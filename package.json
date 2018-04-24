@@ -13,6 +13,8 @@
     "typescript": "^2.8.1"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.107",
+    "lodash": "^4.17.5",
     "vue": "^2.5.16"
   }
 }
