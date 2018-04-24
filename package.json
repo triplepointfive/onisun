@@ -1,0 +1,18 @@
+{
+  "name": "vue-ts-example",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "poi",
+    "build": "poi build"
+  },
+  "devDependencies": {
+    "@poi/plugin-typescript": "^10.1.2",
+    "poi": "^10.1.2",
+    "ts-node": "^6.0.0",
+    "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "vue": "^2.5.16"
+  }
+}
