@@ -1,8 +1,15 @@
 import * as _ from "lodash";
 
 export type Tile = string;
+
 class Block {
-  constructor(public content: Tile[][]) { }
+  public static readonly Dimensions = 2;
+
+  constructor(public content: Tile[][]) {
+    if (content.length !== Block.Dimensions || content.some(row => row.length !== Block.Dimensions)) {
+      throw `Invalid block '${content}'`;
+    }
+  }
 
   public matchRight(block: Block): boolean {
     return this.matchHorizontal(this, block);
@@ -22,14 +29,14 @@ class Block {
 
   private matchHorizontal(left: Block, right: Block): boolean {
     return _.isEqual(
-      left.content.map(row => row[BlockDimension - 1]),
+      left.content.map(row => row[Block.Dimensions - 1]),
       right.content.map(row => row[0]),
     );
   }
 
   private matchVertical(top: Block, bottom: Block): boolean {
     return _.isEqual(
-      top.content[BlockDimension - 1],
+      top.content[Block.Dimensions - 1],
       bottom.content[0],
     );
   }
@@ -57,7 +64,6 @@ const blocks: Array<Block> = [
     ["#", " "],
     ["#", "#"],
   ]),
-
 
   new Block([
     [" ", "#"],
@@ -121,8 +127,6 @@ class MapBlock {
   }
 }
 
-const BlockDimension = 2;
-
 class Map {
   private blockMap: MapBlock[][] = [];
 
@@ -137,7 +141,7 @@ class Map {
       for (let j = 0; j < this.width; j++) {
         let block = new MapBlock();
 
-        if (i === 0 || j === 0 || i === BlockMapHeight - 1 || j === BlockMapWidht - 1) {
+        if (i === 0 || j === 0 || i === this.height - 1 || j === this.width - 1) {
           block.confirmBlock();
           block.block = completeBlock;
         }
@@ -153,7 +157,7 @@ class Map {
     let map = [];
 
     for (let i = 0; i < this.height; i++) {
-      for (let k = 0; k < BlockDimension; k++) {
+      for (let k = 0; k < Block.Dimensions; k++) {
         let row: Tile[] = [];
 
         for (let j = 0; j < this.width; j++) {
@@ -162,7 +166,7 @@ class Map {
           if (block) {
             row = row.concat(block.content[k]);
           } else {
-            const blockRow: string[] = new Array(BlockDimension).fill(" ");
+            const blockRow: string[] = new Array(Block.Dimensions).fill(" ");
             row = row.concat(blockRow);
           }
         }
@@ -225,10 +229,7 @@ class Map {
   }
 }
 
-const BlockMapWidht = 20;
-const BlockMapHeight = 20;
-
-let blockMap: Map = new Map(BlockMapWidht, BlockMapHeight);
+let blockMap: Map = new Map(20, 20);
 blockMap.fillMap(1, 1);
 
 export let map: Array<Array<Tile>> = blockMap.toMap();
