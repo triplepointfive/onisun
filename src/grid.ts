@@ -1,73 +1,103 @@
 import * as _ from "lodash";
 
 export type Tile = string;
-type Block = Array<Array<Tile>>
+class Block {
+  constructor(public content: Tile[][]) { }
+
+  public matchRight(block: Block): boolean {
+    return this.matchHorizontal(this, block);
+  }
+
+  public matchLeft(block: Block): boolean {
+    return this.matchHorizontal(block, this);
+  }
+
+  public matchTop(block: Block): boolean {
+    return this.matchVertical(block, this);
+  }
+
+  public matchBootom(block: Block): boolean {
+    return this.matchVertical(this, block);
+  }
+
+  private matchHorizontal(left: Block, right: Block): boolean {
+    return _.isEqual(
+      left.content.map(row => row[BlockDimension - 1]),
+      right.content.map(row => row[0]),
+    );
+  }
+
+  private matchVertical(top: Block, bottom: Block): boolean {
+    return _.isEqual(
+      top.content[BlockDimension - 1],
+      bottom.content[0],
+    );
+  }
+}
 
 const blocks: Array<Block> = [
-  [
+  new Block([
     [" ", " "],
     [" ", " "],
-  ],
+  ]),
 
-  [
+  new Block([
     ["#", "#"],
     ["#", " "],
-  ],
-  [
+  ]),
+  new Block([
     ["#", "#"],
     [" ", "#"],
-  ],
-  [
+  ]),
+  new Block([
     [" ", "#"],
     ["#", "#"],
-  ],
-  [
+  ]),
+  new Block([
     ["#", " "],
     ["#", "#"],
-  ],
+  ]),
 
 
-  [
+  new Block([
     [" ", "#"],
     [" ", "#"],
-  ],
-  [
+  ]),
+  new Block([
     ["#", " "],
     ["#", " "],
-  ],
-  [
+  ]),
+  new Block([
     ["#", "#"],
     [" ", " "],
-  ],
-  [
+  ]),
+  new Block([
     [" ", " "],
     ["#", "#"],
-  ],
+  ]),
 
-
-
-  [
+  new Block([
     ["#", " "],
     [" ", " "],
-  ],
-  [
+  ]),
+  new Block([
     [" ", "#"],
     [" ", " "],
-  ],
-  [
+  ]),
+  new Block([
     [" ", " "],
     ["#", " "],
-  ],
-  [
+  ]),
+  new Block([
     [" ", " "],
     [" ", "#"],
-  ],
+  ]),
 ];
 
-const completeBlock: Block = [
+const completeBlock: Block = new Block([
   ["#", "#"],
   ["#", "#"],
-];
+]);
 
 enum MapBlockState {
   EMPTY,
@@ -91,119 +121,114 @@ class MapBlock {
   }
 }
 
-let blockMap: Array<Array<MapBlock>> = [];
-
-const BlockMapWidht = 6;
-const BlockMapHeight = 6;
 const BlockDimension = 2;
 
-for (let i = 0; i < BlockMapHeight; i++) {
-  let row = [];
+class Map {
+  private blockMap: MapBlock[][] = [];
 
-  for (let j = 0; j < BlockMapWidht; j++) {
-    let block = new MapBlock();
-
-    if (i === 0 || j === 0 || i === BlockMapHeight - 1 || j === BlockMapWidht - 1) {
-      block.confirmBlock();
-      block.block = completeBlock;
-    }
-
-    row.push(block);
+  constructor(public width: number, public height: number) {
+    this.initializeBlockMap();
   }
 
-  blockMap.push(row);
-}
+  public initializeBlockMap() {
+    for (let i = 0; i < this.height; i++) {
+      let row = [];
 
-function blockMapToMap(blockMap: Array<Array<MapBlock>>) {
-  let map = [];
+      for (let j = 0; j < this.width; j++) {
+        let block = new MapBlock();
 
-  for (let i = 0; i < BlockMapHeight; i++) {
-    for (let k = 0; k < BlockDimension; k++) {
-      let row: Tile[] = [];
-
-      for (let j = 0; j < BlockMapWidht; j++) {
-        const block: Block | undefined = blockMap[i][j].block;
-
-        if (block) {
-          row = row.concat(block[k]);
-        } else {
-          const blockRow: string[] = new Array(BlockDimension).fill(" ");
-          row = row.concat(blockRow);
+        if (i === 0 || j === 0 || i === BlockMapHeight - 1 || j === BlockMapWidht - 1) {
+          block.confirmBlock();
+          block.block = completeBlock;
         }
+
+        row.push(block);
       }
 
-      map.push(row);
+      this.blockMap.push(row);
     }
   }
 
-  return map;
-}
+  public toMap(): string[][] {
+    let map = [];
 
-function matchHorizontal(left: Block, right: Block): boolean {
-  return _.isEqual(
-    left.map(row => row[BlockDimension - 1]),
-    right.map(row => row[0]),
-  );
-}
+    for (let i = 0; i < this.height; i++) {
+      for (let k = 0; k < BlockDimension; k++) {
+        let row: Tile[] = [];
 
-function matchVertical(top: Block, bottom: Block): boolean {
-  return _.isEqual(
-    top[BlockDimension - 1],
-    bottom[0],
-  );
-}
+        for (let j = 0; j < this.width; j++) {
+          const block: Block | undefined = this.blockMap[i][j].block;
 
-function fillMap(blockMap: MapBlock[][], i: number, j: number): boolean {
-  if (blockMap[i][j].block !== undefined) {
-    return true;
-  }
+          if (block) {
+            row = row.concat(block.content[k]);
+          } else {
+            const blockRow: string[] = new Array(BlockDimension).fill(" ");
+            row = row.concat(blockRow);
+          }
+        }
 
-  const shuffledBlocks = _.shuffle(blocks);
-  for (let k = 0; k < shuffledBlocks.length; k++) {
-    const block: Block = shuffledBlocks[k];
-
-    blockMap[i][j].block = block;
-
-    const state = isValidBlock(blockMap, i, j)
-      && fillMap(blockMap, i - 1, j)
-      && fillMap(blockMap, i, j - 1)
-      && fillMap(blockMap, i + 1, j)
-      && fillMap(blockMap, i, j + 1);
-
-    if (state) {
-      break;
+        map.push(row);
+      }
     }
-    else {
-      blockMap[i][j].block = undefined;
+
+    return map;
+  }
+
+  public fillMap(i: number, j: number): boolean {
+    if (this.blockMap[i][j].block !== undefined) {
+      return true;
     }
+
+    const shuffledBlocks = _.shuffle(blocks);
+    for (let k = 0; k < shuffledBlocks.length; k++) {
+      const block: Block = shuffledBlocks[k];
+
+      this.blockMap[i][j].block = block;
+
+      const state = this.isValidBlock(i, j)
+        && this.fillMap(i - 1, j)
+        && this.fillMap(i, j - 1)
+        && this.fillMap(i + 1, j)
+        && this.fillMap(i, j + 1);
+
+      if (state) {
+        break;
+      }
+      else {
+        this.blockMap[i][j].block = undefined;
+      }
+    }
+
+    return this.blockMap[i][j].block !== undefined;
   }
 
-  return blockMap[i][j].block !== undefined;
+  private isValidBlock(i: number, j: number): boolean {
+    const block = this.blockMap[i][j];
+    if (block.isFinished()) {
+      return true;
+    }
+
+    const elem = block.block;
+    if (elem === undefined) {
+      return false;
+    }
+
+    const top = this.blockMap[i - 1][j].block;
+    const bottom = this.blockMap[i + 1][j].block;
+    const left = this.blockMap[i][j - 1].block;
+    const right = this.blockMap[i][j + 1].block;
+
+    return (top === undefined || elem.matchTop(top))
+      && (bottom === undefined || elem.matchBootom(bottom))
+      && (left === undefined || elem.matchLeft(left))
+      && (right === undefined || elem.matchRight(right));
+  }
 }
 
-function isValidBlock(blockMap: MapBlock[][], i: number, j: number): boolean {
-  const block = blockMap[i][j];
-  if (block.isFinished()) {
-    return true;
-  }
+const BlockMapWidht = 20;
+const BlockMapHeight = 20;
 
-  const elem = block.block;
-  if (elem === undefined) {
-    return false;
-  }
+let blockMap: Map = new Map(BlockMapWidht, BlockMapHeight);
+blockMap.fillMap(1, 1);
 
-  const top = blockMap[i - 1][j].block;
-  const bottom = blockMap[i + 1][j].block;
-  const left = blockMap[i][j - 1].block;
-  const right = blockMap[i][j + 1].block;
-
-  return (top === undefined || matchVertical(top, elem))
-    && (bottom === undefined || matchVertical(elem, bottom))
-    && (left === undefined || matchHorizontal(left, elem))
-    && (right === undefined || matchHorizontal(elem, right));
-}
-
-
-fillMap(blockMap, 1, 1);
-
-export let map: Array<Array<Tile>> = blockMapToMap(blockMap);
+export let map: Array<Array<Tile>> = blockMap.toMap();

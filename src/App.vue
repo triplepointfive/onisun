@@ -1,13 +1,15 @@
 <template>
   <div id="app">
-    <div v-for="row in msg">
-      {{ buildRow(row) }}
+    <div v-for="(row, i) in msg">
+      <Cell :cell="cell" v-for="(cell, j) in row"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+
+import Cell from './Cell.vue'
 
 import { map, Tile } from './grid'
 
@@ -17,16 +19,8 @@ export default Vue.extend({
       msg: map
     }
   },
-  methods: {
-    buildRow(row: Array<Tile>) {
-      return row.map(tile => this.symbol(tile)).join('');
-    },
-    symbol(tile: Tile) {
-      if (tile == ' ') {
-        return '.'
-      }
-      return tile
-    }
+  components: {
+    Cell
   }
 })
 </script>
