@@ -1,11 +1,12 @@
 import * as _ from "lodash";
 
 export type Tile = string;
+type BlockId = string;
 
 class Block {
   public static readonly Dimensions = 3;
 
-  public id: string;
+  public id: BlockId;
 
   constructor(public content: Tile[][]) {
     if (content.length !== Block.Dimensions || content.some(row => row.length !== Block.Dimensions)) {
@@ -73,13 +74,25 @@ class Block {
   }
 }
 
+enum Direction {
+  Top,
+  Bottom,
+  Left,
+  Right,
+};
+
+interface Neighbors {
+  [key: string]: Block[];
+}
+
 class BlockRepository {
   public blocks: Block[] = [];
-  public uniqBlockIds: Set<string>;
+  public uniqBlockIds: Set<string> = new Set();
+
+  public neighbors: { [key: string]: Neighbors } = {};
 
   constructor(public borderBlock: Block) {
-    this.uniqBlockIds = new Set();
-    this.uniqBlockIds.add(borderBlock.id);
+    this.addBlock(borderBlock);
   }
 
   public addBlock(block: Block, mirrored: boolean = false): void {
@@ -89,6 +102,8 @@ class BlockRepository {
 
     this.blocks.push(block);
     this.uniqBlockIds.add(block.id);
+
+    this.findNeighbors(block);
 
     if (!mirrored) {
       const horizontalBlock = block.mirrorHorizontally();
@@ -107,6 +122,66 @@ class BlockRepository {
 
   public shuffledBlocks(): Block[] {
     return _.shuffle(this.blocks);
+  }
+
+  public available(top: Block | undefined, bottom: Block | undefined,
+                   left: Block | undefined, right: Block | undefined): Block[] {
+    let availableBlocks = this.blocks;
+
+    if (top !== undefined) {
+      availableBlocks = _.intersection(availableBlocks, this.neighbors[top.id][Direction.Bottom]);
+    }
+
+    if (bottom !== undefined) {
+      availableBlocks = _.intersection(availableBlocks, this.neighbors[bottom.id][Direction.Top]);
+    }
+
+    if (left !== undefined) {
+      availableBlocks = _.intersection(availableBlocks, this.neighbors[left.id][Direction.Right]);
+    }
+
+    if (right !== undefined) {
+      availableBlocks = _.intersection(availableBlocks, this.neighbors[right.id][Direction.Left]);
+    }
+
+    return _.shuffle(availableBlocks);
+  }
+
+  private findNeighbors(centralBlock: Block) {
+    this.blocks.forEach((block) => {
+      if (centralBlock.matchTop(block)) {
+        this.addNeighbor(centralBlock, block, Direction.Top);
+        this.addNeighbor(block, centralBlock, Direction.Bottom);
+      }
+
+      if (centralBlock.matchBootom(block)) {
+        this.addNeighbor(centralBlock, block, Direction.Bottom);
+        this.addNeighbor(block, centralBlock, Direction.Top);
+      }
+
+      if (centralBlock.matchLeft(block)) {
+        this.addNeighbor(centralBlock, block, Direction.Left);
+        this.addNeighbor(block, centralBlock, Direction.Right);
+      }
+
+      if (centralBlock.matchRight(block)) {
+        this.addNeighbor(centralBlock, block, Direction.Right);
+        this.addNeighbor(block, centralBlock, Direction.Left);
+      }
+    });
+  }
+
+  private addNeighbor(central: Block, neighbor: Block, direction: Direction) {
+    if (!this.neighbors[central.id]) {
+      this.neighbors[central.id] = {
+        [Direction.Top]: [],
+        [Direction.Bottom]: [],
+        [Direction.Left]: [],
+        [Direction.Right]: [],
+      };
+    }
+
+    this.neighbors[central.id][direction].push(neighbor);
   }
 }
 
@@ -183,7 +258,7 @@ class MapBlock {
 class Map {
   private blockMap: MapBlock[][] = [];
 
-  private steps = 0
+  private steps = 0;
 
   constructor(public width: number, public height: number) {
     this.initializeBlockMap();
