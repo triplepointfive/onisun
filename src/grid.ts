@@ -229,6 +229,63 @@ let blockRepository = new BlockRepository(
     [" ", " ", " "],
     [" ", " ", " "],
   ],
+
+  [
+    ["#", "#", "#"],
+    ["#", " ", "+"],
+    ["#", " ", "#"],
+  ],
+  [
+    ["#", "#", "#"],
+    ["#", " ", " "],
+    ["#", " ", "#"],
+  ],
+
+  [
+    ["#", "+", "#"],
+    ["#", " ", "#"],
+    ["#", " ", "#"],
+  ],
+  [
+    ["#", " ", "#"],
+    ["#", " ", "#"],
+    ["#", " ", "#"],
+  ],
+
+
+  [
+    ["#", " ", "#"],
+    ["#", " ", "+"],
+    ["#", " ", "#"],
+  ],
+  [
+    ["#", "+", "#"],
+    ["#", " ", "+"],
+    ["#", " ", "#"],
+  ],
+  [
+    ["#", "+", "#"],
+    ["#", " ", " "],
+    ["#", " ", "#"],
+  ],
+  [
+    ["#", " ", "#"],
+    ["#", " ", " "],
+    ["#", " ", "#"],
+  ],
+
+  [
+    ["#", " ", "#"],
+    [" ", " ", " "],
+    ["#", " ", "#"],
+  ],
+  [
+    ["#", "+", "#"],
+    [" ", " ", " "],
+    ["#", " ", "#"],
+  ],
+
+
 ].forEach((content) => {
   blockRepository.addBlock(new Block(content));
 });
@@ -314,21 +371,25 @@ class Map {
     }
     this.steps += 1;
 
-    if (this.steps > 100000) {
+    if (this.steps > 300000) {
       throw "failed to generate";
     }
 
-    const shuffledBlocks = blockRepository.shuffledBlocks();
+    const top = this.blockMap[i - 1][j].block;
+    const bottom = this.blockMap[i + 1][j].block;
+    const left = this.blockMap[i][j - 1].block;
+    const right = this.blockMap[i][j + 1].block;
+
+    const shuffledBlocks = blockRepository.available(top, bottom, left, right);
     for (let k = 0; k < shuffledBlocks.length; k++) {
       const block: Block = shuffledBlocks[k];
 
       this.blockMap[i][j].block = block;
 
-      const state = this.isValidBlock(i, j)
-        && this.fillMap(i - 1, j)
-        && this.fillMap(i, j - 1)
-        && this.fillMap(i + 1, j)
-        && this.fillMap(i, j + 1);
+      const state = this.fillMap(i - 1, j)
+                 && this.fillMap(i, j - 1)
+                 && this.fillMap(i + 1, j)
+                 && this.fillMap(i, j + 1);
 
       if (state) {
         break;

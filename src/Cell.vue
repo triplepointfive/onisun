@@ -1,5 +1,5 @@
 <template>
-  <span :style="style" v-text="symbol()">
+  <span :class="style" v-text="symbol">
   </span>
 </template>
 
@@ -10,15 +10,17 @@ import { map, Tile } from './grid'
 
 export default Vue.extend({
   props: ["cell"],
-  methods: {
+  computed: {
     style() {
-      return {}
+      if (this.cell == '#') {
+        return 'wall'
+      }
     },
     symbol() {
       if (this.cell == ' ') {
         return '　'
       } if (this.cell == '+') {
-        return '　'
+        return '＋'
       } else {
         return '＃'
       }
@@ -26,3 +28,10 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style>
+.wall {
+  color: lightgrey;
+  background-color: lightgrey;
+}
+</style>

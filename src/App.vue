@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-for="(row, i) in msg">
+    <div class="row" v-for="(row, i) in msg">
       <Cell :cell="cell" v-for="(cell, j) in row"/>
     </div>
   </div>
@@ -24,3 +24,9 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style>
+.row {
+  line-height: 1rem;
+}
+</style>
