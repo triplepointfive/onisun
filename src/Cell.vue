@@ -6,7 +6,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { map, Tile, TileTypes } from './grid'
+import { Tile, TileTypes } from './grid'
 
 export default Vue.extend({
   props: ["cell"],
@@ -24,7 +24,7 @@ export default Vue.extend({
       } if (this.cell.display == '#') {
         return '＃'
       } else {
-        return ''
+        return 'E'
       }
     }
   }

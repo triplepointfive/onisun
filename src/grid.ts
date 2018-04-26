@@ -39,12 +39,12 @@ new Tile("C", " ", TileTypes.Floor);
 new Tile("W", "#", TileTypes.Wall);
 new Tile("D", "+", TileTypes.Door);
 
-class Block {
+export class Block {
   public static readonly Dimensions = 3;
 
   public id: BlockId;
 
-  constructor(public content: Tile[][]) {
+  constructor(public content: Tile[][], public weight: number) {
     if (content.length !== Block.Dimensions || content.some(row => row.length !== Block.Dimensions)) {
       throw `Invalid block '${content}'`;
     }
@@ -69,15 +69,15 @@ class Block {
   }
 
   public mirrorVertically(): Block {
-    return new Block(_.cloneDeep(this.content).reverse());
+    return new Block(_.cloneDeep(this.content).reverse(), this.weight);
   }
 
   public mirrorHorizontally(): Block {
-    return new Block(_.cloneDeep(this.content).map(row => row.reverse()));
+    return new Block(_.cloneDeep(this.content).map(row => row.reverse()), this.weight);
   }
 
   public rotateRight(): Block {
-    return new Block(this.rotate(_.cloneDeep(this.content)));
+    return new Block(this.rotate(_.cloneDeep(this.content)), this.weight);
   }
 
   private rotate(matrix: any[][]): any[][] {
@@ -121,7 +121,7 @@ interface Neighbors {
   [key: string]: Block[];
 }
 
-class BlockRepository {
+export class BlockRepository {
   public blocks: Block[] = [];
   public uniqBlockIds: Set<string> = new Set();
 
@@ -156,10 +156,6 @@ class BlockRepository {
     }
   }
 
-  public shuffledBlocks(): Block[] {
-    return _.shuffle(this.blocks);
-  }
-
   public available(top: Block | undefined, bottom: Block | undefined,
                    left: Block | undefined, right: Block | undefined): Block[] {
     let availableBlocks = this.blocks;
@@ -180,7 +176,7 @@ class BlockRepository {
       availableBlocks = _.intersection(availableBlocks, this.neighbors[right.id][Direction.Left]);
     }
 
-    return _.shuffle(availableBlocks);
+    return _.sortBy(availableBlocks, block => Math.random() * block.weight);
   }
 
   private findNeighbors(centralBlock: Block) {
@@ -221,104 +217,6 @@ class BlockRepository {
   }
 }
 
-const rawToTiles = function (map: string[]): Tile[][] {
-  let tiles: Tile[][] = [];
-  map.forEach((row) => {
-    let tileRow: Tile[] = [];
-    row.split("").forEach((key) => {
-      tileRow.push(Tile.retrive(key));
-    });
-    tiles.push(tileRow);
-  });
-  return tiles;
-};
-
-let blockRepository = new BlockRepository(
-  new Block(rawToTiles([
-    "WWW",
-    "WWW",
-    "WWW",
-  ]))
-);
-
-[
-  [
-    "RRR",
-    "RRR",
-    "RRR",
-  ],
-
-  [
-    "WCW",
-    "RRR",
-    "RRR",
-  ],
-  [
-    "WWC",
-    "RRR",
-    "RRR",
-  ],
-  [
-    "CWC",
-    "RRR",
-    "RRR",
-  ],
-  [
-    "WWW",
-    "RRR",
-    "RRR",
-  ],
-
-  [
-    "WCW",
-    "CRR",
-    "WRR",
-  ],
-  [
-    "WWW",
-    "WRR",
-    "WRR",
-  ],
-  [
-    "WWW",
-    "CRR",
-    "WRR",
-  ],
-  [
-    "WWC",
-    "WRR",
-    "WRR",
-  ],
-  [
-    "WWC",
-    "WRR",
-    "CRR",
-  ],
-
-  [
-    "WWW",
-    "CCW",
-    "WCW",
-  ],
-  [
-    "WWW",
-    "CCC",
-    "WWW",
-  ],
-  [
-    "WCW",
-    "CCC",
-    "WWW",
-  ],
-  [
-    "WCW",
-    "CCC",
-    "WCW",
-  ],
-].forEach((content) => {
-  blockRepository.addBlock(new Block(rawToTiles(content)));
-});
-
 enum MapBlockState {
   EMPTY,
   CONFIRMED,
@@ -347,13 +245,13 @@ class Random {
   }
 }
 
-class Map {
+export class Map {
   private blockMap: MapBlock[][] = [];
   private map: Tile[][] = [];
 
   private steps = 0;
 
-  constructor(public width: number, public height: number) {
+  constructor(public width: number, public height: number, private blockRepository: BlockRepository) {
     this.initializeBlockMap();
   }
 
@@ -366,7 +264,7 @@ class Map {
 
         if (i === 0 || j === 0 || i === this.height - 1 || j === this.width - 1) {
           block.confirmBlock();
-          block.block = blockRepository.borderBlock;
+          block.block = this.blockRepository.borderBlock;
         }
 
         row.push(block);
@@ -395,7 +293,7 @@ class Map {
     const left = this.blockMap[i][j - 1].block;
     const right = this.blockMap[i][j + 1].block;
 
-    const shuffledBlocks = blockRepository.available(top, bottom, left, right);
+    const shuffledBlocks = this.blockRepository.available(top, bottom, left, right);
     for (let k = 0; k < shuffledBlocks.length; k++) {
       const block: Block = shuffledBlocks[k];
 
@@ -459,15 +357,3 @@ class Map {
     }
   }
 }
-
-console.log("Blocks", blockRepository.blocks.length);
-
-console.time("fillMap");
-
-let blockMap: Map = new Map(20, 20);
-blockMap.fillMap(1, 1);
-blockMap.postProcess();
-
-console.timeEnd("fillMap");
-
-export let map: Array<Array<Tile>> = blockMap.toMap();
