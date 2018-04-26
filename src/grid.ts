@@ -3,7 +3,7 @@ import * as _ from "lodash";
 export type Tile = string;
 
 class Block {
-  public static readonly Dimensions = 2;
+  public static readonly Dimensions = 3;
 
   public id: string;
 
@@ -112,30 +112,47 @@ class BlockRepository {
 
 let blockRepository = new BlockRepository(
   new Block([
-    ["#", "#"],
-    ["#", "#"],
+    ["#", "#", "#"],
+    ["#", "#", "#"],
+    ["#", "#", "#"],
   ])
 );
 
 [
   [
-    [" ", " "],
-    [" ", " "],
+    [" ", " ", " "],
+    [" ", " ", " "],
+    [" ", " ", " "],
   ],
-
   [
-    ["#", "#"],
-    ["#", " "],
+    ["#", "#", "#"],
+    ["#", " ", " "],
+    ["#", " ", " "],
   ],
-
   [
-    ["#", "#"],
-    [" ", " "],
+    ["#", "+", "#"],
+    ["#", " ", " "],
+    ["#", " ", " "],
   ],
-
   [
-    ["#", " "],
-    [" ", " "],
+    ["#", "#", "#"],
+    [" ", " ", " "],
+    [" ", " ", " "],
+  ],
+  [
+    ["#", "+", "#"],
+    [" ", " ", " "],
+    [" ", " ", " "],
+  ],
+  [
+    ["+", "#", "#"],
+    [" ", " ", " "],
+    [" ", " ", " "],
+  ],
+  [
+    ["+", "#", "+"],
+    [" ", " ", " "],
+    [" ", " ", " "],
   ],
 ].forEach((content) => {
   blockRepository.addBlock(new Block(content));
@@ -165,6 +182,8 @@ class MapBlock {
 
 class Map {
   private blockMap: MapBlock[][] = [];
+
+  private steps = 0
 
   constructor(public width: number, public height: number) {
     this.initializeBlockMap();
@@ -218,6 +237,11 @@ class Map {
     if (this.blockMap[i][j].block !== undefined) {
       return true;
     }
+    this.steps += 1;
+
+    if (this.steps > 100000) {
+      throw "failed to generate";
+    }
 
     const shuffledBlocks = blockRepository.shuffledBlocks();
     for (let k = 0; k < shuffledBlocks.length; k++) {
@@ -266,6 +290,13 @@ class Map {
 }
 
 let blockMap: Map = new Map(20, 20);
+
+console.log("Blocks", blockRepository.blocks.length);
+
+console.time("fillMap");
+
 blockMap.fillMap(1, 1);
+
+console.timeEnd("fillMap");
 
 export let map: Array<Array<Tile>> = blockMap.toMap();

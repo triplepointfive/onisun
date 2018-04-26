@@ -17,6 +17,8 @@ export default Vue.extend({
     symbol() {
       if (this.cell == ' ') {
         return '　'
+      } if (this.cell == '+') {
+        return '　'
       } else {
         return '＃'
       }
@@ -24,4 +26,3 @@ export default Vue.extend({
   }
 })
 </script>
-
