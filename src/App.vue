@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="row" v-for="(row, i) in msg">
-      <Cell :cell="cell" v-for="(cell, j) in row"/>
+      <Cell :cell="cell" v-for="(cell, j) in row" :key="i + '-' + j"/>
     </div>
   </div>
 </template>

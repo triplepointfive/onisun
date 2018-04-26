@@ -1,7 +1,43 @@
 import * as _ from "lodash";
 
-export type Tile = string;
 type BlockId = string;
+
+export enum TileTypes {
+  Wall,
+  Door,
+  Floor,
+}
+
+export class Tile {
+  private static repository: { [key: string]: Tile } = {};
+
+  private static register(key: string, tile: Tile) {
+    if (this.repository[key]) {
+      throw `Tile '${key}' is already registered!`;
+    }
+
+    this.repository[key] = tile;
+  }
+
+  public static retrive(key: string): Tile {
+    let tile = this.repository[key];
+
+    if (!tile) {
+      throw `Tile '${key}' is not registered!`;
+    }
+
+    return tile;
+  }
+
+  constructor(public key: string, public display: string, public type: TileTypes) {
+    Tile.register(key, this);
+  }
+};
+
+new Tile("R", " ", TileTypes.Floor);
+new Tile("C", " ", TileTypes.Floor);
+new Tile("W", "#", TileTypes.Wall);
+new Tile("D", "+", TileTypes.Door);
 
 class Block {
   public static readonly Dimensions = 3;
@@ -13,7 +49,7 @@ class Block {
       throw `Invalid block '${content}'`;
     }
 
-    this.id = content.map(row => row.join("")).join("");
+    this.id = content.map(row => row.map(tile => tile.key).join("")).join("");
   }
 
   public matchRight(block: Block): boolean {
@@ -44,13 +80,13 @@ class Block {
     return new Block(this.rotate(_.cloneDeep(this.content)));
   }
 
-  // TODO: rewrite
   private rotate(matrix: any[][]): any[][] {
     matrix = matrix.reverse();
 
+    let temp: number;
     for (let i = 0; i < matrix.length; i++) {
       for (let j = 0; j < i; j++) {
-        let temp = matrix[i][j];
+        temp = matrix[i][j];
         matrix[i][j] = matrix[j][i];
         matrix[j][i] = temp;
       }
@@ -185,109 +221,103 @@ class BlockRepository {
   }
 }
 
+const rawToTiles = function (map: string[]): Tile[][] {
+  let tiles: Tile[][] = [];
+  map.forEach((row) => {
+    let tileRow: Tile[] = [];
+    row.split("").forEach((key) => {
+      tileRow.push(Tile.retrive(key));
+    });
+    tiles.push(tileRow);
+  });
+  return tiles;
+};
+
 let blockRepository = new BlockRepository(
-  new Block([
-    ["#", "#", "#"],
-    ["#", "#", "#"],
-    ["#", "#", "#"],
-  ])
+  new Block(rawToTiles([
+    "WWW",
+    "WWW",
+    "WWW",
+  ]))
 );
 
 [
   [
-    [" ", " ", " "],
-    [" ", " ", " "],
-    [" ", " ", " "],
-  ],
-  [
-    ["#", "#", "#"],
-    ["#", " ", " "],
-    ["#", " ", " "],
-  ],
-  [
-    ["#", "+", "#"],
-    ["#", " ", " "],
-    ["#", " ", " "],
-  ],
-  [
-    ["#", "#", "#"],
-    [" ", " ", " "],
-    [" ", " ", " "],
-  ],
-  [
-    ["#", "+", "#"],
-    [" ", " ", " "],
-    [" ", " ", " "],
-  ],
-  [
-    ["+", "#", "#"],
-    [" ", " ", " "],
-    [" ", " ", " "],
-  ],
-  [
-    ["+", "#", "+"],
-    [" ", " ", " "],
-    [" ", " ", " "],
+    "RRR",
+    "RRR",
+    "RRR",
   ],
 
   [
-    ["#", "#", "#"],
-    ["#", " ", "+"],
-    ["#", " ", "#"],
+    "WCW",
+    "RRR",
+    "RRR",
   ],
   [
-    ["#", "#", "#"],
-    ["#", " ", " "],
-    ["#", " ", "#"],
+    "WWC",
+    "RRR",
+    "RRR",
+  ],
+  [
+    "CWC",
+    "RRR",
+    "RRR",
+  ],
+  [
+    "WWW",
+    "RRR",
+    "RRR",
   ],
 
   [
-    ["#", "+", "#"],
-    ["#", " ", "#"],
-    ["#", " ", "#"],
+    "WCW",
+    "CRR",
+    "WRR",
   ],
   [
-    ["#", " ", "#"],
-    ["#", " ", "#"],
-    ["#", " ", "#"],
-  ],
-
-
-  [
-    ["#", " ", "#"],
-    ["#", " ", "+"],
-    ["#", " ", "#"],
+    "WWW",
+    "WRR",
+    "WRR",
   ],
   [
-    ["#", "+", "#"],
-    ["#", " ", "+"],
-    ["#", " ", "#"],
+    "WWW",
+    "CRR",
+    "WRR",
   ],
   [
-    ["#", "+", "#"],
-    ["#", " ", " "],
-    ["#", " ", "#"],
+    "WWC",
+    "WRR",
+    "WRR",
   ],
   [
-    ["#", " ", "#"],
-    ["#", " ", " "],
-    ["#", " ", "#"],
+    "WWC",
+    "WRR",
+    "CRR",
   ],
 
   [
-    ["#", " ", "#"],
-    [" ", " ", " "],
-    ["#", " ", "#"],
+    "WWW",
+    "CCW",
+    "WCW",
   ],
   [
-    ["#", "+", "#"],
-    [" ", " ", " "],
-    ["#", " ", "#"],
+    "WWW",
+    "CCC",
+    "WWW",
   ],
-
+  [
+    "WCW",
+    "CCC",
+    "WWW",
+  ],
+  [
+    "WCW",
+    "CCC",
+    "WCW",
+  ],
 
 ].forEach((content) => {
-  blockRepository.addBlock(new Block(content));
+  blockRepository.addBlock(new Block(rawToTiles(content)));
 });
 
 enum MapBlockState {
@@ -340,7 +370,7 @@ class Map {
     }
   }
 
-  public toMap(): string[][] {
+  public toMap(): Tile[][] {
     let map = [];
 
     for (let i = 0; i < this.height; i++) {
@@ -353,7 +383,7 @@ class Map {
           if (block) {
             row = row.concat(_.initial(block.content[k]));
           } else {
-            const blockRow: string[] = new Array(Block.Dimensions).fill(" ");
+            const blockRow: Tile[] = new Array(Block.Dimensions).fill(" ");
             row = row.concat(blockRow);
           }
         }
@@ -428,6 +458,7 @@ class Map {
 let blockMap: Map = new Map(20, 20);
 
 console.log("Blocks", blockRepository.blocks.length);
+console.log(blockRepository.neighbors)
 
 console.time("fillMap");
 

@@ -6,23 +6,25 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { map, Tile } from './grid'
+import { map, Tile, TileTypes } from './grid'
 
 export default Vue.extend({
   props: ["cell"],
   computed: {
     style() {
-      if (this.cell == '#') {
+      if (this.cell.type == TileTypes.Wall) {
         return 'wall'
       }
     },
-    symbol() {
-      if (this.cell == ' ') {
+    symbol():any {
+      if (this.cell.display == ' ') {
         return '　'
-      } if (this.cell == '+') {
-        return '＋'
-      } else {
+      } if (this.cell.display == '+') {
+        return '戸'
+      } if (this.cell.display == '#') {
         return '＃'
+      } else {
+        return ''
       }
     }
   }
