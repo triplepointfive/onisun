@@ -315,7 +315,6 @@ let blockRepository = new BlockRepository(
     "CCC",
     "WCW",
   ],
-
 ].forEach((content) => {
   blockRepository.addBlock(new Block(rawToTiles(content)));
 });
@@ -342,8 +341,15 @@ class MapBlock {
   }
 }
 
+class Random {
+  public static addDoor(): boolean {
+    return Math.random() > 0.5;
+  }
+}
+
 class Map {
   private blockMap: MapBlock[][] = [];
+  private map: Tile[][] = [];
 
   private steps = 0;
 
@@ -371,28 +377,7 @@ class Map {
   }
 
   public toMap(): Tile[][] {
-    let map = [];
-
-    for (let i = 0; i < this.height; i++) {
-      for (let k = 0; k < Block.Dimensions - 1; k++) {
-        let row: Tile[] = [];
-
-        for (let j = 0; j < this.width; j++) {
-          const block: Block | undefined = this.blockMap[i][j].block;
-
-          if (block) {
-            row = row.concat(_.initial(block.content[k]));
-          } else {
-            const blockRow: Tile[] = new Array(Block.Dimensions).fill(" ");
-            row = row.concat(blockRow);
-          }
-        }
-
-        map.push(row);
-      }
-    }
-
-    return map;
+    return this.map;
   }
 
   public fillMap(i: number, j: number): boolean {
@@ -401,7 +386,7 @@ class Map {
     }
     this.steps += 1;
 
-    if (this.steps > 300000) {
+    if (this.steps > 100000) {
       throw "failed to generate";
     }
 
@@ -432,37 +417,56 @@ class Map {
     return this.blockMap[i][j].block !== undefined;
   }
 
-  private isValidBlock(i: number, j: number): boolean {
-    const block = this.blockMap[i][j];
-    if (block.isFinished()) {
-      return true;
+  public postProcess(): void {
+    this.buildMap();
+    this.addDoors();
+  }
+
+  private buildMap(): void {
+    const iterateHeight = this.height - 1;
+    const iterateWidth = this.width - 1;
+
+    for (let i = 1; i < iterateHeight; i++) {
+      for (let k = 0; k < Block.Dimensions - (i === iterateHeight - 1 ? 0 : 1); k++) {
+        let row: Tile[] = [];
+
+        for (let j = 1; j < iterateWidth; j++) {
+          const block: Block | undefined = this.blockMap[i][j].block;
+
+          if (block) {
+            const blockRow = block.content[k];
+            row = row.concat(j === iterateWidth - 1 ? blockRow : _.initial(blockRow));
+          } else {
+            const blockRow: Tile[] = new Array(Block.Dimensions).fill(" ");
+            row = row.concat(blockRow);
+          }
+        }
+
+        this.map.push(row);
+      }
     }
+  }
 
-    const elem = block.block;
-    if (elem === undefined) {
-      return false;
+  private addDoors(): void {
+    for (let i = 1; i < this.map.length; i++) {
+      const row: Tile[] = this.map[i];
+
+      for (let j = 1; j < row.length; j++) {
+        if (row[j].key === "C" && (this.map[i][j - 1].key === "R" || this.map[i - 1][j].key === "R") && Random.addDoor()) {
+          row[j] = Tile.retrive("D");
+        }
+      }
     }
-
-    const top = this.blockMap[i - 1][j].block;
-    const bottom = this.blockMap[i + 1][j].block;
-    const left = this.blockMap[i][j - 1].block;
-    const right = this.blockMap[i][j + 1].block;
-
-    return (top === undefined || elem.matchTop(top))
-      && (bottom === undefined || elem.matchBootom(bottom))
-      && (left === undefined || elem.matchLeft(left))
-      && (right === undefined || elem.matchRight(right));
   }
 }
 
-let blockMap: Map = new Map(20, 20);
-
 console.log("Blocks", blockRepository.blocks.length);
-console.log(blockRepository.neighbors)
 
 console.time("fillMap");
 
+let blockMap: Map = new Map(20, 20);
 blockMap.fillMap(1, 1);
+blockMap.postProcess();
 
 console.timeEnd("fillMap");
 
