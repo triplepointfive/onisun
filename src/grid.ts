@@ -344,14 +344,14 @@ class Map {
     let map = [];
 
     for (let i = 0; i < this.height; i++) {
-      for (let k = 0; k < Block.Dimensions; k++) {
+      for (let k = 0; k < Block.Dimensions - 1; k++) {
         let row: Tile[] = [];
 
         for (let j = 0; j < this.width; j++) {
           const block: Block | undefined = this.blockMap[i][j].block;
 
           if (block) {
-            row = row.concat(block.content[k]);
+            row = row.concat(_.initial(block.content[k]));
           } else {
             const blockRow: string[] = new Array(Block.Dimensions).fill(" ");
             row = row.concat(blockRow);
