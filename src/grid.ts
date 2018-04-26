@@ -5,10 +5,14 @@ export type Tile = string;
 class Block {
   public static readonly Dimensions = 2;
 
+  public id: string;
+
   constructor(public content: Tile[][]) {
     if (content.length !== Block.Dimensions || content.some(row => row.length !== Block.Dimensions)) {
       throw `Invalid block '${content}'`;
     }
+
+    this.id = content.map(row => row.join("")).join("");
   }
 
   public matchRight(block: Block): boolean {
@@ -27,6 +31,33 @@ class Block {
     return this.matchVertical(this, block);
   }
 
+  public mirrorVertically(): Block {
+    return new Block(_.cloneDeep(this.content).reverse());
+  }
+
+  public mirrorHorizontally(): Block {
+    return new Block(_.cloneDeep(this.content).map(row => row.reverse()));
+  }
+
+  public rotateRight(): Block {
+    return new Block(this.rotate(_.cloneDeep(this.content)));
+  }
+
+  // TODO: rewrite
+  private rotate(matrix: any[][]): any[][] {
+    matrix = matrix.reverse();
+
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < i; j++) {
+        let temp = matrix[i][j];
+        matrix[i][j] = matrix[j][i];
+        matrix[j][i] = temp;
+      }
+    }
+
+    return matrix;
+  }
+
   private matchHorizontal(left: Block, right: Block): boolean {
     return _.isEqual(
       left.content.map(row => row[Block.Dimensions - 1]),
@@ -42,68 +73,73 @@ class Block {
   }
 }
 
-const blocks: Array<Block> = [
-  new Block([
-    [" ", " "],
-    [" ", " "],
-  ]),
+class BlockRepository {
+  public blocks: Block[] = [];
+  public uniqBlockIds: Set<string>;
 
-  new Block([
-    ["#", "#"],
-    ["#", " "],
-  ]),
-  new Block([
-    ["#", "#"],
-    [" ", "#"],
-  ]),
-  new Block([
-    [" ", "#"],
-    ["#", "#"],
-  ]),
-  new Block([
-    ["#", " "],
-    ["#", "#"],
-  ]),
+  constructor(public borderBlock: Block) {
+    this.uniqBlockIds = new Set();
+    this.uniqBlockIds.add(borderBlock.id);
+  }
 
-  new Block([
-    [" ", "#"],
-    [" ", "#"],
-  ]),
-  new Block([
-    ["#", " "],
-    ["#", " "],
-  ]),
+  public addBlock(block: Block, mirrored: boolean = false): void {
+    if (this.uniqBlockIds.has(block.id)) {
+      return;
+    }
+
+    this.blocks.push(block);
+    this.uniqBlockIds.add(block.id);
+
+    if (!mirrored) {
+      const horizontalBlock = block.mirrorHorizontally();
+
+      this.addBlock(horizontalBlock, true);
+      this.addBlock(block.mirrorVertically(), true);
+      this.addBlock(horizontalBlock.mirrorVertically(), true);
+    }
+
+    let rotationBlock = block.rotateRight();
+    for (let i = 0; i < 3; i++) {
+      this.addBlock(rotationBlock, true);
+      rotationBlock = rotationBlock.rotateRight();
+    }
+  }
+
+  public shuffledBlocks(): Block[] {
+    return _.shuffle(this.blocks);
+  }
+}
+
+let blockRepository = new BlockRepository(
   new Block([
     ["#", "#"],
-    [" ", " "],
-  ]),
-  new Block([
-    [" ", " "],
     ["#", "#"],
-  ]),
+  ])
+);
 
-  new Block([
+[
+  [
+    [" ", " "],
+    [" ", " "],
+  ],
+
+  [
+    ["#", "#"],
+    ["#", " "],
+  ],
+
+  [
+    ["#", "#"],
+    [" ", " "],
+  ],
+
+  [
     ["#", " "],
     [" ", " "],
-  ]),
-  new Block([
-    [" ", "#"],
-    [" ", " "],
-  ]),
-  new Block([
-    [" ", " "],
-    ["#", " "],
-  ]),
-  new Block([
-    [" ", " "],
-    [" ", "#"],
-  ]),
-];
-
-const completeBlock: Block = new Block([
-  ["#", "#"],
-  ["#", "#"],
-]);
+  ],
+].forEach((content) => {
+  blockRepository.addBlock(new Block(content));
+});
 
 enum MapBlockState {
   EMPTY,
@@ -143,7 +179,7 @@ class Map {
 
         if (i === 0 || j === 0 || i === this.height - 1 || j === this.width - 1) {
           block.confirmBlock();
-          block.block = completeBlock;
+          block.block = blockRepository.borderBlock;
         }
 
         row.push(block);
@@ -183,7 +219,7 @@ class Map {
       return true;
     }
 
-    const shuffledBlocks = _.shuffle(blocks);
+    const shuffledBlocks = blockRepository.shuffledBlocks();
     for (let k = 0; k < shuffledBlocks.length; k++) {
       const block: Block = shuffledBlocks[k];
 
