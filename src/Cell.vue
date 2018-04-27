@@ -1,6 +1,5 @@
-<template>
-  <span :class="style" v-text="symbol">
-  </span>
+<template lang='slm'>
+  td :class="style" v-text="symbol"
 </template>
 
 <script lang="ts">
@@ -35,5 +34,6 @@ export default Vue.extend({
 .wall {
   color: lightgrey;
   background-color: lightgrey;
+  line-height: 1rem;
 }
 </style>

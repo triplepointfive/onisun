@@ -1,18 +1,21 @@
-<template>
-  <div id="app">
-    <div class="row" v-for="(row, i) in map">
-      <Cell :cell="cell" v-for="(cell, j) in row" :key="i + '-' + j"/>
-    </div>
+<template lang='slm'>
+  #app
+    .col
+      table.game-table
+        tr.row v-for="(row, i) in map"
+          Cell :cell="cell" v-for="(cell, j) in row" :key="i + '-' + j"
 
+      button @click="map = buildMap()"
+        | Generate!
 
-    <div class="block" v-for="(tile, i) in blocks">
-      <div class="row" v-for="(row, i) in rawToTiles(tile.content)">
-        <Cell :cell="cell" v-for="(cell, j) in row" :key="i + '-' + j"/>
-      </div>
-    </div>
+    .col
+      .block v-for="(tile, i) in blocks"
+        .wrapper
+          table.content.game-table
+            tr.row v-for="(row, i) in rawToTiles(tile.content)"
+              Cell :cell="cell" v-for="(cell, j) in row" :key="i + '-' + j"
 
-    <button @click="map = buildMap()">Generate!</button>
-  </div>
+          input type="number" v-model="tile.weight"
 </template>
 
 <script lang='ts'>
@@ -20,12 +23,20 @@ import Vue from 'vue'
 
 import Cell from './Cell.vue'
 
+import * as _ from 'lodash'
+
 import { Block, Map, Tile, BlockRepository } from './grid'
 
 export default Vue.extend({
   data() {
     return {
       blocks: [
+        { content: [
+          "WWW",
+          "WWW",
+          "WWW",
+        ], weight: 0.5},
+
         { content: [
           "RRR",
           "RRR",
@@ -115,13 +126,8 @@ export default Vue.extend({
   methods: {
     buildMap() {
       let blockRepository = new BlockRepository(
-        new Block(this.rawToTiles([
-          "WWW",
-          "WWW",
-          "WWW",
-        ]), 0.5)
-      );
-      this.blocks.forEach(({ content, weight }) => {
+        new Block(this.rawToTiles(this.blocks[0].content), this.blocks[0].weight));
+      _.tail(this.blocks).forEach(({ content, weight }) => {
         blockRepository.addBlock(new Block(this.rawToTiles(content), weight));
       });
 
@@ -141,16 +147,40 @@ export default Vue.extend({
       });
       return tiles;
     }
+  },
+  created() {
+    // TODO: OMG
+    eval("this.map = this.buildMap()");
   }
 })
 </script>
 
-<style>
+<style lang='scss'>
+.game-table {
+  border-collapse: collapse;
+
+  td {
+    padding: 0px;
+    width: 1em;
+    height: 0.1em;
+  }
+}
+
+.col {
+  float: left;
+  margin-right: 1em;
+}
 .block {
-  border: solid 1px black;
+  margin-bottom: 1em;
+
+  .wrapper {
+    .content {
+      border: solid 1px black;
+      display: inline-block;
+    }
+  }
 }
 .row {
-  line-height: 1rem;
   white-space: nowrap;
 }
 </style>
