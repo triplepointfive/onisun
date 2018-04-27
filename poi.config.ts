@@ -1,10 +1,11 @@
-import { Options } from 'poi'
+import { Options } from "poi";
 
 const options: Options = {
-  entry: 'src/index.ts',
+  entry: "src/index.ts",
+  homepage: "/onisun/",
   plugins: [
-    require('@poi/plugin-typescript')()
+    require("@poi/plugin-typescript")()
   ]
-}
+};
 
-export default options
+export default options;
