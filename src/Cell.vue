@@ -1,5 +1,5 @@
 <template lang='slm'>
-  td :class="style" v-text="symbol" @click="$emit('click')"
+  td :class="style" v-text="symbol" @mouseover="$emit('click')"
 </template>
 
 <script lang="ts">

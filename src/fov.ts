@@ -66,17 +66,16 @@ export class Fov {
         if (this.doubleDistance(deltaX, deltaY) <= this.doubleRadius) {
           this.lightMap[currentY][currentX] = {
             visible: true,
-            degree: (1 - (this.doubleDistance(deltaX, deltaY) / this.doubleRadius))
+            degree: 1 - this.doubleDistance(deltaX, deltaY) / this.doubleRadius
           };
         }
 
         if (blocked) { // previous cell was a blocking one
           if (this.checkSolid(currentX, currentY)) { // hit a wall
-              newStart = rightSlope;
-              continue;
+            newStart = rightSlope;
           } else {
-              blocked = false;
-              start = newStart;
+            blocked = false;
+            start = newStart;
           }
         } else {
           if (this.checkSolid(currentX, currentY) && distance < this.radius) { // hit a wall within sight line

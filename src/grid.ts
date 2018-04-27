@@ -181,8 +181,8 @@ export class BlockRepository {
       availableBlocks = _.intersection(availableBlocks, this.neighbors[right.id][Direction.Left]);
     }
 
-    // return _.sortBy(availableBlocks, block => Math.random() * block.weight);
-    return _.sortBy(availableBlocks, block => 1 * block.weight).reverse();
+    return _.sortBy(availableBlocks, block => Math.random() * block.weight);
+    // return _.sortBy(availableBlocks, block => 1 * block.weight).reverse();
   }
 
   private findNeighbors(centralBlock: Block) {
