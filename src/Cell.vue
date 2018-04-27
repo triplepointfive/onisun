@@ -21,7 +21,7 @@ export default Vue.extend({
     },
     symbol():any {
       if (this.cell.display == ' ') {
-        return '　'
+        return '・'
       } if (this.cell.display == '+') {
         return '戸'
       } if (this.cell.display == '#') {

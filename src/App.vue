@@ -135,7 +135,7 @@ export default Vue.extend({
   computed: {
     fov(): Visibility[][] {
       if (this.map) {
-        return new Fov<Tile>((tile) => tile.visibleThrough()).check(20, 20, this.radius, this.map);
+        return new Fov<Tile>((tile) => !tile.visibleThrough()).build(1, 19, this.radius, this.map);
       }
 
       return [];
