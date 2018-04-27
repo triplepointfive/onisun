@@ -8,6 +8,8 @@
             v-for="(cell, j) in row"
             :key="i + '-' + j"
             :style='visibility(i, j)'
+            :player="player.x == j && player.y == i"
+            @click="updatePlayerPosition(j, i)"
             ]
 
       button @click="map = buildMap()"
@@ -127,6 +129,10 @@ export default Vue.extend({
       ],
       map: [],
       radius: 10,
+      player: {
+        x: 1,
+        y: 1,
+      }
     }
   },
   components: {
@@ -135,13 +141,17 @@ export default Vue.extend({
   computed: {
     fov(): Visibility[][] {
       if (this.map) {
-        return new Fov<Tile>((tile) => !tile.visibleThrough()).build(1, 19, this.radius, this.map);
+        return new Fov<Tile>((tile) => !tile.visibleThrough()).build(this.player.x, this.player.y, this.radius, this.map);
       }
 
       return [];
     }
   },
   methods: {
+    updatePlayerPosition(x: number, y: number) {
+      this.player.x = x;
+      this.player.y = y;
+    },
     buildMap() {
       let blockRepository = new BlockRepository(
         new Block(this.rawToTiles(this.blocks[0].content), this.blocks[0].weight));

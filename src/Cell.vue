@@ -1,5 +1,5 @@
 <template lang='slm'>
-  td :class="style" v-text="symbol"
+  td :class="style" v-text="symbol" @click="$emit('click')"
 </template>
 
 <script lang="ts">
@@ -8,10 +8,12 @@ import Vue from 'vue'
 import { Tile, TileTypes } from './grid'
 
 export default Vue.extend({
-  props: ["cell"],
+  props: ["cell", 'player'],
   computed: {
     style() {
-      if (this.cell.type == TileTypes.Wall) {
+      if (this.player) {
+        return 'player'
+      } else if (this.cell.type == TileTypes.Wall) {
         return 'wall'
       } else if (this.cell.type == TileTypes.Door) {
         return 'door'
@@ -20,11 +22,13 @@ export default Vue.extend({
       return 'floor'
     },
     symbol():any {
-      if (this.cell.display == ' ') {
+      if (this.player) {
+        return '俺'
+      } else if (this.cell.display == ' ') {
         return '・'
-      } if (this.cell.display == '+') {
+      } else if (this.cell.display == '+') {
         return '戸'
-      } if (this.cell.display == '#') {
+      } else if (this.cell.display == '#') {
         return '＃'
       } else {
         return 'E'
@@ -35,6 +39,10 @@ export default Vue.extend({
 </script>
 
 <style>
+.player {
+  color: white;
+  background-color: black;
+}
 .wall {
   color: orange;
   background-color: orange;
