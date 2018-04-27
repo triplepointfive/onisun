@@ -13,7 +13,11 @@ export default Vue.extend({
     style() {
       if (this.cell.type == TileTypes.Wall) {
         return 'wall'
+      } else if (this.cell.type == TileTypes.Door) {
+        return 'door'
       }
+
+      return 'floor'
     },
     symbol():any {
       if (this.cell.display == ' ') {
@@ -32,8 +36,15 @@ export default Vue.extend({
 
 <style>
 .wall {
-  color: lightgrey;
-  background-color: lightgrey;
-  line-height: 1rem;
+  color: orange;
+  background-color: orange;
+}
+.floor {
+  color: orange;
+  background-color: black;
+}
+.door {
+  color: black;
+  background-color: orange;
 }
 </style>

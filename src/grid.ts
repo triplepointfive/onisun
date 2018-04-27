@@ -29,8 +29,13 @@ export class Tile {
     return tile;
   }
 
+  // TODO: rename type to kind
   constructor(public key: string, public display: string, public type: TileTypes) {
     Tile.register(key, this);
+  }
+
+  public visibleThrough(): boolean {
+    return this.type === TileTypes.Floor;
   }
 };
 
@@ -177,6 +182,7 @@ export class BlockRepository {
     }
 
     return _.sortBy(availableBlocks, block => Math.random() * block.weight);
+    // return _.sortBy(availableBlocks, block => 1 * block.weight).reverse();
   }
 
   private findNeighbors(centralBlock: Block) {

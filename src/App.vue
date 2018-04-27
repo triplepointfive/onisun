@@ -3,17 +3,29 @@
     .col
       table.game-table
         tr.row v-for="(row, i) in map"
-          Cell :cell="cell" v-for="(cell, j) in row" :key="i + '-' + j"
+          Cell[
+            :cell="cell"
+            v-for="(cell, j) in row"
+            :key="i + '-' + j"
+            :style='visibility(i, j)'
+            ]
 
       button @click="map = buildMap()"
         | Generate!
+
+      label radius
+      input type="number" v-model="radius"
 
     .col
       .block v-for="(tile, i) in blocks"
         .wrapper
           table.content.game-table
             tr.row v-for="(row, i) in rawToTiles(tile.content)"
-              Cell :cell="cell" v-for="(cell, j) in row" :key="i + '-' + j"
+              Cell[
+                :cell="cell"
+                v-for="(cell, j) in row"
+                :key="i + '-' + j"
+                ]
 
           input type="number" v-model="tile.weight"
 </template>
@@ -22,6 +34,8 @@
 import Vue from 'vue'
 
 import Cell from './Cell.vue'
+
+import { Visibility, Fov } from './fov'
 
 import * as _ from 'lodash'
 
@@ -112,17 +126,21 @@ export default Vue.extend({
         ], weight: 20},
       ],
       map: [],
+      radius: 10,
     }
   },
   components: {
     Cell
   },
-  // computed: {
-  //   blockRepository() {
+  computed: {
+    fov(): Visibility[][] {
+      if (this.map) {
+        return new Fov<Tile>((tile) => tile.visibleThrough()).check(20, 20, this.radius, this.map);
+      }
 
-  //     return blockRepository;
-  //   }
-  // },
+      return [];
+    }
+  },
   methods: {
     buildMap() {
       let blockRepository = new BlockRepository(
@@ -146,6 +164,13 @@ export default Vue.extend({
         tiles.push(tileRow);
       });
       return tiles;
+    },
+    visibility(i: number, j: number) {
+      if (this.fov[i][j].visible) {
+        return { 'opacity': this.fov[i][j].degree }
+      } else {
+        return { background: 'black', color: 'black' }
+      }
     }
   },
   created() {
@@ -158,6 +183,7 @@ export default Vue.extend({
 <style lang='scss'>
 .game-table {
   border-collapse: collapse;
+  background-color: black;
 
   td {
     padding: 0px;
