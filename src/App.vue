@@ -34,6 +34,7 @@
 
 <script lang='ts'>
 import Vue from 'vue'
+import Component from 'vue-class-component'
 
 import Cell from './Cell.vue'
 
@@ -141,7 +142,14 @@ export default Vue.extend({
   computed: {
     fov(): Visibility[][] {
       if (this.map) {
-        return new Fov<Tile>((tile) => !tile.visibleThrough()).build(this.player.x, this.player.y, this.radius, this.map);
+        return new Fov(
+          this.player.x,
+          this.player.y,
+          this.radius,
+          this.map[0].length,
+          this.map.length,
+          (x: number, y: number) => !this.map[y][x].visibleThrough()
+        ).build();
       }
 
       return [];
