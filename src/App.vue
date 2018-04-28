@@ -9,6 +9,7 @@
             :key="i + '-' + j"
             :style='visibility(i, j)'
             :player="walker.x == j && walker.y == i"
+            @setPosition="updatePlayerPosition(j, i)"
             ]
 
       button @click="map = buildMap()"
@@ -172,6 +173,7 @@ export default Vue.extend({
   },
   methods: {
     updatePlayerPosition(x: number, y: number) {
+      this.pause = false;
       this.player.x = x;
       this.player.y = y;
     },
@@ -221,6 +223,10 @@ export default Vue.extend({
       return tiles;
     },
     visibility(i: number, j: number) {
+      if (this.pause) {
+        return { background: 'black', color: 'darkgrey', opacity: 0.3 }
+      }
+
       if (this.fov.length) {
         if (this.fov[i][j].visible) {
           return { opacity: this.fov[i][j].degree }

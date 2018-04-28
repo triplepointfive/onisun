@@ -72,7 +72,7 @@ export class Walker {
       tile.visible = true
       tile.degree = degree
       tile.seen = true
-      tile.tangible = !stage.visibleThrough(x, y)
+      tile.tangible = !stage.passibleThrough(x, y)
     }
 
     new Fov(

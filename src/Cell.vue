@@ -1,5 +1,9 @@
 <template lang='slm'>
-  td :class="style" v-text="symbol"
+  td[
+    :class="style"
+    v-text="symbol"
+    @click="$emit('setPosition')"
+    ]
 </template>
 
 <script lang="ts">

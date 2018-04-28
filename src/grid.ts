@@ -37,6 +37,10 @@ export class Tile {
   public visibleThrough(): boolean {
     return this.type === TileTypes.Floor
   }
+
+  public passibleThrough(): boolean {
+    return this.type !== TileTypes.Wall
+  }
 }
 
 new Tile('R', ' ', TileTypes.Floor)
@@ -181,8 +185,8 @@ export class BlockRepository {
       availableBlocks = _.intersection(availableBlocks, this.neighbors[right.id][Direction.Left])
     }
 
-    // return _.sortBy(availableBlocks, block => Math.random() * block.weight)
-    return _.sortBy(availableBlocks, block => 1 * block.weight).reverse()
+    return _.sortBy(availableBlocks, block => Math.random() * block.weight)
+    // return _.sortBy(availableBlocks, block => 1 * block.weight).reverse()
   }
 
   private findNeighbors(centralBlock: Block) {
@@ -375,5 +379,9 @@ export class LevelMap {
 
   public visibleThrough(x: number, y: number): boolean {
     return this.map[y][x].visibleThrough()
+  }
+
+  public passibleThrough(x: number, y: number): boolean {
+    return this.map[y][x].passibleThrough()
   }
 }
