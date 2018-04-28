@@ -17,6 +17,9 @@
       label radius
       input type="number" v-model="radius"
 
+      button @click="pause = !pause"
+        | {{ pause ? 'Start' : 'Pause' }}
+
     .col
       .block v-for="(tile, i) in blocks"
         .wrapper
@@ -133,7 +136,8 @@ export default Vue.extend({
       player: {
         x: 1,
         y: 1,
-      }
+      },
+      pause: true,
     }
   },
   components: {
@@ -174,6 +178,20 @@ export default Vue.extend({
       let blockMap = new Map(20, 20, blockRepository);
       blockMap.fillMap(1, 1);
       blockMap.postProcess();
+
+      clearInterval(this.walkerinterval)
+      this.walkerinterval = setInterval(() => {
+        if (this.pause) {
+          return
+        }
+
+        if (this.map && this.player.x < this.map.length - 1) {
+          this.player.x += 1
+        } else {
+          this.player.x = 1
+        }
+      }, 100);
+
       return blockMap.toMap();
     },
     rawToTiles(map: string[]): Tile[][] {
