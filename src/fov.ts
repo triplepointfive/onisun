@@ -1,10 +1,9 @@
-export type Visibility = {
+export interface Visibility {
   visible: boolean
   degree: number
 }
 
 export class Fov {
-  private lightMap: Visibility[][] = []
   private doubleRadius: number
 
   constructor(
@@ -13,23 +12,20 @@ export class Fov {
     private radius: number,
     private width: number,
     private height: number,
-    private checkSolid: (x: number, y: number) => boolean
+    private checkSolid: (x: number, y: number) => boolean,
+    private markVisible: (x: number, y: number, degree: number) => void,
   ) {
     this.doubleRadius = this.radius * this.radius
   }
 
-  public build(): Visibility[][] {
-    this.lightMap = new Array(this.height)
-
+  public calc(): void {
     for (let i = 0; i < this.height; i++) {
-      this.lightMap[i] = new Array(this.width)
-
       for (let j = 0; j < this.width; j++) {
-        this.lightMap[i][j] = { visible: true, degree: 0.1 }
+        this.markVisible(i, j, 0.1)
       }
     }
 
-    this.lightMap[this.starty][this.startx] = { visible: true, degree: 1 }
+    this.markVisible(this.startx, this.starty, 1)
 
     if (!this.checkSolid(this.startx, this.starty)) {
       [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([dx, dy]) => {
@@ -37,8 +33,6 @@ export class Fov {
         this.castLight(1, 1.0, 0.0, dx, 0, 0, dy)
       })
     }
-
-    return this.lightMap
   }
 
   private castLight(row: number, start: number, end: number, xx: number, xy: number, yx: number, yy: number) {
@@ -64,10 +58,11 @@ export class Fov {
 
         // check if it's within the lightable area and light if needed
         if (this.doubleDistance(deltaX, deltaY) <= this.doubleRadius) {
-          this.lightMap[currentY][currentX] = {
-            visible: true,
-            degree: 1 - this.doubleDistance(deltaX, deltaY) / this.doubleRadius
-          }
+          this.markVisible(
+            currentX,
+            currentY,
+            1 - this.doubleDistance(deltaX, deltaY) / this.doubleRadius,
+          )
         }
 
         if (blocked) { // previous cell was a blocking one

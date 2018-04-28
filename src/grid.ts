@@ -363,3 +363,17 @@ export class Map {
     }
   }
 }
+
+export class LevelMap {
+  public readonly width: number
+  public readonly height: number
+
+  constructor(private map: Tile[][]) {
+    this.width  = map[0].length
+    this.height = map.length
+  }
+
+  public visibleThrough(x: number, y: number): boolean {
+    return this.map[y][x].visibleThrough()
+  }
+}

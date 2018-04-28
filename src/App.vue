@@ -9,7 +9,6 @@
             :key="i + '-' + j"
             :style='visibility(i, j)'
             :player="player.x == j && player.y == i"
-            @click="updatePlayerPosition(j, i)"
             ]
 
       button @click="map = buildMap()"
@@ -39,10 +38,11 @@ import Component from 'vue-class-component'
 import Cell from './Cell.vue'
 
 import { Visibility, Fov } from './fov'
+import { Walker, Memory, MemoryTile } from './creatures/walker'
 
 import * as _ from 'lodash'
 
-import { Block, Map, Tile, BlockRepository } from './grid'
+import { Block, Map, Tile, BlockRepository, LevelMap } from './grid'
 
 export default Vue.extend({
   data() {
@@ -140,19 +140,23 @@ export default Vue.extend({
     Cell
   },
   computed: {
-    fov(): Visibility[][] {
+    fov(): MemoryTile[][] {
       if (this.map) {
-        return new Fov(
+        let map = new LevelMap(this.map)
+
+        let walker = new Walker(
           this.player.x,
           this.player.y,
           this.radius,
-          this.map[0].length,
-          this.map.length,
-          (x: number, y: number) => !this.map[y][x].visibleThrough()
-        ).build();
+          map.width,
+          map.height,
+        )
+
+        walker.act(map)
+        return walker.stageMemory.field
       }
 
-      return [];
+      return []
     }
   },
   methods: {
