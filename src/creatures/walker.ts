@@ -1,7 +1,7 @@
 import { twoDimArray } from '../utils'
 // import { Stage, Type, TileType } from '../game'
-// import { AI, TileRecall } from '../ai'
-// import { Explorer } from '../ai/explorer'
+import { AI, TileRecall } from '../ai'
+import { Explorer } from '../ai/explorer'
 
 import { Visibility, Fov } from '../fov'
 import { LevelMap, Tile } from '../grid'
@@ -10,6 +10,7 @@ export class MemoryTile implements Visibility {
   public visible: boolean = false
   public degree: number = 0
   public seen: boolean = false
+  public tangible: boolean = false
 
   constructor(
     private tile?: Tile,
@@ -44,21 +45,21 @@ export class Memory {
 
 // TODO: Ensure seen is build before act() is called!
 export class Walker {
-  // ai: AI
+  ai: AI
   // tile: Type
   public stageMemory: Memory
 
   constructor(public x: number, public y: number, private radius: number = 10, width, height) {
     // this.tile = new Type( TileType.humanoid )
     this.stageMemory = new Memory(width, height)
-    // this.ai = new Explorer()
+    this.ai = new Explorer()
   }
 
   act(stage: LevelMap): void {
     // this.stageMemory[ this.x ][ this.y ].updated = true
 
     this.visionMask( stage )
-    // this.ai.act( this )
+    this.ai.act( this )
 
     // this.stageMemory[ this.x ][ this.y ].updated = true
   }
@@ -71,6 +72,7 @@ export class Walker {
       tile.visible = true
       tile.degree = degree
       tile.seen = true
+      tile.tangible = !stage.visibleThrough(x, y)
     }
 
     new Fov(

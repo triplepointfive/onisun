@@ -18,9 +18,6 @@ export class Rect {
   }
 }
 
-export const MAX_X: number = 30
-export const MAX_Y: number = 30
-
 export const succ = function ( c: string ): string {
   return String.fromCharCode( c.charCodeAt( 0 ) + 1 )
 }

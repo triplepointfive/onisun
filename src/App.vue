@@ -8,7 +8,7 @@
             v-for="(cell, j) in row"
             :key="i + '-' + j"
             :style='visibility(i, j)'
-            :player="player.x == j && player.y == i"
+            :player="walker.x == j && walker.y == i"
             ]
 
       button @click="map = buildMap()"
@@ -138,26 +138,33 @@ export default Vue.extend({
         y: 1,
       },
       pause: true,
+      ts: Date.now(),
     }
   },
   components: {
     Cell
   },
   computed: {
-    fov(): MemoryTile[][] {
+    walker() {
       if (this.map) {
-        let map = new LevelMap(this.map)
-
-        let walker = new Walker(
+        return new Walker(
           this.player.x,
           this.player.y,
           this.radius,
-          map.width,
-          map.height,
+          this.levelMap.width,
+          this.levelMap.height,
         )
+      }
+    },
+    levelMap() {
+      if (this.map) {
+        return new LevelMap(this.map)
+      }
 
-        walker.act(map)
-        return walker.stageMemory.field
+    },
+    fov(): MemoryTile[][] {
+      if (this.ts && this.map) {
+        return this.walker.stageMemory.field
       }
 
       return []
@@ -185,12 +192,20 @@ export default Vue.extend({
           return
         }
 
-        if (this.map && this.player.x < this.map.length - 1) {
-          this.player.x += 1
-        } else {
-          this.player.x = 1
+        try {
+          if (this.walker) {
+            this.walker.act(this.levelMap)
+            this.ts = Date.now()
+            // this.pause = true
+            // this.player.x = this.walker.x
+            // this.player.y = this.walker.y
+          }
+        } catch (e) {
+          console.error(e)
+          this.pause = true
         }
-      }, 100);
+
+      }, 300);
 
       return blockMap.toMap();
     },
@@ -206,16 +221,21 @@ export default Vue.extend({
       return tiles;
     },
     visibility(i: number, j: number) {
-      if (this.fov[i][j].visible) {
-        return { 'opacity': this.fov[i][j].degree }
+      if (this.fov.length) {
+        if (this.fov[i][j].visible) {
+          return { opacity: this.fov[i][j].degree }
+        } else if (this.fov[i][j].seen) {
+          return { background: 'black', color: 'darkgrey', opacity: 0.3 }
+        } else {
+          return { background: 'black', color: 'black' }
+        }
       } else {
-        return { background: 'black', color: 'black' }
+        return { background: 'black', color: 'darkgrey' }
       }
     }
   },
   created() {
-    // TODO: OMG
-    eval("this.map = this.buildMap()");
+    this.map = this.buildMap()
   }
 })
 </script>

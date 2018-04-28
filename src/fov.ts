@@ -21,7 +21,7 @@ export class Fov {
   public calc(): void {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
-        this.markVisible(i, j, 0.1)
+        // this.markVisible(i, j, 0.1)
       }
     }
 
