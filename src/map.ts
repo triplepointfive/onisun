@@ -64,4 +64,8 @@ export class LevelMap {
   public at(x, y): Tile {
     return this.map[y][x]
   }
+
+  public setTile(x, y, tile: Tile): void {
+    this.map[y][x] = tile
+  }
 }

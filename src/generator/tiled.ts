@@ -234,10 +234,6 @@ class Map {
     }
   }
 
-  public toMap(): Tile[][] {
-    return this.map
-  }
-
   public fillMap(i: number, j: number): boolean {
     if (this.blockMap[i][j].block !== undefined) {
       return true
@@ -275,12 +271,7 @@ class Map {
     return this.blockMap[i][j].block !== undefined
   }
 
-  public postProcess(): void {
-    this.buildMap()
-    this.addDoors()
-  }
-
-  private buildMap(): void {
+  public buildMap(): LevelMap {
     const iterateHeight = this.height - 1
     const iterateWidth = this.width - 1
 
@@ -303,18 +294,8 @@ class Map {
         this.map.push(row)
       }
     }
-  }
 
-  private addDoors(): void {
-    for (let i = 1; i < this.map.length; i++) {
-      const row: Tile[] = this.map[i]
-
-      for (let j = 1; j < row.length; j++) {
-        if (row[j].key === 'C' && (this.map[i][j - 1].key === 'R' || this.map[i - 1][j].key === 'R') && this.addDoor()) {
-          row[j] = Tile.retrive('D')
-        }
-      }
-    }
+    return new LevelMap(this.map)
   }
 
   private addDoor(): boolean {
@@ -425,9 +406,8 @@ const generate = function(dimX: number, dimY: number): LevelMap {
 
   let blockMap = new Map(dimX, dimY, blockRepository)
   blockMap.fillMap(1, 1)
-  blockMap.postProcess()
 
-  return new LevelMap(blockMap.toMap())
+  return blockMap.buildMap()
 }
 
 export { generate }

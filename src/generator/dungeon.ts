@@ -6,10 +6,18 @@ const THICKNESS = 0
 
 const MIN_SIZE: number = 4
 const MAX_SIZE: number = 10
-const ROOMS_COUNT: number = 5
+const ROOMS_COUNT: number = 15
 
-const newSpace = function(): Tile {
+const newRoomSpace = function(): Tile {
   return Tile.retrive('R')
+}
+
+const newCoridor = function(): Tile {
+  return Tile.retrive('C')
+}
+
+const newWall = function(): Tile {
+  return Tile.retrive('W')
 }
 
 type Stage = Tile[][]
@@ -17,7 +25,7 @@ type Stage = Tile[][]
 const generate = function ( dimX: number, dimY: number ): LevelMap {
   const dungeon = new DungeonGenerator( dimX, dimY )
 
-  let stage = twoDimArray(dimX, dimY, newSpace)
+  let stage = twoDimArray(dimX, dimY, newWall)
 
   for ( let i = 0; i < dungeon.rooms.length; i++ )
     dungeon.rooms[ i ].add( stage )
@@ -48,7 +56,7 @@ class Room extends Rect {
     while ( i < this.w ) {
       let j: number = 0
       while ( j < this.h ) {
-        stage[ this.x + i ][ this.y + j ] = newSpace()
+        stage[ this.x + i ][ this.y + j ] = newRoomSpace()
         j++
       }
 
@@ -70,14 +78,18 @@ class Road extends Rect {
 
     let i = 0
     while ( i < w ) {
-      stage[ hx + i ][ hy ] = newSpace()
+      if (stage[ hx + i ][ hy ].key === 'W') {
+        stage[ hx + i ][ hy ] = newCoridor()
+      }
       i += 1
     }
 
     let [ vx, vy, h ] = this.verticallLine()
     let j = 0
     while ( j < h ) {
-      stage[ vx ][ vy + j ] = newSpace()
+      if (stage[ vx ][ vy + j ].key === 'W') {
+        stage[ vx ][ vy + j ] = newCoridor()
+      }
       j += 1
     }
   }

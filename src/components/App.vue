@@ -32,7 +32,8 @@ import Cell from './Cell.vue'
 import { Visibility, Fov } from '../fov'
 import { LevelMap } from '../map'
 import { Walker, Memory, MemoryTile } from '../creatures/walker'
-import { generate } from '../generator/tiled'
+import { generate } from '../generator/dungeon'
+import { addDoors } from '../generator/post'
 
 export default Vue.extend({
   data() {
@@ -77,7 +78,7 @@ export default Vue.extend({
       this.player.y = y;
     },
     buildMap() {
-      let map = generate(10, 20)
+      let map = addDoors(generate(50, 50))
 
       clearInterval(this.walkerinterval)
       this.walkerinterval = setInterval(() => {
