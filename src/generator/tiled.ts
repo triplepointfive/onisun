@@ -1,54 +1,10 @@
 import * as _ from 'lodash'
 
+import { LevelMap, Tile, TileTypes } from '../map'
+
 type BlockId = string
 
-export enum TileTypes {
-  Wall,
-  Door,
-  Floor,
-}
-
-export class Tile {
-  private static repository: { [key: string]: Tile } = {}
-
-  private static register(key: string, tile: Tile) {
-    if (this.repository[key]) {
-      throw `Tile '${key}' is already registered!`
-    }
-
-    this.repository[key] = tile
-  }
-
-  public static retrive(key: string): Tile {
-    let tile = this.repository[key]
-
-    if (!tile) {
-      throw `Tile '${key}' is not registered!`
-    }
-
-    return tile
-  }
-
-  // TODO: rename type to kind
-  constructor(public key: string, public display: string, public type: TileTypes) {
-    Tile.register(key, this)
-  }
-
-  public visibleThrough(): boolean {
-    return this.type === TileTypes.Floor
-  }
-
-  public passibleThrough(): boolean {
-    return this.type !== TileTypes.Wall
-  }
-}
-
-new Tile('R', ' ', TileTypes.Floor)
-new Tile('C', ' ', TileTypes.Floor)
-new Tile('W', '#', TileTypes.Wall)
-new Tile('D', '+', TileTypes.Door)
-
-export class Block {
+class Block {
   public static readonly Dimensions = 3
 
   public id: BlockId
@@ -130,7 +86,7 @@ interface Neighbors {
   [key: string]: Block[]
 }
 
-export class BlockRepository {
+class BlockRepository {
   public blocks: Block[] = []
   public uniqBlockIds: Set<string> = new Set()
 
@@ -185,8 +141,8 @@ export class BlockRepository {
       availableBlocks = _.intersection(availableBlocks, this.neighbors[right.id][Direction.Left])
     }
 
-    return _.sortBy(availableBlocks, block => Math.random() * block.weight)
-    // return _.sortBy(availableBlocks, block => 1 * block.weight).reverse()
+    // return _.sortBy(availableBlocks, block => Math.random() * block.weight)
+    return _.sortBy(availableBlocks, block => 1 * block.weight).reverse()
   }
 
   private findNeighbors(centralBlock: Block) {
@@ -249,13 +205,7 @@ class MapBlock {
   }
 }
 
-class Random {
-  public static addDoor(): boolean {
-    return Math.random() > 0.5
-  }
-}
-
-export class Map {
+class Map {
   private blockMap: MapBlock[][] = []
   private map: Tile[][] = []
 
@@ -360,32 +310,124 @@ export class Map {
       const row: Tile[] = this.map[i]
 
       for (let j = 1; j < row.length; j++) {
-        if (row[j].key === 'C' && (this.map[i][j - 1].key === 'R' || this.map[i - 1][j].key === 'R') && Random.addDoor()) {
+        if (row[j].key === 'C' && (this.map[i][j - 1].key === 'R' || this.map[i - 1][j].key === 'R') && this.addDoor()) {
           row[j] = Tile.retrive('D')
         }
       }
     }
   }
-}
 
-export class LevelMap {
-  public readonly width: number
-  public readonly height: number
-
-  constructor(private map: Tile[][]) {
-    this.width  = map[0].length
-    this.height = map.length
-  }
-
-  public visibleThrough(x: number, y: number): boolean {
-    return this.map[y][x].visibleThrough()
-  }
-
-  public passibleThrough(x: number, y: number): boolean {
-    return this.map[y][x].passibleThrough()
-  }
-
-  public at(x, y): Tile {
-    return this.map[y][x]
+  private addDoor(): boolean {
+    return Math.random() > 0.5
   }
 }
+
+const rawToTiles = function(map: string[]): Tile[][] {
+  let tiles: Tile[][] = []
+  map.forEach((row) => {
+    let tileRow: Tile[] = []
+    row.split('').forEach((key) => {
+      tileRow.push(Tile.retrive(key))
+    })
+    tiles.push(tileRow)
+  })
+  return tiles
+}
+
+const blocks = [
+  { content: [
+    'WWW',
+    'WWW',
+    'WWW',
+  ], weight: 0.5},
+
+  { content: [
+    'RRR',
+    'RRR',
+    'RRR',
+  ], weight: 20},
+
+  { content: [
+    'WCW',
+    'RRR',
+    'RRR',
+  ], weight: 20},
+  { content: [
+    'WWC',
+    'RRR',
+    'RRR',
+  ], weight: 20},
+  { content: [
+    'CWC',
+    'RRR',
+    'RRR',
+  ], weight: 20},
+  { content: [
+    'WWW',
+    'RRR',
+    'RRR',
+  ], weight: 20},
+
+  { content: [
+    'WCW',
+    'CRR',
+    'WRR',
+  ], weight: 20},
+  { content: [
+    'WWW',
+    'WRR',
+    'WRR',
+  ], weight: 20},
+  { content: [
+    'WWW',
+    'CRR',
+    'WRR',
+  ], weight: 20},
+  { content: [
+    'WWC',
+    'WRR',
+    'WRR',
+  ], weight: 20},
+  { content: [
+    'WWC',
+    'WRR',
+    'CRR',
+  ], weight: 20},
+
+  { content: [
+    'WWW',
+    'CCW',
+    'WCW',
+  ], weight: 20},
+  { content: [
+    'WWW',
+    'CCC',
+    'WWW',
+  ], weight: 20},
+  { content: [
+    'WCW',
+    'CCC',
+    'WWW',
+  ], weight: 20},
+  { content: [
+    'WCW',
+    'CCC',
+    'WCW',
+  ], weight: 20},
+]
+
+const generate = function(dimX: number, dimY: number): LevelMap {
+  let blockRepository = new BlockRepository(
+    new Block(rawToTiles(blocks[0].content), blocks[0].weight))
+  _.tail(blocks).forEach(({ content, weight }) => {
+    blockRepository.addBlock(new Block(rawToTiles(content), weight))
+  })
+
+  let blockMap = new Map(dimX, dimY, blockRepository)
+  blockMap.fillMap(1, 1)
+  blockMap.postProcess()
+
+  return new LevelMap(blockMap.toMap())
+}
+
+export { generate }

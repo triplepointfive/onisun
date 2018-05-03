@@ -9,7 +9,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Tile, TileTypes } from './grid'
+import { Tile, TileTypes } from '../map'
 
 export default Vue.extend({
   props: ["cell", 'player'],

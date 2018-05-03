@@ -4,7 +4,7 @@ import { AI, TileRecall } from '../ai'
 import { Explorer } from '../ai/explorer'
 
 import { Visibility, Fov } from '../fov'
-import { LevelMap, Tile, TileTypes } from '../grid'
+import { LevelMap, Tile, TileTypes } from '../map'
 
 export class MemoryTile implements Visibility {
   public visible: boolean = false
@@ -59,7 +59,7 @@ export class Walker {
     // this.stageMemory[ this.x ][ this.y ].updated = true
 
     this.visionMask( stage )
-    // this.ai.act( this )
+    this.ai.act( this )
 
     // this.stageMemory[ this.x ][ this.y ].updated = true
   }
