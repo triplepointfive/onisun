@@ -384,4 +384,8 @@ export class LevelMap {
   public passibleThrough(x: number, y: number): boolean {
     return this.map[y][x].passibleThrough()
   }
+
+  public at(x, y): Tile {
+    return this.map[y][x]
+  }
 }

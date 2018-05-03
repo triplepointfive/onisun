@@ -207,7 +207,7 @@ export default Vue.extend({
           this.pause = true
         }
 
-      }, 300);
+      }, 100);
 
       return blockMap.toMap();
     },

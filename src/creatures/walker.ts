@@ -4,7 +4,7 @@ import { AI, TileRecall } from '../ai'
 import { Explorer } from '../ai/explorer'
 
 import { Visibility, Fov } from '../fov'
-import { LevelMap, Tile } from '../grid'
+import { LevelMap, Tile, TileTypes } from '../grid'
 
 export class MemoryTile implements Visibility {
   public visible: boolean = false
@@ -59,7 +59,7 @@ export class Walker {
     // this.stageMemory[ this.x ][ this.y ].updated = true
 
     this.visionMask( stage )
-    this.ai.act( this )
+    // this.ai.act( this )
 
     // this.stageMemory[ this.x ][ this.y ].updated = true
   }
@@ -81,8 +81,18 @@ export class Walker {
       this.radius,
       stage.width,
       stage.height,
-      (x: number, y: number) => !stage.visibleThrough(x, y),
+      this.isSolid(stage),
       see,
     ).calc()
+  }
+
+  private isSolid(stage: LevelMap): (x: number, y: number) => boolean {
+    return (x: number, y: number) => {
+      if (stage.visibleThrough(x, y)) {
+        return false
+      } else {
+        return !(stage.at(x, y).type === TileTypes.Door && this.x === x && this.y === y)
+      }
+    }
   }
 }

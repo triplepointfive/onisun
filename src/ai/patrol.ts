@@ -77,7 +77,7 @@ class Patrol implements AI {
 
   private moveToTarget( walker: Walker ): void {
     const nextPoint: Point = this.path.shift()
-    if ( walker.stageMemory[ nextPoint.x ][ nextPoint.y ].tangible ) {
+    if ( walker.stageMemory.at(nextPoint.x,  nextPoint.y).tangible ) {
       this.path = []
       this.act( walker )
     } else {
