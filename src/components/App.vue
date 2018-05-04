@@ -78,7 +78,7 @@ export default Vue.extend({
       this.player.y = y;
     },
     buildMap() {
-      let map = addDoors(generate(50, 50))
+      let map = addDoors(generate(20, 20))
 
       clearInterval(this.walkerinterval)
       this.walkerinterval = setInterval(() => {

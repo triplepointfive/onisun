@@ -16,7 +16,10 @@ class Explorer implements AI {
   }
 
   act( walker: Walker ): void {
-    this.updatePatrol( walker )
+    if (this.step === NEW_POINT_EVERY ) {
+      this.updatePatrol( walker )
+    }
+
     if ( !this.path.length ) {
       this.buildNewPath( walker )
       if ( this.path.length ) {
@@ -34,6 +37,10 @@ class Explorer implements AI {
       } else {
         walker.x = nextPoint.x
         walker.y = nextPoint.y
+
+        if (this.shouldAddNode(walker)) {
+          this.updatePatrol(walker)
+        }
       }
     }
   }
@@ -45,16 +52,18 @@ class Explorer implements AI {
   }
 
   private updatePatrol( walker: Walker ): void {
-    if ( this.step === NEW_POINT_EVERY ) {
-      this.step = 0
-      if ( this.patrol === undefined ) {
-        this.patrol = new Patrol( walker.x, walker.y )
-      } else {
-        this.patrol.addNode( walker.x, walker.y )
-      }
+    this.step = 0
+    if ( this.patrol === undefined ) {
+      this.patrol = new Patrol( walker.x, walker.y )
+    } else {
+      this.patrol.addNode( walker.x, walker.y )
     }
 
     this.step++
+  }
+
+  private shouldAddNode(walker: Walker): boolean {
+    return walker.stageMemory.at(walker.previousPos.x, walker.previousPos.y).tile.isDoor()
   }
 }
 
