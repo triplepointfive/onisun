@@ -7,42 +7,42 @@ export enum TileTypes {
 export class Tile {
   private static repository: { [key: string]: Tile } = {}
 
-  private static register(key: string, tile: Tile) {
-    if (this.repository[key]) {
-      throw `Tile '${key}' is already registered!`
-    }
-
-    this.repository[key] = tile
-  }
-
   public static retrive(key: string): Tile {
     let tile = this.repository[key]
 
-    if (!tile) {
-      throw `Tile '${key}' is not registered!`
+    switch (key) {
+      case 'R':
+        return new Tile('R', ' ', TileTypes.Floor)
+      case 'C':
+        return new Tile('C', ' ', TileTypes.Floor)
+      case 'W':
+        return new Tile('W', '#', TileTypes.Wall)
+      case 'D':
+        return new Tile('D', '+', TileTypes.Door)
+      default:
+        throw `Tile '${key}' is not registered!`
     }
-
-    return tile
   }
 
-  // TODO: rename type to kind
-  constructor(public key: string, public display: string, public type: TileTypes) {
-    Tile.register(key, this)
+  private constructor(public key: string, public display: string, private kind: TileTypes) {
+  }
+
+  public isDoor(): boolean {
+    return this.kind === TileTypes.Door
+  }
+
+  public isWall(): boolean {
+    return this.kind === TileTypes.Wall
   }
 
   public visibleThrough(): boolean {
-    return this.type === TileTypes.Floor
+    return this.kind === TileTypes.Floor
   }
 
   public passibleThrough(): boolean {
-    return this.type !== TileTypes.Wall
+    return this.kind !== TileTypes.Wall
   }
 }
-
-new Tile('R', ' ', TileTypes.Floor)
-new Tile('C', ' ', TileTypes.Floor)
-new Tile('W', '#', TileTypes.Wall)
-new Tile('D', '+', TileTypes.Door)
 
 export class LevelMap {
   public readonly width: number

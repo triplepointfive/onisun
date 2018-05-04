@@ -88,8 +88,10 @@ export default Vue.extend({
 
         try {
           if (this.walker) {
-            this.walker.act(this.map)
-            this.ts = Date.now()
+            Vue.nextTick(() => {
+              this.walker.act(this.map)
+              this.ts = Date.now()
+            })
             // this.pause = true
             // this.player.x = this.walker.x
             // this.player.y = this.walker.y
@@ -99,7 +101,7 @@ export default Vue.extend({
           this.pause = true
         }
 
-      }, 100);
+      }, 300);
 
       return map
     },

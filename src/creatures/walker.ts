@@ -1,10 +1,9 @@
 import { twoDimArray } from '../utils'
-// import { Stage, Type, TileType } from '../game'
 import { AI, TileRecall } from '../ai'
 import { Explorer } from '../ai/explorer'
 
 import { Visibility, Fov } from '../fov'
-import { LevelMap, Tile, TileTypes } from '../map'
+import { LevelMap, Tile } from '../map'
 
 export class MemoryTile implements Visibility {
   public visible: boolean = false
@@ -91,7 +90,7 @@ export class Walker {
       if (stage.visibleThrough(x, y)) {
         return false
       } else {
-        return !(stage.at(x, y).type === TileTypes.Door && this.x === x && this.y === y)
+        return !(stage.at(x, y).isDoor() && this.x === x && this.y === y)
       }
     }
   }

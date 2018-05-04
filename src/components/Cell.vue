@@ -17,9 +17,9 @@ export default Vue.extend({
     style() {
       if (this.player) {
         return 'player'
-      } else if (this.cell.type == TileTypes.Wall) {
+      } else if (this.cell.isWall()) {
         return 'wall'
-      } else if (this.cell.type == TileTypes.Door) {
+      } else if (this.cell.isDoor()) {
         return 'door'
       }
 
