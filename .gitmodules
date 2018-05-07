@@ -1,0 +1,3 @@
+[submodule "vendor/unicodetiles.ts"]
+	path = vendor/unicodetiles.ts
+	url = git@github.com:triplepointfive/unicodetiles.js.git

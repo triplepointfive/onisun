@@ -1,5 +1,7 @@
 <template lang='slm'>
   #app
+    Scene
+
     .col
       table.game-table
         tr.row v-for="(_, i) in map.height"
@@ -28,6 +30,7 @@ import Component from 'vue-class-component'
 import * as _ from 'lodash'
 
 import Cell from './Cell.vue'
+import Scene from './Scene.vue'
 
 import { Visibility, Fov } from '../fov'
 import { LevelMap } from '../map'
@@ -49,7 +52,8 @@ export default Vue.extend({
     }
   },
   components: {
-    Cell
+    Cell,
+    Scene
   },
   computed: {
     walker() {
