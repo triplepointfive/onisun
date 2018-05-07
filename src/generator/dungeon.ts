@@ -5,8 +5,8 @@ import { LevelMap, Tile, TileTypes } from '../map'
 const THICKNESS = 0
 
 const MIN_SIZE: number = 4
-const MAX_SIZE: number = 4
-const ROOMS_COUNT: number = 2
+const MAX_SIZE: number = 10
+const ROOMS_COUNT: number = 15
 
 const newRoomSpace = function(): Tile {
   return Tile.retrive('R')

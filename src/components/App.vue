@@ -7,7 +7,7 @@
       ]
 
     .col
-      table.game-table
+      / table.game-table
         tr.row v-for="(_, i) in map.height"
           Cell[
             :cell="map.at(j, i)"
@@ -48,8 +48,8 @@ export default Vue.extend({
       map: new LevelMap([[]]),
       radius: 10,
       player: {
-        x: 1,
-        y: 1,
+        x: 10,
+        y: 10,
       },
       pause: true,
       ts: Date.now(),
@@ -86,7 +86,7 @@ export default Vue.extend({
       this.player.y = y;
     },
     buildMap() {
-      let map = addDoors(generate(20, 20))
+      let map = addDoors(generate(50, 50))
 
       clearInterval(this.walkerinterval)
       this.walkerinterval = setInterval(() => {
@@ -109,7 +109,7 @@ export default Vue.extend({
           this.pause = true
         }
 
-      }, 300);
+      }, 50);
 
       return map
     },

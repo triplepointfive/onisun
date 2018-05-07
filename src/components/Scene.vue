@@ -24,7 +24,8 @@ export default Vue.extend({
   data() {
     return {
       term: null,
-      eng: null
+      eng: null,
+      drawInterval: null
     }
   },
   methods: {
@@ -60,13 +61,44 @@ export default Vue.extend({
         return this.fov[y][x].seen
       });
 
-      setInterval(() => { this.tick() }, 50)
+      this.eng.setShaderFunc((tile, x, y, time) => {
+        return this.lighting(tile, x, y, time)
+      })
+
+      clearInterval(this.drawInterval)
+      this.drawInterval = setInterval(() => { this.drawScene() }, 50)
     },
-    tick() {
-      // if (updateFOV) updateFOV(pl.x, pl.y); // Update field of view (used in some examples)
-      this.eng.update(this.player.x, this.player.y); // Update tiles
+    drawScene() {
+      this.eng.update(this.player.x, this.player.y);
       this.term.put(AT, this.term.cx, this.term.cy)
-      this.term.render(); // Render
+      this.term.render();
+    },
+    lighting(tile, x, y, time) {
+      const fovTile = this.fov[y][x]
+      if (!fovTile.visible) {
+        return tile
+      }
+
+      // TODO: extract to a class
+
+      let lightedTile = tile.clone()
+      if (tile !== DOOR) {
+        lightedTile.r = 255 * fovTile.degree
+        lightedTile.g = 165 * fovTile.degree
+        lightedTile.b = 0 * fovTile.degree
+      } else {
+        lightedTile.r = 0
+        lightedTile.g = 0
+        lightedTile.b = 0
+      }
+
+      if (tile !== FLOOR) {
+        lightedTile.br = 255 * fovTile.degree
+        lightedTile.bg = 165 * fovTile.degree
+        lightedTile.bb = 0 * fovTile.degree
+      }
+
+      return lightedTile
     }
   },
   mounted() {
