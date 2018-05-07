@@ -18,7 +18,7 @@
             @setPosition="updatePlayerPosition(j, i)"
             ]
 
-      button @click="map = buildMap()"
+      button @click="generateMap()"
         | Generate!
 
       label radius
@@ -80,6 +80,22 @@ export default Vue.extend({
     }
   },
   methods: {
+    generateMap() {
+      this.map = this.buildMap()
+      let x = 1,
+          y = 1
+
+      while (!this.map.visibleThrough(x, y)) {
+        if (x < this.map.width - 1) {
+          x += 1
+        } else {
+          x = 1
+          y += 1
+        }
+      }
+
+      this.player = { x, y }
+    },
     updatePlayerPosition(x: number, y: number) {
       this.pause = false;
       this.player.x = x;
@@ -132,7 +148,7 @@ export default Vue.extend({
     }
   },
   created() {
-    this.map = this.buildMap()
+    this.generateMap()
   }
 })
 </script>
