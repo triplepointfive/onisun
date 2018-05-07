@@ -38,7 +38,8 @@ import Scene from './Scene.vue'
 
 import { Visibility, Fov } from '../fov'
 import { LevelMap } from '../map'
-import { Walker, Memory, MemoryTile } from '../creatures/walker'
+import { Walker } from '../creatures/walker'
+import { Memory, MemoryTile } from '../creature'
 import { generate } from '../generator/dungeon'
 import { addDoors } from '../generator/post'
 

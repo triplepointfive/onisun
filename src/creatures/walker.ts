@@ -1,70 +1,25 @@
 import { Point, twoDimArray } from '../utils'
-import { AI, TileRecall } from '../ai'
+import { AI } from '../ai'
 import { Explorer } from '../ai/explorer'
 
-import { Visibility, Fov } from '../fov'
+import { Fov } from '../fov'
 import { LevelMap, Tile } from '../map'
 
-export class MemoryTile implements Visibility {
-  public visible: boolean = false
-  public degree: number = 0
-  public seen: boolean = false
-  public tangible: boolean = false
-
-  constructor(
-    public tile?: Tile,
-    ) {
-  }
-}
-
-export class Memory {
-  public field: MemoryTile[][]
-
-  constructor(
-    public width: number,
-    public height: number,
-    baseBlock: (() => MemoryTile) = () => new MemoryTile(),
-    ) {
-    this.field = twoDimArray(height, width, baseBlock)
-  }
-
-  at(x: number, y: number): MemoryTile {
-    return this.field[y][x]
-  }
-
-  public resetVisible(): void {
-    this.field.forEach((row) => {
-      row.forEach((tile) => {
-        // tile.updated = tile.visible
-        tile.visible = false
-        tile.tile = undefined
-      })
-    })
-  }
-}
+import { Memory, Creature } from '../creature'
 
 // TODO: Ensure seen is build before act() is called!
-export class Walker {
-  ai: AI
-  // tile: Type
-  public stageMemory: Memory
-  public previousPos: Point
-
+export class Walker extends Creature {
   constructor(public x: number, public y: number, private radius: number = 10, width, height) {
-    // this.tile = new Type( TileType.humanoid )
+    super()
     this.stageMemory = new Memory(width, height)
     this.ai = new Explorer()
     this.previousPos = { x, y }
   }
 
   act(stage: LevelMap): void {
-    // this.stageMemory[ this.x ][ this.y ].updated = true
-
     this.visionMask( stage )
     this.previousPos = { x: this.x, y: this.y }
     this.ai.act( this )
-
-    // this.stageMemory[ this.x ][ this.y ].updated = true
   }
 
   private visionMask(stage: LevelMap): void {

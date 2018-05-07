@@ -1,5 +1,6 @@
 import { Point, rand, succ } from '../utils'
-import { AI, TileRecall, Walker, leePath } from '../ai'
+import { AI, leePath } from '../ai'
+import { Creature } from '../creature'
 
 import * as graphlib from 'graphlib'
 
@@ -27,7 +28,7 @@ class Patrol implements AI {
     this.path = []
   }
 
-  act( walker: Walker ): void {
+  act( walker: Creature ): void {
     if ( this.path.length ) {
       this.moveToTarget( walker )
     } else {
@@ -52,7 +53,7 @@ class Patrol implements AI {
     this.i = succ( this.i )
   }
 
-  private buildNewPath( walker: Walker ): void {
+  private buildNewPath( walker: Creature ): void {
     const pos: Point = this.graph.node( this.targetNodeID )
 
     this.path = leePath( walker, ( x, y ) => {
@@ -60,7 +61,7 @@ class Patrol implements AI {
     })
   }
 
-  private pickUpNewTarget( walker: Walker ): void {
+  private pickUpNewTarget( walker: Creature ): void {
     let seenLastID: NodeID = this.currentNodeID
     let seenLastStep: number = this.lastNodeVisit[ seenLastID ]
 
@@ -75,7 +76,7 @@ class Patrol implements AI {
     this.buildNewPath( walker )
   }
 
-  private moveToTarget( walker: Walker ): void {
+  private moveToTarget( walker: Creature ): void {
     const nextPoint: Point = this.path.shift()
     if ( walker.stageMemory.at(nextPoint.x,  nextPoint.y).tangible ) {
       this.path = []

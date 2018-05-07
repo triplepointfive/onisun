@@ -1,25 +1,11 @@
 import { Point, twoDimArray } from './utils'
-import { Walker } from './creatures/walker'
+import { Creature } from './creature'
 
 interface AI {
-  act( walker: Walker ): void
+  act( walker: Creature ): void
 }
 
-class TileRecall {
-  seen: boolean
-  tangible: boolean
-  visible: boolean
-  updated: boolean
-
-  constructor() {
-    this.seen = false
-    this.tangible = false
-    this.visible = false
-    this.updated = false
-  }
-}
-
-const leePath = function ( walker: Walker,
+const leePath = function ( walker: Creature,
                            destination: ( x: number, y: number ) => boolean
                          ): Array< Point > {
   const map = walker.stageMemory
@@ -94,4 +80,4 @@ const buildRoad = function ( point: Point, stageMemory: Array< Array< number > >
   return chain
 }
 
-export { AI, TileRecall, Walker, leePath }
+export { AI, leePath }

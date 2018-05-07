@@ -1,5 +1,6 @@
 import { Point, twoDimArray } from '../utils'
-import { AI, TileRecall, Walker, leePath } from '../ai'
+import { AI, leePath } from '../ai'
+import { Creature } from '../creature'
 import { Patrol } from './patrol'
 
 // import { Logger } from "../logger"
@@ -15,7 +16,7 @@ class Explorer implements AI {
     this.step = NEW_POINT_EVERY
   }
 
-  act( walker: Walker ): void {
+  act( walker: Creature ): void {
     if (this.step === NEW_POINT_EVERY ) {
       this.updatePatrol( walker )
     }
@@ -45,13 +46,13 @@ class Explorer implements AI {
     }
   }
 
-  private buildNewPath( walker: Walker ): void {
+  private buildNewPath( walker: Creature ): void {
     this.path = leePath( walker, ( x, y ) => {
       return !walker.stageMemory.at(x, y).seen
     })
   }
 
-  private updatePatrol( walker: Walker ): void {
+  private updatePatrol( walker: Creature ): void {
     this.step = 0
     if ( this.patrol === undefined ) {
       this.patrol = new Patrol( walker.x, walker.y )
@@ -62,7 +63,7 @@ class Explorer implements AI {
     this.step++
   }
 
-  private shouldAddNode(walker: Walker): boolean {
+  private shouldAddNode(walker: Creature): boolean {
     return walker.stageMemory.at(walker.previousPos.x, walker.previousPos.y).tile.isDoor()
   }
 }
