@@ -1,6 +1,10 @@
 <template lang='slm'>
   #app
-    Scene
+    Scene[
+      :scene='map'
+      :player='walker'
+      :fov='fov'
+      ]
 
     .col
       table.game-table
