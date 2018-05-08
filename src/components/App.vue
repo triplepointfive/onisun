@@ -96,6 +96,26 @@ export default Vue.extend({
       }
 
       this.player = { x, y }
+
+      x = this.map.width - 1
+      y = this.map.height -1
+
+      while (!this.map.visibleThrough(x, y)) {
+        if (x > 1) {
+          x -= 1
+        } else {
+          x = this.map.width - 1
+          y -= 1
+        }
+      }
+
+      this.map.at(x, y).creature = new Walker(
+        x,
+        y,
+        this.radius,
+        this.map.width,
+        this.map.height,
+      )
     },
     updatePlayerPosition(x: number, y: number) {
       this.pause = false;

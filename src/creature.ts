@@ -34,7 +34,6 @@ export class Memory {
   public resetVisible(): void {
     this.field.forEach((row) => {
       row.forEach((tile) => {
-        // tile.updated = tile.visible
         tile.visible = false
         tile.tile = undefined
       })
