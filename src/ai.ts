@@ -8,7 +8,7 @@ interface AI {
 const leePath = function ( walker: Creature,
                            destination: ( x: number, y: number ) => boolean
                          ): Array< Point > {
-  const map = walker.stageMemory
+  const map = walker.stageMemory()
 
   let stageMemory: Array< Array< number > > = twoDimArray( map.height, map.width, () => { return undefined } )
   let pointsToVisit: Array< Point > = []

@@ -48,13 +48,22 @@ export class Tile {
   }
 }
 
+export type LevelMapId = number
+
 export class LevelMap {
+  public id: LevelMapId
   public readonly width: number
   public readonly height: number
+
+  private static lastId: LevelMapId = 0
+  public static getId(): LevelMapId {
+    return this.lastId++
+  }
 
   constructor(public map: Tile[][]) {
     this.width  = map[0].length
     this.height = map.length
+    this.id = LevelMap.getId()
   }
 
   public visibleThrough(x: number, y: number): boolean {

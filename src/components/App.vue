@@ -3,21 +3,9 @@
     Scene[
       :scene='map'
       :player='walker'
-      :fov='fov'
       ]
 
     .col
-      / table.game-table
-        tr.row v-for="(_, i) in map.height"
-          Cell[
-            :cell="map.at(j, i)"
-            v-for="(_, j) in map.width"
-            :key="i + '-' + j"
-            :style='visibility(i, j)'
-            :player="walker.x == j && walker.y == i"
-            @setPosition="updatePlayerPosition(j, i)"
-            ]
-
       button @click="generateMap()"
         | Generate!
 
@@ -36,7 +24,6 @@ import * as _ from 'lodash'
 import Cell from './Cell.vue'
 import Scene from './Scene.vue'
 
-import { Visibility, Fov } from '../fov'
 import { LevelMap } from '../map'
 import { Walker } from '../creatures/walker'
 import { Memory, MemoryTile } from '../creature'
@@ -67,17 +54,9 @@ export default Vue.extend({
           this.player.x,
           this.player.y,
           this.radius,
-          this.map.width,
-          this.map.height,
+          this.map,
         )
       }
-    },
-    fov(): MemoryTile[][] {
-      if (this.ts && this.map) {
-        return this.walker.stageMemory.field
-      }
-
-      return []
     }
   },
   methods: {
@@ -113,8 +92,7 @@ export default Vue.extend({
         x,
         y,
         this.radius,
-        this.map.width,
-        this.map.height,
+        this.map,
       )
     },
     updatePlayerPosition(x: number, y: number) {
@@ -123,49 +101,7 @@ export default Vue.extend({
       this.player.y = y;
     },
     buildMap() {
-      let map = addDoors(generate(50, 50))
-
-      clearInterval(this.walkerinterval)
-      this.walkerinterval = setInterval(() => {
-        if (this.pause) {
-          return
-        }
-
-        try {
-          if (this.walker) {
-            Vue.nextTick(() => {
-              this.walker.act(this.map)
-              this.ts = Date.now()
-            })
-            // this.pause = true
-            // this.player.x = this.walker.x
-            // this.player.y = this.walker.y
-          }
-        } catch (e) {
-          console.error(e)
-          this.pause = true
-        }
-
-      }, 50);
-
-      return map
-    },
-    visibility(i: number, j: number) {
-      if (this.pause) {
-        return { background: 'black', color: 'darkgrey', opacity: 0.3 }
-      }
-
-      if (this.fov.length) {
-        if (this.fov[i][j].visible) {
-          return { opacity: this.fov[i][j].degree }
-        } else if (this.fov[i][j].seen) {
-          return { background: 'black', color: 'darkgrey', opacity: 0.3 }
-        } else {
-          return { background: 'black', color: 'black' }
-        }
-      } else {
-        return { background: 'black', color: 'darkgrey' }
-      }
+      return addDoors(generate(50, 50))
     }
   },
   created() {

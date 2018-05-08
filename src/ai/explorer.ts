@@ -3,8 +3,6 @@ import { AI, leePath } from '../ai'
 import { Creature } from '../creature'
 import { Patrol } from './patrol'
 
-// import { Logger } from "../logger"
-
 const NEW_POINT_EVERY: number = 10
 
 class Explorer implements AI {
@@ -32,7 +30,7 @@ class Explorer implements AI {
       }
     } else {
       const nextPoint: Point = this.path.shift()
-      if ( walker.stageMemory.at(nextPoint.x, nextPoint.y).tangible ) {
+      if ( walker.stageMemory().at(nextPoint.x, nextPoint.y).tangible ) {
         this.path = []
         this.act( walker )
       } else {
@@ -47,7 +45,7 @@ class Explorer implements AI {
 
   private buildNewPath( walker: Creature ): void {
     this.path = leePath( walker, ( x, y ) => {
-      return !walker.stageMemory.at(x, y).seen
+      return !walker.stageMemory().at(x, y).seen
     })
   }
 
@@ -63,7 +61,7 @@ class Explorer implements AI {
   }
 
   private shouldAddNode(walker: Creature): boolean {
-    return walker.stageMemory.at(walker.previousPos.x, walker.previousPos.y).tile.isDoor()
+    return walker.stageMemory().at(walker.previousPos.x, walker.previousPos.y).tile.isDoor()
   }
 }
 

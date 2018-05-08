@@ -1,8 +1,8 @@
 import { Point, twoDimArray } from './utils'
 import { AI } from './ai'
-import { Visibility } from './fov'
+import { Visibility, Fov } from './fov'
 
-import { LevelMap, Tile } from './map'
+import { LevelMap, LevelMapId, Tile } from './map'
 
 export class MemoryTile implements Visibility {
   public visible: boolean = false
@@ -43,13 +43,73 @@ export class Memory {
 
 export abstract class Creature {
   ai: AI
-  public stageMemory: Memory
+  public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
-  public x: number
-  public y: number
+  private currentLevelId: LevelMapId
+
+  constructor(
+    public x: number,
+    public y: number,
+    public radius: number,
+    level: LevelMap,
+  ) {
+    this.previousPos = { x, y }
+    this.currentLevelId = level.id
+    this.visionMask(level)
+  }
+
+  public stageMemory(levelId: LevelMapId = this.currentLevelId): Memory {
+    return this.stageMemories[levelId]
+  }
+
+  public act(stage: LevelMap): void {
+    this.visionMask(stage)
+    this.previousPos = { x: this.x, y: this.y }
+    this.ai.act(this)
+    stage.at(this.previousPos.x, this.previousPos.y).creature = undefined
+    stage.at(this.x, this.y).creature = this
+    this.visionMask(stage)
+  }
 
   public move(nextPoint: Point) {
     this.x = nextPoint.x
     this.y = nextPoint.y
+  }
+
+  protected visionMask(stage: LevelMap): void {
+    if (!this.stageMemories[stage.id]) {
+      this.stageMemories[stage.id] = new Memory(stage.width, stage.height)
+    } else {
+      this.stageMemory().resetVisible()
+    }
+
+    const see = (x: number, y: number, degree: number): void => {
+      const tile = this.stageMemory().at(x, y)
+      tile.visible = true
+      tile.degree = degree
+      tile.seen = true
+      tile.tangible = !stage.passibleThrough(x, y)
+      tile.tile = stage.at(x, y)
+    }
+
+    new Fov(
+      this.x,
+      this.y,
+      this.radius,
+      stage.width,
+      stage.height,
+      this.isSolid(stage),
+      see,
+    ).calc()
+  }
+
+  private isSolid(stage: LevelMap): (x: number, y: number) => boolean {
+    return (x: number, y: number) => {
+      if (stage.visibleThrough(x, y)) {
+        return false
+      } else {
+        return !(stage.at(x, y).isDoor() && this.x === x && this.y === y)
+      }
+    }
   }
 }

@@ -13,7 +13,6 @@ import {
   Tile,
 } from '../../vendor/unicodetiles.ts/src/index'
 
-
 import {
   CreatureTile,
   DoorTile,
@@ -28,7 +27,7 @@ const FLOOR = new FloorTile()
 const NULLTILE = new Tile('　', 0, 0, 0)
 
 export default Vue.extend({
-  props: ['scene', 'player', 'fov'],
+  props: ['scene', 'player'],
   data() {
     return {
       term: null,
@@ -70,7 +69,7 @@ export default Vue.extend({
       )
 
       this.eng.setMaskFunc((x, y) => {
-        return this.fov[y][x].seen
+        return this.stage.at(x, y).seen
       });
 
       this.eng.setShaderFunc((tile, x, y, time) => {
@@ -78,23 +77,34 @@ export default Vue.extend({
       })
 
       clearInterval(this.drawInterval)
-      this.drawInterval = setInterval(() => { this.drawScene() }, 50)
+      this.drawInterval = setInterval(() => { this.drawScene() }, 5)
     },
     drawScene() {
+      if (this.done) { return }
+      this.done = true
+      this.player.act(this.scene)
+
       // this.eng.update(this.term.cx, this.term.cy);
       // this.term.put(HUMAN, this.term.cx, this.term.cy)
       this.eng.update(this.player.x, this.player.y);
       // this.term.put(HUMAN, this.term.cx, this.term.cy)
       this.term.render();
+
+      this.done = false
     },
     lighting(tile, x, y, time) {
-      const fovTile = this.fov[y][x]
+      const fovTile = this.stage.at(x, y)
 
       if (fovTile.visible && tile.lighted) {
         return tile.lighted(fovTile.degree)
       }
 
       return tile
+    }
+  },
+  computed: {
+    stage() {
+      return this.player.stageMemory(this.scene.id)
     }
   },
   mounted() {
