@@ -36,8 +36,7 @@ class Explorer implements AI {
         this.path = []
         this.act( walker )
       } else {
-        walker.x = nextPoint.x
-        walker.y = nextPoint.y
+        walker.move(nextPoint)
 
         if (this.shouldAddNode(walker)) {
           this.updatePatrol(walker)

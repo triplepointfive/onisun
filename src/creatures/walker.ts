@@ -9,8 +9,13 @@ import { Memory, Creature } from '../creature'
 
 // TODO: Ensure seen is build before act() is called!
 export class Walker extends Creature {
-  constructor(public x: number, public y: number, private radius: number = 10, width, height) {
+  public x: number
+  public y: number
+
+  constructor(x: number, y: number, private radius: number = 10, width, height) {
     super()
+    this.x = x
+    this.y = y
     this.stageMemory = new Memory(width, height)
     this.ai = new Explorer()
     this.previousPos = { x, y }
@@ -20,6 +25,8 @@ export class Walker extends Creature {
     this.visionMask( stage )
     this.previousPos = { x: this.x, y: this.y }
     this.ai.act( this )
+    stage.at(this.previousPos.x, this.previousPos.y).creature = undefined
+    stage.at(this.x, this.y).creature = this
   }
 
   private visionMask(stage: LevelMap): void {

@@ -1,3 +1,5 @@
+import { Creature } from './creature'
+
 export enum TileTypes {
   Wall,
   Door,
@@ -5,6 +7,8 @@ export enum TileTypes {
 }
 
 export class Tile {
+  public creature?: Creature
+
   private static repository: { [key: string]: Tile } = {}
 
   public static retrive(key: string): Tile {

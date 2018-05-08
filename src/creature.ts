@@ -49,4 +49,8 @@ export abstract class Creature {
   public x: number
   public y: number
 
+  public move(nextPoint: Point) {
+    this.x = nextPoint.x
+    this.y = nextPoint.y
+  }
 }
