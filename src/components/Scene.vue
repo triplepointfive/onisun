@@ -1,5 +1,7 @@
 <template lang='slm'>
-  .unicodetiles ref="scene"
+  .scene
+    .fps {{ fps }}
+    .unicodetiles ref="scene"
 </template>
 
 <script lang='ts'>
@@ -32,7 +34,10 @@ export default Vue.extend({
     return {
       term: null,
       eng: null,
-      drawInterval: null
+      drawInterval: null,
+      ts: Date.now(),
+      fps: 0,
+      counter: 0,
     }
   },
   methods: {
@@ -77,10 +82,17 @@ export default Vue.extend({
       })
 
       clearInterval(this.drawInterval)
-      this.drawInterval = setInterval(() => { this.drawScene() }, 5)
+      this.drawInterval = setInterval(() => { this.drawScene() }, 50)
     },
     drawScene() {
       if (this.done) { return }
+      const ts = Date.now()
+      if (this.ts + 1000 < ts) {
+        this.fps = this.counter
+        this.counter = 0
+        this.ts = ts
+      }
+
       this.done = true
       this.player.act(this.scene)
 
@@ -91,6 +103,7 @@ export default Vue.extend({
       this.term.render();
 
       this.done = false
+      this.counter += 1
     },
     lighting(tile, x, y, time) {
       const fovTile = this.stage.at(x, y)
