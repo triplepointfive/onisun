@@ -51,6 +51,7 @@ export class Tile {
 export type LevelMapId = number
 
 export class LevelMap {
+  public creatures: Creature[] = []
   public id: LevelMapId
   public readonly width: number
   public readonly height: number
@@ -64,6 +65,12 @@ export class LevelMap {
     this.width  = map[0].length
     this.height = map.length
     this.id = LevelMap.getId()
+  }
+
+  public addCreature(creature: Creature) {
+    this.creatures.push(creature)
+    // TODO fail if taken
+    this.at(creature.x, creature.y).creature = creature
   }
 
   public visibleThrough(x: number, y: number): boolean {

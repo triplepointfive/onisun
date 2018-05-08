@@ -56,6 +56,7 @@ export abstract class Creature {
     this.previousPos = { x, y }
     this.currentLevelId = level.id
     this.visionMask(level)
+    level.addCreature(this)
   }
 
   public stageMemory(levelId: LevelMapId = this.currentLevelId): Memory {

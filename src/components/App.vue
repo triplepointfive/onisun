@@ -2,7 +2,7 @@
   #app
     Scene[
       :scene='map'
-      :player='walker'
+      :player='map.creatures[0]'
       ]
 
     .col
@@ -35,10 +35,6 @@ export default Vue.extend({
     return {
       map: new LevelMap([[]]),
       radius: 10,
-      player: {
-        x: 10,
-        y: 10,
-      },
       pause: true,
       ts: Date.now(),
     }
@@ -50,12 +46,6 @@ export default Vue.extend({
   computed: {
     walker() {
       if (this.map) {
-        return new Walker(
-          this.player.x,
-          this.player.y,
-          this.radius,
-          this.map,
-        )
       }
     }
   },
@@ -74,7 +64,12 @@ export default Vue.extend({
         }
       }
 
-      this.player = { x, y }
+      new Walker(
+        x,
+        y,
+        this.radius,
+        this.map,
+      )
 
       x = this.map.width - 1
       y = this.map.height -1
@@ -88,17 +83,12 @@ export default Vue.extend({
         }
       }
 
-      this.map.at(x, y).creature = new Walker(
+      new Walker(
         x,
         y,
         this.radius,
         this.map,
       )
-    },
-    updatePlayerPosition(x: number, y: number) {
-      this.pause = false;
-      this.player.x = x;
-      this.player.y = y;
     },
     buildMap() {
       return addDoors(generate(50, 50))
