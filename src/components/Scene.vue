@@ -13,10 +13,18 @@ import {
   Tile,
 } from '../../vendor/unicodetiles.ts/src/index'
 
-const AT = new Tile('俺', 255, 255, 255)
-const DOOR = new Tile('戸', 255, 255, 255)
-const WALL = new Tile('＃', 200, 200, 200)
-const FLOOR = new Tile('・', 250, 250, 250)
+
+import {
+  CreatureTile,
+  DoorTile,
+  FloorTile,
+  WallTile,
+} from './tile'
+
+const HUMAN = new CreatureTile('俺', 0, 255, 0)
+const DOOR = new DoorTile()
+const WALL = new WallTile()
+const FLOOR = new FloorTile()
 const NULLTILE = new Tile('　', 0, 0, 0)
 
 export default Vue.extend({
@@ -30,6 +38,10 @@ export default Vue.extend({
   },
   methods: {
     getTile(x, y) {
+      if (this.scene.at(x, y).creature) {
+        return HUMAN
+      }
+
       switch (this.scene.at(x, y).display) {
       case '#':
         return WALL
@@ -69,36 +81,20 @@ export default Vue.extend({
       this.drawInterval = setInterval(() => { this.drawScene() }, 50)
     },
     drawScene() {
+      // this.eng.update(this.term.cx, this.term.cy);
+      // this.term.put(HUMAN, this.term.cx, this.term.cy)
       this.eng.update(this.player.x, this.player.y);
-      this.term.put(AT, this.term.cx, this.term.cy)
+      // this.term.put(HUMAN, this.term.cx, this.term.cy)
       this.term.render();
     },
     lighting(tile, x, y, time) {
       const fovTile = this.fov[y][x]
-      if (!fovTile.visible) {
-        return tile
+
+      if (fovTile.visible && tile.lighted) {
+        return tile.lighted(fovTile.degree)
       }
 
-      // TODO: extract to a class
-
-      let lightedTile = tile.clone()
-      if (tile !== DOOR) {
-        lightedTile.r = 255 * fovTile.degree
-        lightedTile.g = 165 * fovTile.degree
-        lightedTile.b = 0 * fovTile.degree
-      } else {
-        lightedTile.r = 0
-        lightedTile.g = 0
-        lightedTile.b = 0
-      }
-
-      if (tile !== FLOOR) {
-        lightedTile.br = 255 * fovTile.degree
-        lightedTile.bg = 165 * fovTile.degree
-        lightedTile.bb = 0 * fovTile.degree
-      }
-
-      return lightedTile
+      return tile
     }
   },
   mounted() {
