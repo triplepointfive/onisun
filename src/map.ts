@@ -1,4 +1,4 @@
-import { Creature } from './creature'
+import { Phantom, Creature } from './creature'
 
 export enum TileTypes {
   Wall,
@@ -7,7 +7,7 @@ export enum TileTypes {
 }
 
 export class Tile {
-  public creature?: Creature
+  public creature?: Phantom
 
   private static repository: { [key: string]: Tile } = {}
 
@@ -45,6 +45,18 @@ export class Tile {
 
   public passibleThrough(): boolean {
     return this.kind !== TileTypes.Wall
+  }
+
+  public clone(): Tile {
+    let tile = Tile.retrive(this.key)
+    if (this.creature) {
+      tile.creature = this.creature.clone()
+    }
+    return tile
+  }
+
+  protected uniq(): boolean {
+    return this.creature !== undefined
   }
 }
 
@@ -87,5 +99,9 @@ export class LevelMap {
 
   public setTile(x, y, tile: Tile): void {
     this.map[y][x] = tile
+  }
+
+  public turn(): void {
+    this.creatures.forEach((creature) => creature.act(this))
   }
 }

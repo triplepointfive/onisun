@@ -1,7 +1,7 @@
 <template lang='slm'>
   #app
     Scene[
-      :scene='map'
+      :level='map'
       :player='map.creatures[0]'
       ]
 

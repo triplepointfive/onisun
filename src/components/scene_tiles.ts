@@ -1,6 +1,7 @@
 import { Tile } from '../../vendor/unicodetiles.ts/src/index'
 
 const DEFAULT_GREY: number = 120
+const IMPORTANT_GREY: number = 180
 const DEFAULT_LIT = { r: 255, g: 165, b: 0 }
 
 class DisplayTile extends Tile {
@@ -8,8 +9,8 @@ class DisplayTile extends Tile {
     return this
   }
 
-  constructor(char: string) {
-    super(char, DEFAULT_GREY, DEFAULT_GREY, DEFAULT_GREY)
+  constructor(char: string, r = DEFAULT_GREY, g = DEFAULT_GREY, b = DEFAULT_GREY) {
+    super(char, r, g, b)
   }
 
   protected litBackground(tile: Tile, degree: number): Tile {
@@ -31,7 +32,13 @@ class DisplayTile extends Tile {
   }
 }
 
-export class CreatureTile extends DisplayTile {
+abstract class ImportantTile extends DisplayTile {
+  constructor(char: string) {
+    super(char, IMPORTANT_GREY, IMPORTANT_GREY, IMPORTANT_GREY)
+  }
+}
+
+export class CreatureTile extends ImportantTile {
   constructor(
     char: string,
     public vr: number,

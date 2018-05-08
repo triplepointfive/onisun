@@ -35,24 +35,35 @@ export class Memory {
     this.field.forEach((row) => {
       row.forEach((tile) => {
         tile.visible = false
-        tile.tile = undefined
       })
     })
   }
 }
 
-export abstract class Creature {
+export class Phantom {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+
+  public clone(): Phantom {
+    return new Phantom(this.x, this.y)
+  }
+}
+
+export abstract class Creature extends Phantom {
   ai: AI
   public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
   private currentLevelId: LevelMapId
 
   constructor(
-    public x: number,
-    public y: number,
+    x: number,
+    y: number,
     public radius: number,
     level: LevelMap,
   ) {
+    super(x, y)
     this.previousPos = { x, y }
     this.currentLevelId = level.id
     this.visionMask(level)
@@ -90,7 +101,7 @@ export abstract class Creature {
       tile.degree = degree
       tile.seen = true
       tile.tangible = !stage.passibleThrough(x, y)
-      tile.tile = stage.at(x, y)
+      tile.tile = stage.at(x, y).clone()
     }
 
     new Fov(

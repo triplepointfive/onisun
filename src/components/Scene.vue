@@ -2,6 +2,7 @@
   .scene
     .fps {{ fps }}
     .unicodetiles ref="scene"
+    input v-model='interval' type='number'
 </template>
 
 <script lang='ts'>
@@ -20,7 +21,7 @@ import {
   DoorTile,
   FloorTile,
   WallTile,
-} from './tile'
+} from './scene_tiles'
 
 const HUMAN = new CreatureTile('俺', 0, 255, 0)
 const DOOR = new DoorTile()
@@ -29,7 +30,7 @@ const FLOOR = new FloorTile()
 const NULLTILE = new Tile('　', 0, 0, 0)
 
 export default Vue.extend({
-  props: ['scene', 'player'],
+  props: ['level', 'player'],
   data() {
     return {
       term: null,
@@ -38,15 +39,21 @@ export default Vue.extend({
       ts: Date.now(),
       fps: 0,
       counter: 0,
+      interval: 200,
     }
   },
   methods: {
     getTile(x, y) {
-      if (this.scene.at(x, y).creature) {
+      const tile = this.stage.at(x, y).tile
+      if (!tile) {
+        return NULLTILE
+      }
+
+      if (tile.creature) {
         return HUMAN
       }
 
-      switch (this.scene.at(x, y).display) {
+      switch (tile.display) {
       case '#':
         return WALL
       case '+':
@@ -60,8 +67,8 @@ export default Vue.extend({
     initViewport() {
       this.term = new Viewport(
         this.$refs.scene,
-        this.scene.width,
-        this.scene.height,
+        this.level.width,
+        this.level.height,
         webGLRenderer,
         true,
       )
@@ -69,8 +76,8 @@ export default Vue.extend({
       this.eng = new Engine(
         this.term,
         (x, y) => this.getTile(x, y),
-        this.scene.width,
-        this.scene.height
+        this.level.width,
+        this.level.height
       )
 
       this.eng.setMaskFunc((x, y) => {
@@ -82,7 +89,7 @@ export default Vue.extend({
       })
 
       clearInterval(this.drawInterval)
-      this.drawInterval = setInterval(() => { this.drawScene() }, 50)
+      this.drawInterval = setInterval(() => { this.drawScene() }, this.interval)
     },
     drawScene() {
       if (this.done) { return }
@@ -94,12 +101,10 @@ export default Vue.extend({
       }
 
       this.done = true
-      this.player.act(this.scene)
+      this.level.turn()
 
-      // this.eng.update(this.term.cx, this.term.cy);
-      // this.term.put(HUMAN, this.term.cx, this.term.cy)
-      this.eng.update(this.player.x, this.player.y);
-      // this.term.put(HUMAN, this.term.cx, this.term.cy)
+      // this.eng.update(this.player.x, this.player.y);
+      this.eng.update(this.term.cx, this.term.cy);
       this.term.render();
 
       this.done = false
@@ -117,14 +122,17 @@ export default Vue.extend({
   },
   computed: {
     stage() {
-      return this.player.stageMemory(this.scene.id)
+      return this.player.stageMemory(this.level.id)
     }
   },
   mounted() {
     this.initViewport()
   },
   watch: {
-    scene() {
+    level() {
+      this.initViewport()
+    },
+    interval() {
       this.initViewport()
     }
   }
