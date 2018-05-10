@@ -21,8 +21,8 @@ export class MemoryTile  {
     this.tile = tile.clone()
   }
 
-  public tangible(): boolean {
-    return this.seen && !this.tile.passibleThrough()
+  public tangible(actor?: Creature): boolean {
+    return this.seen && !this.tile.passibleThrough(actor)
   }
 
   public reset(): void {
@@ -44,6 +44,11 @@ export class Memory {
 
   at(x: number, y: number): MemoryTile {
     return this.field[y][x]
+  }
+
+  public inRange(point: Point): boolean {
+    return point.x >= 0         && point.y >= 0
+        && point.x < this.width && point.y < this.height
   }
 
   public resetVisible(): void {

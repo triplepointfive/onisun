@@ -43,8 +43,12 @@ export class Tile {
     return this.kind === TileTypes.Floor
   }
 
-  public passibleThrough(): boolean {
-    return this.kind !== TileTypes.Wall
+  public passibleThrough(actor?: Creature): boolean {
+    if (actor && this.creature) {
+      return (this.kind !== TileTypes.Wall) && this.creature.id === actor.id
+    }
+
+    return (this.kind !== TileTypes.Wall) && (!this.creature)
   }
 
   public clone(): Tile {

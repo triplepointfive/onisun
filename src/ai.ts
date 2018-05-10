@@ -1,8 +1,10 @@
 import { Point, twoDimArray } from './utils'
 import { Creature } from './creature'
 
-abstract class AI {
+export abstract class AI {
   public abstract act( walker: Creature ): void
+
+  public abstract available(walker: Creature): boolean
 
   protected leePath(
     walker: Creature,
@@ -12,16 +14,15 @@ abstract class AI {
 
     let stageMemory: Array< Array< number > > = twoDimArray( map.height, map.width, () => { return undefined } )
     let pointsToVisit: Point[] = []
-    let pointsToCheck: Point[] = [new Point(walker.pos.x, walker.pos.y)]
+    let pointsToCheck: Point[] = [walker.pos]
 
     let step = 0
     while ( pointsToCheck.length && !pointsToVisit.length ) {
-      // console.log(pointsToCheck )
       let wavePoints: Array< Point > = []
 
       pointsToCheck.forEach( ( point: Point ) => {
         // TODO: Compare, current value might be lower
-        if ( map.at(point.x ,  point.y).tangible() ||
+        if (!map.inRange(point) || map.at(point.x ,  point.y).tangible(walker) ||
             stageMemory[ point.x ][ point.y ] !== undefined ) {
           return
         }
@@ -38,7 +39,7 @@ abstract class AI {
       pointsToCheck = wavePoints
     }
 
-    if ( pointsToVisit.length ) {
+    if (pointsToVisit.length) {
       pointsToVisit[ Math.floor( Math.random() * pointsToVisit.length ) ]
       return buildRoad( pointsToVisit[ 0 ], stageMemory )
     } else {
@@ -67,5 +68,3 @@ const buildRoad = function ( point: Point, stageMemory: number[][]): Point[] {
 
   return chain
 }
-
-export { AI }

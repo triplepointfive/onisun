@@ -2,6 +2,8 @@ import { Point, rand, succ } from '../utils'
 import { AI } from '../ai'
 import { Creature } from '../creature'
 
+import { Explorer } from './explorer'
+
 import * as graphlib from 'graphlib'
 
 type NodeID = string
@@ -13,7 +15,7 @@ class Patrol extends AI {
   private lastNodeVisit: { [ key: string ]: number }
   private currentNodeID: NodeID
   private targetNodeID: NodeID
-  private path: Array< Point >
+  private path: Point[]
 
   constructor( x: number, y: number ) {
     super()
@@ -29,9 +31,13 @@ class Patrol extends AI {
     this.path = []
   }
 
-  act( walker: Creature ): void {
+  public available(walker: Creature): boolean {
+    return this.graph.nodes().length > 1
+  }
+
+  public act(walker: Creature, firstTurn: boolean = true): void {
     if ( this.path.length ) {
-      this.moveToTarget( walker )
+      this.moveToTarget( walker, firstTurn )
     } else {
       if ( this.targetNodeID ) {
         this.markNodeVisited( this.targetNodeID )
@@ -39,13 +45,13 @@ class Patrol extends AI {
       }
 
       this.pickUpNewTarget( walker )
-      this.moveToTarget( walker )
+      this.moveToTarget( walker, firstTurn )
     }
     this.step += 1
   }
 
   // TODO: If close enough to another node, use it instead.
-  addNode( x: number, y: number, withEdge: boolean = true ): void {
+  public addNode( x: number, y: number, withEdge: boolean = true ): void {
     this.graph.setNode( this.i, { x: x, y: y } )
     if ( withEdge ) {
       this.graph.setEdge( this.currentNodeID, this.i )
@@ -77,11 +83,24 @@ class Patrol extends AI {
     this.buildNewPath( walker )
   }
 
-  private moveToTarget( walker: Creature ): void {
+  private moveToTarget( walker: Creature, firstTurn: boolean ): void {
     const nextPoint: Point = this.path.shift()
-    if ( walker.stageMemory().at(nextPoint.x,  nextPoint.y).tangible() ) {
-      this.path = []
-      this.act( walker )
+
+    if (!nextPoint) {
+      walker.ai = new Explorer(this)
+    } else if ( walker.stageMemory().at(nextPoint.x,  nextPoint.y).tangible() ) {
+      this.buildNewPath
+
+      if (this.path.length) {
+        return this.act( walker, false )
+      }
+
+      let explorer = new Explorer(this)
+
+      if (explorer.available(walker)) {
+        walker.ai = explorer
+        explorer.act(walker)
+      }
     } else {
       walker.move(nextPoint)
     }

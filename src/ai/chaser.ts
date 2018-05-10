@@ -5,4 +5,8 @@ export class Chaser extends AI {
   act( walker: Creature ): void {
 
   }
+
+  public available(actor: Creature): boolean {
+    return true
+  }
 }

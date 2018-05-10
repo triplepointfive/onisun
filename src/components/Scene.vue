@@ -1,7 +1,21 @@
 <template lang='slm'>
   .scene
     .fps {{ fps }}
-    .unicodetiles ref="scene"
+    .row
+      .col
+        .unicodetiles ref="scene"
+
+      .col.small style="overflow: scroll"
+        dl.row v-for='creature in level.creatures'
+          dd.col-sm-3 ID
+          dt.col-sm-9 {{ creature.id }}
+
+          dd.col-sm-3 POS
+          dt.col-sm-9 {{ creature.pos }}
+
+          dd.col-sm-3 AI
+          dt.col-sm-9 {{ aiName(creature.ai) }}
+
     input v-model='interval' type='number'
 </template>
 
@@ -23,6 +37,11 @@ import {
   WallTile,
 } from './scene_tiles'
 
+import { Patrol } from '../ai/patrol'
+import { Explorer } from '../ai/explorer'
+import { Waiter } from '../ai/waiter'
+import { Chaser } from '../ai/chaser'
+
 const HUMAN = new CreatureTile('俺', 0, 255, 0)
 const DOOR = new DoorTile()
 const WALL = new WallTile()
@@ -43,6 +62,20 @@ export default Vue.extend({
     }
   },
   methods: {
+    aiName(ai) {
+      if (ai instanceof Patrol) {
+        return 'Patrol'
+      }
+      if (ai instanceof Chaser) {
+        return 'Chaser'
+      }
+      if (ai instanceof Explorer) {
+        return 'Explorer'
+      }
+      if (ai instanceof Waiter) {
+        return 'Waiter'
+      }
+    },
     getTile(x, y) {
       const tile = this.stage.at(x, y).tile
       if (!tile) {
