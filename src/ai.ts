@@ -3,56 +3,56 @@ import { Creature } from './creature'
 
 abstract class AI {
   public abstract act( walker: Creature ): void
-}
 
-const leePath = function ( walker: Creature,
-                           destination: ( x: number, y: number ) => boolean
-                         ): Array< Point > {
-  const map = walker.stageMemory()
+  protected leePath(
+    walker: Creature,
+    destination: ( x: number, y: number ) => boolean
+  ): Array< Point > {
+    const map = walker.stageMemory()
 
-  let stageMemory: Array< Array< number > > = twoDimArray( map.height, map.width, () => { return undefined } )
-  let pointsToVisit: Array< Point > = []
-  let pointsToCheck: Array< Point > = [ { x: walker.x, y: walker.y } ]
+    let stageMemory: Array< Array< number > > = twoDimArray( map.height, map.width, () => { return undefined } )
+    let pointsToVisit: Array< Point > = []
+    let pointsToCheck: Array< Point > = [ { x: walker.x, y: walker.y } ]
 
-  let step = 0
-  while ( pointsToCheck.length && !pointsToVisit.length ) {
-    // console.log(pointsToCheck )
-    let wavePoints: Array< Point > = []
+    let step = 0
+    while ( pointsToCheck.length && !pointsToVisit.length ) {
+      // console.log(pointsToCheck )
+      let wavePoints: Array< Point > = []
 
-    pointsToCheck.forEach( ( point: Point ) => {
-      // TODO: Compare, current value might be lower
-      if ( map.at(point.x ,  point.y).tangible() ||
-          stageMemory[ point.x ][ point.y ] !== undefined ) {
-        return
-      }
+      pointsToCheck.forEach( ( point: Point ) => {
+        // TODO: Compare, current value might be lower
+        if ( map.at(point.x ,  point.y).tangible() ||
+            stageMemory[ point.x ][ point.y ] !== undefined ) {
+          return
+        }
 
-      stageMemory[ point.x ][ point.y ] = step
-      if ( destination( point.x, point.y ) ) {
-        pointsToVisit.push( point )
-      } else {
-        wavePoints.push( { x: point.x - 1, y: point.y })
-        wavePoints.push( { x: point.x + 1, y: point.y })
-        wavePoints.push( { x: point.x, y: point.y - 1 })
-        wavePoints.push( { x: point.x, y: point.y + 1 })
-        wavePoints.push( { x: point.x - 1, y: point.y - 1 })
-        wavePoints.push( { x: point.x + 1, y: point.y - 1 })
-        wavePoints.push( { x: point.x + 1, y: point.y + 1 })
-        wavePoints.push( { x: point.x - 1, y: point.y + 1 })
-      }
-    })
-    step++
+        stageMemory[ point.x ][ point.y ] = step
+        if ( destination( point.x, point.y ) ) {
+          pointsToVisit.push( point )
+        } else {
+          wavePoints.push( { x: point.x - 1, y: point.y })
+          wavePoints.push( { x: point.x + 1, y: point.y })
+          wavePoints.push( { x: point.x, y: point.y - 1 })
+          wavePoints.push( { x: point.x, y: point.y + 1 })
+          wavePoints.push( { x: point.x - 1, y: point.y - 1 })
+          wavePoints.push( { x: point.x + 1, y: point.y - 1 })
+          wavePoints.push( { x: point.x + 1, y: point.y + 1 })
+          wavePoints.push( { x: point.x - 1, y: point.y + 1 })
+        }
+      })
+      step++
 
-    pointsToCheck = wavePoints
+      pointsToCheck = wavePoints
+    }
+
+    if ( pointsToVisit.length ) {
+      pointsToVisit[ Math.floor( Math.random() * pointsToVisit.length ) ]
+      return buildRoad( pointsToVisit[ 0 ], stageMemory )
+    } else {
+      return []
+    }
   }
-
-  if ( pointsToVisit.length ) {
-    pointsToVisit[ Math.floor( Math.random() * pointsToVisit.length ) ]
-    return buildRoad( pointsToVisit[ 0 ], stageMemory )
-  } else {
-    return []
-  }
 }
-
 
 const buildRoad = function ( point: Point, stageMemory: Array< Array< number > > ): Array< Point > {
   let x0 = point.x, y0 = point.y
@@ -80,4 +80,4 @@ const buildRoad = function ( point: Point, stageMemory: Array< Array< number > >
   return chain
 }
 
-export { AI, leePath }
+export { AI }

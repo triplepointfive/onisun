@@ -1,5 +1,5 @@
 import { Point, rand, succ } from '../utils'
-import { AI, leePath } from '../ai'
+import { AI } from '../ai'
 import { Creature } from '../creature'
 
 import * as graphlib from 'graphlib'
@@ -57,7 +57,7 @@ class Patrol extends AI {
   private buildNewPath( walker: Creature ): void {
     const pos: Point = this.graph.node( this.targetNodeID )
 
-    this.path = leePath( walker, ( x, y ) => {
+    this.path = this.leePath( walker, ( x, y ) => {
       return ( pos.x === x ) && ( pos.y === y )
     })
   }

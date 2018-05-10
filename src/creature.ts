@@ -11,7 +11,7 @@ export class MemoryTile  {
 
   constructor(
     public tile?: Tile,
-    ) {
+  ) {
   }
 
   public see(tile: Tile, degree: number) {
@@ -23,6 +23,11 @@ export class MemoryTile  {
 
   public tangible(): boolean {
     return this.seen && !this.tile.passibleThrough()
+  }
+
+  public reset(): void {
+    this.visible = false
+    this.tile.creature = undefined
   }
 }
 
@@ -44,20 +49,29 @@ export class Memory {
   public resetVisible(): void {
     this.field.forEach((row) => {
       row.forEach((tile) => {
-        tile.visible = false
+        tile.reset()
       })
     })
   }
 }
 
+export type CreatureId = number
+
 export class Phantom {
+  private static lastId: CreatureId = 0
+  public static getId(): CreatureId {
+    return this.lastId++
+  }
+
   constructor(
     public x: number,
     public y: number,
-  ) {}
+    public id: CreatureId = Phantom.getId(),
+  ) {
+  }
 
   public clone(): Phantom {
-    return new Phantom(this.x, this.y)
+    return new Phantom(this.x, this.y, this.id)
   }
 }
 

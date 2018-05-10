@@ -1,5 +1,5 @@
 import { Point, twoDimArray } from '../utils'
-import { AI, leePath } from '../ai'
+import { AI } from '../ai'
 import { Creature } from '../creature'
 import { Patrol } from './patrol'
 
@@ -44,7 +44,7 @@ class Explorer extends AI {
   }
 
   private buildNewPath( walker: Creature ): void {
-    this.path = leePath( walker, ( x, y ) => {
+    this.path = this.leePath( walker, ( x, y ) => {
       return !walker.stageMemory().at(x, y).seen
     })
   }
