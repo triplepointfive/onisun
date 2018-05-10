@@ -6,7 +6,7 @@ import * as graphlib from 'graphlib'
 
 type NodeID = string
 
-class Patrol implements AI {
+class Patrol extends AI {
   private i: NodeID
   private step: number
   private graph: graphlib.Graph
@@ -16,6 +16,7 @@ class Patrol implements AI {
   private path: Array< Point >
 
   constructor( x: number, y: number ) {
+    super()
     this.i = 'a'
 
     this.step = 0

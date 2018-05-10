@@ -5,11 +5,12 @@ import { Patrol } from './patrol'
 
 const NEW_POINT_EVERY: number = 10
 
-class Explorer implements AI {
+class Explorer extends AI {
   path: Array< Point >
   private step: number
 
   constructor( public patrol: Patrol = undefined ) {
+    super()
     this.path = []
     this.step = NEW_POINT_EVERY
   }

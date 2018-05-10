@@ -1,8 +1,8 @@
 import { Point, twoDimArray } from './utils'
 import { Creature } from './creature'
 
-interface AI {
-  act( walker: Creature ): void
+abstract class AI {
+  public abstract act( walker: Creature ): void
 }
 
 const leePath = function ( walker: Creature,
