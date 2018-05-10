@@ -53,7 +53,25 @@ export const min = function( list: Array< number > ): number {
   return Math.min.apply( Math, list )
 }
 
-export interface Point {
-  x: number,
-  y: number
+export class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {
+  }
+
+  public static readonly dxy = [
+    new Point(-1, -1), new Point(0, -1), new Point(1, -1),
+    new Point(-1,  0),                   new Point(1,  0),
+    new Point(-1,  1), new Point(0,  1), new Point(1,  1),
+  ]
+
+  public add(point: Point): Point {
+    return new Point(this.x + point.x, this.y + point.y)
+  }
+
+  public wrappers(): Point[] {
+    return Point.dxy.map(point => this.add(point))
+  }
 }
+

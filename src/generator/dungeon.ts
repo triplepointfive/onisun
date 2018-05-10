@@ -45,10 +45,10 @@ class Room extends Rect {
   }
 
   pointWithin(): Point {
-    return {
-      x: this.x + 1 + rand( this.w - 1 ),
-      y: this.y + 1 + rand( this.h - 1 )
-    }
+    return new Point(
+      this.x + 1 + rand( this.w - 1 ),
+      this.y + 1 + rand( this.h - 1 )
+    )
   }
 
   add( stage: Stage ): void {

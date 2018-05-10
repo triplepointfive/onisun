@@ -88,7 +88,7 @@ export abstract class Creature extends Phantom {
     level: LevelMap,
   ) {
     super(x, y)
-    this.previousPos = { x, y }
+    this.previousPos = new Point(x, y)
     this.currentLevelId = level.id
     this.visionMask(level)
     level.addCreature(this)
@@ -100,7 +100,7 @@ export abstract class Creature extends Phantom {
 
   public act(stage: LevelMap): void {
     this.visionMask(stage)
-    this.previousPos = { x: this.x, y: this.y }
+    this.previousPos = new Point(this.x, this.y)
     this.ai.act(this)
     stage.at(this.previousPos.x, this.previousPos.y).creature = undefined
     stage.at(this.x, this.y).creature = this

@@ -11,8 +11,8 @@ abstract class AI {
     const map = walker.stageMemory()
 
     let stageMemory: Array< Array< number > > = twoDimArray( map.height, map.width, () => { return undefined } )
-    let pointsToVisit: Array< Point > = []
-    let pointsToCheck: Array< Point > = [ { x: walker.x, y: walker.y } ]
+    let pointsToVisit: Point[] = []
+    let pointsToCheck: Point[] = [new Point(walker.x, walker.y)]
 
     let step = 0
     while ( pointsToCheck.length && !pointsToVisit.length ) {
@@ -30,14 +30,7 @@ abstract class AI {
         if ( destination( point.x, point.y ) ) {
           pointsToVisit.push( point )
         } else {
-          wavePoints.push( { x: point.x - 1, y: point.y })
-          wavePoints.push( { x: point.x + 1, y: point.y })
-          wavePoints.push( { x: point.x, y: point.y - 1 })
-          wavePoints.push( { x: point.x, y: point.y + 1 })
-          wavePoints.push( { x: point.x - 1, y: point.y - 1 })
-          wavePoints.push( { x: point.x + 1, y: point.y - 1 })
-          wavePoints.push( { x: point.x + 1, y: point.y + 1 })
-          wavePoints.push( { x: point.x - 1, y: point.y + 1 })
+          point.wrappers().forEach(dist => wavePoints.push(dist))
         }
       })
       step++
@@ -54,27 +47,22 @@ abstract class AI {
   }
 }
 
-const buildRoad = function ( point: Point, stageMemory: Array< Array< number > > ): Array< Point > {
-  let x0 = point.x, y0 = point.y
-  let chain = [ { x: x0, y: y0 } ]
+const buildRoad = function ( point: Point, stageMemory: number[][]): Point[] {
+  let lastPoint = point
+  let chain = [lastPoint]
 
   let delta: Point = undefined
 
-  while ( stageMemory[ x0 ][ y0 ] !== 0 ) {
+  while ( stageMemory[ lastPoint.x ][ lastPoint.y ] !== 0 ) {
 
-    delta = [
-      { x: -1, y: 0 }, { x: 1, y: 0 }, { x: 0, y: -1 }, { x: 0, y: 1 },
-      { x: -1, y: -1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: 1 }
-    ].find( ( dp ): boolean => {
-
-      return stageMemory[ x0 + dp.x ] &&
-        ( stageMemory[ x0 + dp.x ][ y0 + dp.y ] === stageMemory[ x0 ][ y0 ] - 1 )
+    delta = Point.dxy.find( ( dp ): boolean => {
+      return stageMemory[ lastPoint.x + dp.x ] &&
+        ( stageMemory[ lastPoint.x + dp.x ][ lastPoint.y + dp.y ] === stageMemory[ lastPoint.x ][ lastPoint.y ] - 1 )
     })
 
-    x0 += delta.x
-    y0 += delta.y
+    lastPoint = lastPoint.add(delta)
 
-    chain.unshift( { x: x0, y: y0 } )
+    chain.unshift(lastPoint)
   }
 
   return chain
