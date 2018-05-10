@@ -63,15 +63,18 @@ export class Phantom {
     return this.lastId++
   }
 
+  public pos: Point
+
   constructor(
-    public x: number,
-    public y: number,
+    x: number,
+    y: number,
     public id: CreatureId = Phantom.getId(),
   ) {
+    this.pos = new Point(x, y)
   }
 
   public clone(): Phantom {
-    return new Phantom(this.x, this.y, this.id)
+    return new Phantom(this.pos.x, this.pos.y, this.id)
   }
 }
 
@@ -88,7 +91,7 @@ export abstract class Creature extends Phantom {
     level: LevelMap,
   ) {
     super(x, y)
-    this.previousPos = new Point(x, y)
+    this.previousPos = this.pos.copy()
     this.currentLevelId = level.id
     this.visionMask(level)
     level.addCreature(this)
@@ -100,16 +103,15 @@ export abstract class Creature extends Phantom {
 
   public act(stage: LevelMap): void {
     this.visionMask(stage)
-    this.previousPos = new Point(this.x, this.y)
+    this.previousPos = this.pos.copy()
     this.ai.act(this)
     stage.at(this.previousPos.x, this.previousPos.y).creature = undefined
-    stage.at(this.x, this.y).creature = this
+    stage.at(this.pos.x, this.pos.y).creature = this
     this.visionMask(stage)
   }
 
   public move(nextPoint: Point) {
-    this.x = nextPoint.x
-    this.y = nextPoint.y
+    this.pos = nextPoint.copy()
   }
 
   protected visionMask(stage: LevelMap): void {
@@ -124,8 +126,8 @@ export abstract class Creature extends Phantom {
     }
 
     new Fov(
-      this.x,
-      this.y,
+      this.pos.x,
+      this.pos.y,
       this.radius,
       stage.width,
       stage.height,
@@ -139,7 +141,7 @@ export abstract class Creature extends Phantom {
       if (stage.visibleThrough(x, y)) {
         return false
       } else {
-        return !(stage.at(x, y).isDoor() && this.x === x && this.y === y)
+        return !(stage.at(x, y).isDoor() && this.pos.x === x && this.pos.y === y)
       }
     }
   }

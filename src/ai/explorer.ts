@@ -52,9 +52,9 @@ class Explorer extends AI {
   private updatePatrol( walker: Creature ): void {
     this.step = 0
     if ( this.patrol === undefined ) {
-      this.patrol = new Patrol( walker.x, walker.y )
+      this.patrol = new Patrol( walker.pos.x, walker.pos.y )
     } else {
-      this.patrol.addNode( walker.x, walker.y )
+      this.patrol.addNode( walker.pos.x, walker.pos.y )
     }
 
     this.step++

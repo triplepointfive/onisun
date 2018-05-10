@@ -66,6 +66,10 @@ export class Point {
     new Point(-1,  1), new Point(0,  1), new Point(1,  1),
   ]
 
+  public copy(): Point {
+    return new Point(this.x, this.y)
+  }
+
   public add(point: Point): Point {
     return new Point(this.x + point.x, this.y + point.y)
   }

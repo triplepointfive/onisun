@@ -82,7 +82,7 @@ export class LevelMap {
   public addCreature(creature: Creature) {
     this.creatures.push(creature)
     // TODO fail if taken
-    this.at(creature.x, creature.y).creature = creature
+    this.at(creature.pos.x, creature.pos.y).creature = creature
   }
 
   public visibleThrough(x: number, y: number): boolean {

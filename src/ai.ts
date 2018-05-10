@@ -12,7 +12,7 @@ abstract class AI {
 
     let stageMemory: Array< Array< number > > = twoDimArray( map.height, map.width, () => { return undefined } )
     let pointsToVisit: Point[] = []
-    let pointsToCheck: Point[] = [new Point(walker.x, walker.y)]
+    let pointsToCheck: Point[] = [new Point(walker.pos.x, walker.pos.y)]
 
     let step = 0
     while ( pointsToCheck.length && !pointsToVisit.length ) {
