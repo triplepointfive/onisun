@@ -1,8 +1,3 @@
-export interface Visibility {
-  visible: boolean
-  degree: number
-}
-
 export class Fov {
   private doubleRadius: number
 

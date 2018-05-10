@@ -26,12 +26,11 @@ class Explorer extends AI {
         this.act( walker )
       } else {
         // Logger.info( "I'm done, time to patrol" )
-        // console.log( "I'm done, time to patrol" )
         walker.ai = this.patrol
       }
     } else {
       const nextPoint: Point = this.path.shift()
-      if ( walker.stageMemory().at(nextPoint.x, nextPoint.y).tangible ) {
+      if ( walker.stageMemory().at(nextPoint.x, nextPoint.y).tangible() ) {
         this.path = []
         this.act( walker )
       } else {

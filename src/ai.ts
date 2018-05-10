@@ -21,7 +21,7 @@ const leePath = function ( walker: Creature,
 
     pointsToCheck.forEach( ( point: Point ) => {
       // TODO: Compare, current value might be lower
-      if ( map.at(point.x ,  point.y).tangible ||
+      if ( map.at(point.x ,  point.y).tangible() ||
           stageMemory[ point.x ][ point.y ] !== undefined ) {
         return
       }

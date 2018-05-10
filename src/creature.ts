@@ -1,18 +1,28 @@
 import { Point, twoDimArray } from './utils'
 import { AI } from './ai'
-import { Visibility, Fov } from './fov'
+import { Fov } from './fov'
 
 import { LevelMap, LevelMapId, Tile } from './map'
 
-export class MemoryTile implements Visibility {
+export class MemoryTile  {
   public visible: boolean = false
   public degree: number = 0
   public seen: boolean = false
-  public tangible: boolean = false
 
   constructor(
     public tile?: Tile,
     ) {
+  }
+
+  public see(tile: Tile, degree: number) {
+    this.visible = true
+    this.degree = degree
+    this.seen = true
+    this.tile = tile.clone()
+  }
+
+  public tangible(): boolean {
+    return this.seen && !this.tile.passibleThrough()
   }
 }
 
@@ -22,9 +32,9 @@ export class Memory {
   constructor(
     public width: number,
     public height: number,
-    baseBlock: (() => MemoryTile) = () => new MemoryTile(),
-    ) {
-    this.field = twoDimArray(height, width, baseBlock)
+  ) {
+    const baseTile = Tile.retrive('W')
+    this.field = twoDimArray(height, width, () => new MemoryTile(baseTile))
   }
 
   at(x: number, y: number): MemoryTile {
@@ -96,12 +106,7 @@ export abstract class Creature extends Phantom {
     }
 
     const see = (x: number, y: number, degree: number): void => {
-      const tile = this.stageMemory().at(x, y)
-      tile.visible = true
-      tile.degree = degree
-      tile.seen = true
-      tile.tangible = !stage.passibleThrough(x, y)
-      tile.tile = stage.at(x, y).clone()
+      this.stageMemory().at(x, y).see(stage.at(x, y), degree)
     }
 
     new Fov(
