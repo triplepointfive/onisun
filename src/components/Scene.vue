@@ -37,10 +37,13 @@ import {
   WallTile,
 } from './scene_tiles'
 
-import { Patrol } from '../ai/patrol'
-import { Explorer } from '../ai/explorer'
-import { Waiter } from '../ai/waiter'
-import { Chaser } from '../ai/chaser'
+import {
+  Patrol,
+  Explorer,
+  Waiter,
+  Chaser,
+  Loiter,
+} from '../ai'
 
 const HUMAN = new CreatureTile('俺', 0, 255, 0)
 const DOOR = new DoorTile()
@@ -74,6 +77,9 @@ export default Vue.extend({
       }
       if (ai instanceof Waiter) {
         return 'Waiter'
+      }
+      if (ai instanceof Loiter) {
+        return 'Loiter'
       }
     },
     getTile(x, y) {

@@ -1,4 +1,5 @@
-import { AI } from '../ai'
+import { AI } from './internal'
+
 import { Creature } from '../creature'
 
 export class Chaser extends AI {

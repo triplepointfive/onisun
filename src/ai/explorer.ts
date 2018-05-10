@@ -1,5 +1,6 @@
+import { AI } from './internal'
+
 import { Point, twoDimArray } from '../utils'
-import { AI } from '../ai'
 import { Creature } from '../creature'
 import { Patrol } from './patrol'
 

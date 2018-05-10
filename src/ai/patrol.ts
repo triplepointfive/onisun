@@ -1,5 +1,6 @@
+import { AI } from './internal'
+
 import { Point, rand, succ } from '../utils'
-import { AI } from '../ai'
 import { Creature } from '../creature'
 
 import { Explorer } from './explorer'
