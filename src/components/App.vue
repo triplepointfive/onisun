@@ -83,12 +83,12 @@ export default Vue.extend({
         }
       }
 
-      new Walker(
-        x,
-        y,
-        this.radius,
-        this.map,
-      )
+      // new Walker(
+      //   x,
+      //   y,
+      //   this.radius,
+      //   this.map,
+      // )
     },
     buildMap() {
       return addDoors(generate(50, 50))

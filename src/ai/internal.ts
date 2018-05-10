@@ -2,7 +2,7 @@ import { Point, twoDimArray } from '../utils'
 import { Creature } from '../creature'
 
 export abstract class AI {
-  public abstract act( walker: Creature ): void
+  public abstract act(walker: Creature, firstTurn: boolean): void
 
   public abstract available(walker: Creature): boolean
 

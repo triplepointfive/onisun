@@ -46,6 +46,7 @@ import {
 } from '../ai'
 
 const HUMAN = new CreatureTile('俺', 0, 255, 0)
+const HUMAN2 = new CreatureTile('俺', 255, 0, 0)
 const DOOR = new DoorTile()
 const WALL = new WallTile()
 const FLOOR = new FloorTile()
@@ -89,7 +90,7 @@ export default Vue.extend({
       }
 
       if (tile.creature) {
-        return HUMAN
+        return tile.creature.id % 2 === 0 ? HUMAN : HUMAN2
       }
 
       switch (tile.display) {

@@ -7,10 +7,10 @@ import { Patrol } from './patrol'
 const NEW_POINT_EVERY: number = 10
 
 class Explorer extends AI {
-  path: Array< Point >
+  path: Point[]
   private step: number
 
-  constructor( public patrol: Patrol = undefined ) {
+  constructor(public patrol: Patrol = undefined) {
     super()
     this.path = []
     this.step = NEW_POINT_EVERY
@@ -20,12 +20,12 @@ class Explorer extends AI {
     if (this.path.length) {
       return true
     } else {
-      this.buildNewPath( walker )
+      this.buildNewPath(walker)
       return this.path.length > 0
     }
   }
 
-  act( walker: Creature, firstTurn: boolean = true): void {
+  act(walker: Creature, firstTurn: boolean = true): void {
     if (this.step === NEW_POINT_EVERY ) {
       this.updatePatrol( walker )
     }
@@ -45,8 +45,8 @@ class Explorer extends AI {
         }
       }
     } else {
-      this.buildNewPath( walker )
-      if ( this.path.length ) {
+      this.buildNewPath(walker)
+      if (this.path.length) {
         if (firstTurn) {
           this.act(walker, false)
         }
@@ -65,7 +65,7 @@ class Explorer extends AI {
 
   private updatePatrol( walker: Creature ): void {
     this.step = 0
-    if ( this.patrol === undefined ) {
+    if (this.patrol === undefined) {
       this.patrol = new Patrol( walker.pos.x, walker.pos.y )
     } else {
       this.patrol.addNode( walker.pos.x, walker.pos.y )

@@ -3,7 +3,7 @@ import { AI } from './internal'
 import { Point, rand, succ } from '../utils'
 import { Creature } from '../creature'
 
-import { Explorer } from './explorer'
+import { Loiter } from './loiter'
 
 import * as graphlib from 'graphlib'
 
@@ -88,7 +88,7 @@ class Patrol extends AI {
     const nextPoint: Point = this.path.shift()
 
     if (!nextPoint) {
-      walker.ai = new Explorer(this)
+      walker.ai = new Loiter(this)
     } else if ( walker.stageMemory().at(nextPoint.x,  nextPoint.y).tangible() ) {
       this.buildNewPath
 
@@ -96,7 +96,7 @@ class Patrol extends AI {
         return this.act( walker, false )
       }
 
-      let explorer = new Explorer(this)
+      let explorer = new Loiter(this)
 
       if (explorer.available(walker)) {
         walker.ai = explorer
