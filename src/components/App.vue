@@ -3,6 +3,7 @@
     Scene[
       :level='map'
       :player='map.creatures[0]'
+      :pause='pause'
       ]
 
     .col
@@ -35,7 +36,7 @@ export default Vue.extend({
     return {
       map: new LevelMap([[]]),
       radius: 10,
-      pause: true,
+      pause: false,
       ts: Date.now(),
     }
   },

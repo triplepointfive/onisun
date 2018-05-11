@@ -66,6 +66,10 @@ export class Point {
     new Point(-1,  1), new Point(0,  1), new Point(1,  1),
   ]
 
+  public eq(point: Point): boolean {
+    return this.x === point.x && this.y === point.y
+  }
+
   public copy(): Point {
     return new Point(this.x, this.y)
   }

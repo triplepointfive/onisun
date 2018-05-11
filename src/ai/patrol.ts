@@ -53,7 +53,7 @@ class Patrol extends AI {
 
   // TODO: If close enough to another node, use it instead.
   public addNode( x: number, y: number, withEdge: boolean = true ): void {
-    this.graph.setNode( this.i, { x: x, y: y } )
+    this.graph.setNode( this.i, new Point(x, y))
     if ( withEdge ) {
       this.graph.setEdge( this.currentNodeID, this.i )
     }
@@ -64,7 +64,7 @@ class Patrol extends AI {
   private buildNewPath( actor: Creature ): void {
     const pos: Point = this.graph.node( this.targetNodeID )
 
-    this.path = this.leePath(actor, point => pos === point)
+    this.path = this.leePath(actor, point => pos.eq(point))
   }
 
   private pickUpNewTarget( actor: Creature ): void {

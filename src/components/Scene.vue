@@ -53,7 +53,7 @@ const FLOOR = new FloorTile()
 const NULLTILE = new Tile('　', 0, 0, 0)
 
 export default Vue.extend({
-  props: ['level', 'player'],
+  props: ['level', 'player', 'pause'],
   data() {
     return {
       term: null,
@@ -141,7 +141,10 @@ export default Vue.extend({
       }
 
       this.done = true
-      this.level.turn()
+      if (!this.pause) {
+
+        this.level.turn()
+      }
 
       // this.eng.update(this.player.x, this.player.y);
       this.eng.update(this.term.cx, this.term.cy);
