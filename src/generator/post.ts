@@ -3,7 +3,7 @@ import { LevelMap, Tile, TileTypes } from '../map'
 export const addDoors = function (
   level: LevelMap,
   addDoor: () => boolean = () => true,
-  ): LevelMap {
+): LevelMap {
   for (let j = 1; j < level.height - 1; j++) {
 
     for (let i = 1; i < level.width; i++) {

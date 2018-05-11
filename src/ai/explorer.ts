@@ -25,7 +25,7 @@ class Explorer extends AI {
   }
 
   act(walker: Creature, firstTurn: boolean = true): void {
-    if (this.step === NEW_POINT_EVERY ) {
+    if (this.step >= NEW_POINT_EVERY ) {
       this.updatePatrol( walker )
     }
 
@@ -37,6 +37,8 @@ class Explorer extends AI {
           this.act(walker, false)
         }
       } else {
+        this.step++
+
         walker.move(nextPoint)
 
         if (this.shouldAddNode(walker)) {
@@ -51,7 +53,9 @@ class Explorer extends AI {
         }
       } else if (this.patrol.available(walker)) {
         // Logger.info( "I'm done, time to patrol" )
+        this.patrol.addNode( walker.pos.x, walker.pos.y )
         walker.ai = this.patrol
+        walker.ai.act(walker, false)
       } else {
         walker.ai = new Loiter(this)
       }
@@ -65,14 +69,13 @@ class Explorer extends AI {
   }
 
   private updatePatrol( walker: Creature ): void {
-    this.step = 0
     if (this.patrol === undefined) {
       this.patrol = new Patrol( walker.pos.x, walker.pos.y )
     } else {
       this.patrol.addNode( walker.pos.x, walker.pos.y )
     }
 
-    this.step++
+    this.step = 0
   }
 
   private shouldAddNode(walker: Creature): boolean {

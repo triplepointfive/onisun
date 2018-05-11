@@ -15,6 +15,10 @@
 
       button @click="pause = !pause"
         | {{ pause ? 'Start' : 'Pause' }}
+
+      label for='doors'
+        input#doors type='checkbox' v-model='addDoors'
+        | Add doors
 </template>
 
 <script lang='ts'>
@@ -31,7 +35,7 @@ import { Memory, MemoryTile } from '../creature'
 import { generate } from '../generator/dungeon'
 import { addDoors } from '../generator/post'
 
-import { Chaser, Waiter } from '../ai'
+import { Chaser, Waiter, Explorer } from '../ai'
 
 export default Vue.extend({
   data() {
@@ -40,17 +44,12 @@ export default Vue.extend({
       radius: 10,
       pause: false,
       ts: Date.now(),
+      addDoors: true,
     }
   },
   components: {
     Cell,
     Scene
-  },
-  computed: {
-    walker() {
-      if (this.map) {
-      }
-    }
   },
   methods: {
     generateMap() {
@@ -72,7 +71,7 @@ export default Vue.extend({
         y,
         this.radius,
         this.map,
-        new Waiter(),
+        new Explorer(),
       )
 
       x = this.map.width - 1
@@ -96,11 +95,22 @@ export default Vue.extend({
       )
     },
     buildMap() {
-      return addDoors(generate(50, 50))
+      let map = generate(50, 50)
+
+      if (this.addDoors) {
+        return addDoors(map)
+      }
+
+      return map
     }
   },
   created() {
     this.generateMap()
+  },
+  watch: {
+    addDoors() {
+      this.generateMap()
+    }
   }
 })
 </script>

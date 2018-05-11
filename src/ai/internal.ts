@@ -10,6 +10,19 @@ export abstract class AI {
 
   public abstract available(actor: Creature): boolean
 
+  protected moveTo(actor: Creature, destination: Point): boolean {
+    const path = this.leePath(
+      actor,
+      point => destination.eq(point),
+    )
+
+    if (path.length) {
+      actor.move(path[0])
+    }
+
+    return !!path.length
+  }
+
   protected followTo(actor: Creature, destination: Point): boolean {
     const path = this.leePath(
       actor,

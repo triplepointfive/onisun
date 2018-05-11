@@ -21,6 +21,10 @@ export class Chaser extends AI {
       this.chase(actor)
     } else if (this.foundNewVictim(actor)) {
       this.chase(actor)
+    } else if (this.victimPos) {
+      if (this.moveTo(actor, this.victimPos) && this.victimPos.eq(actor.pos)) {
+        this.victimPos = undefined
+      }
     }
 
     if (this.victimSet() && this.caught(actor)) {
@@ -32,11 +36,11 @@ export class Chaser extends AI {
   }
 
   private victimSet(): boolean {
-    return !!this.victimId
+    return this.victimId !== undefined
   }
 
   private updateVictimPosition(actor: Creature) {
-    return this.findCreature(
+    this.findCreature(
       actor,
       creature => creature.id === this.victimId,
     )
@@ -59,7 +63,6 @@ export class Chaser extends AI {
 
   private resetVictim(): void {
     this.victimId = undefined
-    this.victimPos = undefined
   }
 
   private findCreature(

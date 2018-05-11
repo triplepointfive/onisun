@@ -17,6 +17,8 @@
           dt.col-sm-9 {{ aiName(creature.ai) }}
 
     input v-model='interval' type='number'
+    button @click='nextStep = true'
+      | Next step
 </template>
 
 <script lang='ts'>
@@ -62,7 +64,8 @@ export default Vue.extend({
       ts: Date.now(),
       fps: 0,
       counter: 0,
-      interval: 2000,
+      interval: 100,
+      nextStep: false,
     }
   },
   methods: {
@@ -80,7 +83,7 @@ export default Vue.extend({
         return 'Waiter'
       }
       if (ai instanceof Loiter) {
-        return 'Loiter'
+        return `Loiter (${this.aiName(ai.prevAI)})`
       }
     },
     getTile(x, y) {
@@ -141,7 +144,8 @@ export default Vue.extend({
       }
 
       this.done = true
-      if (!this.pause) {
+      if (!this.pause || this.nextStep) {
+        this.nextStep = false
 
         this.level.turn()
       }
