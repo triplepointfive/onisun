@@ -98,6 +98,14 @@ export default Vue.extend({
         new Explorer(),
       )
 
+      new Walker(
+        x + 2,
+        y + 2,
+        this.radius,
+        this.map,
+        new Chaser(),
+      )
+
       x = this.map.width - 1
       y = this.map.height -1
 
@@ -109,6 +117,14 @@ export default Vue.extend({
           y -= 1
         }
       }
+
+      new Walker(
+        x - 1,
+        y - 1,
+        this.radius,
+        this.map,
+        new Explorer(),
+      )
 
       new Walker(
         x,

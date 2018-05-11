@@ -58,8 +58,11 @@ import {
   Loiter,
 } from '../ai'
 
-const HUMAN = new CreatureTile('俺', 0, 255, 0)
+const HUMAN  = new CreatureTile('俺', 0, 255, 0)
 const HUMAN2 = new CreatureTile('俺', 255, 0, 0)
+const HUMAN3 = new CreatureTile('俺', 0, 0, 255)
+const HUMAN4 = new CreatureTile('俺', 255, 0, 255)
+const HUMAN5 = new CreatureTile('俺', 0, 255, 255)
 const DOOR = new DoorTile()
 const WALL = new WallTile()
 const FLOOR = new FloorTile()
@@ -105,7 +108,18 @@ export default Vue.extend({
       }
 
       if (tile.creature) {
-        return tile.creature.id % 2 === 0 ? HUMAN : HUMAN2
+        switch (tile.creature.id % 5) {
+          case 0:
+            return HUMAN5
+          case 1:
+            return HUMAN4
+          case 2:
+            return HUMAN3
+          case 3:
+            return HUMAN2
+          case 4:
+            return HUMAN
+        }
       }
 
       switch (tile.display) {
