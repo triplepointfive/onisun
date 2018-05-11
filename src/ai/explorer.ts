@@ -59,8 +59,8 @@ class Explorer extends AI {
   }
 
   private buildNewPath( walker: Creature ): void {
-    this.path = this.leePath( walker, ( x, y ) => {
-      return !walker.stageMemory().at(x, y).seen
+    this.path = this.leePath( walker, point => {
+      return !walker.stageMemory().at(point.x, point.y).seen
     })
   }
 

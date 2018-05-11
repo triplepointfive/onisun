@@ -64,9 +64,7 @@ class Patrol extends AI {
   private buildNewPath( actor: Creature ): void {
     const pos: Point = this.graph.node( this.targetNodeID )
 
-    this.path = this.leePath( actor, ( x, y ) => {
-      return ( pos.x === x ) && ( pos.y === y )
-    })
+    this.path = this.leePath(actor, point => pos === point)
   }
 
   private pickUpNewTarget( actor: Creature ): void {

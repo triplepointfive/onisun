@@ -1,6 +1,8 @@
 import { Point, twoDimArray } from '../utils'
 import { Creature } from '../creature'
 
+import { sample } from 'lodash'
+
 const FIRST_STEP: number = 1
 
 export abstract class AI {
@@ -10,11 +12,12 @@ export abstract class AI {
 
   protected leePath(
     actor: Creature,
-    destination: ( x: number, y: number ) => boolean
+    destination: (point: Point) => boolean,
+    randomDestination: boolean = false,
   ): Array< Point > {
     const map = actor.stageMemory()
 
-    let stageMemory: Array< Array< number > > = twoDimArray( map.height, map.width, () => { return undefined } )
+    let stageMemory: number[][] = twoDimArray(map.height, map.width, () => undefined)
     let pointsToVisit: Point[] = []
     let pointsToCheck: Point[] = [actor.pos]
 
@@ -30,7 +33,7 @@ export abstract class AI {
         }
 
         stageMemory[ point.x ][ point.y ] = step
-        if (destination(point.x, point.y)) {
+        if (destination(point)) {
           pointsToVisit.push( point )
         } else {
           point.wrappers().forEach(dist => wavePoints.push(dist))
@@ -42,8 +45,11 @@ export abstract class AI {
     }
 
     if (pointsToVisit.length) {
-      pointsToVisit[Math.floor(Math.random() * pointsToVisit.length)]
-      return this.buildRoad(pointsToVisit[0], stageMemory)
+      if (randomDestination) {
+        return this.buildRoad(sample(pointsToVisit), stageMemory)
+      } else {
+        return this.buildRoad(pointsToVisit[0], stageMemory)
+      }
     } else {
       return []
     }

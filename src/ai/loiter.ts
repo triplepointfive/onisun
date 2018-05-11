@@ -17,7 +17,8 @@ export class Loiter extends AI {
 
     const path = this.leePath(
       actor,
-      (x: number, y: number) => actor.pos.x !== x && actor.pos.y !== y
+      point => actor.pos !== point,
+      true,
     )
 
     if (path.length) {
