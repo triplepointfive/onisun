@@ -3,22 +3,42 @@
     Scene[
       :level='map'
       :player='map.creatures[0]'
-      :pause='pause'
       ]
 
-    .col
-      button @click="generateMap()"
-        | Generate!
+    .row
+      .col-md-6.mt-2
+        .form-group.row
+          label.col-sm-2.col-form-label for='radius' Radius
+          .col-sm-10
+            input.form-control#radius type='number' v-model='radius'
 
-      label radius
-      input type="number" v-model="radius"
+        .form-group.row
+          .col-sm-2 Map
+          .col-sm-10
+            .form-check
+              input.form-check-input#doors type='checkbox' v-model='generatorOptions.addDoors'
+              label.form-check-label for='doors'
+                | Add doors
 
-      button @click="pause = !pause"
-        | {{ pause ? 'Start' : 'Pause' }}
+            .form-group
+              input.form-control#roomsCount v-model='generatorOptions.roomsCount' type='number'
+              label.form-check-label for='roomsCount'
+                | roomsCount
 
-      label for='doors'
-        input#doors type='checkbox' v-model='addDoors'
-        | Add doors
+            .form-group
+              input.form-control#minSize v-model='generatorOptions.minSize' type='number'
+              label.form-check-label for='minSize'
+                | minSize
+
+            .form-group
+              input.form-control#maxSize v-model='generatorOptions.maxSize' type='number'
+              label.form-check-label for='maxSize'
+                | maxSize
+
+        .form-group.row
+          .col-sm-10
+            button.btn.btn-primary @click="generateMap()"
+              | Rebuild!
 </template>
 
 <script lang='ts'>
@@ -42,9 +62,13 @@ export default Vue.extend({
     return {
       map: new LevelMap([[]]),
       radius: 10,
-      pause: false,
       ts: Date.now(),
-      addDoors: true,
+      generatorOptions: {
+        addDoors: false,
+        minSize: 3,
+        maxSize: 7,
+        roomsCount: 10,
+      }
     }
   },
   components: {
@@ -95,9 +119,15 @@ export default Vue.extend({
       )
     },
     buildMap() {
-      let map = generate(50, 50)
+      let map = generate(
+        50,
+        50,
+        this.generatorOptions.minSize,
+        this.generatorOptions.maxSize,
+        this.generatorOptions.roomsCount,
+      )
 
-      if (this.addDoors) {
+      if (this.generatorOptions.addDoors) {
         return addDoors(map)
       }
 
@@ -106,11 +136,6 @@ export default Vue.extend({
   },
   created() {
     this.generateMap()
-  },
-  watch: {
-    addDoors() {
-      this.generateMap()
-    }
   }
 })
 </script>

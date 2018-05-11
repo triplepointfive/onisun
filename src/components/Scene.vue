@@ -1,12 +1,13 @@
 <template lang='slm'>
   .scene
-    .fps {{ fps }}
     .row
-      .col
+      .col.mr-0
         .unicodetiles ref="scene"
 
-      .col.small style="overflow: scroll"
-        dl.row v-for='creature in level.creatures'
+      .col.pl-0
+        .fps.mb-2 FPS {{ fps }}
+
+        dl.row.small style="overflow: scroll" v-for='creature in level.creatures'
           dd.col-sm-3 ID
           dt.col-sm-9 {{ creature.id }}
 
@@ -16,9 +17,19 @@
           dd.col-sm-3 AI
           dt.col-sm-9 {{ aiName(creature.ai) }}
 
-    input v-model='interval' type='number'
-    button @click='nextStep = true'
-      | Next step
+        .form-group.row
+          .col-sm-2 Map
+          .col-sm-10
+            .form-group
+              input.form-control#interval v-model='interval' type='number'
+              label.form-check-label for='interval'
+                | Tick interval
+
+            button.btn.btn-secondary> @click='nextStep = true'
+              | Next step
+
+            button.btn.btn-secondary> @click="pause = !pause"
+              | {{ pause ? 'Start' : 'Pause' }}
 </template>
 
 <script lang='ts'>
@@ -55,7 +66,7 @@ const FLOOR = new FloorTile()
 const NULLTILE = new Tile('　', 0, 0, 0)
 
 export default Vue.extend({
-  props: ['level', 'player', 'pause'],
+  props: ['level', 'player'],
   data() {
     return {
       term: null,
@@ -66,6 +77,7 @@ export default Vue.extend({
       counter: 0,
       interval: 100,
       nextStep: false,
+      pause: false
     }
   },
   methods: {

@@ -4,10 +4,6 @@ import { LevelMap, Tile, TileTypes } from '../map'
 
 const THICKNESS = 0
 
-const MIN_SIZE: number = 5
-const MAX_SIZE: number = 5
-const ROOMS_COUNT: number = 3
-
 const newRoomSpace = function(): Tile {
   return Tile.retrive('R')
 }
@@ -22,8 +18,20 @@ const newWall = function(): Tile {
 
 type Stage = Tile[][]
 
-const generate = function ( dimX: number, dimY: number ): LevelMap {
-  const dungeon = new DungeonGenerator( dimX, dimY )
+const generate = function (
+  dimX: number,
+  dimY: number,
+  minSize: number = 5,
+  maxSize: number = 5,
+  roomsCount: number = 3,
+): LevelMap {
+  const dungeon = new DungeonGenerator(
+    dimX,
+    dimY,
+    minSize,
+    maxSize,
+    roomsCount,
+  )
 
   let stage = twoDimArray(dimX, dimY, newWall)
 
@@ -125,11 +133,17 @@ class DungeonGenerator {
   rooms: Array< Room >
   roads: Array< Road >
 
-  constructor( protected maxX: number, protected maxY: number ) {
+  constructor(
+    protected maxX: number,
+    protected maxY: number,
+    private minSize: number,
+    private maxSize: number,
+    private roomsCount: number,
+  ) {
     let rooms: Array< Room > = []
 
     let i = 0
-    while ( i < ROOMS_COUNT ) {
+    while ( i < this.roomsCount ) {
       rooms.push( this.generateRoom() )
       i += 1
     }
@@ -142,8 +156,8 @@ class DungeonGenerator {
     return new Room(
       0,
       0,
-      MIN_SIZE + rand( MAX_SIZE - MIN_SIZE ),
-      MIN_SIZE + rand( MAX_SIZE - MIN_SIZE )
+      this.minSize + rand(this.maxSize - this.minSize),
+      this.minSize + rand(this.maxSize - this.minSize),
     )
   }
 

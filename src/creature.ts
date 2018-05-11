@@ -116,14 +116,13 @@ export abstract class Creature extends Phantom {
     this.ai.act(this, true)
     stage.at(this.previousPos.x, this.previousPos.y).creature = undefined
     stage.at(this.pos.x, this.pos.y).creature = this
-    this.visionMask(stage)
   }
 
   public move(nextPoint: Point) {
     this.pos = nextPoint.copy()
   }
 
-  protected visionMask(stage: LevelMap): void {
+  public visionMask(stage: LevelMap): void {
     if (!this.stageMemories[stage.id]) {
       this.stageMemories[stage.id] = new Memory(stage.width, stage.height)
     } else {

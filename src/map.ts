@@ -107,5 +107,6 @@ export class LevelMap {
 
   public turn(): void {
     this.creatures.forEach((creature) => creature.act(this))
+    this.creatures.forEach((creature) => creature.visionMask(this))
   }
 }
