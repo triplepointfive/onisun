@@ -1,20 +1,22 @@
 import { Point, twoDimArray } from '../utils'
 import { Creature } from '../creature'
 
-export abstract class AI {
-  public abstract act(walker: Creature, firstTurn: boolean): void
+const FIRST_STEP: number = 1
 
-  public abstract available(walker: Creature): boolean
+export abstract class AI {
+  public abstract act(actor: Creature, firstTurn: boolean): void
+
+  public abstract available(actor: Creature): boolean
 
   protected leePath(
-    walker: Creature,
+    actor: Creature,
     destination: ( x: number, y: number ) => boolean
   ): Array< Point > {
-    const map = walker.stageMemory()
+    const map = actor.stageMemory()
 
     let stageMemory: Array< Array< number > > = twoDimArray( map.height, map.width, () => { return undefined } )
     let pointsToVisit: Point[] = []
-    let pointsToCheck: Point[] = [walker.pos]
+    let pointsToCheck: Point[] = [actor.pos]
 
     let step = 0
     while ( pointsToCheck.length && !pointsToVisit.length ) {
@@ -22,13 +24,13 @@ export abstract class AI {
 
       pointsToCheck.forEach( ( point: Point ) => {
         // TODO: Compare, current value might be lower
-        if (!map.inRange(point) || map.at(point.x ,  point.y).tangible(walker) ||
+        if (!map.inRange(point) || map.at(point.x ,  point.y).tangible(actor) ||
             stageMemory[ point.x ][ point.y ] !== undefined ) {
           return
         }
 
         stageMemory[ point.x ][ point.y ] = step
-        if ( destination( point.x, point.y ) ) {
+        if (destination(point.x, point.y)) {
           pointsToVisit.push( point )
         } else {
           point.wrappers().forEach(dist => wavePoints.push(dist))
@@ -40,32 +42,31 @@ export abstract class AI {
     }
 
     if (pointsToVisit.length) {
-      pointsToVisit[ Math.floor( Math.random() * pointsToVisit.length ) ]
-      return buildRoad( pointsToVisit[ 0 ], stageMemory )
+      pointsToVisit[Math.floor(Math.random() * pointsToVisit.length)]
+      return this.buildRoad(pointsToVisit[0], stageMemory)
     } else {
       return []
     }
   }
-}
 
-const buildRoad = function ( point: Point, stageMemory: number[][]): Point[] {
-  let lastPoint = point
-  let chain = [lastPoint]
+  private buildRoad(point: Point, stageMemory: number[][]): Point[] {
+    let lastPoint = point
+    let chain = [lastPoint]
 
-  let delta: Point = undefined
+    let delta: Point = undefined
 
-  while ( stageMemory[ lastPoint.x ][ lastPoint.y ] !== 0 ) {
+    while ( stageMemory[ lastPoint.x ][ lastPoint.y ] !== FIRST_STEP ) {
 
-    delta = Point.dxy.find( ( dp ): boolean => {
-      return stageMemory[ lastPoint.x + dp.x ] &&
-        ( stageMemory[ lastPoint.x + dp.x ][ lastPoint.y + dp.y ] === stageMemory[ lastPoint.x ][ lastPoint.y ] - 1 )
-    })
+      delta = Point.dxy.find( ( dp ): boolean => {
+        return stageMemory[ lastPoint.x + dp.x ] &&
+          ( stageMemory[ lastPoint.x + dp.x ][ lastPoint.y + dp.y ] === stageMemory[ lastPoint.x ][ lastPoint.y ] - 1 )
+      })
 
-    lastPoint = lastPoint.add(delta)
+      lastPoint = lastPoint.add(delta)
 
-    chain.unshift(lastPoint)
+      chain.unshift(lastPoint)
+    }
+
+    return chain
   }
-
-  return chain
 }
-

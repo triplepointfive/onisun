@@ -10,21 +10,18 @@ export class Loiter extends AI {
 
   act(actor: Creature, firstTurn: boolean = true): void {
     if (this.turns > 1) {
-      // actor.ai = this.prevAI
-      // this.prevAI.act(actor, false)
-      // return
+      actor.ai = this.prevAI
+      this.prevAI.act(actor, false)
+      return
     }
 
     const path = this.leePath(
       actor,
-      (x: number, y: number) => {
-        return actor.pos.x !== x && actor.pos.y !== y
-
-      }
+      (x: number, y: number) => actor.pos.x !== x && actor.pos.y !== y
     )
 
     if (path.length) {
-      const a = path[1]
+      const a = path[0]
       this.turns += 1
       actor.move(a)
     }

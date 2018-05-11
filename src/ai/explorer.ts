@@ -1,8 +1,7 @@
-import { AI } from './internal'
+import { AI, Patrol, Loiter } from '../ai'
 
 import { Point, twoDimArray } from '../utils'
 import { Creature } from '../creature'
-import { Patrol } from './patrol'
 
 const NEW_POINT_EVERY: number = 10
 
@@ -53,6 +52,8 @@ class Explorer extends AI {
       } else if (this.patrol.available(walker)) {
         // Logger.info( "I'm done, time to patrol" )
         walker.ai = this.patrol
+      } else {
+        walker.ai = new Loiter(this)
       }
     }
   }
