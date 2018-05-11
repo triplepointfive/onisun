@@ -62,7 +62,7 @@ export default Vue.extend({
       ts: Date.now(),
       fps: 0,
       counter: 0,
-      interval: 200,
+      interval: 2000,
     }
   },
   methods: {

@@ -9,7 +9,7 @@ import * as graphlib from 'graphlib'
 
 type NodeID = string
 
-class Patrol extends AI {
+export class Patrol extends AI {
   private i: NodeID
   private step: number
   private graph: graphlib.Graph
@@ -109,5 +109,3 @@ class Patrol extends AI {
     this.lastNodeVisit[ nodeID ] = this.step
   }
 }
-
-export { Patrol }

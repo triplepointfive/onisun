@@ -6,8 +6,8 @@ import { LevelMap, Tile } from '../map'
 import { Memory, Creature } from '../creature'
 
 export class Walker extends Creature {
-  constructor(x: number, y: number, radius: number = 10, levelMap) {
+  constructor(x: number, y: number, radius: number = 10, levelMap, ai: AI = new Explorer()) {
     super(x, y, radius, levelMap)
-    this.ai = new Explorer()
+    this.ai = ai
   }
 }

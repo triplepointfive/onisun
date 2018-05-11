@@ -31,6 +31,8 @@ import { Memory, MemoryTile } from '../creature'
 import { generate } from '../generator/dungeon'
 import { addDoors } from '../generator/post'
 
+import { Chaser, Waiter } from '../ai'
+
 export default Vue.extend({
   data() {
     return {
@@ -70,6 +72,7 @@ export default Vue.extend({
         y,
         this.radius,
         this.map,
+        new Waiter(),
       )
 
       x = this.map.width - 1
@@ -84,12 +87,13 @@ export default Vue.extend({
         }
       }
 
-      // new Walker(
-      //   x,
-      //   y,
-      //   this.radius,
-      //   this.map,
-      // )
+      new Walker(
+        x,
+        y,
+        this.radius,
+        this.map,
+        new Chaser(),
+      )
     },
     buildMap() {
       return addDoors(generate(50, 50))

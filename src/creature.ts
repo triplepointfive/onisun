@@ -25,6 +25,10 @@ export class MemoryTile  {
     return this.seen && !this.tile.passibleThrough(actor)
   }
 
+  public creature(): Phantom {
+    return this.tile && this.tile.creature
+  }
+
   public reset(): void {
     this.visible = false
     this.tile.creature = undefined

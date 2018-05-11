@@ -70,6 +70,10 @@ export class Point {
     return this.x === point.x && this.y === point.y
   }
 
+  public nextTo(point: Point): boolean {
+    return Math.abs(this.x - point.x) <= 1 && Math.abs(this.y - point.y) <= 1
+  }
+
   public copy(): Point {
     return new Point(this.x, this.y)
   }

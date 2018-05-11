@@ -1,5 +1,5 @@
 import { Point, twoDimArray } from '../utils'
-import { Creature } from '../creature'
+import { Creature, MemoryTile } from '../creature'
 
 import { sample } from 'lodash'
 
@@ -10,9 +10,22 @@ export abstract class AI {
 
   public abstract available(actor: Creature): boolean
 
+  protected followTo(actor: Creature, destination: Point): boolean {
+    const path = this.leePath(
+      actor,
+      point => destination.nextTo(point),
+    )
+
+    if (path.length) {
+      actor.move(path[0])
+    }
+
+    return !!path.length
+  }
+
   protected leePath(
     actor: Creature,
-    destination: (point: Point) => boolean,
+    destination: (point: Point, tile: MemoryTile) => boolean,
     randomDestination: boolean = false,
   ): Array< Point > {
     const map = actor.stageMemory()
@@ -27,13 +40,18 @@ export abstract class AI {
 
       pointsToCheck.forEach( ( point: Point ) => {
         // TODO: Compare, current value might be lower
-        if (!map.inRange(point) || map.at(point.x ,  point.y).tangible(actor) ||
+        if (!map.inRange(point)) {
+          return
+        }
+
+        const tile = map.at(point.x ,  point.y)
+        if (tile.tangible(actor) ||
             stageMemory[ point.x ][ point.y ] !== undefined ) {
           return
         }
 
         stageMemory[ point.x ][ point.y ] = step
-        if (destination(point)) {
+        if (destination(point, tile)) {
           pointsToVisit.push( point )
         } else {
           point.wrappers().forEach(dist => wavePoints.push(dist))
@@ -62,11 +80,14 @@ export abstract class AI {
     let delta: Point = undefined
 
     while ( stageMemory[ lastPoint.x ][ lastPoint.y ] !== FIRST_STEP ) {
-
       delta = Point.dxy.find( ( dp ): boolean => {
         return stageMemory[ lastPoint.x + dp.x ] &&
           ( stageMemory[ lastPoint.x + dp.x ][ lastPoint.y + dp.y ] === stageMemory[ lastPoint.x ][ lastPoint.y ] - 1 )
       })
+
+      if (!delta) {
+        return []
+      }
 
       lastPoint = lastPoint.add(delta)
 

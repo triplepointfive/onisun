@@ -22,9 +22,8 @@ export class Loiter extends AI {
     )
 
     if (path.length) {
-      const a = path[0]
       this.turns += 1
-      actor.move(a)
+      actor.move(path[0])
     }
   }
 

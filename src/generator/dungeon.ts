@@ -6,7 +6,7 @@ const THICKNESS = 0
 
 const MIN_SIZE: number = 5
 const MAX_SIZE: number = 5
-const ROOMS_COUNT: number = 4
+const ROOMS_COUNT: number = 1
 
 const newRoomSpace = function(): Tile {
   return Tile.retrive('R')
