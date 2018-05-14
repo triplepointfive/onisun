@@ -23,7 +23,7 @@ export class Loiter extends AI {
     }
   }
 
-  public available(walker: Creature): boolean {
+  public available(actor: Creature): boolean {
     return true
   }
 }

@@ -50,7 +50,7 @@ import Cell from './Cell.vue'
 import Scene from './Scene.vue'
 
 import { LevelMap } from '../map'
-import { Walker } from '../creatures/walker'
+import { Creature } from '../creature'
 import { Memory, MemoryTile } from '../creature'
 import { generate } from '../generator/dungeon'
 import { addDoors } from '../generator/post'
@@ -65,9 +65,9 @@ export default Vue.extend({
       ts: Date.now(),
       generatorOptions: {
         addDoors: false,
-        minSize: 3,
-        maxSize: 7,
-        roomsCount: 10,
+        minSize: 5,
+        maxSize: 5,
+        roomsCount: 2,
       }
     }
   },
@@ -90,7 +90,7 @@ export default Vue.extend({
         }
       }
 
-      new Walker(
+      new Creature(
         x + 2,
         y + 2,
         this.radius,
@@ -98,7 +98,7 @@ export default Vue.extend({
         new Escaper(),
       )
 
-      new Walker(
+      new Creature(
         x,
         y,
         this.radius,
@@ -118,7 +118,7 @@ export default Vue.extend({
         }
       }
 
-      // new Walker(
+      // new Creature(
       //   x - 1,
       //   y - 1,
       //   this.radius,
@@ -126,7 +126,7 @@ export default Vue.extend({
       //   new Explorer(),
       // )
 
-      // new Walker(
+      // new Creature(
       //   x,
       //   y,
       //   this.radius,

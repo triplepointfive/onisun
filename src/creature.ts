@@ -87,7 +87,7 @@ export class Phantom {
   }
 }
 
-export abstract class Creature extends Phantom {
+export class Creature extends Phantom {
   ai: AI
   public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
@@ -98,12 +98,14 @@ export abstract class Creature extends Phantom {
     y: number,
     public radius: number,
     level: LevelMap,
+    ai: AI,
   ) {
     super(x, y)
     this.previousPos = this.pos.copy()
     this.currentLevelId = level.id
     this.visionMask(level)
     level.addCreature(this)
+    this.ai = ai
   }
 
   public stageMemory(levelId: LevelMapId = this.currentLevelId): Memory {

@@ -2,9 +2,9 @@ import { AI } from './internal'
 import { Creature } from '../creature'
 
 export class Waiter extends AI {
-  act( walker: Creature ): void {}
+  act(actor: Creature): void {}
 
-  public available(walker: Creature): boolean {
+  public available(actor: Creature): boolean {
     return true
   }
 }

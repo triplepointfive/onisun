@@ -5,7 +5,7 @@ import { Creature } from '../creature'
 
 const NEW_POINT_EVERY: number = 10
 
-class Explorer extends AI {
+export class Explorer extends AI {
   path: Point[]
   private step: number
 
@@ -15,72 +15,70 @@ class Explorer extends AI {
     this.step = NEW_POINT_EVERY
   }
 
-  public available(walker: Creature): boolean {
+  public available(actor: Creature): boolean {
     if (this.path.length) {
       return true
     } else {
-      this.buildNewPath(walker)
+      this.buildNewPath(actor)
       return this.path.length > 0
     }
   }
 
-  act(walker: Creature, firstTurn: boolean = true): void {
+  act(actor: Creature, firstTurn: boolean = true): void {
     if (this.step >= NEW_POINT_EVERY ) {
-      this.updatePatrol( walker )
+      this.updatePatrol( actor )
     }
 
     if (this.path.length) {
       const nextPoint: Point = this.path.shift()
-      if (walker.stageMemory().at(nextPoint.x, nextPoint.y).tangible(walker)) {
+      if (actor.stageMemory().at(nextPoint.x, nextPoint.y).tangible(actor)) {
         this.path = []
         if (firstTurn) {
-          this.act(walker, false)
+          this.act(actor, false)
         }
       } else {
         this.step++
 
-        walker.move(nextPoint)
+        actor.move(nextPoint)
 
-        if (this.shouldAddNode(walker)) {
-          this.updatePatrol(walker)
+        if (this.shouldAddNode(actor)) {
+          this.updatePatrol(actor)
         }
       }
     } else {
-      this.buildNewPath(walker)
+      this.buildNewPath(actor)
       if (this.path.length) {
         if (firstTurn) {
-          this.act(walker, false)
+          this.act(actor, false)
         }
-      } else if (this.patrol.available(walker)) {
+      } else if (this.patrol.available(actor)) {
         // Logger.info( "I'm done, time to patrol" )
-        this.patrol.addNode( walker.pos.x, walker.pos.y )
-        walker.ai = this.patrol
-        walker.ai.act(walker, false)
+        this.patrol.addNode( actor.pos.x, actor.pos.y )
+        actor.ai = this.patrol
+        actor.ai.act(actor, false)
       } else {
-        walker.ai = new Loiter(this)
+        actor.ai = new Loiter(this)
       }
     }
   }
 
-  private buildNewPath( walker: Creature ): void {
-    this.path = this.leePath( walker, point => {
-      return !walker.stageMemory().at(point.x, point.y).seen
+  private buildNewPath( actor: Creature ): void {
+    this.path = this.leePath( actor, point => {
+      return !actor.stageMemory().at(point.x, point.y).seen
     })
   }
 
-  private updatePatrol( walker: Creature ): void {
+  private updatePatrol( actor: Creature ): void {
     if (this.patrol === undefined) {
-      this.patrol = new Patrol( walker.pos.x, walker.pos.y )
+      this.patrol = new Patrol( actor.pos.x, actor.pos.y )
     } else {
-      this.patrol.addNode( walker.pos.x, walker.pos.y )
+      this.patrol.addNode( actor.pos.x, actor.pos.y )
     }
 
     this.step = 0
   }
 
-  private shouldAddNode(walker: Creature): boolean {
-    return walker.stageMemory().at(walker.previousPos.x, walker.previousPos.y).tile.isDoor()
+  private shouldAddNode(actor: Creature): boolean {
+    return actor.stageMemory().at(actor.previousPos.x, actor.previousPos.y).tile.isDoor()
   }
 }
-
-export { Explorer }
