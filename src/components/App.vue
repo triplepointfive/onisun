@@ -55,6 +55,8 @@ import { Memory, MemoryTile } from '../creature'
 import { generate } from '../generator/dungeon'
 import { addDoors } from '../generator/post'
 
+import { Katana } from '../items'
+
 import { Escaper, Chaser, Waiter, Explorer } from '../ai'
 
 export default Vue.extend({
@@ -67,7 +69,7 @@ export default Vue.extend({
         addDoors: false,
         minSize: 5,
         maxSize: 5,
-        roomsCount: 2,
+        roomsCount: 1,
       }
     }
   },
@@ -146,6 +148,8 @@ export default Vue.extend({
       if (this.generatorOptions.addDoors) {
         return addDoors(map)
       }
+
+      map.at(3, 3).item = new Katana()
 
       return map
     }

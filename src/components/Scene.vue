@@ -60,11 +60,19 @@ import {
   Loiter,
 } from '../ai'
 
+import {
+  Katana,
+  ItemKind,
+} from '../items'
+
 const HUMAN  = new CreatureTile('俺', 0, 255, 0)
 const HUMAN2 = new CreatureTile('俺', 255, 0, 0)
 const HUMAN3 = new CreatureTile('俺', 0, 0, 255)
 const HUMAN4 = new CreatureTile('俺', 255, 0, 255)
 const HUMAN5 = new CreatureTile('俺', 0, 255, 255)
+
+const KATANA = new CreatureTile('刀', 200, 200, 200)
+
 const DOOR = new DoorTile()
 const WALL = new WallTile()
 const FLOOR = new FloorTile()
@@ -124,6 +132,13 @@ export default Vue.extend({
             return HUMAN2
           case 4:
             return HUMAN
+        }
+      }
+
+      if (tile.item) {
+        switch (tile.item.kind) {
+          case ItemKind.Katana:
+            return KATANA
         }
       }
 
@@ -206,6 +221,9 @@ export default Vue.extend({
   mounted() {
     this.initViewport()
   },
+  beforeDestroy() {
+    clearInterval(this.drawInterval)
+  },
   watch: {
     level() {
       this.initViewport()
@@ -223,20 +241,21 @@ export default Vue.extend({
 }
 
 .unicodetiles {
-	font-family: "DejaVuSansMono", "DejaVu Sans Mono", monospace;
-	white-space: pre;
-	text-align: center;
-	line-height: 1;
-	letter-spacing: 0px;
-	display: inline-block;
+  font-family: "DejaVuSansMono", "DejaVu Sans Mono", monospace;
+  font-size: 16px;
+  white-space: pre;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0px;
+  display: inline-block;
 }
 
 .unicodetiles div {
-	float: left;
-	height: 1em;
+  float: left;
+  height: 1em;
 }
 
 .unicodetiles br {
-	clear: both;
+  clear: both;
 }
 </style>

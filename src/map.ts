@@ -1,4 +1,5 @@
 import { Phantom, Creature } from './creature'
+import { Item } from './items'
 
 export enum TileTypes {
   Wall,
@@ -8,6 +9,7 @@ export enum TileTypes {
 
 export class Tile {
   public creature?: Phantom
+  public item?: Item
 
   private static repository: { [key: string]: Tile } = {}
 
@@ -55,6 +57,9 @@ export class Tile {
     let tile = Tile.retrive(this.key)
     if (this.creature) {
       tile.creature = this.creature.clone()
+    }
+    if (this.item) {
+      tile.item = this.item.clone()
     }
     return tile
   }
