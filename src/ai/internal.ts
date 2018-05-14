@@ -55,12 +55,12 @@ export abstract class AI {
       let wavePoints: Array< Point > = []
 
       pointsToCheck.forEach( ( point: Point ) => {
-        // TODO: Compare, current value might be lower
         if (!map.inRange(point)) {
           return
         }
 
         const tile = map.at(point.x ,  point.y)
+        // TODO: Compare, current value might be lower
         if (tile.tangible(actor) ||
             stageMemory[ point.x ][ point.y ] !== undefined ) {
           return
@@ -111,5 +111,38 @@ export abstract class AI {
     }
 
     return chain
+  }
+
+  protected withinView(
+    actor: Creature,
+    visit: (point: Point, tile: MemoryTile) => void,
+  ): void {
+    const map = actor.stageMemory()
+
+    let tileVisited: boolean[][] = twoDimArray(map.height, map.width, () => false)
+    let pointsToCheck: Point[] = [actor.pos]
+
+    while (pointsToCheck.length) {
+      let wavePoints: Array< Point > = []
+
+      pointsToCheck.forEach((point: Point) => {
+        if (!map.inRange(point)) {
+          return
+        }
+
+        const tile = map.at(point.x ,  point.y)
+        if (!tile.visible || tileVisited[point.x][point.y]) {
+          return
+        }
+
+        tileVisited[point.x][point.y] = true
+
+        visit(point, tile)
+
+        point.wrappers().forEach(dist => wavePoints.push(dist))
+      })
+
+      pointsToCheck = wavePoints
+    }
   }
 }

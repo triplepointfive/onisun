@@ -91,8 +91,8 @@ export default Vue.extend({
       }
 
       new Walker(
-        x + 4,
-        y + 4,
+        x + 2,
+        y + 2,
         this.radius,
         this.map,
         new Escaper(),

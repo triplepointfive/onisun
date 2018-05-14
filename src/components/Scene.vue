@@ -7,7 +7,7 @@
       .col.pl-0
         .fps.mb-2 FPS {{ fps }}
 
-        dl.row.small style="overflow: scroll" v-for='creature in level.creatures'
+        dl.row.small v-for='creature in level.creatures'
           dd.col-sm-3 ID
           dt.col-sm-9 {{ creature.id }}
 
@@ -15,7 +15,8 @@
           dt.col-sm-9 {{ creature.pos }}
 
           dd.col-sm-3 AI
-          dt.col-sm-9 {{ aiName(creature.ai) }}
+          dt.col-sm-9
+            | {{ aiName(creature.ai) }}
 
         .form-group.row
           .col-sm-2 Map

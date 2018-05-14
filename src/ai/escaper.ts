@@ -1,4 +1,5 @@
 import { AI } from './internal'
+import { Loiter } from '../ai'
 import { Phantom, Creature, CreatureId } from '../creature'
 import { Point } from '../utils'
 
@@ -24,13 +25,13 @@ export class Escaper extends AI {
         this.runningTo = undefined
       }
     } else {
-      // Loit here
+      actor.ai = new Loiter(this)
     }
   }
 
   private buildPath(
     actor: Creature,
-    minDistance: number = actor.radius,
+    minDistance: number = actor.radius / 2,
   ): void {
     if (minDistance <= 1) {
       this.runningTo = undefined
@@ -49,6 +50,7 @@ export class Escaper extends AI {
 
         return score >= minDistance
       },
+      true,
     )
 
     if (path.length) {
@@ -63,17 +65,16 @@ export class Escaper extends AI {
   ): boolean {
     this.escapesFrom = []
 
-    const field = actor.stageMemory()
-
-    for (let y = 0; y < field.height; y++) {
-      for (let x = 0; x < field.width; x++) {
-        const creature = field.at(x, y).creature()
+    this.withinView(
+      actor,
+      (point, tile) => {
+        const creature = tile.creature()
 
         if (creature && creature.id !== actor.id) {
           this.escapesFrom.push(creature)
         }
       }
-    }
+    )
 
     return this.escapesFrom.length > 0
   }

@@ -69,11 +69,10 @@ export class Chaser extends AI {
     actor: Creature,
     condition: (creature: Phantom) => boolean,
   ): boolean {
-    const field = actor.stageMemory()
-
-    for (let y = 0; y < field.height; y++) {
-      for (let x = 0; x < field.width; x++) {
-        const creature = field.at(x, y).creature()
+    this.withinView(
+      actor,
+      ({ x, y }, tile) => {
+        const creature = tile.creature()
 
         if (creature && condition(creature)) {
           this.victimPos = new Point(x, y)
@@ -81,7 +80,7 @@ export class Chaser extends AI {
           return true
         }
       }
-    }
+    )
 
     return false
   }
