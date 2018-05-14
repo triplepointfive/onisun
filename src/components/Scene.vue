@@ -48,6 +48,7 @@ import {
   CreatureTile,
   DoorTile,
   FloorTile,
+  ItemTile,
   WallTile,
 } from './scene_tiles'
 
@@ -71,7 +72,7 @@ const HUMAN3 = new CreatureTile('俺', 0, 0, 255)
 const HUMAN4 = new CreatureTile('俺', 255, 0, 255)
 const HUMAN5 = new CreatureTile('俺', 0, 255, 255)
 
-const KATANA = new CreatureTile('刀', 200, 200, 200)
+const KATANA = new ItemTile('刀', 200, 200, 200)
 
 const DOOR = new DoorTile()
 const WALL = new WallTile()

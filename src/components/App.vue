@@ -69,7 +69,7 @@ export default Vue.extend({
         addDoors: false,
         minSize: 5,
         maxSize: 5,
-        roomsCount: 1,
+        roomsCount: 3,
       }
     }
   },

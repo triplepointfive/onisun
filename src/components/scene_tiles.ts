@@ -93,3 +93,21 @@ export class WallTile extends DisplayTile {
     return tile
   }
 }
+
+export class ItemTile extends DisplayTile {
+  constructor(
+    char: string,
+    public vr: number,
+    public vg: number,
+    public vb: number,
+  ) {
+    super(char)
+  }
+
+  public lighted(degree: number) {
+    let tile = this.clone()
+    tile.setColor(this.vr, this.vg, this.vb)
+
+    return tile
+  }
+}
