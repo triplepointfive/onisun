@@ -6,6 +6,9 @@ import { sample } from 'lodash'
 const FIRST_STEP: number = 1
 
 export abstract class AI {
+  constructor(public prevAI?: AI) {
+  }
+
   public abstract act(actor: Creature, firstTurn: boolean): void
 
   public abstract available(actor: Creature): boolean
@@ -40,7 +43,7 @@ export abstract class AI {
     actor: Creature,
     destination: (point: Point, tile: MemoryTile) => boolean,
     randomDestination: boolean = false,
-  ): Array< Point > {
+  ): Point[] {
     const map = actor.stageMemory()
 
     let stageMemory: number[][] = twoDimArray(map.height, map.width, () => undefined)

@@ -1,5 +1,5 @@
 import { AI } from './internal'
-import { Creature, CreatureId } from '../creature'
+import { Phantom, Creature, CreatureId } from '../creature'
 import { Point } from '../utils'
 
 export class Chaser extends AI {
@@ -67,7 +67,7 @@ export class Chaser extends AI {
 
   private findCreature(
     actor: Creature,
-    condition: (creature: Creature) => boolean,
+    condition: (creature: Phantom) => boolean,
   ): boolean {
     const field = actor.stageMemory()
 
@@ -75,7 +75,7 @@ export class Chaser extends AI {
       for (let x = 0; x < field.width; x++) {
         const creature = field.at(x, y).creature()
 
-        if (creature && creature.id !== actor.id) {
+        if (creature && condition(creature)) {
           this.victimPos = new Point(x, y)
           this.victimId = creature.id
           return true

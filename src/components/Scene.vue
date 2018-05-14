@@ -55,6 +55,7 @@ import {
   Explorer,
   Waiter,
   Chaser,
+  Escaper,
   Loiter,
 } from '../ai'
 
@@ -87,6 +88,9 @@ export default Vue.extend({
     aiName(ai) {
       if (ai instanceof Patrol) {
         return 'Patrol'
+      }
+      if (ai instanceof Escaper) {
+        return 'Escaper'
       }
       if (ai instanceof Chaser) {
         return 'Chaser'

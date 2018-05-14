@@ -4,10 +4,6 @@ import { Creature } from '../creature'
 export class Loiter extends AI {
   private turns: number = 0
 
-  constructor(public prevAI?: AI) {
-    super()
-  }
-
   act(actor: Creature, firstTurn: boolean = true): void {
     if (this.turns > 1) {
       actor.ai = this.prevAI
