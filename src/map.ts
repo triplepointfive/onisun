@@ -1,5 +1,6 @@
 import { Phantom, Creature } from './creature'
 import { Item } from './items'
+import { Point } from './utils'
 
 export enum TileTypes {
   Wall,
@@ -108,6 +109,11 @@ export class LevelMap {
 
   public setTile(x, y, tile: Tile): void {
     this.map[y][x] = tile
+  }
+
+  public inRange(point: Point): boolean {
+    return point.x >= 0         && point.y >= 0
+        && point.x < this.width && point.y < this.height
   }
 
   public turn(): void {

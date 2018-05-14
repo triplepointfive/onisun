@@ -52,7 +52,7 @@ import Scene from './Scene.vue'
 import { LevelMap } from '../map'
 import { Creature } from '../creature'
 import { Memory, MemoryTile } from '../creature'
-import { generate } from '../generator/dungeon'
+import { generate } from '../generator/drunk_cave'
 import { addDoors } from '../generator/post'
 
 import { Katana } from '../items'
@@ -93,19 +93,11 @@ export default Vue.extend({
       }
 
       new Creature(
-        x + 2,
-        y + 2,
-        this.radius,
-        this.map,
-        new Escaper(),
-      )
-
-      new Creature(
         x,
         y,
         this.radius,
         this.map,
-        new Chaser(),
+        new Explorer(),
       )
 
       x = this.map.width - 1
@@ -119,6 +111,14 @@ export default Vue.extend({
           y -= 1
         }
       }
+
+      new Creature(
+        x,
+        y,
+        this.radius,
+        this.map,
+        new Chaser(),
+      )
 
       // new Creature(
       //   x - 1,
