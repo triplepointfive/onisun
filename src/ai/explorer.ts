@@ -6,14 +6,9 @@ import { Creature } from '../creature'
 const NEW_POINT_EVERY: number = 10
 
 export class Explorer extends AI {
-  path: Point[]
-  private step: number
-
-  constructor(public patrol: Patrol = undefined) {
-    super()
-    this.path = []
-    this.step = NEW_POINT_EVERY
-  }
+  path: Point[] = []
+  private step: number = NEW_POINT_EVERY
+  public patrol: Patrol
 
   public available(actor: Creature): boolean {
     if (this.path.length) {

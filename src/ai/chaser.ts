@@ -4,12 +4,7 @@ import { Point } from '../utils'
 
 export class Chaser extends AI {
   private victimPos?: Point
-
-  constructor(
-    private victimId?: CreatureId,
-  ) {
-    super()
-  }
+  private victimId?: CreatureId
 
   public available(actor: Creature): boolean {
     return true

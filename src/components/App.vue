@@ -2,7 +2,6 @@
   #app.container
     Scene[
       :level='map'
-      :player='map.creatures[0]'
       ]
 
     .row
@@ -52,12 +51,12 @@ import Scene from './Scene.vue'
 import { LevelMap } from '../map'
 import { Creature } from '../creature'
 import { Memory, MemoryTile } from '../creature'
-import { generate } from '../generator/drunk_cave'
+import { generate } from '../generator/dungeon'
 import { addDoors } from '../generator/post'
 
 import { Katana } from '../items'
 
-import { Escaper, Chaser, Waiter, Explorer } from '../ai'
+import { Escaper, Chaser, Waiter, Explorer, Dispatcher } from '../ai'
 
 export default Vue.extend({
   data() {
@@ -97,7 +96,7 @@ export default Vue.extend({
         y,
         this.radius,
         this.map,
-        new Explorer(),
+        new Dispatcher(),
       )
 
       x = this.map.width - 1
@@ -117,7 +116,7 @@ export default Vue.extend({
         y,
         this.radius,
         this.map,
-        new Chaser(),
+        new Dispatcher(),
       )
 
       // new Creature(

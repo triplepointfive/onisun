@@ -1,12 +1,14 @@
 import { Phantom, Creature } from './creature'
 import { Item } from './items'
-import { Point } from './utils'
+import { Point, Mapped } from './utils'
 
 export enum TileTypes {
   Wall,
   Door,
   Floor,
 }
+
+import { remove } from 'lodash'
 
 export class Tile {
   public creature?: Phantom
@@ -31,7 +33,11 @@ export class Tile {
     }
   }
 
-  private constructor(public key: string, public display: string, private kind: TileTypes) {
+  private constructor(
+    public key: string,
+    public display: string,
+    private kind: TileTypes,
+  ) {
   }
 
   public isDoor(): boolean {
@@ -72,20 +78,17 @@ export class Tile {
 
 export type LevelMapId = number
 
-export class LevelMap {
+export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public id: LevelMapId
-  public readonly width: number
-  public readonly height: number
 
   private static lastId: LevelMapId = 0
   public static getId(): LevelMapId {
     return this.lastId++
   }
 
-  constructor(public map: Tile[][]) {
-    this.width  = map[0].length
-    this.height = map.length
+  constructor(map: Tile[][]) {
+    super(map)
     this.id = LevelMap.getId()
   }
 
@@ -93,6 +96,11 @@ export class LevelMap {
     this.creatures.push(creature)
     // TODO fail if taken
     this.at(creature.pos.x, creature.pos.y).creature = creature
+  }
+
+  public removeCreature(creature: Creature) {
+    this.at(creature.pos.x, creature.pos.y).creature = undefined
+    remove(this.creatures, c => c.id === creature.id)
   }
 
   public visibleThrough(x: number, y: number): boolean {

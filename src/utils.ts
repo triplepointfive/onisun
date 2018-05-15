@@ -87,3 +87,16 @@ export class Point {
   }
 }
 
+export abstract class Mapped<T> {
+  public readonly width: number
+  public readonly height: number
+
+  constructor(protected map: T[][]) {
+    this.width  = map[0].length
+    this.height = map.length
+  }
+
+  public at(x, y): T {
+    return this.map[y][x]
+  }
+}

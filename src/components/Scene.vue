@@ -59,6 +59,7 @@ import {
   Chaser,
   Escaper,
   Loiter,
+  Dispatcher,
 } from '../ai'
 
 import {
@@ -80,7 +81,7 @@ const FLOOR = new FloorTile()
 const NULLTILE = new Tile('　', 0, 0, 0)
 
 export default Vue.extend({
-  props: ['level', 'player'],
+  props: ['level'],
   data() {
     return {
       term: null,
@@ -91,7 +92,8 @@ export default Vue.extend({
       counter: 0,
       interval: 100,
       nextStep: false,
-      pause: false
+      pause: false,
+      player: this.level.creatures[0]
     }
   },
   methods: {
@@ -113,6 +115,9 @@ export default Vue.extend({
       }
       if (ai instanceof Loiter) {
         return `Loiter (${this.aiName(ai.prevAI)})`
+      }
+      if (ai instanceof Dispatcher) {
+        return `Dispatcher (${this.aiName(ai.prevAI)})`
       }
     },
     getTile(x, y) {
@@ -195,6 +200,7 @@ export default Vue.extend({
         this.nextStep = false
 
         this.level.turn()
+        this.player = this.level.creatures[0]
       }
 
       // this.eng.update(this.player.x, this.player.y);

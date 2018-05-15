@@ -1,6 +1,8 @@
 export { AI } from './ai/internal'
 
+export { Attacker } from './ai/attacker'
 export { Chaser } from './ai/chaser'
+export { Dispatcher } from './ai/dispatcher'
 export { Escaper } from './ai/escaper'
 export { Explorer } from './ai/explorer'
 export { Loiter } from './ai/loiter'

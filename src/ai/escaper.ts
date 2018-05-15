@@ -42,7 +42,7 @@ export class Escaper extends AI {
       actor,
       ({ x, y }) => {
         const score = sumBy(this.escapesFrom, enemy => {
-          // TODO: I don't use pathfinding since it should try
+          // I don't use pathfinding since it should try
           // to run away from those who are visible, so the path
           // to them should be straightforward.
           return Math.max(Math.abs(x - enemy.pos.x), Math.abs(y - enemy.pos.y))

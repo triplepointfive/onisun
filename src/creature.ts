@@ -1,4 +1,4 @@
-import { Point, twoDimArray } from './utils'
+import { Mapped, Point, twoDimArray } from './utils'
 import { AI } from './ai'
 import { Fov } from './fov'
 
@@ -35,19 +35,13 @@ export class MemoryTile  {
   }
 }
 
-export class Memory {
-  public field: MemoryTile[][]
-
+export class Memory extends Mapped<MemoryTile> {
   constructor(
-    public width: number,
-    public height: number,
+    width: number,
+    height: number,
   ) {
     const baseTile = Tile.retrive('W')
-    this.field = twoDimArray(height, width, () => new MemoryTile(baseTile))
-  }
-
-  at(x: number, y: number): MemoryTile {
-    return this.field[y][x]
+    super(twoDimArray(height, width, () => new MemoryTile(baseTile)))
   }
 
   public inRange(point: Point): boolean {
@@ -56,7 +50,7 @@ export class Memory {
   }
 
   public resetVisible(): void {
-    this.field.forEach((row) => {
+    this.map.forEach((row) => {
       row.forEach((tile) => {
         tile.reset()
       })
@@ -73,6 +67,7 @@ export class Phantom {
   }
 
   public pos: Point
+  public refToReal?: Creature
 
   constructor(
     x: number,
@@ -85,13 +80,38 @@ export class Phantom {
   public clone(): Phantom {
     return new Phantom(this.pos.x, this.pos.y, this.id)
   }
+
+  public real(): Creature {
+    return this.refToReal
+  }
+}
+
+export abstract class Event {
+  public abstract affect(actor: Creature): Reaction
+}
+
+export class Attack {
+  constructor(public damage: number) {}
+
+  public affect(actor: Creature): Reaction {
+    actor.die()
+    return Reaction.DIE
+  }
+}
+
+export enum EventType {
+  Attack,
+}
+
+export enum Reaction {
+  DIE,
 }
 
 export class Creature extends Phantom {
   ai: AI
   public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
-  private currentLevelId: LevelMapId
+  private currentLevel: LevelMap
 
   constructor(
     x: number,
@@ -102,13 +122,34 @@ export class Creature extends Phantom {
   ) {
     super(x, y)
     this.previousPos = this.pos.copy()
-    this.currentLevelId = level.id
+    this.currentLevel = level
     this.visionMask(level)
     level.addCreature(this)
     this.ai = ai
   }
 
-  public stageMemory(levelId: LevelMapId = this.currentLevelId): Memory {
+  public emit(eventType: EventType): Event {
+    switch (eventType) {
+    case EventType.Attack:
+      return new Attack(10)
+    default:
+      throw `Unknow event type ${eventType} for ${this}`
+    }
+  }
+
+  public die(): void {
+    this.currentLevel.removeCreature(this)
+  }
+
+  public on(event: Event): Reaction {
+    return event.affect(this)
+  }
+
+  public real(): Creature {
+    return this
+  }
+
+  public stageMemory(levelId: LevelMapId = this.currentLevel.id): Memory {
     return this.stageMemories[levelId]
   }
 
@@ -122,6 +163,12 @@ export class Creature extends Phantom {
 
   public move(nextPoint: Point) {
     this.pos = nextPoint.copy()
+  }
+
+  public clone(): Phantom {
+    let phantom = new Phantom(this.pos.x, this.pos.y, this.id)
+    phantom.refToReal = this
+    return phantom
   }
 
   public visionMask(stage: LevelMap): void {
