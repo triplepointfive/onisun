@@ -3,6 +3,8 @@ export {
   ItemId,
   ItemGroup,
   ItemKind,
+
+  Corpse,
 } from './items/internal'
 
 export {

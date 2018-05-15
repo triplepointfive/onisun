@@ -1,5 +1,5 @@
 import { Phantom, Creature } from './creature'
-import { Item } from './items'
+import { Item, Corpse } from './items'
 import { Point, Mapped } from './utils'
 
 export enum TileTypes {
@@ -99,7 +99,9 @@ export class LevelMap extends Mapped<Tile> {
   }
 
   public removeCreature(creature: Creature) {
-    this.at(creature.pos.x, creature.pos.y).creature = undefined
+    let tile = this.at(creature.pos.x, creature.pos.y)
+    tile.creature = undefined
+    tile.item = new Corpse(creature)
     remove(this.creatures, c => c.id === creature.id)
   }
 

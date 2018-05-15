@@ -1,5 +1,15 @@
 import { Tile } from '../../vendor/unicodetiles.ts/src/index'
 
+import {
+  Item,
+  ItemId,
+  ItemGroup,
+  ItemKind,
+
+  Katana,
+  Corpse,
+} from '../items'
+
 const DEFAULT_GREY: number = 120
 const IMPORTANT_GREY: number = 180
 const DEFAULT_LIT = { r: 255, g: 165, b: 0 }
@@ -109,5 +119,19 @@ export class ItemTile extends DisplayTile {
     tile.setColor(this.vr, this.vg, this.vb)
 
     return tile
+  }
+}
+
+const KATANA = new ItemTile('刀', 200, 200, 200)
+const CORPSE = new ItemTile('％', 200, 200, 200)
+
+export const displayItem = function(item: Item) {
+  switch (item.kind) {
+    case ItemKind.Katana:
+      return KATANA
+    case ItemKind.Corpse:
+      return CORPSE
+    default:
+      throw `Unknow item ${item} with type ${item.kind}`
   }
 }

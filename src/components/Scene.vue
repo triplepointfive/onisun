@@ -50,6 +50,8 @@ import {
   FloorTile,
   ItemTile,
   WallTile,
+
+  displayItem,
 } from './scene_tiles'
 
 import {
@@ -72,8 +74,6 @@ const HUMAN2 = new CreatureTile('俺', 255, 0, 0)
 const HUMAN3 = new CreatureTile('俺', 0, 0, 255)
 const HUMAN4 = new CreatureTile('俺', 255, 0, 255)
 const HUMAN5 = new CreatureTile('俺', 0, 255, 255)
-
-const KATANA = new ItemTile('刀', 200, 200, 200)
 
 const DOOR = new DoorTile()
 const WALL = new WallTile()
@@ -142,10 +142,7 @@ export default Vue.extend({
       }
 
       if (tile.item) {
-        switch (tile.item.kind) {
-          case ItemKind.Katana:
-            return KATANA
-        }
+        return displayItem(tile.item)
       }
 
       switch (tile.display) {

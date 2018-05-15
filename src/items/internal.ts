@@ -1,10 +1,14 @@
+import { Creature } from '../creature'
+
 export enum ItemGroup {
   Armor,
   Weapon,
+  Corpse,
 }
 
 export enum ItemKind {
   Katana,
+  Corpse
 }
 
 export type ItemId = number
@@ -28,6 +32,16 @@ export class Item {
       this.group,
       this.kind,
       this.name,
+    )
+  }
+}
+
+export class Corpse extends Item {
+  constructor(creature: Creature) {
+    super(
+      ItemGroup.Corpse,
+      ItemKind.Corpse,
+      'corpse',
     )
   }
 }
