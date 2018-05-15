@@ -2,7 +2,7 @@ import { Options } from "poi";
 
 const options: Options = {
   entry: "src/index.ts",
-  homepage: "/onisun/",
+  publicPath: "/onisun/",
   plugins: [
     require("@poi/plugin-typescript")()
   ]
