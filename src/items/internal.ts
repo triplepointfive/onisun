@@ -1,4 +1,4 @@
-import { Creature } from '../creature'
+import { Phantom } from '../creature'
 
 export enum ItemGroup {
   Armor,
@@ -37,7 +37,7 @@ export class Item {
 }
 
 export class Corpse extends Item {
-  constructor(creature: Creature) {
+  constructor(creature: Phantom) {
     super(
       ItemGroup.Corpse,
       ItemKind.Corpse,

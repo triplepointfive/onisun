@@ -49,12 +49,12 @@ import Cell from './Cell.vue'
 import Scene from './Scene.vue'
 
 import { LevelMap } from '../map'
-import { Creature } from '../creature'
+import { Phantom, Creature } from '../creature'
 import { Memory, MemoryTile } from '../creature'
 import { generate } from '../generator/dungeon'
 import { addDoors } from '../generator/post'
 
-import { Katana } from '../items'
+import { Katana, Corpse } from '../items'
 
 import { Escaper, Chaser, Waiter, Explorer, Dispatcher } from '../ai'
 
@@ -148,7 +148,8 @@ export default Vue.extend({
         return addDoors(map)
       }
 
-      map.at(3, 3).item = new Katana()
+      map.at(3, 3).items.push(new Katana())
+      map.at(3, 3).items.push(new Corpse(new Phantom(3, 3)))
 
       return map
     }

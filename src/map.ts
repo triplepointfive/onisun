@@ -12,7 +12,7 @@ import { remove } from 'lodash'
 
 export class Tile {
   public creature?: Phantom
-  public item?: Item
+  public items: Item[] = []
 
   private static repository: { [key: string]: Tile } = {}
 
@@ -65,9 +65,7 @@ export class Tile {
     if (this.creature) {
       tile.creature = this.creature.clone()
     }
-    if (this.item) {
-      tile.item = this.item.clone()
-    }
+    this.items.forEach(item => tile.items.push(item.clone()))
     return tile
   }
 
@@ -101,7 +99,7 @@ export class LevelMap extends Mapped<Tile> {
   public removeCreature(creature: Creature) {
     let tile = this.at(creature.pos.x, creature.pos.y)
     tile.creature = undefined
-    tile.item = new Corpse(creature)
+    tile.items.push(new Corpse(creature))
     remove(this.creatures, c => c.id === creature.id)
   }
 

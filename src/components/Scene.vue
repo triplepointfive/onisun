@@ -80,6 +80,13 @@ const WALL = new WallTile()
 const FLOOR = new FloorTile()
 const NULLTILE = new Tile('　', 0, 0, 0)
 
+const nextItemAnimation = [
+  new ItemTile('｜', 200, 200, 200),
+  new ItemTile('／', 200, 200, 200),
+  new ItemTile('ー', 200, 200, 200),
+  new ItemTile('＼', 200, 200, 200),
+]
+
 export default Vue.extend({
   props: ['level'],
   data() {
@@ -92,6 +99,7 @@ export default Vue.extend({
       counter: 0,
       interval: 100,
       nextStep: false,
+      step: 0,
       pause: false,
       player: this.level.creatures[0]
     }
@@ -141,8 +149,19 @@ export default Vue.extend({
         }
       }
 
-      if (tile.item) {
-        return displayItem(tile.item)
+      if (tile.items.length) {
+        if (tile.items.length === 1) {
+          return displayItem(tile.items[0])
+        }
+
+        const frame = this.step % (this.animationFps * 3 + 4)
+        if (frame < nextItemAnimation.length) {
+          return nextItemAnimation[frame]
+        } else {
+          const itemId = Math.floor(this.step / (this.animationFps * 3 + 4))
+
+          return displayItem(tile.items[itemId % tile.items.length])
+        }
       }
 
       switch (tile.display) {
@@ -206,6 +225,7 @@ export default Vue.extend({
 
       this.done = false
       this.counter += 1
+      this.step += 1
     },
     lighting(tile, x, y, time) {
       const fovTile = this.stage.at(x, y)
@@ -220,6 +240,9 @@ export default Vue.extend({
   computed: {
     stage() {
       return this.player.stageMemory(this.level.id)
+    },
+    animationFps() {
+      return 1000 / this.interval
     }
   },
   mounted() {
