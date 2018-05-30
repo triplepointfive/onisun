@@ -24,6 +24,13 @@
           </dt>
 
           <dd class='col-sm-3'>
+            Health
+          </dd>
+          <dt class='col-sm-9'>
+            {{ creature.health }}
+          </dt>
+
+          <dd class='col-sm-3'>
             AI
           </dd>
           <dt class='col-sm-9'>

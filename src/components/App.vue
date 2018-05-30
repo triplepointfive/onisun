@@ -1,6 +1,6 @@
 <template>
   <div id='app' class='container'>
-    <Scene :level='map'/>
+    <Scene :level='map' v-if='map.creatures.length'/>
     <div class=''>
       <div class=''>
         <div class='form-group row'>
@@ -59,7 +59,6 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import Component from 'vue-class-component'
 import * as _ from 'lodash'
 
 import Cell from './Cell.vue'
@@ -111,10 +110,10 @@ export default Vue.extend({
       new Creature(
         x,
         y,
+        50,
         this.radius,
-        this.map,
         new Dispatcher(),
-      )
+      ).addToMap(this.map)
 
       x = this.map.width - 1
       y = this.map.height -1
@@ -131,26 +130,10 @@ export default Vue.extend({
       new Creature(
         x,
         y,
+        80,
         this.radius,
-        this.map,
         new Dispatcher(),
-      )
-
-      // new Creature(
-      //   x - 1,
-      //   y - 1,
-      //   this.radius,
-      //   this.map,
-      //   new Explorer(),
-      // )
-
-      // new Creature(
-      //   x,
-      //   y,
-      //   this.radius,
-      //   this.map,
-      //   new Chaser(),
-      // )
+      ).addToMap(this.map)
     },
     buildMap() {
       let map = generate(

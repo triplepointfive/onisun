@@ -94,8 +94,13 @@ export class Attack {
   constructor(public damage: number) {}
 
   public affect(actor: Creature): Reaction {
-    actor.die()
-    return Reaction.DIE
+    if (this.damage > actor.health) {
+      actor.die()
+      return Reaction.HURT
+    } else {
+      actor.health -= this.damage
+      return Reaction.DIE
+    }
   }
 }
 
@@ -105,6 +110,8 @@ export enum EventType {
 
 export enum Reaction {
   DIE,
+  HURT,
+  NOTHING,
 }
 
 export class Creature extends Phantom {
@@ -116,22 +123,25 @@ export class Creature extends Phantom {
   constructor(
     x: number,
     y: number,
+    public health: number,
     public radius: number,
-    level: LevelMap,
     ai: AI,
   ) {
     super(x, y)
     this.previousPos = this.pos.copy()
+    this.ai = ai
+  }
+
+  public addToMap(level: LevelMap) {
     this.currentLevel = level
     this.visionMask(level)
     level.addCreature(this)
-    this.ai = ai
   }
 
   public emit(eventType: EventType): Event {
     switch (eventType) {
     case EventType.Attack:
-      return new Attack(10)
+      return new Attack(Math.round(Math.random() * 5))
     default:
       throw `Unknow event type ${eventType} for ${this}`
     }
