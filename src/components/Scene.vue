@@ -1,36 +1,59 @@
-<template lang='slm'>
-  .scene
-    .row
-      .col.mr-0
-        .unicodetiles ref="scene"
+<template>
+  <div class='scene'>
+    <div class='row'>
+      <div class='col mr-0'>
+        <div class='unicodetiles' ref="scene"></div>
+      </div>
 
-      .col.pl-0
-        .fps.mb-2 FPS {{ fps }}
+      <div class='col pl-0'>
+        <div class='fps mb-2 '>FPS {{ fps }}</div>
 
-        dl.row.small v-for='creature in level.creatures'
-          dd.col-sm-3 ID
-          dt.col-sm-9 {{ creature.id }}
+        <dl class='row small' v-for='creature in level.creatures'>
+          <dd class='col-sm-3'>
+            ID
+          </dd>
+          <dt class='col-sm-9'>
+            {{ creature.id }}
+          </dt>
 
-          dd.col-sm-3 POS
-          dt.col-sm-9 {{ creature.pos }}
+          <dd class='col-sm-3'>
+            POS
+          </dd>
+          <dt class='col-sm-9'>
+            {{ creature.pos }}
+          </dt>
 
-          dd.col-sm-3 AI
-          dt.col-sm-9
-            | {{ aiName(creature.ai) }}
+          <dd class='col-sm-3'>
+            AI
+          </dd>
+          <dt class='col-sm-9'>
+            {{ aiName(creature.ai) }}
+          </dt>
+        </dl>
 
-        .form-group.row
-          .col-sm-2 Map
-          .col-sm-10
-            .form-group
-              input.form-control#interval v-model='interval' type='number'
-              label.form-check-label for='interval'
-                | Tick interval
+        <div class='form-group row'>
+          <div class='col-sm-2'>Map</div>
+          <div class='col-sm-10'>
+            <div class='form-group'>
+              <input class='form-control' id='interval' v-model='interval' type='number'/>
+              <label class='form-check-label' for='interval'>
+                Tick interval
+              </label>
+            </div>
 
-            button.btn.btn-secondary> @click='nextStep = true'
-              | Next step
+            <button class='btn btn-secondary' @click='nextStep = true'>
+              Next step
+            </button>
 
-            button.btn.btn-secondary> @click="pause = !pause"
-              | {{ pause ? 'Start' : 'Pause' }}
+            <button class='btn btn-secondary' @click="pause = !pause">
+              {{ pause ? 'Start' : 'Pause' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script lang='ts'>

@@ -1,43 +1,60 @@
-<template lang='slm'>
-  #app.container
-    Scene[
-      :level='map'
-      ]
+<template>
+  <div id='app' class='container'>
+    <Scene :level='map'/>
+    <div class=''>
+      <div class=''>
+        <div class='form-group row'>
+          <label class='col-sm-2 col-form-label' for='radius'>
+            Radius
+          </label>
+          <div class='col-sm-10'>
+            <input class='form-control' id='radius' type='number' v-model='radius'/>
+          </div>
+        </div>
+        <div class='form-group row'>
+          <div class='col-sm-2'>
+            Map
+          </div>
+          <div class='col-sm-10'>
+            <div class='form-check'>
+              <input class='form-check-input' id='doors' type='checkbox' v-model='generatorOptions.addDoors'/>
+              <label class='form-check-label' for='doors'>
+                Add doors
+              </label>
+            </div>
 
-    .row
-      .col-md-6.mt-2
-        .form-group.row
-          label.col-sm-2.col-form-label for='radius' Radius
-          .col-sm-10
-            input.form-control#radius type='number' v-model='radius'
+            <div class='form-group'>
+              <input class='form-control' id='roomsCount' v-model='generatorOptions.roomsCount' type='number'/>
+              <label class='form-check-label' for='roomsCount'>
+                roomsCount
+              </label>
+            </div>
 
-        .form-group.row
-          .col-sm-2 Map
-          .col-sm-10
-            .form-check
-              input.form-check-input#doors type='checkbox' v-model='generatorOptions.addDoors'
-              label.form-check-label for='doors'
-                | Add doors
+            <div class='form-group'>
+              <input class='form-control' id='minSize' v-model='generatorOptions.minSize' type='number'/>
+              <label class='form-check-label' for='minSize'>
+                minSize
+              </label>
+            </div>
 
-            .form-group
-              input.form-control#roomsCount v-model='generatorOptions.roomsCount' type='number'
-              label.form-check-label for='roomsCount'
-                | roomsCount
-
-            .form-group
-              input.form-control#minSize v-model='generatorOptions.minSize' type='number'
-              label.form-check-label for='minSize'
-                | minSize
-
-            .form-group
-              input.form-control#maxSize v-model='generatorOptions.maxSize' type='number'
-              label.form-check-label for='maxSize'
-                | maxSize
-
-        .form-group.row
-          .col-sm-10
-            button.btn.btn-primary @click="generateMap()"
-              | Rebuild!
+            <div class='form-group'>
+              <input class='form-control' id='maxSize' v-model='generatorOptions.maxSize' type='number'/>
+              <label class='form-check-label' for='maxSize'>
+                maxSize
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class='form-group row'>
+          <div class='col-sm-10'>
+            <button class='btn btn-primary' @click="generateMap()">
+              Rebuild!
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang='ts'>
