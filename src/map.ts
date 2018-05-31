@@ -1,6 +1,7 @@
 import { Phantom, Creature } from './creature'
 import { Item, Corpse } from './items'
 import { Point, Mapped } from './utils'
+import { Logger } from './logger'
 
 export enum TileTypes {
   Wall,
@@ -13,6 +14,7 @@ import { remove } from 'lodash'
 export class Tile {
   public creature?: Phantom
   public items: Item[] = []
+  public logger: Logger
 
   private static repository: { [key: string]: Tile } = {}
 
@@ -38,6 +40,7 @@ export class Tile {
     public display: string,
     private kind: TileTypes,
   ) {
+    this.logger = new Logger()
   }
 
   public isDoor(): boolean {
