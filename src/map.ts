@@ -14,7 +14,6 @@ import { remove } from 'lodash'
 export class Tile {
   public creature?: Phantom
   public items: Item[] = []
-  public logger: Logger
 
   private static repository: { [key: string]: Tile } = {}
 
@@ -40,7 +39,6 @@ export class Tile {
     public display: string,
     private kind: TileTypes,
   ) {
-    this.logger = new Logger()
   }
 
   public isDoor(): boolean {
@@ -82,6 +80,7 @@ export type LevelMapId = number
 export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public id: LevelMapId
+  public logger: Logger
 
   private static lastId: LevelMapId = 0
   public static getId(): LevelMapId {
@@ -91,6 +90,7 @@ export class LevelMap extends Mapped<Tile> {
   constructor(map: Tile[][]) {
     super(map)
     this.id = LevelMap.getId()
+    this.logger = new Logger()
   }
 
   public addCreature(creature: Creature) {

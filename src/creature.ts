@@ -3,6 +3,7 @@ import { AI } from './ai'
 import { Fov } from './fov'
 
 import { LevelMap, LevelMapId, Tile } from './map'
+import { Logger } from './logger'
 
 export class MemoryTile  {
   public visible: boolean = false
@@ -91,14 +92,16 @@ export abstract class Event {
 }
 
 export class Attack {
-  constructor(public damage: number) {}
+  constructor(public actor: Creature, public damage: number) {}
 
-  public affect(actor: Creature): Reaction {
-    if (this.damage > actor.health) {
-      actor.die()
+  public affect(subject: Creature): Reaction {
+    if (this.damage > subject.health) {
+      subject.currentLevel.logger.killMessage(this.damage, this.actor, subject)
+      subject.die()
       return Reaction.HURT
     } else {
-      actor.health -= this.damage
+      subject.health -= this.damage
+      subject.currentLevel.logger.hurtMessage(this.damage, this.actor, subject)
       return Reaction.DIE
     }
   }
@@ -118,7 +121,7 @@ export class Creature extends Phantom {
   ai: AI
   public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
-  private currentLevel: LevelMap
+  public currentLevel: LevelMap
 
   constructor(
     x: number,
@@ -132,6 +135,10 @@ export class Creature extends Phantom {
     this.ai = ai
   }
 
+  public name(): string {
+    return `${this.id}`
+  }
+
   public addToMap(level: LevelMap) {
     this.currentLevel = level
     this.visionMask(level)
@@ -141,7 +148,7 @@ export class Creature extends Phantom {
   public emit(eventType: EventType): Event {
     switch (eventType) {
     case EventType.Attack:
-      return new Attack(Math.round(Math.random() * 5))
+      return new Attack(this, Math.round(Math.random() * 5))
     default:
       throw `Unknow event type ${eventType} for ${this}`
     }

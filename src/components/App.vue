@@ -1,6 +1,7 @@
 <template>
   <div id='app' class='container'>
     <Scene :level='map' v-if='map.creatures.length'/>
+    <Logger :logger='map.logger' />
     <div class=''>
       <div class=''>
         <div class='form-group row'>
@@ -62,6 +63,7 @@ import Vue from 'vue'
 import * as _ from 'lodash'
 
 import Cell from './Cell.vue'
+import Logger from './Logger.vue'
 import Scene from './Scene.vue'
 
 import { LevelMap } from '../map'
@@ -90,7 +92,8 @@ export default Vue.extend({
   },
   components: {
     Cell,
-    Scene
+    Logger,
+    Scene,
   },
   methods: {
     generateMap() {
