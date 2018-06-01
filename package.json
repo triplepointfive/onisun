@@ -9,8 +9,11 @@
   },
   "devDependencies": {
     "@poi/plugin-typescript": "^10.1.2",
+    "@types/jest": "^22.2.3",
     "gh-pages": "^1.1.0",
+    "jest": "^23.1.0",
     "poi": "^10.1.2",
+    "ts-jest": "^22.4.6",
     "ts-node": "^6.0.0",
     "typescript": "^2.8.1",
     "vue-loader": "^15.2.2"
