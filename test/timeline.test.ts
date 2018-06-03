@@ -34,4 +34,12 @@ describe('with two creatures', () => {
         timeline.add(actor1, 4)
         expect(timeline.actors()).toEqual([actor2, actor1])
     })
+
+    test('removes actors', () => {
+        timeline.add(actor1, 4)
+        timeline.add(actor2, 8)
+        expect(timeline.actors()).toEqual([actor1])
+        timeline.remove(actor2)
+        expect(timeline.actors()).toEqual([])
+    })
 })

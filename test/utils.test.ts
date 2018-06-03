@@ -1,5 +1,5 @@
-import { succ } from './utils';
+import { succ } from '../src/utils'
 
-test('basic', () => {
-  expect(succ('a')).toBe('b');
+test('succ', () => {
+  expect(succ('a')).toBe('b')
 });
