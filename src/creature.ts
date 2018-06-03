@@ -128,6 +128,7 @@ export class Creature extends Phantom {
     y: number,
     public health: number,
     public radius: number,
+    private speed: number,
     ai: AI,
   ) {
     super(x, y)
@@ -148,7 +149,7 @@ export class Creature extends Phantom {
   public emit(eventType: EventType): Event {
     switch (eventType) {
     case EventType.Attack:
-      return new Attack(this, Math.round(Math.random() * 5))
+      return new Attack(this, this.speed)
     default:
       throw `Unknow event type ${eventType} for ${this}`
     }
@@ -164,6 +165,11 @@ export class Creature extends Phantom {
 
   public real(): Creature {
     return this
+  }
+
+  // Speed, affect how often the creature acts
+  public initiativity(): number {
+    return this.speed
   }
 
   public stageMemory(levelId: LevelMapId = this.currentLevel.id): Memory {

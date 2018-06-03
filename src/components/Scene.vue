@@ -9,31 +9,38 @@
         <div class='fps mb-2 '>FPS {{ fps }}</div>
 
         <dl class='row small' v-for='creature in level.creatures'>
-          <dd class='col-sm-3'>
+          <dd class='col-sm-4'>
             ID
           </dd>
-          <dt class='col-sm-9'>
+          <dt class='col-sm-8'>
             {{ creature.id }}
           </dt>
 
-          <dd class='col-sm-3'>
+          <dd class='col-sm-4'>
             POS
           </dd>
-          <dt class='col-sm-9'>
+          <dt class='col-sm-8'>
             {{ creature.pos }}
           </dt>
 
-          <dd class='col-sm-3'>
+          <dd class='col-sm-4'>
             Health
           </dd>
-          <dt class='col-sm-9'>
+          <dt class='col-sm-8'>
             {{ creature.health }}
           </dt>
 
-          <dd class='col-sm-3'>
+          <dd class='col-sm-4'>
+            Initiation
+          </dd>
+          <dt class='col-sm-8'>
+            {{ creature.initiativity() }}
+          </dt>
+
+          <dd class='col-sm-4'>
             AI
           </dd>
-          <dt class='col-sm-9'>
+          <dt class='col-sm-8'>
             {{ aiName(creature.ai) }}
           </dt>
         </dl>

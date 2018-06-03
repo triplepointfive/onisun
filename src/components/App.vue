@@ -115,6 +115,7 @@ export default Vue.extend({
         y,
         50,
         this.radius,
+        10,
         new Dispatcher(),
       ).addToMap(this.map)
 
@@ -133,8 +134,9 @@ export default Vue.extend({
       new Creature(
         x,
         y,
-        80,
+        100,
         this.radius,
+        5,
         new Dispatcher(),
       ).addToMap(this.map)
     },

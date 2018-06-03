@@ -1,7 +1,10 @@
-import { Phantom, Creature } from './creature'
+import { Phantom, Creature, CreatureId } from './creature'
 import { Item, Corpse } from './items'
 import { Point, Mapped } from './utils'
 import { Logger } from './logger'
+import { Timeline } from './timeline'
+
+import { includes } from 'lodash'
 
 export enum TileTypes {
   Wall,
@@ -81,6 +84,7 @@ export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public id: LevelMapId
   public logger: Logger
+  protected timeline: Timeline<CreatureId>
 
   private static lastId: LevelMapId = 0
   public static getId(): LevelMapId {
@@ -91,12 +95,14 @@ export class LevelMap extends Mapped<Tile> {
     super(map)
     this.id = LevelMap.getId()
     this.logger = new Logger()
+    this.timeline = new Timeline()
   }
 
   public addCreature(creature: Creature) {
     this.creatures.push(creature)
     // TODO fail if taken
     this.at(creature.pos.x, creature.pos.y).creature = creature
+    this.timeline.add(creature.id, creature.initiativity())
   }
 
   public removeCreature(creature: Creature) {
@@ -104,6 +110,7 @@ export class LevelMap extends Mapped<Tile> {
     tile.creature = undefined
     tile.items.push(new Corpse(creature))
     remove(this.creatures, c => c.id === creature.id)
+    this.timeline.remove(creature.id)
   }
 
   public visibleThrough(x: number, y: number): boolean {
@@ -128,7 +135,22 @@ export class LevelMap extends Mapped<Tile> {
   }
 
   public turn(): void {
-    this.creatures.forEach((creature) => creature.act(this))
-    this.creatures.forEach((creature) => creature.visionMask(this))
+    const turnCreatureIds = this.timeline.actors()
+
+    // First loop to act
+    this.creatures.forEach(creature => {
+      if (includes(turnCreatureIds, creature.id)) {
+        creature.act(this)
+      }
+    })
+
+    // Second loop to add themselves to timeline again
+    // and build vision after all actions
+    this.creatures.forEach(creature => {
+      if (includes(turnCreatureIds, creature.id)) {
+        this.timeline.add(creature.id, creature.initiativity())
+      }
+      creature.visionMask(this)
+    })
   }
 }
