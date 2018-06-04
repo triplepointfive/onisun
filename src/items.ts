@@ -4,6 +4,8 @@ export {
   ItemGroup,
   ItemKind,
 
+  Equipment,
+
   Corpse,
 } from './items/internal'
 

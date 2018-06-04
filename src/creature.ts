@@ -1,9 +1,12 @@
 import { Mapped, Point, twoDimArray } from './utils'
 import { AI } from './ai'
 import { Fov } from './fov'
+import { Item, Equipment } from './items'
 
 import { LevelMap, LevelMapId, Tile } from './map'
 import { Logger } from './logger'
+
+import { remove } from 'lodash'
 
 export class MemoryTile  {
   public visible: boolean = false
@@ -60,6 +63,59 @@ export class Memory extends Mapped<MemoryTile> {
 }
 
 export type CreatureId = number
+
+export enum BodyPart {
+  LeftHand,
+  RightHand,
+  Legs,
+  Finger,
+  Head,
+  Eye,
+  Neck,
+  Back,
+  Body,
+}
+
+type Wearing = {
+  bodyPart: BodyPart
+  equipment?: Equipment
+}
+
+export class Inventory {
+  private wearings: Wearing[] = []
+  private bag: Equipment[] = []
+
+  constructor(parts: BodyPart[]) {
+    this.wearings = parts.map(bodyPart => { return { bodyPart: bodyPart } })
+  }
+
+  public equip(bodyPart: BodyPart, item: Equipment) {
+    // TODO: Check type matches
+    this.wearings.forEach(wearing => {
+      if (wearing.bodyPart === bodyPart) {
+        return wearing.equipment = item
+      }
+    })
+  }
+
+  public takeOff(item: Equipment) {
+    // TODO: assert it is put on
+    this.wearings.forEach(wearing => {
+      if (wearing.equipment && wearing.equipment.id === item.id) {
+        return wearing.equipment = null
+      }
+    })
+  }
+
+  public addToBag(item: Item) {
+    this.bag.push(item)
+  }
+
+  public drop(item: Item) {
+    // TODO: assert it is in the bag
+    remove(this.bag, inventoryItem => inventoryItem.id === item.id)
+  }
+}
 
 export class Phantom {
   private static lastId: CreatureId = 0

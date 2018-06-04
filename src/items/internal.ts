@@ -36,6 +36,10 @@ export class Item {
   }
 }
 
+export abstract class Equipment extends Item {
+
+}
+
 export class Corpse extends Item {
   constructor(creature: Phantom) {
     super(
