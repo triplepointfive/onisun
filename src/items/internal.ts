@@ -1,4 +1,5 @@
 import { Phantom } from '../creature'
+import { BodyPart } from '../creature'
 
 export enum ItemGroup {
   Armor,
@@ -37,7 +38,7 @@ export class Item {
 }
 
 export abstract class Equipment extends Item {
-
+  public abstract bodyPart(): BodyPart
 }
 
 export class Corpse extends Item {

@@ -83,16 +83,24 @@ type Wearing = {
 
 export class Inventory {
   private wearings: Wearing[] = []
-  private bag: Equipment[] = []
+  private bag: Item[] = []
 
-  constructor(parts: BodyPart[]) {
+  constructor(parts: BodyPart[] = []) {
     this.wearings = parts.map(bodyPart => { return { bodyPart: bodyPart } })
   }
 
-  public equip(bodyPart: BodyPart, item: Equipment) {
+  public wears(): Wearing[] {
+    return this.wearings
+  }
+
+  public cares(): Item[] {
+    return this.bag
+  }
+
+  public equip(item: Equipment) {
     // TODO: Check type matches
     this.wearings.forEach(wearing => {
-      if (wearing.bodyPart === bodyPart) {
+      if (wearing.bodyPart === item.bodyPart()) {
         return wearing.equipment = item
       }
     })
@@ -178,6 +186,7 @@ export class Creature extends Phantom {
   public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
   public currentLevel: LevelMap
+  public inventory: Inventory
 
   constructor(
     x: number,
@@ -190,6 +199,21 @@ export class Creature extends Phantom {
     super(x, y)
     this.previousPos = this.pos.copy()
     this.ai = ai
+    this.inventory = new Inventory([
+      BodyPart.LeftHand,
+      BodyPart.RightHand,
+      BodyPart.Legs,
+      BodyPart.Finger,
+      BodyPart.Head,
+      BodyPart.Eye,
+      BodyPart.Neck,
+      BodyPart.Back,
+      BodyPart.Body,
+    ])
+  }
+
+  public wear(item: Equipment) {
+    this.inventory.equip(item)
   }
 
   public name(): string {

@@ -110,14 +110,17 @@ export default Vue.extend({
         }
       }
 
-      new Creature(
+      const creature1 = new Creature(
         x,
         y,
         50,
         this.radius,
         10,
         new Dispatcher(),
-      ).addToMap(this.map)
+      )
+
+      creature1.addToMap(this.map)
+      creature1.wear(new Katana())
 
       x = this.map.width - 1
       y = this.map.height -1
@@ -131,14 +134,17 @@ export default Vue.extend({
         }
       }
 
-      new Creature(
+      const creature2 = new Creature(
         x,
         y,
         100,
         this.radius,
         5,
         new Dispatcher(),
-      ).addToMap(this.map)
+      )
+
+      creature2.addToMap(this.map)
+      creature2.wear(new Katana())
     },
     buildMap() {
       let map = generate(

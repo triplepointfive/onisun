@@ -3,15 +3,25 @@ import {
   ItemId,
   ItemGroup,
   ItemKind,
+
+  Equipment,
 } from './internal'
 
-export abstract class Weapon extends Item {
+import {
+  BodyPart,
+} from '../creature'
+
+export abstract class Weapon extends Equipment {
   constructor(kind: ItemKind, name: string) {
     super(
       ItemGroup.Weapon,
       kind,
       name,
     )
+  }
+
+  public bodyPart(): BodyPart {
+    return BodyPart.RightHand
   }
 }
 

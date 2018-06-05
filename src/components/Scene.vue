@@ -8,7 +8,7 @@
       <div class='col pl-0'>
         <div class='fps mb-2 '>FPS {{ fps }}</div>
 
-        <dl class='row small' v-for='creature in level.creatures'>
+        <dl class='row small' v-for='creature in level.creatures' :key='creature.id'>
           <dd class='col-sm-4'>
             ID
           </dd>
@@ -24,7 +24,7 @@
           </dt>
 
           <dd class='col-sm-4'>
-            Health
+            健康
           </dd>
           <dt class='col-sm-8'>
             {{ creature.health }}
@@ -42,6 +42,33 @@
           </dd>
           <dt class='col-sm-8'>
             {{ aiName(creature.ai) }}
+          </dt>
+
+          <dd class='col-sm-4'>
+            服
+          </dd>
+          <dt class='col-sm-8'>
+            <table>
+              <tr v-for='(wearing, i) in creature.inventory.wears()' :key='"bodyPart" + i'>
+                <td>
+                  {{ displayBodyPart(wearing.bodyPart) }}
+                </td>
+                <td>
+                  {{ displayItem(wearing.equipment) }}
+                </td>
+              </tr>
+            </table>
+          </dt>
+
+          <dd class='col-sm-4'>
+            鞄
+          </dd>
+          <dt class='col-sm-8'>
+            <ul>
+              <li v-for='item in creature.inventory.cares()' :key='item.id'>
+                {{ item }}
+              </li>
+            </ul>
           </dt>
         </dl>
 
@@ -105,6 +132,8 @@ import {
   Katana,
   ItemKind,
 } from '../items'
+
+import { BodyPart } from '../creature'
 
 const HUMAN  = new CreatureTile('俺', 0, 255, 0)
 const HUMAN2 = new CreatureTile('俺', 255, 0, 0)
@@ -272,6 +301,35 @@ export default Vue.extend({
       }
 
       return tile
+    },
+    displayItem(item) {
+      if (item) {
+        return displayItem(item).getChar()
+      }
+    },
+    displayBodyPart(bodyPart) {
+      switch (bodyPart) {
+        case BodyPart.LeftHand:
+          return '手'
+        case BodyPart.RightHand:
+          return '手'
+        case BodyPart.Legs:
+          return '足'
+        case BodyPart.Finger:
+          return '指'
+        case BodyPart.Head:
+          return '頭'
+        case BodyPart.Eye:
+          return '目'
+        case BodyPart.Neck:
+          return '喉'
+        case BodyPart.Back:
+          return '背'
+        case BodyPart.Body:
+          return '体'
+        default:
+          throw `Unknow body part ${bodyPart}`
+      }
     }
   },
   computed: {

@@ -125,7 +125,7 @@ export class ItemTile extends DisplayTile {
 const KATANA = new ItemTile('刀', 200, 200, 200)
 const CORPSE = new ItemTile('体', 200, 200, 200)
 
-export const displayItem = function(item: Item) {
+export const displayItem = function(item: Item): ItemTile {
   switch (item.kind) {
     case ItemKind.Katana:
       return KATANA
