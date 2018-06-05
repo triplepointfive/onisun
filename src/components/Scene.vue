@@ -322,7 +322,7 @@ export default Vue.extend({
         case BodyPart.Eye:
           return '目'
         case BodyPart.Neck:
-          return '喉'
+          return '首'
         case BodyPart.Back:
           return '背'
         case BodyPart.Body:
