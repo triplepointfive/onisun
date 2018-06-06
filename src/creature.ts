@@ -24,6 +24,10 @@ export class MemoryTile  {
     this.tile = tile.clone()
   }
 
+  public items(): Item[] {
+    return this.tile.items
+  }
+
   public tangible(actor?: Creature): boolean {
     return this.seen && !this.tile.passibleThrough(actor)
   }
