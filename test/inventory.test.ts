@@ -40,7 +40,7 @@ describe('failed', () => {
   test('can not wear if there is no matching slot', () => {
     inventory.equip(item1)
     expect(inventory.wears()[0].equipment).toBeNull
-    expect(inventory.cares()).toEqual([item1])
+    expect(inventory.cares()).toEqual([])
   })
 
   test('drops item', () => {

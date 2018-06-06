@@ -17,9 +17,12 @@ export class Picker extends AI {
     }
 
     if (actor.pos.eq(this.desiredItemPos)) {
-      actor.currentLevel.at(actor.pos.x, actor.pos.y).items.forEach(item => {
+      const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
+      tile.items.forEach(item => {
         actor.inventory.putToBag(item)
       })
+
+      tile.items = []
 
       this.desiredItemId = null
       this.desiredItemPos = null

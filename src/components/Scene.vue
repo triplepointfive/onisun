@@ -66,7 +66,7 @@
           <dt class='col-sm-8'>
             <ul>
               <li v-for='item in creature.inventory.cares()' :key='item.id'>
-                {{ item }}
+                  {{ displayItem(item) }}
               </li>
             </ul>
           </dt>
@@ -126,6 +126,7 @@ import {
   Escaper,
   Loiter,
   Dispatcher,
+  Picker,
 } from '../ai'
 
 import {
@@ -192,6 +193,9 @@ export default Vue.extend({
       }
       if (ai instanceof Dispatcher) {
         return `Dispatcher (${this.aiName(ai.prevAI)})`
+      }
+      if (ai instanceof Picker) {
+        return 'Picker'
       }
     },
     getTile(x, y) {
@@ -304,7 +308,7 @@ export default Vue.extend({
     },
     displayItem(item) {
       if (item) {
-        return displayItem(item).getChar()
+        return `${displayItem(item).getChar()} ${item.name}`
       }
     },
     displayBodyPart(bodyPart) {
