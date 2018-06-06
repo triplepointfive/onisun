@@ -159,9 +159,6 @@ export default Vue.extend({
         return addDoors(map)
       }
 
-      map.at(3, 3).items.push(new Katana())
-      map.at(3, 3).items.push(new Corpse(new Phantom(3, 3)))
-
       return map
     }
   },

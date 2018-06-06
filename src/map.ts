@@ -109,6 +109,17 @@ export class LevelMap extends Mapped<Tile> {
     let tile = this.at(creature.pos.x, creature.pos.y)
     tile.creature = undefined
     tile.items.push(new Corpse(creature))
+
+    creature.inventory.wears().forEach(({ bodyPart, equipment }) => {
+      if (equipment) {
+        tile.items.push(equipment)
+      }
+    });
+
+    creature.inventory.cares().forEach(item => {
+      tile.items.push(item)
+    });
+
     remove(this.creatures, c => c.id === creature.id)
     this.timeline.remove(creature.id)
   }

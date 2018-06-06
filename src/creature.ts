@@ -101,6 +101,10 @@ export class Inventory {
     // TODO: Check type matches
     this.wearings.forEach(wearing => {
       if (wearing.bodyPart === item.bodyPart()) {
+        if (wearing.equipment) {
+          this.takeOff(wearing.equipment)
+        }
+
         return wearing.equipment = item
       }
     })
