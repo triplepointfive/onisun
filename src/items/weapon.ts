@@ -9,7 +9,7 @@ import {
 
 import {
   BodyPart,
-} from '../creature'
+} from '../inventory'
 
 export abstract class Weapon extends Equipment {
   constructor(kind: ItemKind, name: string) {

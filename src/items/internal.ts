@@ -1,5 +1,5 @@
 import { Phantom } from '../creature'
-import { BodyPart } from '../creature'
+import { BodyPart } from '../inventory'
 
 export enum ItemGroup {
   Armor,

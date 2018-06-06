@@ -133,7 +133,7 @@ import {
   ItemKind,
 } from '../items'
 
-import { BodyPart } from '../creature'
+import { BodyPart } from '../inventory'
 
 const HUMAN  = new CreatureTile('俺', 0, 255, 0)
 const HUMAN2 = new CreatureTile('俺', 255, 0, 0)
