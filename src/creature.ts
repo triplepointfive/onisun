@@ -123,12 +123,16 @@ export enum Reaction {
   NOTHING,
 }
 
+export type Characteristics = {
+}
+
 export class Creature extends Phantom {
   ai: AI
   public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
   public currentLevel: LevelMap
   public inventory: Inventory
+  public characteristics: Characteristics
 
   constructor(
     x: number,
