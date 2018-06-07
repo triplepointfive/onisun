@@ -1,6 +1,0 @@
-.game-table{border-collapse:collapse;background-color:#000}.game-table td{padding:0;width:1em;height:.1em}.col{float:left;margin-right:1em}.block{margin-bottom:1em}.block .wrapper .content{border:1px solid #000;display:inline-block}.row{white-space:nowrap}
-.player{color:#fff;background-color:#000}.wall{color:orange;background-color:orange}.floor{color:orange;background-color:#000}.door{color:#000;background-color:orange}
-.unicodetiles{background-color:#000;font-family:DejaVuSansMono,DejaVu Sans Mono,monospace;font-size:16px;white-space:pre;text-align:center;line-height:1;letter-spacing:0;display:inline-block}.unicodetiles div{float:left;height:1em}.unicodetiles br{clear:both}
-div{font-family:Lucida Console,Monaco,monospace}
-
-/*# sourceMappingURL=main.2f6118a0.css.map*/
