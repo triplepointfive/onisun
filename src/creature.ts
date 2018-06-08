@@ -123,12 +123,32 @@ export enum Reaction {
   NOTHING,
 }
 
+export class Attribute {
+  constructor(private base: number) {
+  }
+
+  public currentValue(): number {
+    return this.base
+  }
+}
+
+export class Characteristics {
+  public attack: Attribute
+  public defense: Attribute
+
+  constructor(attack: number, defense: number) {
+    this.attack = new Attribute(attack)
+    this.defense = new Attribute(defense)
+  }
+}
+
 export class Creature extends Phantom {
   ai: AI
   public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
   public currentLevel: LevelMap
   public inventory: Inventory
+  public characteristics: Characteristics
 
   constructor(
     x: number,
@@ -152,6 +172,7 @@ export class Creature extends Phantom {
       BodyPart.Back,
       BodyPart.Body,
     ])
+    this.characteristics = new Characteristics(5, 3)
   }
 
   public wear(item: Equipment) {

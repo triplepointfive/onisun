@@ -8,69 +8,7 @@
       <div class='col pl-0'>
         <div class='fps mb-2 '>FPS {{ fps }}</div>
 
-        <dl class='row small' v-for='creature in level.creatures' :key='creature.id'>
-          <dd class='col-sm-4'>
-            ID
-          </dd>
-          <dt class='col-sm-8'>
-            {{ creature.id }}
-          </dt>
-
-          <dd class='col-sm-4'>
-            POS
-          </dd>
-          <dt class='col-sm-8'>
-            {{ creature.pos }}
-          </dt>
-
-          <dd class='col-sm-4'>
-            健康
-          </dd>
-          <dt class='col-sm-8'>
-            {{ creature.health }}
-          </dt>
-
-          <dd class='col-sm-4'>
-            Initiation
-          </dd>
-          <dt class='col-sm-8'>
-            {{ creature.initiativity() }}
-          </dt>
-
-          <dd class='col-sm-4'>
-            AI
-          </dd>
-          <dt class='col-sm-8'>
-            {{ aiName(creature.ai) }}
-          </dt>
-
-          <dd class='col-sm-4'>
-            服
-          </dd>
-          <dt class='col-sm-8'>
-            <table>
-              <tr v-for='(wearing, i) in creature.inventory.wears()' :key='"bodyPart" + i'>
-                <td>
-                  {{ displayBodyPart(wearing.bodyPart) }}
-                </td>
-                <td>
-                  {{ displayItem(wearing.equipment) }}
-                </td>
-              </tr>
-            </table>
-          </dt>
-
-          <dd class='col-sm-4'>
-            鞄
-          </dd>
-          <dt class='col-sm-8'>
-            <ul>
-              <li v-for='item in creature.inventory.cares()' :key='item.id'>
-                  {{ displayItem(item) }}
-              </li>
-            </ul>
-          </dt>
-        </dl>
+        <Stats :creature='creature' v-for='creature in level.creatures' :key='creature.id'/>
 
         <div class='form-group row'>
           <div class='col-sm-2'>Map</div>
@@ -99,6 +37,8 @@
 
 <script lang='ts'>
 import Vue from 'vue'
+import Stats from './stats.vue'
+
 import {
   domRenderer,
   canvasRenderer,
@@ -117,24 +57,6 @@ import {
 
   displayItem,
 } from './scene_tiles'
-
-import {
-  Patrol,
-  Explorer,
-  Waiter,
-  Chaser,
-  Escaper,
-  Loiter,
-  Dispatcher,
-  Picker,
-} from '../ai'
-
-import {
-  Katana,
-  ItemKind,
-} from '../items'
-
-import { BodyPart } from '../inventory'
 
 const HUMAN  = new CreatureTile('俺', 0, 255, 0)
 const HUMAN2 = new CreatureTile('俺', 255, 0, 0)
@@ -171,33 +93,10 @@ export default Vue.extend({
       player: this.level.creatures[0]
     }
   },
+  components: {
+    Stats
+  },
   methods: {
-    aiName(ai) {
-      if (ai instanceof Patrol) {
-        return 'Patrol'
-      }
-      if (ai instanceof Escaper) {
-        return 'Escaper'
-      }
-      if (ai instanceof Chaser) {
-        return 'Chaser'
-      }
-      if (ai instanceof Explorer) {
-        return 'Explorer'
-      }
-      if (ai instanceof Waiter) {
-        return 'Waiter'
-      }
-      if (ai instanceof Loiter) {
-        return `Loiter (${this.aiName(ai.prevAI)})`
-      }
-      if (ai instanceof Dispatcher) {
-        return `Dispatcher (${this.aiName(ai.prevAI)})`
-      }
-      if (ai instanceof Picker) {
-        return 'Picker'
-      }
-    },
     getTile(x, y) {
       const tile = this.stage.at(x, y).tile
       if (!tile) {
@@ -306,35 +205,6 @@ export default Vue.extend({
 
       return tile
     },
-    displayItem(item) {
-      if (item) {
-        return `${displayItem(item).getChar()} ${item.name}`
-      }
-    },
-    displayBodyPart(bodyPart) {
-      switch (bodyPart) {
-        case BodyPart.LeftHand:
-          return '手'
-        case BodyPart.RightHand:
-          return '手'
-        case BodyPart.Legs:
-          return '足'
-        case BodyPart.Finger:
-          return '指'
-        case BodyPart.Head:
-          return '頭'
-        case BodyPart.Eye:
-          return '目'
-        case BodyPart.Neck:
-          return '首'
-        case BodyPart.Back:
-          return '背'
-        case BodyPart.Body:
-          return '体'
-        default:
-          throw `Unknow body part ${bodyPart}`
-      }
-    }
   },
   computed: {
     stage() {
