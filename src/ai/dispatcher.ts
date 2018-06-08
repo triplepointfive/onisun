@@ -4,7 +4,9 @@ import {
   Chaser,
   Escaper,
   Explorer,
+  Loiter,
   Picker,
+  Patrol,
 } from '../ai'
 import { Creature } from '../creature'
 
@@ -16,6 +18,10 @@ export class Dispatcher extends AI {
   private chaser: Chaser
   private attacker: Attacker
   private picker: Picker
+  private patrol: Patrol
+  private loiter: Loiter
+
+  private firstCallPatrol: boolean = true
 
   constructor() {
     super()
@@ -24,6 +30,8 @@ export class Dispatcher extends AI {
     this.chaser   = new Chaser(this)
     this.attacker = new Attacker(this)
     this.picker   = new Picker(this)
+    this.patrol   = new Patrol(this)
+    this.loiter   = new Loiter(this)
   }
 
   public available(actor: Creature): boolean {
@@ -54,7 +62,7 @@ export class Dispatcher extends AI {
   }
 
   private feelsGood(actor: Creature): boolean {
-    return true /////////////////////
+    return true // TODO
   }
 
   private enemyClose(actor: Creature): boolean {
@@ -78,7 +86,19 @@ export class Dispatcher extends AI {
   }
 
   private explore(actor: Creature): void {
-    this.explorer.act(actor)
+    if (this.explorer.available(actor)) {
+      // console.log(`Dispatcher ${this.explorer.available(actor)}`)
+      this.patrol.trackMovement(actor)
+      this.explorer.act(actor)
+    } else if (this.patrol.available(actor)) {
+      if (this.firstCallPatrol) {
+        this.firstCallPatrol = false
+        this.patrol.addNode(actor.pos.x, actor.pos.y)
+      }
+      this.patrol.act(actor)
+    } else {
+      this.loiter.act(actor)
+    }
   }
 
   private runAway(actor: Creature): void {

@@ -1,14 +1,10 @@
-import { AI, Patrol, Loiter } from '../ai'
+import { AI } from '../ai'
 
-import { Point, twoDimArray } from '../utils'
+import { Point } from '../utils'
 import { Creature } from '../creature'
-
-const NEW_POINT_EVERY: number = 10
 
 export class Explorer extends AI {
   path: Point[] = []
-  private step: number = NEW_POINT_EVERY
-  public patrol: Patrol
 
   public available(actor: Creature): boolean {
     if (this.path.length) {
@@ -20,10 +16,6 @@ export class Explorer extends AI {
   }
 
   act(actor: Creature, firstTurn: boolean = true): void {
-    if (this.step >= NEW_POINT_EVERY ) {
-      this.updatePatrol( actor )
-    }
-
     if (this.path.length) {
       const nextPoint: Point = this.path.shift()
       if (actor.stageMemory().at(nextPoint.x, nextPoint.y).tangible(actor)) {
@@ -32,48 +24,26 @@ export class Explorer extends AI {
           this.act(actor, false)
         }
       } else {
-        this.step++
-
         actor.move(nextPoint)
-
-        if (this.shouldAddNode(actor)) {
-          this.updatePatrol(actor)
-        }
       }
     } else {
       this.buildNewPath(actor)
+
       if (this.path.length) {
         if (firstTurn) {
           this.act(actor, false)
         }
-      } else if (this.patrol.available(actor)) {
-        // Logger.info( "I'm done, time to patrol" )
-        this.patrol.addNode( actor.pos.x, actor.pos.y )
-        actor.ai = this.patrol
-        actor.ai.act(actor, false)
       } else {
-        actor.ai = new Loiter(this)
+        // TODO: Happens when the last point in a path is tangible
+        // Just call parent to give it one more chance
+        this.prevAI.act(actor, true)
       }
     }
   }
 
-  private buildNewPath( actor: Creature ): void {
-    this.path = this.leePath( actor, point => {
+  private buildNewPath(actor: Creature): void {
+    this.path = this.leePath(actor, point => {
       return !actor.stageMemory().at(point.x, point.y).seen
     })
-  }
-
-  private updatePatrol( actor: Creature ): void {
-    if (this.patrol === undefined) {
-      this.patrol = new Patrol( actor.pos.x, actor.pos.y )
-    } else {
-      this.patrol.addNode( actor.pos.x, actor.pos.y )
-    }
-
-    this.step = 0
-  }
-
-  private shouldAddNode(actor: Creature): boolean {
-    return actor.stageMemory().at(actor.previousPos.x, actor.previousPos.y).tile.isDoor()
   }
 }
