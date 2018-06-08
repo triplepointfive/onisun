@@ -120,7 +120,7 @@ export default Vue.extend({
       )
 
       creature1.addToMap(this.map)
-      creature1.wear(new Katana())
+      creature1.putOn(new Katana())
 
       x = this.map.width - 1
       y = this.map.height -1
@@ -144,7 +144,7 @@ export default Vue.extend({
       )
 
       creature2.addToMap(this.map)
-      creature2.wear(new Katana())
+      creature2.putOn(new Katana())
     },
     buildMap() {
       let map = generate(

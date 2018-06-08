@@ -1,7 +1,7 @@
-import { AI } from "../ai";
-import { Creature } from "../creature";
-import { Item, ItemId } from "../items";
-import { Point } from "../utils";
+import { AI } from '../ai'
+import { Creature } from '../creature'
+import { Item, ItemId } from '../items'
+import { Point } from '../utils'
 
 export class Picker extends AI {
   private desiredItemId: ItemId = null

@@ -4,8 +4,9 @@ import { Fov } from './fov'
 import { Item, Equipment } from './items'
 
 import { LevelMap, LevelMapId, Tile } from './map'
-import { Logger } from './logger'
 import { Inventory, BodyPart } from './inventory'
+
+import { remove, sum } from 'lodash'
 
 export class MemoryTile  {
   public visible: boolean = false
@@ -126,11 +127,20 @@ export enum Reaction {
 }
 
 export class Attribute {
-  constructor(private base: number) {
+  private modifiers: number[] = []
+
+  constructor(private base: number) {}
+
+  public addModifier(modifier: number) {
+    this.modifiers.push(modifier)
+  }
+
+  public removeModifier(modifier: number) {
+    remove(this.modifiers, val => val === modifier)
   }
 
   public currentValue(): number {
-    return this.base
+    return this.base + sum(this.modifiers)
   }
 }
 
@@ -181,8 +191,14 @@ export class Creature extends Phantom {
     this.characteristics = new Characteristics(5, 3)
   }
 
-  public wear(item: Equipment) {
+  public putOn(item: Equipment) {
     this.inventory.equip(item)
+    item.onPutOn(this)
+  }
+
+  public takeOff(item: Equipment) {
+    this.inventory.equip(item)
+    item.onPutOn(this)
   }
 
   public name(): string {

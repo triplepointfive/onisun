@@ -1,6 +1,4 @@
 import {
-  Item,
-  ItemId,
   ItemGroup,
   ItemKind,
 
@@ -10,9 +8,10 @@ import {
 import {
   BodyPart,
 } from '../inventory'
+import { Creature } from '../creature'
 
 export abstract class Weapon extends Equipment {
-  constructor(kind: ItemKind, name: string) {
+  constructor(kind: ItemKind, name: string, private attackModifier: number) {
     super(
       ItemGroup.Weapon,
       kind,
@@ -23,6 +22,14 @@ export abstract class Weapon extends Equipment {
   public bodyPart(): BodyPart {
     return BodyPart.RightHand
   }
+
+  public onPutOn(creature: Creature): void {
+    creature.characteristics.attack.addModifier(this.attackModifier)
+  }
+
+  public onTakeOff(creature: Creature): void {
+    creature.characteristics.attack.removeModifier(this.attackModifier)
+  }
 }
 
 export class Katana extends Weapon {
@@ -30,6 +37,7 @@ export class Katana extends Weapon {
     super(
       ItemKind.Katana,
       'Katana',
+      3,
     )
   }
 }

@@ -39,6 +39,11 @@ export class Item {
 
 export abstract class Equipment extends Item {
   public abstract bodyPart(): BodyPart
+  public canTakeOff(): boolean {
+    return true // TODO
+  }
+  public abstract onPutOn(creature): void
+  public abstract onTakeOff(creature): void
 }
 
 export class Corpse extends Item {
