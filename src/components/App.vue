@@ -2,26 +2,6 @@
   <div id='app' class='container'>
     <Scene :level='map' v-if='map.creatures.length'/>
     <Logger :logger='map.logger' />
-
-    <div class='mb-5'>
-      <input type='text' v-model='formula' placeholder="formula">
-      <input type='number' v-model='minVal' placeholder="min">
-      <input type='number' v-model='maxVal' placeholder="max">
-
-      <table>
-        <tr>
-          <th>D\A</th>
-          <th v-for='value in values' :key='value'>{{value}}</th>
-        </tr>
-        <tr v-for='d in values' :key='d'>
-          <th>{{d}}</th>
-          <td v-for='a in values' :key='a' style='border: 1px solid black;'>
-            {{ calc(a, d) }}
-          </td>
-        </tr>
-      </table>
-    </div>
-
     <div class=''>
       <div class=''>
         <div class='form-group row'>
@@ -107,22 +87,7 @@ export default Vue.extend({
         minSize: 5,
         maxSize: 5,
         roomsCount: 3,
-      },
-      minVal: 1,
-      maxVal: 10,
-      formula: 'Math.floor(10 * a / d)'
-    }
-  },
-  computed: {
-    values() {
-      let array = []
-      for (let i = this.minVal; i <= this.maxVal; i ++ ) {
-        array.push(i)
-
       }
-
-      return array
-
     }
   },
   components: {
@@ -131,13 +96,6 @@ export default Vue.extend({
     Scene,
   },
   methods: {
-    calc(a, d) {
-      try {
-        return eval(this.formula)
-      } catch(e) {
-        return 'E'
-      }
-    },
     generateMap() {
       this.map = this.buildMap()
       let x = 1,
