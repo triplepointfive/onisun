@@ -98,16 +98,18 @@ export abstract class Event {
 }
 
 export class Attack {
-  constructor(public actor: Creature, public damage: number) {}
+  constructor(public actor: Creature) {}
 
   public affect(subject: Creature): Reaction {
-    if (this.damage > subject.health) {
-      subject.currentLevel.logger.killMessage(this.damage, this.actor, subject)
+    const damage = this.actor.characteristics.damageTo(subject)
+
+    if (damage > subject.health) {
+      subject.currentLevel.logger.killMessage(damage, this.actor, subject)
       subject.die()
       return Reaction.HURT
     } else {
-      subject.health -= this.damage
-      subject.currentLevel.logger.hurtMessage(this.damage, this.actor, subject)
+      subject.health -= damage
+      subject.currentLevel.logger.hurtMessage(damage, this.actor, subject)
       return Reaction.DIE
     }
   }
@@ -139,6 +141,10 @@ export class Characteristics {
   constructor(attack: number, defense: number) {
     this.attack = new Attribute(attack)
     this.defense = new Attribute(defense)
+  }
+
+  public damageTo(victim: Creature): number {
+    return 10 * this.attack.currentValue() / victim.characteristics.defense.currentValue()
   }
 }
 
@@ -192,7 +198,7 @@ export class Creature extends Phantom {
   public emit(eventType: EventType): Event {
     switch (eventType) {
     case EventType.Attack:
-      return new Attack(this, this.speed)
+      return new Attack(this)
     default:
       throw `Unknow event type ${eventType} for ${this}`
     }
