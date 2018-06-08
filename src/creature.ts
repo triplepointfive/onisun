@@ -140,7 +140,8 @@ export class Attribute {
   }
 
   public currentValue(): number {
-    return this.base + sum(this.modifiers)
+    const value = this.base + sum(this.modifiers)
+    return value >= 1 ? value : 1
   }
 }
 
