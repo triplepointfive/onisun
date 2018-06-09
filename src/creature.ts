@@ -98,7 +98,7 @@ export class Attack {
   public affect(subject: Creature): Reaction {
     const damage = this.actor.characteristics.damageTo(subject)
 
-    if (damage > subject.characteristics.health.currentValue()) {
+    if (damage >= subject.characteristics.health.currentValue()) {
       subject.currentLevel.logger.killMessage(damage, this.actor, subject)
       subject.die()
       return Reaction.DIE
@@ -152,7 +152,6 @@ export class Creature extends Phantom {
       BodyPart.Back,
       BodyPart.Body,
     ])
-    console.log("attack, defense", attack, defense)
     this.characteristics = new Characteristics(attack, defense, health, radius, speed)
   }
 

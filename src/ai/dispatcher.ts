@@ -53,7 +53,11 @@ export class Dispatcher extends AI {
         this.explore(actor)
       }
     } else if (this.enemyClose(actor)) {
-      this.runAway(actor)
+      if (this.healthCritical(actor)) {
+        this.runAway(actor)
+      } else {
+        this.attack(actor)
+      }
     } else {
       this.rest(actor)
     }
@@ -62,7 +66,11 @@ export class Dispatcher extends AI {
   }
 
   private feelsGood(actor: Creature): boolean {
-    return actor.characteristics.health.currentValue() > actor.characteristics.health.maximum() / 4
+    return actor.characteristics.health.currentValue() > actor.characteristics.health.maximum() * 0.9
+  }
+
+  private healthCritical(actor: Creature): boolean {
+    return actor.characteristics.health.currentValue() < actor.characteristics.health.maximum() / 4
   }
 
   private enemyClose(actor: Creature): boolean {
@@ -104,5 +112,7 @@ export class Dispatcher extends AI {
     this.escaper.act(actor)
   }
 
-  private rest(actor: Creature): void {}
+  private rest(actor: Creature): void {
+    actor.characteristics.regenerate()
+  }
 }

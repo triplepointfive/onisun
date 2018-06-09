@@ -84,4 +84,8 @@ export class Characteristics {
         victim.characteristics.defense.currentValue()
     )
   }
+
+  public regenerate(): void {
+    this.health.increase(Math.ceil(this.health.maximum() / 20))
+  }
 }
