@@ -31,7 +31,7 @@ export class Escaper extends AI {
 
   private buildPath(
     actor: Creature,
-    minDistance: number = actor.radius() / 2,
+    minDistance: number = actor.radius() / 2
   ): void {
     if (minDistance <= 1) {
       this.runningTo = undefined
@@ -50,7 +50,7 @@ export class Escaper extends AI {
 
         return score >= minDistance
       },
-      true,
+      true
     )
 
     if (path.length) {
@@ -60,21 +60,16 @@ export class Escaper extends AI {
     }
   }
 
-  private foundEnemies(
-    actor: Creature,
-  ): boolean {
+  private foundEnemies(actor: Creature): boolean {
     this.escapesFrom = []
 
-    this.withinView(
-      actor,
-      (point, tile) => {
-        const creature = tile.creature()
+    this.withinView(actor, (point, tile) => {
+      const creature = tile.creature()
 
-        if (creature && creature.id !== actor.id) {
-          this.escapesFrom.push(creature)
-        }
+      if (creature && creature.id !== actor.id) {
+        this.escapesFrom.push(creature)
       }
-    )
+    })
 
     return this.escapesFrom.length > 0
   }

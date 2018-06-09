@@ -12,12 +12,12 @@ const newWall = function(): Tile {
   return Tile.retrive('W')
 }
 
-const generate = function (
+const generate = function(
   dimX: number,
   dimY: number,
   minSize: number = 5,
   maxSize: number = 5,
-  roomsCount: number = 3,
+  roomsCount: number = 3
 ): LevelMap {
   let level = new LevelMap(twoDimArray(dimX, dimY, newWall))
   let freeCellsCount = 1
@@ -35,7 +35,12 @@ const generate = function (
     }
 
     // TODO check height and widht match
-    if (pos.x <= 0 || pos.y <= 0 || pos.x >= level.width - 1 || pos.y >= level.height - 1) {
+    if (
+      pos.x <= 0 ||
+      pos.y <= 0 ||
+      pos.x >= level.width - 1 ||
+      pos.y >= level.height - 1
+    ) {
       pos = new Point(Math.floor(dimX / 2), Math.floor(dimY / 2))
       continue
     }

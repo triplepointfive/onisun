@@ -2,14 +2,13 @@ import { forEach, keys, min, remove, size } from 'lodash'
 
 export class Timeline<T> {
   private step: number = 0
-  private turns: { [key: number]:  T[] } = {}
+  private turns: { [key: number]: T[] } = {}
 
   public add(actor: T, delta: number): void {
     const ts = this.step + delta
 
     if (this.turns[ts]) {
       this.turns[ts].push(actor)
-
     } else {
       this.turns[ts] = [actor]
     }

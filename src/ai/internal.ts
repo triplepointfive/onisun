@@ -6,18 +6,14 @@ import { sample } from 'lodash'
 const FIRST_STEP: number = 1
 
 export abstract class AI {
-  constructor(public prevAI?: AI) {
-  }
+  constructor(public prevAI?: AI) {}
 
   public abstract act(actor: Creature, firstTurn: boolean): void
 
   public abstract available(actor: Creature): boolean
 
   protected moveTo(actor: Creature, destination: Point): boolean {
-    const path = this.leePath(
-      actor,
-      point => destination.eq(point),
-    )
+    const path = this.leePath(actor, point => destination.eq(point))
 
     if (path.length) {
       actor.move(path[0])
@@ -27,10 +23,7 @@ export abstract class AI {
   }
 
   protected followTo(actor: Creature, destination: Point): boolean {
-    const path = this.leePath(
-      actor,
-      point => destination.nextTo(point),
-    )
+    const path = this.leePath(actor, point => destination.nextTo(point))
 
     if (path.length) {
       actor.move(path[0])
@@ -42,33 +35,39 @@ export abstract class AI {
   protected leePath(
     actor: Creature,
     destination: (point: Point, tile: MemoryTile) => boolean,
-    randomDestination: boolean = false,
+    randomDestination: boolean = false
   ): Point[] {
     const map = actor.stageMemory()
 
-    let stageMemory: number[][] = twoDimArray(map.height, map.width, () => undefined)
+    let stageMemory: number[][] = twoDimArray(
+      map.height,
+      map.width,
+      () => undefined
+    )
     let pointsToVisit: Point[] = []
     let pointsToCheck: Point[] = [actor.pos]
 
     let step = 0
-    while ( pointsToCheck.length && !pointsToVisit.length ) {
-      let wavePoints: Array< Point > = []
+    while (pointsToCheck.length && !pointsToVisit.length) {
+      let wavePoints: Array<Point> = []
 
-      pointsToCheck.forEach( ( point: Point ) => {
+      pointsToCheck.forEach((point: Point) => {
         if (!map.inRange(point)) {
           return
         }
 
-        const tile = map.at(point.x ,  point.y)
+        const tile = map.at(point.x, point.y)
         // TODO: Compare, current value might be lower
-        if (tile.tangible(actor) ||
-            stageMemory[ point.x ][ point.y ] !== undefined ) {
+        if (
+          tile.tangible(actor) ||
+          stageMemory[point.x][point.y] !== undefined
+        ) {
           return
         }
 
-        stageMemory[ point.x ][ point.y ] = step
+        stageMemory[point.x][point.y] = step
         if (destination(point, tile)) {
-          pointsToVisit.push( point )
+          pointsToVisit.push(point)
         } else {
           point.wrappers().forEach(dist => wavePoints.push(dist))
         }
@@ -95,11 +94,16 @@ export abstract class AI {
 
     let delta: Point = undefined
 
-    while ( stageMemory[ lastPoint.x ][ lastPoint.y ] !== FIRST_STEP ) {
-      delta = Point.dxy.find( ( dp ): boolean => {
-        return stageMemory[ lastPoint.x + dp.x ] &&
-          ( stageMemory[ lastPoint.x + dp.x ][ lastPoint.y + dp.y ] === stageMemory[ lastPoint.x ][ lastPoint.y ] - 1 )
-      })
+    while (stageMemory[lastPoint.x][lastPoint.y] !== FIRST_STEP) {
+      delta = Point.dxy.find(
+        (dp): boolean => {
+          return (
+            stageMemory[lastPoint.x + dp.x] &&
+            stageMemory[lastPoint.x + dp.x][lastPoint.y + dp.y] ===
+              stageMemory[lastPoint.x][lastPoint.y] - 1
+          )
+        }
+      )
 
       if (!delta) {
         return []
@@ -115,22 +119,26 @@ export abstract class AI {
 
   protected withinView(
     actor: Creature,
-    visit: (point: Point, tile: MemoryTile) => void,
+    visit: (point: Point, tile: MemoryTile) => void
   ): void {
     const map = actor.stageMemory()
 
-    let tileVisited: boolean[][] = twoDimArray(map.height, map.width, () => false)
+    let tileVisited: boolean[][] = twoDimArray(
+      map.height,
+      map.width,
+      () => false
+    )
     let pointsToCheck: Point[] = [actor.pos]
 
     while (pointsToCheck.length) {
-      let wavePoints: Array< Point > = []
+      let wavePoints: Array<Point> = []
 
       pointsToCheck.forEach((point: Point) => {
         if (!map.inRange(point)) {
           return
         }
 
-        const tile = map.at(point.x ,  point.y)
+        const tile = map.at(point.x, point.y)
         if (!tile.visible || tileVisited[point.x][point.y]) {
           return
         }

@@ -13,9 +13,8 @@ export class LogMessage {
   constructor(
     public level: LogLevel,
     public ts: Moment,
-    public message: string,
-  ) {
-  }
+    public message: string
+  ) {}
 }
 
 export class Logger {
@@ -26,7 +25,9 @@ export class Logger {
   }
 
   public killMessage(damage: number, actor: Creature, target: Creature) {
-    this.warning(`${target.name()} got ${damage} damage from ${actor.name()} causes them to die`)
+    this.warning(
+      `${target.name()} got ${damage} damage from ${actor.name()} causes them to die`
+    )
   }
 
   protected debug(message: string): void {
@@ -46,12 +47,6 @@ export class Logger {
   }
 
   protected addMessage(level: LogLevel, message: string): void {
-    this.messages.push(
-      new LogMessage(
-        level,
-        moment(),
-        message,
-      )
-    )
+    this.messages.push(new LogMessage(level, moment(), message))
   }
 }

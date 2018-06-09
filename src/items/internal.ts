@@ -9,7 +9,7 @@ export enum ItemGroup {
 
 export enum ItemKind {
   Katana,
-  Corpse
+  Corpse,
 }
 
 export type ItemId = number
@@ -24,16 +24,11 @@ export class Item {
     public group: ItemGroup,
     public kind: ItemKind,
     public name: string,
-    public id: ItemId = Item.getId(),
-  ) {
-  }
+    public id: ItemId = Item.getId()
+  ) {}
 
   public clone(): Item {
-    return new Item(
-      this.group,
-      this.kind,
-      this.name,
-    )
+    return new Item(this.group, this.kind, this.name)
   }
 }
 
@@ -48,10 +43,6 @@ export abstract class Equipment extends Item {
 
 export class Corpse extends Item {
   constructor(creature: Phantom) {
-    super(
-      ItemGroup.Corpse,
-      ItemKind.Corpse,
-      'corpse',
-    )
+    super(ItemGroup.Corpse, ItemKind.Corpse, 'corpse')
   }
 }

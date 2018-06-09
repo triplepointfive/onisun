@@ -4,11 +4,7 @@ import { Creature } from './onisun'
 export class Attribute {
   protected modifiers: number[] = []
 
-  constructor(
-    protected max: number,
-    protected current: number = max
-  ) {
-  }
+  constructor(protected max: number, protected current: number = max) {}
 
   public maximum(): number {
     return this.max
@@ -73,7 +69,7 @@ export class Characteristics {
     defense: number,
     health: number,
     radius: number,
-    speed: number,
+    speed: number
   ) {
     this.attack = new PositiveAttribute(attack)
     this.defense = new PositiveAttribute(defense)
@@ -83,6 +79,9 @@ export class Characteristics {
   }
 
   public damageTo(victim: Creature): number {
-    return Math.round(10 * this.attack.currentValue() / victim.characteristics.defense.currentValue())
+    return Math.round(
+      (10 * this.attack.currentValue()) /
+        victim.characteristics.defense.currentValue()
+    )
   }
 }

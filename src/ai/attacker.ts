@@ -30,12 +30,20 @@ export class Attacker extends AI {
 
   private canAttack(actor: Creature): boolean {
     const memory = actor.stageMemory()
-    return actor.pos.wrappers().some(({ x, y }) => memory.at(x, y).creature() !== undefined)
+    return actor.pos
+      .wrappers()
+      .some(({ x, y }) => memory.at(x, y).creature() !== undefined)
   }
 
   private victimInAccess(actor: Creature): boolean {
     const memory = actor.stageMemory()
-    return actor.pos.wrappers().some(({ x, y }) => memory.at(x, y).creature() && memory.at(x, y).creature().id === this.victim.id)
+    return actor.pos
+      .wrappers()
+      .some(
+        ({ x, y }) =>
+          memory.at(x, y).creature() &&
+          memory.at(x, y).creature().id === this.victim.id
+      )
   }
 
   private victimSet(): boolean {
@@ -43,36 +51,26 @@ export class Attacker extends AI {
   }
 
   private updateVictimPosition(actor: Creature) {
-    this.findCreature(
-      actor,
-      creature => creature.id === this.victim.id,
-    )
+    this.findCreature(actor, creature => creature.id === this.victim.id)
   }
 
   private findNewVictim(actor: Creature) {
-    this.findCreature(
-      actor,
-      creature => creature.id !== actor.id
-    )
+    this.findCreature(actor, creature => creature.id !== actor.id)
   }
 
   private findCreature(
     actor: Creature,
-    condition: (creature: Phantom) => boolean,
+    condition: (creature: Phantom) => boolean
   ): boolean {
-    this.withinView(
-      actor,
-      ({ x, y }, tile) => {
-        const creature = tile.creature()
+    this.withinView(actor, ({ x, y }, tile) => {
+      const creature = tile.creature()
 
-        if (creature && condition(creature)) {
-          this.victim = creature.real()
-          return true
-        }
+      if (creature && condition(creature)) {
+        this.victim = creature.real()
+        return true
       }
-    )
+    })
 
     return false
   }
 }
-

@@ -8,7 +8,7 @@ export class Fov {
     private width: number,
     private height: number,
     private checkSolid: (x: number, y: number) => boolean,
-    private markVisible: (x: number, y: number, degree: number) => void,
+    private markVisible: (x: number, y: number, degree: number) => void
   ) {
     this.doubleRadius = this.radius * this.radius
   }
@@ -17,15 +17,25 @@ export class Fov {
     this.markVisible(this.startx, this.starty, 1)
 
     if (!this.checkSolid(this.startx, this.starty)) {
-      [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([dx, dy]) => {
+      ;[[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([dx, dy]) => {
         this.castLight(1, 1.0, 0.0, 0, dx, dy, 0)
         this.castLight(1, 1.0, 0.0, dx, 0, 0, dy)
       })
     }
   }
 
-  private castLight(row: number, start: number, end: number, xx: number, xy: number, yx: number, yy: number) {
-    if (start < end) { return }
+  private castLight(
+    row: number,
+    start: number,
+    end: number,
+    xx: number,
+    xy: number,
+    yx: number,
+    yy: number
+  ) {
+    if (start < end) {
+      return
+    }
 
     let newStart = 0.0
     let blocked = false
@@ -39,7 +49,15 @@ export class Fov {
         let leftSlope = (deltaX - 0.5) / (deltaY + 0.5)
         let rightSlope = (deltaX + 0.5) / (deltaY - 0.5)
 
-        if (!(currentX >= 0 && currentY >= 0 && currentX < this.width && currentY < this.height) || start < rightSlope) {
+        if (
+          !(
+            currentX >= 0 &&
+            currentY >= 0 &&
+            currentX < this.width &&
+            currentY < this.height
+          ) ||
+          start < rightSlope
+        ) {
           continue
         } else if (end > leftSlope) {
           break
@@ -50,22 +68,25 @@ export class Fov {
           this.markVisible(
             currentX,
             currentY,
-            1 - this.doubleDistance(deltaX, deltaY) / this.doubleRadius,
+            1 - this.doubleDistance(deltaX, deltaY) / this.doubleRadius
           )
         }
 
-        if (blocked) { // previous cell was a blocking one
-          if (this.checkSolid(currentX, currentY)) { // hit a wall
+        if (blocked) {
+          // previous cell was a blocking one
+          if (this.checkSolid(currentX, currentY)) {
+            // hit a wall
             newStart = rightSlope
           } else {
             blocked = false
             start = newStart
           }
         } else {
-          if (this.checkSolid(currentX, currentY) && distance < this.radius) { // hit a wall within sight line
-              blocked = true
-              this.castLight(distance + 1, start, leftSlope, xx, xy, yx, yy)
-              newStart = rightSlope
+          if (this.checkSolid(currentX, currentY) && distance < this.radius) {
+            // hit a wall within sight line
+            blocked = true
+            this.castLight(distance + 1, start, leftSlope, xx, xy, yx, yy)
+            newStart = rightSlope
           }
         }
       }

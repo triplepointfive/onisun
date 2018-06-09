@@ -6,7 +6,8 @@
     "dev": "poi",
     "build": "poi build",
     "deploy": "npm run build && gh-pages -d dist",
-    "test": "npx jest"
+    "test": "npx jest",
+    "prettier": "prettier --parser typescript --single-quote --no-semi --trailing-comma es5 --write \"src/**/*.{ts,tsx}\""
   },
   "devDependencies": {
     "@poi/plugin-typescript": "^10.1.2",
@@ -14,6 +15,7 @@
     "gh-pages": "^1.1.0",
     "jest": "^23.1.0",
     "poi": "^10.1.2",
+    "prettier": "^1.13.5",
     "ts-jest": "^22.4.6",
     "ts-node": "^6.0.0",
     "typescript": "^2.8.1",

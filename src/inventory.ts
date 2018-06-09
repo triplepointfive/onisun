@@ -24,7 +24,9 @@ export class Inventory {
   private bag: Item[] = []
 
   constructor(parts: BodyPart[]) {
-    this.wearings = parts.map(bodyPart => { return { bodyPart: bodyPart } })
+    this.wearings = parts.map(bodyPart => {
+      return { bodyPart: bodyPart }
+    })
   }
 
   public wears(): Wearing[] {
@@ -42,7 +44,7 @@ export class Inventory {
           this.putToBag(wearing.equipment)
         }
 
-        return wearing.equipment = item
+        return (wearing.equipment = item)
       }
     })
   }
@@ -51,7 +53,7 @@ export class Inventory {
     this.wearings.forEach(wearing => {
       if (wearing.equipment && wearing.equipment.id === item.id) {
         this.putToBag(wearing.equipment)
-        return wearing.equipment = null
+        return (wearing.equipment = null)
       }
     })
   }

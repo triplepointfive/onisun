@@ -8,15 +8,12 @@ import { Inventory, BodyPart } from './inventory'
 
 import { Characteristics } from './onisun'
 
-export class MemoryTile  {
+export class MemoryTile {
   public visible: boolean = false
   public degree: number = 0
   public seen: boolean = false
 
-  constructor(
-    public tile?: Tile,
-  ) {
-  }
+  constructor(public tile?: Tile) {}
 
   public see(tile: Tile, degree: number) {
     this.visible = true
@@ -44,22 +41,23 @@ export class MemoryTile  {
 }
 
 export class Memory extends Mapped<MemoryTile> {
-  constructor(
-    width: number,
-    height: number,
-  ) {
+  constructor(width: number, height: number) {
     const baseTile = Tile.retrive('W')
     super(twoDimArray(height, width, () => new MemoryTile(baseTile)))
   }
 
   public inRange(point: Point): boolean {
-    return point.x >= 0         && point.y >= 0
-        && point.x < this.width && point.y < this.height
+    return (
+      point.x >= 0 &&
+      point.y >= 0 &&
+      point.x < this.width &&
+      point.y < this.height
+    )
   }
 
   public resetVisible(): void {
-    this.map.forEach((row) => {
-      row.forEach((tile) => {
+    this.map.forEach(row => {
+      row.forEach(tile => {
         tile.reset()
       })
     })
@@ -77,11 +75,7 @@ export class Phantom {
   public pos: Point
   public refToReal?: Creature
 
-  constructor(
-    x: number,
-    y: number,
-    public id: CreatureId = Phantom.getId(),
-  ) {
+  constructor(x: number, y: number, public id: CreatureId = Phantom.getId()) {
     this.pos = new Point(x, y)
   }
 
@@ -140,7 +134,7 @@ export class Creature extends Phantom {
     health: number,
     radius: number,
     speed: number,
-    ai: AI,
+    ai: AI
   ) {
     super(x, y)
     this.previousPos = this.pos.copy()
@@ -156,13 +150,7 @@ export class Creature extends Phantom {
       BodyPart.Back,
       BodyPart.Body,
     ])
-    this.characteristics = new Characteristics(
-      5,
-      3,
-      health,
-      radius,
-      speed,
-    )
+    this.characteristics = new Characteristics(5, 3, health, radius, speed)
   }
 
   public putOn(item: Equipment) {
@@ -187,10 +175,10 @@ export class Creature extends Phantom {
 
   public emit(eventType: EventType): Event {
     switch (eventType) {
-    case EventType.Attack:
-      return new Attack(this)
-    default:
-      throw `Unknow event type ${eventType} for ${this}`
+      case EventType.Attack:
+        return new Attack(this)
+      default:
+        throw `Unknow event type ${eventType} for ${this}`
     }
   }
 
@@ -244,7 +232,9 @@ export class Creature extends Phantom {
     }
 
     const see = (x: number, y: number, degree: number): void => {
-      this.stageMemory().at(x, y).see(stage.at(x, y), degree)
+      this.stageMemory()
+        .at(x, y)
+        .see(stage.at(x, y), degree)
     }
 
     new Fov(
@@ -254,7 +244,7 @@ export class Creature extends Phantom {
       stage.width,
       stage.height,
       this.isSolid(stage),
-      see,
+      see
     ).calc()
   }
 
@@ -263,7 +253,11 @@ export class Creature extends Phantom {
       if (stage.visibleThrough(x, y)) {
         return false
       } else {
-        return !(stage.at(x, y).isDoor() && this.pos.x === x && this.pos.y === y)
+        return !(
+          stage.at(x, y).isDoor() &&
+          this.pos.x === x &&
+          this.pos.y === y
+        )
       }
     }
   }

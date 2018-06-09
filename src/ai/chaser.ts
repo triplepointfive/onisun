@@ -35,10 +35,7 @@ export class Chaser extends AI {
   }
 
   private updateVictimPosition(actor: Creature) {
-    this.findCreature(
-      actor,
-      creature => creature.id === this.victimId,
-    )
+    this.findCreature(actor, creature => creature.id === this.victimId)
   }
 
   private chase(actor: Creature): void {
@@ -46,10 +43,7 @@ export class Chaser extends AI {
   }
 
   private foundNewVictim(actor: Creature): boolean {
-    return this.findCreature(
-      actor,
-      creature => creature.id !== actor.id
-    )
+    return this.findCreature(actor, creature => creature.id !== actor.id)
   }
 
   private caught(actor: Creature): boolean {
@@ -62,20 +56,17 @@ export class Chaser extends AI {
 
   private findCreature(
     actor: Creature,
-    condition: (creature: Phantom) => boolean,
+    condition: (creature: Phantom) => boolean
   ): boolean {
-    this.withinView(
-      actor,
-      ({ x, y }, tile) => {
-        const creature = tile.creature()
+    this.withinView(actor, ({ x, y }, tile) => {
+      const creature = tile.creature()
 
-        if (creature && condition(creature)) {
-          this.victimPos = new Point(x, y)
-          this.victimId = creature.id
-          return true
-        }
+      if (creature && condition(creature)) {
+        this.victimPos = new Point(x, y)
+        this.victimId = creature.id
+        return true
       }
-    )
+    })
 
     return false
   }

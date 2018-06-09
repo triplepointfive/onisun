@@ -18,7 +18,12 @@ export class Explorer extends AI {
   act(actor: Creature, firstTurn: boolean = true): void {
     if (this.path.length) {
       const nextPoint: Point = this.path.shift()
-      if (actor.stageMemory().at(nextPoint.x, nextPoint.y).tangible(actor)) {
+      if (
+        actor
+          .stageMemory()
+          .at(nextPoint.x, nextPoint.y)
+          .tangible(actor)
+      ) {
         this.path = []
         if (firstTurn) {
           this.act(actor, false)

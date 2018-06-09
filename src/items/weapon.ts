@@ -1,22 +1,11 @@
-import {
-  ItemGroup,
-  ItemKind,
+import { ItemGroup, ItemKind, Equipment } from './internal'
 
-  Equipment,
-} from './internal'
-
-import {
-  BodyPart,
-} from '../inventory'
+import { BodyPart } from '../inventory'
 import { Creature } from '../creature'
 
 export abstract class Weapon extends Equipment {
   constructor(kind: ItemKind, name: string, private attackModifier: number) {
-    super(
-      ItemGroup.Weapon,
-      kind,
-      name,
-    )
+    super(ItemGroup.Weapon, kind, name)
   }
 
   public bodyPart(): BodyPart {
@@ -34,10 +23,6 @@ export abstract class Weapon extends Equipment {
 
 export class Katana extends Weapon {
   constructor() {
-    super(
-      ItemKind.Katana,
-      'Katana',
-      3,
-    )
+    super(ItemKind.Katana, 'Katana', 3)
   }
 }

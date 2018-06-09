@@ -10,7 +10,10 @@ class Block {
   public id: BlockId
 
   constructor(public content: Tile[][], public weight: number) {
-    if (content.length !== Block.Dimensions || content.some(row => row.length !== Block.Dimensions)) {
+    if (
+      content.length !== Block.Dimensions ||
+      content.some(row => row.length !== Block.Dimensions)
+    ) {
       throw `Invalid block '${content}'`
     }
 
@@ -38,7 +41,10 @@ class Block {
   }
 
   public mirrorHorizontally(): Block {
-    return new Block(_.cloneDeep(this.content).map(row => row.reverse()), this.weight)
+    return new Block(
+      _.cloneDeep(this.content).map(row => row.reverse()),
+      this.weight
+    )
   }
 
   public rotateRight(): Block {
@@ -63,15 +69,12 @@ class Block {
   private matchHorizontal(left: Block, right: Block): boolean {
     return _.isEqual(
       left.content.map(row => row[Block.Dimensions - 1]),
-      right.content.map(row => row[0]),
+      right.content.map(row => row[0])
     )
   }
 
   private matchVertical(top: Block, bottom: Block): boolean {
-    return _.isEqual(
-      top.content[Block.Dimensions - 1],
-      bottom.content[0],
-    )
+    return _.isEqual(top.content[Block.Dimensions - 1], bottom.content[0])
   }
 }
 
@@ -121,24 +124,40 @@ class BlockRepository {
     }
   }
 
-  public available(top: Block | undefined, bottom: Block | undefined,
-                   left: Block | undefined, right: Block | undefined): Block[] {
+  public available(
+    top: Block | undefined,
+    bottom: Block | undefined,
+    left: Block | undefined,
+    right: Block | undefined
+  ): Block[] {
     let availableBlocks = this.blocks
 
     if (top !== undefined) {
-      availableBlocks = _.intersection(availableBlocks, this.neighbors[top.id][Direction.Bottom])
+      availableBlocks = _.intersection(
+        availableBlocks,
+        this.neighbors[top.id][Direction.Bottom]
+      )
     }
 
     if (bottom !== undefined) {
-      availableBlocks = _.intersection(availableBlocks, this.neighbors[bottom.id][Direction.Top])
+      availableBlocks = _.intersection(
+        availableBlocks,
+        this.neighbors[bottom.id][Direction.Top]
+      )
     }
 
     if (left !== undefined) {
-      availableBlocks = _.intersection(availableBlocks, this.neighbors[left.id][Direction.Right])
+      availableBlocks = _.intersection(
+        availableBlocks,
+        this.neighbors[left.id][Direction.Right]
+      )
     }
 
     if (right !== undefined) {
-      availableBlocks = _.intersection(availableBlocks, this.neighbors[right.id][Direction.Left])
+      availableBlocks = _.intersection(
+        availableBlocks,
+        this.neighbors[right.id][Direction.Left]
+      )
     }
 
     // return _.sortBy(availableBlocks, block => Math.random() * block.weight)
@@ -146,7 +165,7 @@ class BlockRepository {
   }
 
   private findNeighbors(centralBlock: Block) {
-    this.blocks.forEach((block) => {
+    this.blocks.forEach(block => {
       if (centralBlock.matchTop(block)) {
         this.addNeighbor(centralBlock, block, Direction.Top)
         this.addNeighbor(block, centralBlock, Direction.Bottom)
@@ -211,7 +230,11 @@ class Map {
 
   private steps = 0
 
-  constructor(public width: number, public height: number, private blockRepository: BlockRepository) {
+  constructor(
+    public width: number,
+    public height: number,
+    private blockRepository: BlockRepository
+  ) {
     this.initializeBlockMap()
   }
 
@@ -222,7 +245,12 @@ class Map {
       for (let j = 0; j < this.width; j++) {
         let block = new MapBlock()
 
-        if (i === 0 || j === 0 || i === this.height - 1 || j === this.width - 1) {
+        if (
+          i === 0 ||
+          j === 0 ||
+          i === this.height - 1 ||
+          j === this.width - 1
+        ) {
           block.confirmBlock()
           block.block = this.blockRepository.borderBlock
         }
@@ -249,21 +277,26 @@ class Map {
     const left = this.blockMap[i][j - 1].block
     const right = this.blockMap[i][j + 1].block
 
-    const shuffledBlocks = this.blockRepository.available(top, bottom, left, right)
+    const shuffledBlocks = this.blockRepository.available(
+      top,
+      bottom,
+      left,
+      right
+    )
     for (let k = 0; k < shuffledBlocks.length; k++) {
       const block: Block = shuffledBlocks[k]
 
       this.blockMap[i][j].block = block
 
-      const state = this.fillMap(i - 1, j)
-                 && this.fillMap(i, j - 1)
-                 && this.fillMap(i + 1, j)
-                 && this.fillMap(i, j + 1)
+      const state =
+        this.fillMap(i - 1, j) &&
+        this.fillMap(i, j - 1) &&
+        this.fillMap(i + 1, j) &&
+        this.fillMap(i, j + 1)
 
       if (state) {
         break
-      }
-      else {
+      } else {
         this.blockMap[i][j].block = undefined
       }
     }
@@ -276,7 +309,11 @@ class Map {
     const iterateWidth = this.width - 1
 
     for (let i = 1; i < iterateHeight; i++) {
-      for (let k = 0; k < Block.Dimensions - (i === iterateHeight - 1 ? 0 : 1); k++) {
+      for (
+        let k = 0;
+        k < Block.Dimensions - (i === iterateHeight - 1 ? 0 : 1);
+        k++
+      ) {
         let row: Tile[] = []
 
         for (let j = 1; j < iterateWidth; j++) {
@@ -284,7 +321,9 @@ class Map {
 
           if (block) {
             const blockRow = block.content[k]
-            row = row.concat(j === iterateWidth - 1 ? blockRow : _.initial(blockRow))
+            row = row.concat(
+              j === iterateWidth - 1 ? blockRow : _.initial(blockRow)
+            )
           } else {
             const blockRow: Tile[] = new Array(Block.Dimensions).fill(' ')
             row = row.concat(blockRow)
@@ -305,9 +344,9 @@ class Map {
 
 const rawToTiles = function(map: string[]): Tile[][] {
   let tiles: Tile[][] = []
-  map.forEach((row) => {
+  map.forEach(row => {
     let tileRow: Tile[] = []
-    row.split('').forEach((key) => {
+    row.split('').forEach(key => {
       tileRow.push(Tile.retrive(key))
     })
     tiles.push(tileRow)
@@ -316,90 +355,76 @@ const rawToTiles = function(map: string[]): Tile[][] {
 }
 
 const blocks = [
-  { content: [
-    'WWW',
-    'WWW',
-    'WWW',
-  ], weight: 0.5},
+  {
+    content: ['WWW', 'WWW', 'WWW'],
+    weight: 0.5,
+  },
 
-  { content: [
-    'RRR',
-    'RRR',
-    'RRR',
-  ], weight: 20},
+  {
+    content: ['RRR', 'RRR', 'RRR'],
+    weight: 20,
+  },
 
-  { content: [
-    'WCW',
-    'RRR',
-    'RRR',
-  ], weight: 20},
-  { content: [
-    'WWC',
-    'RRR',
-    'RRR',
-  ], weight: 20},
-  { content: [
-    'CWC',
-    'RRR',
-    'RRR',
-  ], weight: 20},
-  { content: [
-    'WWW',
-    'RRR',
-    'RRR',
-  ], weight: 20},
+  {
+    content: ['WCW', 'RRR', 'RRR'],
+    weight: 20,
+  },
+  {
+    content: ['WWC', 'RRR', 'RRR'],
+    weight: 20,
+  },
+  {
+    content: ['CWC', 'RRR', 'RRR'],
+    weight: 20,
+  },
+  {
+    content: ['WWW', 'RRR', 'RRR'],
+    weight: 20,
+  },
 
-  { content: [
-    'WCW',
-    'CRR',
-    'WRR',
-  ], weight: 20},
-  { content: [
-    'WWW',
-    'WRR',
-    'WRR',
-  ], weight: 20},
-  { content: [
-    'WWW',
-    'CRR',
-    'WRR',
-  ], weight: 20},
-  { content: [
-    'WWC',
-    'WRR',
-    'WRR',
-  ], weight: 20},
-  { content: [
-    'WWC',
-    'WRR',
-    'CRR',
-  ], weight: 20},
+  {
+    content: ['WCW', 'CRR', 'WRR'],
+    weight: 20,
+  },
+  {
+    content: ['WWW', 'WRR', 'WRR'],
+    weight: 20,
+  },
+  {
+    content: ['WWW', 'CRR', 'WRR'],
+    weight: 20,
+  },
+  {
+    content: ['WWC', 'WRR', 'WRR'],
+    weight: 20,
+  },
+  {
+    content: ['WWC', 'WRR', 'CRR'],
+    weight: 20,
+  },
 
-  { content: [
-    'WWW',
-    'CCW',
-    'WCW',
-  ], weight: 20},
-  { content: [
-    'WWW',
-    'CCC',
-    'WWW',
-  ], weight: 20},
-  { content: [
-    'WCW',
-    'CCC',
-    'WWW',
-  ], weight: 20},
-  { content: [
-    'WCW',
-    'CCC',
-    'WCW',
-  ], weight: 20},
+  {
+    content: ['WWW', 'CCW', 'WCW'],
+    weight: 20,
+  },
+  {
+    content: ['WWW', 'CCC', 'WWW'],
+    weight: 20,
+  },
+  {
+    content: ['WCW', 'CCC', 'WWW'],
+    weight: 20,
+  },
+  {
+    content: ['WCW', 'CCC', 'WCW'],
+    weight: 20,
+  },
 ]
 
 const generate = function(dimX: number, dimY: number): LevelMap {
   let blockRepository = new BlockRepository(
-    new Block(rawToTiles(blocks[0].content), blocks[0].weight))
+    new Block(rawToTiles(blocks[0].content), blocks[0].weight)
+  )
   _.tail(blocks).forEach(({ content, weight }) => {
     blockRepository.addBlock(new Block(rawToTiles(content), weight))
   })

@@ -40,9 +40,8 @@ export class Tile {
   private constructor(
     public key: string,
     public display: string,
-    private kind: TileTypes,
-  ) {
-  }
+    private kind: TileTypes
+  ) {}
 
   public isDoor(): boolean {
     return this.kind === TileTypes.Door
@@ -58,10 +57,10 @@ export class Tile {
 
   public passibleThrough(actor?: Creature): boolean {
     if (actor && this.creature) {
-      return (this.kind !== TileTypes.Wall) && this.creature.id === actor.id
+      return this.kind !== TileTypes.Wall && this.creature.id === actor.id
     }
 
-    return (this.kind !== TileTypes.Wall) && (!this.creature)
+    return this.kind !== TileTypes.Wall && !this.creature
   }
 
   public clone(): Tile {
@@ -114,11 +113,11 @@ export class LevelMap extends Mapped<Tile> {
       if (equipment) {
         tile.items.push(equipment)
       }
-    });
+    })
 
     creature.inventory.cares().forEach(item => {
       tile.items.push(item)
-    });
+    })
 
     remove(this.creatures, c => c.id === creature.id)
     this.timeline.remove(creature.id)
@@ -141,8 +140,12 @@ export class LevelMap extends Mapped<Tile> {
   }
 
   public inRange(point: Point): boolean {
-    return point.x >= 0         && point.y >= 0
-        && point.x < this.width && point.y < this.height
+    return (
+      point.x >= 0 &&
+      point.y >= 0 &&
+      point.x < this.width &&
+      point.y < this.height
+    )
   }
 
   public turn(): void {

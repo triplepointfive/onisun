@@ -13,7 +13,7 @@ import { Creature } from '../creature'
 export class Dispatcher extends AI {
   private events: Event[] = []
 
-  private escaper:  Escaper
+  private escaper: Escaper
   private explorer: Explorer
   private chaser: Chaser
   private attacker: Attacker
@@ -25,13 +25,13 @@ export class Dispatcher extends AI {
 
   constructor() {
     super()
-    this.escaper  = new Escaper(this)
+    this.escaper = new Escaper(this)
     this.explorer = new Explorer(this)
-    this.chaser   = new Chaser(this)
+    this.chaser = new Chaser(this)
     this.attacker = new Attacker(this)
-    this.picker   = new Picker(this)
-    this.patrol   = new Patrol(this)
-    this.loiter   = new Loiter(this)
+    this.picker = new Picker(this)
+    this.patrol = new Patrol(this)
+    this.loiter = new Loiter(this)
   }
 
   public available(actor: Creature): boolean {
@@ -105,6 +105,5 @@ export class Dispatcher extends AI {
     this.escaper.act(actor)
   }
 
-  private rest(actor: Creature): void {
-  }
+  private rest(actor: Creature): void {}
 }

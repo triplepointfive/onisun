@@ -14,7 +14,7 @@ const NEW_POINT_EVERY: number = 10
 export class Patrol extends AI {
   private i: NodeID
   private graph: graphlib.Graph
-  private lastNodeVisit: { [ key: string ]: number }
+  private lastNodeVisit: { [key: string]: number }
   private currentNodeID: NodeID
   private targetNodeID: NodeID
   private path: Point[]
@@ -28,7 +28,7 @@ export class Patrol extends AI {
 
     this.lastNodeVisit = {}
 
-    this.markNodeVisited( this.currentNodeID )
+    this.markNodeVisited(this.currentNodeID)
     this.path = []
   }
 
@@ -37,31 +37,31 @@ export class Patrol extends AI {
   }
 
   public act(actor: Creature, firstTurn: boolean = true): void {
-    if ( this.path.length ) {
-      this.moveToTarget( actor, firstTurn )
+    if (this.path.length) {
+      this.moveToTarget(actor, firstTurn)
     } else {
-      if ( this.targetNodeID ) {
-        this.markNodeVisited( this.targetNodeID )
+      if (this.targetNodeID) {
+        this.markNodeVisited(this.targetNodeID)
         this.currentNodeID = this.targetNodeID
       }
 
-      this.pickUpNewTarget( actor )
-      this.moveToTarget( actor, firstTurn )
+      this.pickUpNewTarget(actor)
+      this.moveToTarget(actor, firstTurn)
     }
     this.step += 1
   }
 
   public trackMovement(actor: Creature): void {
     if (this.step >= NEW_POINT_EVERY || this.shouldAddNode(actor)) {
-      this.addNode( actor.pos.x, actor.pos.y )
+      this.addNode(actor.pos.x, actor.pos.y)
     }
     this.step += 1
   }
 
   // TODO: If close enough to another node, use it instead.
-  public addNode( x: number, y: number): void {
-    this.graph.setNode( this.i, new Point(x, y))
-    if (this.currentNodeID &&  this.currentNodeID !== this.i) {
+  public addNode(x: number, y: number): void {
+    this.graph.setNode(this.i, new Point(x, y))
+    if (this.currentNodeID && this.currentNodeID !== this.i) {
       this.graph.setEdge(this.currentNodeID, this.i)
     }
     this.currentNodeID = this.i
@@ -69,37 +69,42 @@ export class Patrol extends AI {
     this.step = 0
   }
 
-  private buildNewPath( actor: Creature ): void {
-    const pos: Point = this.graph.node( this.targetNodeID )
+  private buildNewPath(actor: Creature): void {
+    const pos: Point = this.graph.node(this.targetNodeID)
 
     this.path = this.leePath(actor, point => pos.eq(point))
   }
 
-  private pickUpNewTarget( actor: Creature ): void {
+  private pickUpNewTarget(actor: Creature): void {
     let seenLastID: NodeID = this.graph.nodes()[0]
-    let seenLastStep: number = this.lastNodeVisit[ seenLastID ]
+    let seenLastStep: number = this.lastNodeVisit[seenLastID]
 
-    this.graph.neighbors( this.currentNodeID ).forEach( ( nodeID: NodeID ) => {
-      if (seenLastStep > (this.lastNodeVisit[ nodeID ] || 0)) {
+    this.graph.neighbors(this.currentNodeID).forEach((nodeID: NodeID) => {
+      if (seenLastStep > (this.lastNodeVisit[nodeID] || 0)) {
         seenLastID = nodeID
-        seenLastStep = this.lastNodeVisit[ seenLastID ]
+        seenLastStep = this.lastNodeVisit[seenLastID]
       }
     })
 
     this.targetNodeID = seenLastID
-    this.buildNewPath( actor )
+    this.buildNewPath(actor)
   }
 
-  private moveToTarget( actor: Creature, firstTurn: boolean ): void {
+  private moveToTarget(actor: Creature, firstTurn: boolean): void {
     const nextPoint: Point = this.path.shift()
 
     if (!nextPoint) {
       actor.ai = new Loiter(this)
-    } else if ( actor.stageMemory().at(nextPoint.x,  nextPoint.y).tangible() ) {
+    } else if (
+      actor
+        .stageMemory()
+        .at(nextPoint.x, nextPoint.y)
+        .tangible()
+    ) {
       this.buildNewPath
 
       if (this.path.length) {
-        return this.act( actor, false )
+        return this.act(actor, false)
       }
 
       let explorer = new Loiter(this)
@@ -113,11 +118,14 @@ export class Patrol extends AI {
     }
   }
 
-  private markNodeVisited( nodeID: NodeID ): void {
-    this.lastNodeVisit[ nodeID ] = this.step
+  private markNodeVisited(nodeID: NodeID): void {
+    this.lastNodeVisit[nodeID] = this.step
   }
 
   private shouldAddNode(actor: Creature): boolean {
-    return actor.stageMemory().at(actor.previousPos.x, actor.previousPos.y).tile.isDoor()
+    return actor
+      .stageMemory()
+      .at(actor.previousPos.x, actor.previousPos.y)
+      .tile.isDoor()
   }
 }
