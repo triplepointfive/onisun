@@ -102,7 +102,7 @@ export class LevelMap extends Mapped<Tile> {
     this.creatures.push(creature)
     // TODO fail if taken
     this.at(creature.pos.x, creature.pos.y).creature = creature
-    this.timeline.add(creature.id, creature.initiativity())
+    this.timeline.add(creature.id, creature.speed())
   }
 
   public removeCreature(creature: Creature) {
@@ -159,7 +159,7 @@ export class LevelMap extends Mapped<Tile> {
     // and build vision after all actions
     this.creatures.forEach(creature => {
       if (includes(turnCreatureIds, creature.id)) {
-        this.timeline.add(creature.id, creature.initiativity())
+        this.timeline.add(creature.id, creature.speed())
       }
       creature.visionMask(this)
     })

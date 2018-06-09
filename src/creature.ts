@@ -104,14 +104,14 @@ export class Attack {
   public affect(subject: Creature): Reaction {
     const damage = this.actor.characteristics.damageTo(subject)
 
-    if (damage > subject.health) {
+    if (damage > subject.characteristics.health.currentValue()) {
       subject.currentLevel.logger.killMessage(damage, this.actor, subject)
       subject.die()
-      return Reaction.HURT
-    } else {
-      subject.health -= damage
-      subject.currentLevel.logger.hurtMessage(damage, this.actor, subject)
       return Reaction.DIE
+    } else {
+      subject.characteristics.health.decrease(damage)
+      subject.currentLevel.logger.hurtMessage(damage, this.actor, subject)
+      return Reaction.HURT
     }
   }
 }
@@ -127,9 +127,35 @@ export enum Reaction {
 }
 
 export class Attribute {
-  private modifiers: number[] = []
+  protected modifiers: number[] = []
 
-  constructor(private base: number) {}
+  constructor(
+    protected max: number,
+    protected current: number = max
+  ) {
+  }
+
+  public maximum(): number {
+    return this.max
+  }
+
+  public decrease(modifier: number) {
+    this.current -= modifier
+  }
+
+  public increase(modifier: number) {
+    this.current = Math.max(this.current + modifier, this.max)
+  }
+
+  public constantIncrease(modifier: number) {
+    this.max += modifier
+    this.increase(modifier)
+  }
+
+  public constantDecrease(modifier: number) {
+    this.max -= modifier
+    this.decrease(modifier)
+  }
 
   public addModifier(modifier: number) {
     this.modifiers.push(modifier)
@@ -140,22 +166,49 @@ export class Attribute {
   }
 
   public currentValue(): number {
-    const value = this.base + sum(this.modifiers)
+    return this.current + sum(this.modifiers)
+  }
+}
+
+export class PositiveAttribute extends Attribute {
+  public currentValue(): number {
+    const value = super.currentValue()
     return value >= 1 ? value : 1
+  }
+
+  public constantDecrease(modifier: number) {
+    this.max = Math.max(1, this.max - modifier)
+    this.decrease(modifier)
+  }
+
+  public decrease(modifier: number) {
+    this.current = Math.max(1, this.current - modifier)
   }
 }
 
 export class Characteristics {
   public attack: Attribute
   public defense: Attribute
+  public health: Attribute
+  public radius: Attribute
+  public speed: Attribute
 
-  constructor(attack: number, defense: number) {
-    this.attack = new Attribute(attack)
-    this.defense = new Attribute(defense)
+  constructor(
+    attack: number,
+    defense: number,
+    health: number,
+    radius: number,
+    speed: number,
+  ) {
+    this.attack = new PositiveAttribute(attack)
+    this.defense = new PositiveAttribute(defense)
+    this.health = new Attribute(health)
+    this.radius = new PositiveAttribute(radius)
+    this.speed = new PositiveAttribute(speed)
   }
 
   public damageTo(victim: Creature): number {
-    return 10 * this.attack.currentValue() / victim.characteristics.defense.currentValue()
+    return Math.round(10 * this.attack.currentValue() / victim.characteristics.defense.currentValue())
   }
 }
 
@@ -170,9 +223,9 @@ export class Creature extends Phantom {
   constructor(
     x: number,
     y: number,
-    public health: number,
-    public radius: number,
-    private speed: number,
+    health: number,
+    radius: number,
+    speed: number,
     ai: AI,
   ) {
     super(x, y)
@@ -189,7 +242,13 @@ export class Creature extends Phantom {
       BodyPart.Back,
       BodyPart.Body,
     ])
-    this.characteristics = new Characteristics(5, 3)
+    this.characteristics = new Characteristics(
+      5,
+      3,
+      health,
+      radius,
+      speed,
+    )
   }
 
   public putOn(item: Equipment) {
@@ -233,9 +292,12 @@ export class Creature extends Phantom {
     return this
   }
 
-  // Speed, affect how often the creature acts
-  public initiativity(): number {
-    return this.speed
+  public speed(): number {
+    return this.characteristics.speed.currentValue()
+  }
+
+  public radius(): number {
+    return this.characteristics.radius.currentValue()
   }
 
   public stageMemory(levelId: LevelMapId = this.currentLevel.id): Memory {
@@ -274,7 +336,7 @@ export class Creature extends Phantom {
     new Fov(
       this.pos.x,
       this.pos.y,
-      this.radius,
+      this.radius(),
       stage.width,
       stage.height,
       this.isSolid(stage),

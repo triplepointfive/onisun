@@ -15,10 +15,10 @@
     </dt>
 
     <dd class='col-sm-4'>
-      健康
+      Здоровье
     </dd>
     <dt class='col-sm-8'>
-      {{ creature.health }}
+      {{ displayAttribute(creature.characteristics.health) }}
     </dt>
 
     <dd class='col-sm-4'>
@@ -36,10 +36,10 @@
     </dt>
 
     <dd class='col-sm-4'>
-      Initiation
+      Скорость
     </dd>
     <dt class='col-sm-8'>
-      {{ creature.initiativity() }}
+      {{ creature.speed() }}
     </dt>
 
     <dd class='col-sm-4'>
@@ -133,6 +133,13 @@ export default Vue.extend({
     displayItem(item) {
       if (item) {
         return `${displayItem(item).getChar()} ${item.name}`
+      }
+    },
+    displayAttribute(attribute) {
+      if (attribute.currentValue() != attribute.maximum()) {
+        return `${attribute.currentValue()} [${attribute.maximum()}]`
+      } else {
+        return attribute.currentValue()
       }
     },
     displayBodyPart(bodyPart) {

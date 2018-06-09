@@ -31,7 +31,7 @@ export class Escaper extends AI {
 
   private buildPath(
     actor: Creature,
-    minDistance: number = actor.radius / 2,
+    minDistance: number = actor.radius() / 2,
   ): void {
     if (minDistance <= 1) {
       this.runningTo = undefined
