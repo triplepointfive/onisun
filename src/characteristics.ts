@@ -2,7 +2,7 @@ import { remove, sum } from 'lodash'
 import { Creature } from './onisun'
 
 export class Attribute {
-  protected modifiers: number[] = []
+  public modifiers: number[] = []
 
   constructor(protected max: number, protected current: number = max) {}
 

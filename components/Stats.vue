@@ -25,21 +25,21 @@
       Атака
     </dd>
     <dt class='col-sm-8'>
-      {{ creature.characteristics.attack.currentValue() }}
+      {{ displayAttributeWithModifiers(creature.characteristics.attack) }}
     </dt>
 
     <dd class='col-sm-4'>
       Защита
     </dd>
     <dt class='col-sm-8'>
-      {{ creature.characteristics.defense.currentValue() }}
+      {{ displayAttributeWithModifiers(creature.characteristics.defense) }}
     </dt>
 
     <dd class='col-sm-4'>
       Скорость
     </dd>
     <dt class='col-sm-8'>
-      {{ creature.speed() }}
+      {{ displayAttributeWithModifiers(creature.characteristics.speed) }}
     </dt>
 
     <dd class='col-sm-4'>
@@ -138,6 +138,14 @@ export default Vue.extend({
     displayAttribute(attribute) {
       if (attribute.currentValue() != attribute.maximum()) {
         return `${attribute.currentValue()} [${attribute.maximum()}]`
+      } else {
+        return attribute.currentValue()
+      }
+    },
+    displayAttributeWithModifiers(attribute) {
+      if (attribute.currentValue() != attribute.maximum()) {
+        const mods = attribute.modifiers.map(x => x > 0 ? `+ ${x}` : `- ${x}`)
+        return `${attribute.currentValue()} = [${attribute.maximum()}] ${mods}`
       } else {
         return attribute.currentValue()
       }
