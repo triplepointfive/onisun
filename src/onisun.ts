@@ -4,6 +4,7 @@ export * from './inventory'
 export * from './items'
 export * from './logger'
 export * from './map'
+export * from './characteristics'
 
 import { generate } from './generator/dungeon'
 import { addDoors } from './generator/post'
