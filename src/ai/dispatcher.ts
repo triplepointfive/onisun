@@ -62,7 +62,7 @@ export class Dispatcher extends AI {
   }
 
   private feelsGood(actor: Creature): boolean {
-    return true // TODO
+    return actor.characteristics.health.currentValue() > actor.characteristics.health.maximum() / 4
   }
 
   private enemyClose(actor: Creature): boolean {
@@ -87,7 +87,6 @@ export class Dispatcher extends AI {
 
   private explore(actor: Creature): void {
     if (this.explorer.available(actor)) {
-      // console.log(`Dispatcher ${this.explorer.available(actor)}`)
       this.patrol.trackMovement(actor)
       this.explorer.act(actor)
     } else if (this.patrol.available(actor)) {

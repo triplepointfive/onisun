@@ -131,6 +131,8 @@ export class Creature extends Phantom {
   constructor(
     x: number,
     y: number,
+    attack: number,
+    defense: number,
     health: number,
     radius: number,
     speed: number,
@@ -150,7 +152,8 @@ export class Creature extends Phantom {
       BodyPart.Back,
       BodyPart.Body,
     ])
-    this.characteristics = new Characteristics(5, 3, health, radius, speed)
+    console.log("attack, defense", attack, defense)
+    this.characteristics = new Characteristics(attack, defense, health, radius, speed)
   }
 
   public putOn(item: Equipment) {

@@ -50,7 +50,7 @@ export const generateMap = function(
     }
   }
 
-  const creature1 = new Creature(x, y, 50, radius, 10, new Dispatcher())
+  const creature1 = new Creature(x, y, 1, 4, 50, radius, 5, new Dispatcher())
 
   creature1.addToMap(map)
   creature1.putOn(new Katana())
@@ -67,7 +67,7 @@ export const generateMap = function(
     }
   }
 
-  const creature2 = new Creature(x, y, 100, radius, 5, new Dispatcher())
+  const creature2 = new Creature(x, y, 1, 4, 100, radius, 10, new Dispatcher())
 
   creature2.addToMap(map)
   creature2.putOn(new Katana())
