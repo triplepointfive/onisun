@@ -66,15 +66,10 @@ import Cell from './Cell.vue'
 import Logger from './Logger.vue'
 import Scene from './Scene.vue'
 
-import { LevelMap } from '../map'
-import { Phantom, Creature } from '../creature'
-import { Memory, MemoryTile } from '../creature'
-import { generate } from '../generator/dungeon'
-import { addDoors } from '../generator/post'
-
-import { Katana, Corpse } from '../items'
-
-import { Escaper, Chaser, Waiter, Explorer, Dispatcher } from '../ai'
+import {
+  LevelMap,
+  generateMap,
+} from '../src/onisun'
 
 export default Vue.extend({
   data() {
@@ -97,69 +92,10 @@ export default Vue.extend({
   },
   methods: {
     generateMap() {
-      this.map = this.buildMap()
-      let x = 1,
-          y = 1
-
-      while (!this.map.visibleThrough(x, y)) {
-        if (x < this.map.width - 1) {
-          x += 1
-        } else {
-          x = 1
-          y += 1
-        }
-      }
-
-      const creature1 = new Creature(
-        x,
-        y,
-        50,
+      this.map = generateMap(
+        this.generatorOptions,
         this.radius,
-        10,
-        new Dispatcher(),
       )
-
-      creature1.addToMap(this.map)
-      creature1.putOn(new Katana())
-
-      x = this.map.width - 1
-      y = this.map.height -1
-
-      while (!this.map.visibleThrough(x, y)) {
-        if (x > 1) {
-          x -= 1
-        } else {
-          x = this.map.width - 1
-          y -= 1
-        }
-      }
-
-      const creature2 = new Creature(
-        x,
-        y,
-        100,
-        this.radius,
-        5,
-        new Dispatcher(),
-      )
-
-      creature2.addToMap(this.map)
-      creature2.putOn(new Katana())
-    },
-    buildMap() {
-      let map = generate(
-        50,
-        50,
-        this.generatorOptions.minSize,
-        this.generatorOptions.maxSize,
-        this.generatorOptions.roomsCount,
-      )
-
-      if (this.generatorOptions.addDoors) {
-        return addDoors(map)
-      }
-
-      return map
     }
   },
   created() {

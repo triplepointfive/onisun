@@ -1,14 +1,9 @@
-import { Tile } from '../../vendor/unicodetiles.ts/src/index'
+import { Tile } from '../vendor/unicodetiles.ts/src/index'
 
 import {
   Item,
-  ItemId,
-  ItemGroup,
   ItemKind,
-
-  Katana,
-  Corpse,
-} from '../items'
+} from '../src/onisun'
 
 const DEFAULT_GREY: number = 120
 const IMPORTANT_GREY: number = 180

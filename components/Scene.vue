@@ -46,7 +46,7 @@ import {
   Engine,
   Viewport,
   Tile,
-} from '../../vendor/unicodetiles.ts/src/index'
+} from '../vendor/unicodetiles.ts/src/index'
 
 import {
   CreatureTile,

@@ -2,7 +2,7 @@
   <div class='logger' ref='container'>
     <table class='table table-sm table-striped'>
       <tbody>
-        <tr :class='rowClass(record)' v-for='record in messages'>
+        <tr :class='rowClass(record)' v-for='(record, i) in messages' :key='i'>
           <td>{{ ts(record) }}</td>
           <td>{{ record.message }}</td>
         </tr>
@@ -14,7 +14,8 @@
 <script lang='ts'>
 import Vue from 'vue'
 import { takeRight } from 'lodash'
-import { LogLevel } from '../logger'
+
+import { LogLevel } from '../src/onisun'
 
 import * as moment from 'moment'
 

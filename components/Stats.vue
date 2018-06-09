@@ -86,6 +86,8 @@ import {
 } from './scene_tiles'
 
 import {
+  BodyPart,
+
   Patrol,
   Explorer,
   Waiter,
@@ -94,9 +96,7 @@ import {
   Loiter,
   Dispatcher,
   Picker,
-} from '../ai'
-
-import { BodyPart } from '../inventory'
+} from '../src/onisun'
 
 export default Vue.extend({
   name: 'Stats',
