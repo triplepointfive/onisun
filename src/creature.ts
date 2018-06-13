@@ -75,16 +75,41 @@ export class Phantom {
   public pos: Point
   public refToReal?: Creature
 
-  constructor(x: number, y: number, public id: CreatureId = Phantom.getId()) {
+  constructor(
+    x: number,
+    y: number,
+    public clan: Clan,
+    public id: CreatureId = Phantom.getId()
+  ) {
     this.pos = new Point(x, y)
   }
 
   public clone(): Phantom {
-    return new Phantom(this.pos.x, this.pos.y, this.id)
+    return new Phantom(this.pos.x, this.pos.y, this.clan, this.id)
   }
 
   public real(): Creature {
     return this.refToReal
+  }
+
+  public enemyTo(enemy: Phantom) {
+    if (this.id === enemy.id) {
+      return false
+    }
+
+    if (this.clan === Clan.FreeForAll || enemy.clan === Clan.FreeForAll) {
+      return true
+    }
+
+    if (this.clan === Clan.Player && enemy.clan === Clan.PlayerOnlyEnemy) {
+      return true
+    }
+
+    if (enemy.clan === Clan.Player && this.clan === Clan.PlayerOnlyEnemy) {
+      return true
+    }
+
+    return false
   }
 }
 
@@ -120,6 +145,12 @@ export enum Reaction {
   NOTHING,
 }
 
+export enum Clan {
+  Player,
+  PlayerOnlyEnemy,
+  FreeForAll,
+}
+
 export class Creature extends Phantom {
   ai: AI
   public stageMemories: { [key: string]: Memory } = {}
@@ -136,9 +167,10 @@ export class Creature extends Phantom {
     health: number,
     radius: number,
     speed: number,
+    clan: Clan,
     ai: AI
   ) {
-    super(x, y)
+    super(x, y, clan)
     this.previousPos = this.pos.copy()
     this.ai = ai
     this.inventory = new Inventory([
@@ -221,7 +253,7 @@ export class Creature extends Phantom {
   }
 
   public clone(): Phantom {
-    let phantom = new Phantom(this.pos.x, this.pos.y, this.id)
+    let phantom = new Phantom(this.pos.x, this.pos.y, this.clan, this.id)
     phantom.refToReal = this
     return phantom
   }

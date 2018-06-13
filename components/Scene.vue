@@ -8,7 +8,7 @@
       <div class='col pl-0'>
         <div class='fps mb-2 '>FPS {{ fps }}</div>
 
-        <Stats :creature='creature' v-for='creature in level.creatures' :key='creature.id'/>
+        <Stats :creature='level.creatures[0]'/>
 
         <div class='form-group row'>
           <div class='col-sm-2'>Map</div>

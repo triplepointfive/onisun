@@ -1,6 +1,5 @@
 import { AI } from './internal'
-import { Phantom, Creature, Event, EventType, Reaction } from '../creature'
-import { Point } from '../utils'
+import { Phantom, Creature, EventType, Reaction } from '../creature'
 
 export class Attacker extends AI {
   private victim?: Creature
@@ -10,14 +9,14 @@ export class Attacker extends AI {
   }
 
   public act(actor: Creature, firstTurn: boolean = true): void {
-    if (this.victimSet() && this.victimInAccess(actor)) {
+    if (this.victimInAccess(actor)) {
       this.attack(actor)
     } else {
       if (!firstTurn) {
         throw 'Attacker got called twice'
       }
 
-      this.findNewVictim(actor)
+      this.pickNewVictim(actor)
       this.act(actor, false)
     }
   }
@@ -29,48 +28,37 @@ export class Attacker extends AI {
   }
 
   private canAttack(actor: Creature): boolean {
-    const memory = actor.stageMemory()
-    return actor.pos
-      .wrappers()
-      .some(({ x, y }) => memory.at(x, y).creature() !== undefined)
+    const creature = this.findCreature(
+      actor,
+      creature => actor.enemyTo(creature)
+    )
+    return !!creature
   }
 
   private victimInAccess(actor: Creature): boolean {
-    const memory = actor.stageMemory()
-    return actor.pos
-      .wrappers()
-      .some(
-        ({ x, y }) =>
-          memory.at(x, y).creature() &&
-          memory.at(x, y).creature().id === this.victim.id
-      )
+    if (this.victim === undefined) {
+      return false
+    }
+
+    const creature = this.findCreature(
+      actor,
+      creature => creature.id === this.victim.id
+    )
+    return !!creature
   }
 
-  private victimSet(): boolean {
-    return this.victim !== undefined
-  }
-
-  private updateVictimPosition(actor: Creature) {
-    this.findCreature(actor, creature => creature.id === this.victim.id)
-  }
-
-  private findNewVictim(actor: Creature) {
-    this.findCreature(actor, creature => creature.id !== actor.id)
+  private pickNewVictim(actor: Creature) {
+    this.victim = this.findCreature(actor, creature => actor.enemyTo(creature)).real()
   }
 
   private findCreature(
     actor: Creature,
     condition: (creature: Phantom) => boolean
-  ): boolean {
-    this.withinView(actor, ({ x, y }, tile) => {
-      const creature = tile.creature()
-
-      if (creature && condition(creature)) {
-        this.victim = creature.real()
-        return true
-      }
-    })
-
-    return false
+  ): Phantom {
+    const memory = actor.stageMemory()
+    return actor.pos
+      .wrappers()
+      .map(({ x, y }) => memory.at(x, y).creature())
+      .find(creature => creature && condition(creature))
   }
 }

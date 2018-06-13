@@ -9,7 +9,7 @@ export * from './characteristics'
 import { generate } from './generator/dungeon'
 import { addDoors } from './generator/post'
 
-import { Creature } from './creature'
+import { Creature, Clan } from './creature'
 import { Dispatcher } from './ai'
 import { Katana } from './items'
 import { LevelMap } from './map'
@@ -53,7 +53,7 @@ export class Game {
       }
     }
 
-    this.player = new Creature(x, y, 1, 4, 50, radius, 5, new Dispatcher())
+    this.player = new Creature(x, y, 1, 4, 20, radius, 101, Clan.Player, new Dispatcher())
     this.player.addToMap(this.map)
     this.player.putOn(new Katana())
 
@@ -69,9 +69,16 @@ export class Game {
       }
     }
 
-    const creature2 = new Creature(x, y, 1, 4, 100, radius, 10, new Dispatcher())
-
+    const creature2 = new Creature(x, y, 1, 4, 5, radius, 100, Clan.PlayerOnlyEnemy, new Dispatcher())
     creature2.addToMap(this.map)
     creature2.putOn(new Katana())
+
+    const creature3 = new Creature(x - 1, y, 1, 4, 5, radius, 100, Clan.PlayerOnlyEnemy, new Dispatcher())
+    creature3.addToMap(this.map)
+    creature3.putOn(new Katana())
+
+    const creature4 = new Creature(x, y - 1, 1, 4, 5, radius, 100, Clan.PlayerOnlyEnemy, new Dispatcher())
+    creature4.addToMap(this.map)
+    creature4.putOn(new Katana())
   }
 }

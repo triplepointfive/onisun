@@ -43,7 +43,7 @@ export class Chaser extends AI {
   }
 
   private foundNewVictim(actor: Creature): boolean {
-    return this.findCreature(actor, creature => creature.id !== actor.id)
+    return this.findCreature(actor, creature => actor.enemyTo(creature))
   }
 
   private caught(actor: Creature): boolean {

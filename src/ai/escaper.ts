@@ -66,7 +66,7 @@ export class Escaper extends AI {
     this.withinView(actor, (point, tile) => {
       const creature = tile.creature()
 
-      if (creature && creature.id !== actor.id) {
+      if (creature && creature.enemyTo(actor)) {
         this.escapesFrom.push(creature)
       }
     })
