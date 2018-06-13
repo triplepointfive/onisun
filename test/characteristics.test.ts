@@ -10,6 +10,7 @@ describe('Attribute', () => {
 
   test('raw', () => {
     expect(attribute.currentValue()).toEqual(10)
+    expect(attribute.atMax()).toBeTruthy
   })
 
   test('increase over maximum does nothing', () => {
@@ -22,6 +23,7 @@ describe('Attribute', () => {
     attribute.decrease(2)
     expect(attribute.currentValue()).toEqual(8)
     expect(attribute.maximum()).toEqual(10)
+    expect(attribute.atMax()).toBeFalsy
   })
 
   test('increase when decreased', () => {
@@ -74,6 +76,7 @@ describe('PositiveAttribute', () => {
 
   test('raw', () => {
     expect(attribute.currentValue()).toEqual(10)
+    expect(attribute.atMax()).toBeTruthy
   })
 
   test('increase over maximum does nothing', () => {
@@ -86,6 +89,7 @@ describe('PositiveAttribute', () => {
     attribute.decrease(2)
     expect(attribute.currentValue()).toEqual(8)
     expect(attribute.maximum()).toEqual(10)
+    expect(attribute.atMax()).toBeFalsy
   })
 
   test('increase when decreased', () => {
