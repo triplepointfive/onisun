@@ -70,7 +70,7 @@ export default Vue.extend({
         addDoors: false,
         minSize: 5,
         maxSize: 5,
-        roomsCount: 10,
+        roomsCount: 3,
       }),
       ts: Date.now(),
       generatorOptions: {

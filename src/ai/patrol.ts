@@ -4,6 +4,7 @@ import { Point, rand, succ } from '../utils'
 import { Creature } from '../creature'
 
 import * as graphlib from 'graphlib'
+import { Loiter } from './loiter';
 
 type NodeID = string
 
@@ -49,6 +50,10 @@ export class Patrol extends AI {
     this.step += 1
   }
 
+  public reset(): void {
+    this.path = []
+  }
+
   public trackMovement(actor: Creature): void {
     if (this.step >= NEW_POINT_EVERY || this.shouldAddNode(actor)) {
       this.addNode(actor.pos.x, actor.pos.y)
@@ -91,7 +96,14 @@ export class Patrol extends AI {
   private moveToTarget(actor: Creature, firstTurn: boolean): void {
     const nextPoint: Point = this.path.shift()
 
-    if (
+    if (!nextPoint) {
+      if (firstTurn) {
+        this.path = []
+        this.act(actor, false)
+      } else {
+        new Loiter(this).act(actor, firstTurn)
+      }
+    } else if (
       actor
         .stageMemory()
         .at(nextPoint.x, nextPoint.y)

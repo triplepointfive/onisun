@@ -82,36 +82,44 @@ export class Dispatcher extends AI {
 
   private attack(actor: Creature): void {
     if (this.attacker.available(actor)) {
-      this.prevAI = this.attacker
+      this.setAi(this.attacker)
     } else {
-      this.prevAI = this.chaser
+      this.setAi(this.chaser)
     }
   }
 
   private pickItem(actor: Creature): void {
-    this.prevAI = this.picker
+    this.setAi(this.picker)
   }
 
   private explore(actor: Creature): void {
     if (this.explorer.available(actor)) {
       this.patrol.trackMovement(actor)
-      this.prevAI = this.explorer
+      this.setAi(this.explorer)
     } else if (this.patrol.available(actor)) {
       if (this.firstCallPatrol) {
         this.firstCallPatrol = false
         this.patrol.addNode(actor.pos.x, actor.pos.y)
       }
-      this.prevAI = this.patrol
+      this.setAi(this.patrol)
     } else {
-      this.prevAI = this.loiter
+      this.setAi(this.loiter)
     }
   }
 
   private runAway(actor: Creature): void {
-    this.prevAI = this.escaper
+    this.setAi(this.escaper)
   }
 
   private rest(actor: Creature): void {
-    this.prevAI = new SelfHealer(this)
+    this.setAi(new SelfHealer(this))
+  }
+
+  private setAi(ai: AI): void {
+    if (this.prevAI && this.prevAI.id !== ai.id) {
+      this.prevAI.reset()
+    }
+
+    this.prevAI = ai
   }
 }

@@ -5,12 +5,24 @@ import { sample } from 'lodash'
 
 const FIRST_STEP: number = 1
 
+type AIId = number
+
 export abstract class AI {
-  constructor(public prevAI?: AI) {}
+  private static lastId: AIId = 0
+  public static getId(): AIId {
+    return this.lastId++
+  }
+
+  constructor(
+    public prevAI?: AI,
+    public id: AIId = AI.getId(),
+  ) {}
 
   public abstract act(actor: Creature, firstTurn: boolean): void
 
   public abstract available(actor: Creature): boolean
+
+  public reset(): void {}
 
   protected moveTo(actor: Creature, destination: Point): boolean {
     const path = this.leePath(actor, point => destination.eq(point))

@@ -2,12 +2,14 @@ import { Phantom } from '../creature'
 import { BodyPart } from '../inventory'
 
 export enum ItemGroup {
+  BodyArmor,
   Armor,
   Weapon,
   Corpse,
 }
 
 export enum ItemKind {
+  BodyArmor,
   Weapon,
   Corpse,
 }
@@ -39,6 +41,24 @@ export abstract class Equipment extends Item {
   }
   public abstract onPutOn(creature): void
   public abstract onTakeOff(creature): void
+}
+
+export class BodyArmor extends Equipment {
+  constructor(name: string, private defenseModifier: number) {
+    super(ItemGroup.BodyArmor, ItemKind.BodyArmor, name)
+  }
+
+  public bodyPart(): BodyPart {
+    return BodyPart.Body
+  }
+
+  public onPutOn(creature) {
+    creature.characteristics.attack.addModifier(this.defenseModifier)
+  }
+
+  public onTakeOff(creature) {
+    creature.characteristics.attack.removeModifier(this.defenseModifier)
+  }
 }
 
 export class Corpse extends Item {

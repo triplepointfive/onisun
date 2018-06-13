@@ -64,7 +64,7 @@ export class Game {
       }
     }
 
-    this.player = new Creature(x, y, 1, 4, 20, radius, 101, Clan.Player, new Dispatcher())
+    this.player = new Creature(x, y, 1, 4, 20, radius, 101, Clan.PlayerOnlyEnemy, new Dispatcher())
     this.player.addToMap(this.map)
     this.player.putOn(sample(this.weapons))
 

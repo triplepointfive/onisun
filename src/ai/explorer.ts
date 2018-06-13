@@ -46,6 +46,10 @@ export class Explorer extends AI {
     }
   }
 
+  public reset(): void {
+    this.path = []
+  }
+
   private buildNewPath(actor: Creature): void {
     this.path = this.leePath(actor, point => {
       return !actor.stageMemory().at(point.x, point.y).seen
