@@ -121,7 +121,7 @@ export class Attack {
   constructor(public actor: Creature) {}
 
   public affect(subject: Creature): Reaction {
-    const damage = this.actor.characteristics.damageTo(subject)
+    const damage = this.actor.characteristics.damageTo(subject.characteristics)
 
     if (damage >= subject.characteristics.health.currentValue()) {
       subject.currentLevel.logger.killMessage(damage, this.actor, subject)

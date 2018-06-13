@@ -78,10 +78,10 @@ export class Characteristics {
     this.speed = new PositiveAttribute(speed)
   }
 
-  public damageTo(victim: Creature): number {
+  public damageTo(victim: Characteristics): number {
     return Math.round(
       (10 * this.attack.currentValue()) /
-        victim.characteristics.defense.currentValue()
+        victim.defense.currentValue()
     )
   }
 
