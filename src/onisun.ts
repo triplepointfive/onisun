@@ -22,55 +22,56 @@ export type GeneratorOptions = {
   addDoors: boolean
 }
 
-export const generateMap = function(
-  generatorOptions: GeneratorOptions,
-  radius: number
-): LevelMap {
-  let map = generate(
-    50,
-    50,
-    generatorOptions.minSize,
-    generatorOptions.maxSize,
-    generatorOptions.roomsCount
-  )
+export class Game {
+  public player: Creature
+  public map: LevelMap
 
-  if (generatorOptions.addDoors) {
-    map = addDoors(map)
-  }
+  constructor(generatorOptions: GeneratorOptions) {
+    const radius = 5
 
-  let x = 1,
-    y = 1
+    this.map = generate(
+      50,
+      50,
+      generatorOptions.minSize,
+      generatorOptions.maxSize,
+      generatorOptions.roomsCount
+    )
 
-  while (!map.visibleThrough(x, y)) {
-    if (x < map.width - 1) {
-      x += 1
-    } else {
-      x = 1
-      y += 1
+    if (generatorOptions.addDoors) {
+      this.map = addDoors(this.map)
     }
-  }
 
-  const creature1 = new Creature(x, y, 1, 4, 50, radius, 5, new Dispatcher())
+    let x = 1,
+      y = 1
 
-  creature1.addToMap(map)
-  creature1.putOn(new Katana())
-
-  x = map.width - 1
-  y = map.height - 1
-
-  while (!map.visibleThrough(x, y)) {
-    if (x > 1) {
-      x -= 1
-    } else {
-      x = map.width - 1
-      y -= 1
+    while (!this.map.visibleThrough(x, y)) {
+      if (x < this.map.width - 1) {
+        x += 1
+      } else {
+        x = 1
+        y += 1
+      }
     }
+
+    this.player = new Creature(x, y, 1, 4, 50, radius, 5, new Dispatcher())
+    this.player.addToMap(this.map)
+    this.player.putOn(new Katana())
+
+    x = this.map.width - 1
+    y = this.map.height - 1
+
+    while (!this.map.visibleThrough(x, y)) {
+      if (x > 1) {
+        x -= 1
+      } else {
+        x = this.map.width - 1
+        y -= 1
+      }
+    }
+
+    const creature2 = new Creature(x, y, 1, 4, 100, radius, 10, new Dispatcher())
+
+    creature2.addToMap(this.map)
+    creature2.putOn(new Katana())
   }
-
-  const creature2 = new Creature(x, y, 1, 4, 100, radius, 10, new Dispatcher())
-
-  creature2.addToMap(map)
-  creature2.putOn(new Katana())
-
-  return map
 }

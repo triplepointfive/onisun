@@ -1,17 +1,9 @@
 <template>
-  <div id='app' class='container'>
-    <Scene :level='map' v-if='map.creatures.length'/>
-    <Logger :logger='map.logger' />
+  <div id='app' class='container' v-if='game'>
+    <Scene :level='game.map' v-if='game.player'/>
+    <Logger :logger='game.map.logger' />
     <div class=''>
       <div class=''>
-        <div class='form-group row'>
-          <label class='col-sm-2 col-form-label' for='radius'>
-            Radius
-          </label>
-          <div class='col-sm-10'>
-            <input class='form-control' id='radius' type='number' v-model='radius'/>
-          </div>
-        </div>
         <div class='form-group row'>
           <div class='col-sm-2'>
             Map
@@ -68,14 +60,18 @@ import Scene from './Scene.vue'
 
 import {
   LevelMap,
-  generateMap,
+  Game,
 } from '../src/onisun'
 
 export default Vue.extend({
   data() {
     return {
-      map: new LevelMap([[]]),
-      radius: 10,
+      game: new Game({
+        addDoors: false,
+        minSize: 5,
+        maxSize: 5,
+        roomsCount: 3,
+      }),
       ts: Date.now(),
       generatorOptions: {
         addDoors: false,
@@ -92,14 +88,10 @@ export default Vue.extend({
   },
   methods: {
     generateMap() {
-      this.map = generateMap(
+      this.game = new Game(
         this.generatorOptions,
-        this.radius,
       )
     }
-  },
-  created() {
-    this.generateMap()
   }
 })
 </script>
