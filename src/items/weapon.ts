@@ -3,9 +3,9 @@ import { ItemGroup, ItemKind, Equipment } from './internal'
 import { BodyPart } from '../inventory'
 import { Creature } from '../creature'
 
-export abstract class Weapon extends Equipment {
-  constructor(kind: ItemKind, name: string, private attackModifier: number) {
-    super(ItemGroup.Weapon, kind, name)
+export class Weapon extends Equipment {
+  constructor(name: string, private attackModifier: number) {
+    super(ItemGroup.Weapon, ItemKind.Weapon, name)
   }
 
   public bodyPart(): BodyPart {
@@ -18,11 +18,5 @@ export abstract class Weapon extends Equipment {
 
   public onTakeOff(creature: Creature): void {
     creature.characteristics.attack.removeModifier(this.attackModifier)
-  }
-}
-
-export class Katana extends Weapon {
-  constructor() {
-    super(ItemKind.Katana, 'Katana', 3)
   }
 }

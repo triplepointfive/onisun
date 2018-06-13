@@ -8,7 +8,7 @@ export enum ItemGroup {
 }
 
 export enum ItemKind {
-  Katana,
+  Weapon,
   Corpse,
 }
 

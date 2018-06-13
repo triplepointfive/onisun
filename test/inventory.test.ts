@@ -1,8 +1,8 @@
 import { Inventory, BodyPart } from '../src/inventory'
-import { Katana } from '../src/items';
+import { Weapon } from '../src/items'
 
-let item1 = new Katana()
-let item2 = new Katana()
+let item1 = new Weapon('Katana', 10)
+let item2 = new Weapon('Hatch', 5)
 
 describe('puts on and takes off', () => {
   let inventory: Inventory

@@ -11,8 +11,10 @@ import { addDoors } from './generator/post'
 
 import { Creature, Clan } from './creature'
 import { Dispatcher } from './ai'
-import { Katana } from './items'
+import { Weapon, Item } from './items'
 import { LevelMap } from './map'
+
+import { sample } from 'lodash'
 
 export type GeneratorOptions = {
   minSize: number
@@ -25,9 +27,18 @@ export type GeneratorOptions = {
 export class Game {
   public player: Creature
   public map: LevelMap
+  public itemsPool: Item[]
+  public weapons: Weapon[]
 
   constructor(generatorOptions: GeneratorOptions) {
     const radius = 5
+
+    this.weapons = [
+      new Weapon('Katana', 10),
+      new Weapon('Axe', 7),
+      new Weapon('Dagger', 3),
+      new Weapon('Hammer', 5),
+    ]
 
     this.map = generate(
       50,
@@ -55,7 +66,7 @@ export class Game {
 
     this.player = new Creature(x, y, 1, 4, 20, radius, 101, Clan.Player, new Dispatcher())
     this.player.addToMap(this.map)
-    this.player.putOn(new Katana())
+    this.player.putOn(sample(this.weapons))
 
     x = this.map.width - 1
     y = this.map.height - 1
@@ -71,14 +82,14 @@ export class Game {
 
     const creature2 = new Creature(x, y, 1, 4, 5, radius, 100, Clan.PlayerOnlyEnemy, new Dispatcher())
     creature2.addToMap(this.map)
-    creature2.putOn(new Katana())
+    creature2.putOn(sample(this.weapons))
 
     const creature3 = new Creature(x - 1, y, 1, 4, 5, radius, 100, Clan.PlayerOnlyEnemy, new Dispatcher())
     creature3.addToMap(this.map)
-    creature3.putOn(new Katana())
+    creature3.putOn(sample(this.weapons))
 
     const creature4 = new Creature(x, y - 1, 1, 4, 5, radius, 100, Clan.PlayerOnlyEnemy, new Dispatcher())
     creature4.addToMap(this.map)
-    creature4.putOn(new Katana())
+    creature4.putOn(sample(this.weapons))
   }
 }
