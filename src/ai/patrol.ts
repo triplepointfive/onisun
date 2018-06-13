@@ -3,8 +3,6 @@ import { AI } from './internal'
 import { Point, rand, succ } from '../utils'
 import { Creature } from '../creature'
 
-import { Loiter } from './loiter'
-
 import * as graphlib from 'graphlib'
 
 type NodeID = string
@@ -93,9 +91,7 @@ export class Patrol extends AI {
   private moveToTarget(actor: Creature, firstTurn: boolean): void {
     const nextPoint: Point = this.path.shift()
 
-    if (!nextPoint) {
-      actor.ai = new Loiter(this)
-    } else if (
+    if (
       actor
         .stageMemory()
         .at(nextPoint.x, nextPoint.y)
@@ -105,13 +101,6 @@ export class Patrol extends AI {
 
       if (this.path.length) {
         return this.act(actor, false)
-      }
-
-      let explorer = new Loiter(this)
-
-      if (explorer.available(actor)) {
-        actor.ai = explorer
-        explorer.act(actor)
       }
     } else {
       actor.move(nextPoint)

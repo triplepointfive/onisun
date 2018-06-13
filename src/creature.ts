@@ -91,26 +91,6 @@ export class Phantom {
   public real(): Creature {
     return this.refToReal
   }
-
-  public enemyTo(enemy: Phantom) {
-    if (this.id === enemy.id) {
-      return false
-    }
-
-    if (this.clan === Clan.FreeForAll || enemy.clan === Clan.FreeForAll) {
-      return true
-    }
-
-    if (this.clan === Clan.Player && enemy.clan === Clan.PlayerOnlyEnemy) {
-      return true
-    }
-
-    if (enemy.clan === Clan.Player && this.clan === Clan.PlayerOnlyEnemy) {
-      return true
-    }
-
-    return false
-  }
 }
 
 export abstract class Event {

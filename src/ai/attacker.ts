@@ -30,7 +30,7 @@ export class Attacker extends AI {
   private canAttack(actor: Creature): boolean {
     const creature = this.findCreature(
       actor,
-      creature => actor.enemyTo(creature)
+      creature => this.enemies(actor, creature)
     )
     return !!creature
   }
@@ -48,7 +48,7 @@ export class Attacker extends AI {
   }
 
   private pickNewVictim(actor: Creature) {
-    this.victim = this.findCreature(actor, creature => actor.enemyTo(creature)).real()
+    this.victim = this.findCreature(actor, creature => this.enemies(actor, creature)).real()
   }
 
   private findCreature(

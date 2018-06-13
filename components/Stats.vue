@@ -96,6 +96,7 @@ import {
   Loiter,
   Dispatcher,
   Picker,
+SelfHealer,
 } from '../src/onisun'
 
 export default Vue.extend({
@@ -121,10 +122,13 @@ export default Vue.extend({
         return 'Waiter'
       }
       if (ai instanceof Loiter) {
-        return `Loiter (${this.aiName(ai.prevAI)})`
+        return `Loiter`
       }
       if (ai instanceof Dispatcher) {
         return `Dispatcher (${this.aiName(ai.prevAI)})`
+      }
+      if (ai instanceof SelfHealer) {
+        return `SelfHealer`
       }
       if (ai instanceof Picker) {
         return 'Picker'

@@ -7,12 +7,11 @@ import {
   Loiter,
   Picker,
   Patrol,
+  SelfHealer,
 } from '../ai'
 import { Creature } from '../creature'
 
 export class Dispatcher extends AI {
-  private events: Event[] = []
-
   private escaper: Escaper
   private explorer: Explorer
   private chaser: Chaser
@@ -62,7 +61,7 @@ export class Dispatcher extends AI {
       this.rest(actor)
     }
 
-    this.events = []
+    this.prevAI.act(actor, firstTurn)
   }
 
   private feelsGood(actor: Creature): boolean {
@@ -83,36 +82,36 @@ export class Dispatcher extends AI {
 
   private attack(actor: Creature): void {
     if (this.attacker.available(actor)) {
-      this.attacker.act(actor)
+      this.prevAI = this.attacker
     } else {
-      this.chaser.act(actor)
+      this.prevAI = this.chaser
     }
   }
 
   private pickItem(actor: Creature): void {
-    this.picker.act(actor)
+    this.prevAI = this.picker
   }
 
   private explore(actor: Creature): void {
     if (this.explorer.available(actor)) {
       this.patrol.trackMovement(actor)
-      this.explorer.act(actor)
+      this.prevAI = this.explorer
     } else if (this.patrol.available(actor)) {
       if (this.firstCallPatrol) {
         this.firstCallPatrol = false
         this.patrol.addNode(actor.pos.x, actor.pos.y)
       }
-      this.patrol.act(actor)
+      this.prevAI = this.patrol
     } else {
-      this.loiter.act(actor)
+      this.prevAI = this.loiter
     }
   }
 
   private runAway(actor: Creature): void {
-    this.escaper.act(actor)
+    this.prevAI = this.escaper
   }
 
   private rest(actor: Creature): void {
-    actor.characteristics.regenerate()
+    this.prevAI = new SelfHealer(this)
   }
 }

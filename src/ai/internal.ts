@@ -1,5 +1,5 @@
 import { Point, twoDimArray } from '../utils'
-import { Creature, MemoryTile } from '../creature'
+import { Creature, MemoryTile, Phantom, Clan } from '../creature'
 
 import { sample } from 'lodash'
 
@@ -152,5 +152,25 @@ export abstract class AI {
 
       pointsToCheck = wavePoints
     }
+  }
+
+  public enemies(actor: Phantom, enemy: Phantom): boolean {
+    if (actor.id === enemy.id) {
+      return false
+    }
+
+    if (actor.clan === Clan.FreeForAll || enemy.clan === Clan.FreeForAll) {
+      return true
+    }
+
+    if (actor.clan === Clan.Player && enemy.clan === Clan.PlayerOnlyEnemy) {
+      return true
+    }
+
+    if (enemy.clan === Clan.Player && actor.clan === Clan.PlayerOnlyEnemy) {
+      return true
+    }
+
+    return false
   }
 }

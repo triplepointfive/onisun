@@ -10,6 +10,10 @@ export class Attribute {
     return this.max
   }
 
+  public atMax(): boolean {
+    return this.max === this.current
+  }
+
   public decrease(modifier: number) {
     this.current -= modifier
   }
