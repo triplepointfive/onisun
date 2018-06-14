@@ -1,4 +1,7 @@
 import { LevelMap, Tile, TileTypes } from '../map'
+import { Pool } from '../pool'
+import { Creature } from '../creature'
+import { Point } from '../utils'
 
 export const addDoors = function(
   level: LevelMap,
@@ -39,6 +42,22 @@ export const addDoors = function(
         (up.key === 'W' && down.key === 'W')
       ) {
         level.setTile(i, j, Tile.retrive('D'))
+      }
+    }
+  }
+
+  return level
+}
+
+export const addCreatures = function(
+  chance: number,
+  level: LevelMap,
+  creaturesPool: Pool<Point, Creature>
+): LevelMap {
+  for (let j = 1; j < level.height - 1; j++) {
+    for (let i = 1; i < level.width; i++) {
+      if (level.at(i, j).passibleThrough() && Math.random() < chance) {
+        creaturesPool.pick(new Point(i, j)).addToMap(level)
       }
     }
   }

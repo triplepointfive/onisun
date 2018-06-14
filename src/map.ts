@@ -21,8 +21,6 @@ export class Tile {
   private static repository: { [key: string]: Tile } = {}
 
   public static retrive(key: string): Tile {
-    let tile = this.repository[key]
-
     switch (key) {
       case 'R':
         return new Tile('R', ' ', TileTypes.Floor)
@@ -151,12 +149,16 @@ export class LevelMap extends Mapped<Tile> {
   public turn(): void {
     const turnCreatureIds = this.timeline.actors()
 
+    console.time('Creatures AI')
+
     // First loop to act
     this.creatures.forEach(creature => {
       if (includes(turnCreatureIds, creature.id)) {
         creature.act(this)
       }
     })
+
+    console.timeEnd('Creatures AI')
 
     // Second loop to add themselves to timeline again
     // and build vision after all actions

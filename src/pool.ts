@@ -1,14 +1,14 @@
 import { random } from 'lodash'
 
-export class Pool<T> {
+export class Pool<Input, Output> {
   private totalWeight: number = 0
-  private items: [number, T][] = []
+  private items: [number, (Input) => Output][] = []
 
-  constructor(items: [number, T][]) {
+  constructor(items: [number, (Input) => Output][]) {
     items.forEach(([weight, item]) => this.add(weight, item))
   }
 
-  public add(weight: number, item: T): void {
+  public add(weight: number, item: (Input) => Output): void {
     if (weight < 1) {
       throw `Item '${item}' weight is lower than 1`
     }
@@ -17,17 +17,17 @@ export class Pool<T> {
     this.totalWeight += Math.ceil(weight)
   }
 
-  public pick(): T {
+  public pick(input: Input): Output {
     if (this.items.length === 0) {
       throw 'Tried to use empty pool'
     }
 
-    let pick = random(this.totalWeight - 1)
+    let pick = random(this.totalWeight)
 
     return this.items.find(([weight, item]) => {
       pick -= weight
 
       return pick <= 0
-    })[1]
+    })[1](input)
   }
 }
