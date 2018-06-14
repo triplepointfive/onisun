@@ -98,7 +98,8 @@ export default Vue.extend({
   },
   methods: {
     getTile(x, y) {
-      const tile = this.stage.at(x, y).tile
+      const tile = this.wholeMap ? this.stage.at(x, y) : this.stage.at(x, y).tile
+
       if (!tile) {
         return NULLTILE
       }
@@ -161,7 +162,7 @@ export default Vue.extend({
       )
 
       this.eng.setMaskFunc((x, y) => {
-        return this.stage.at(x, y).seen
+        return this.wholeMap || this.stage.at(x, y).seen
       });
 
       this.eng.setShaderFunc((tile, x, y, time) => {
@@ -197,6 +198,9 @@ export default Vue.extend({
       this.step += 1
     },
     lighting(tile, x, y, time) {
+      if (this.wholeMap) {
+        return tile.lighted(1)
+      }
       const fovTile = this.stage.at(x, y)
 
       if (fovTile.visible && tile.lighted) {
@@ -207,8 +211,11 @@ export default Vue.extend({
     },
   },
   computed: {
+    wholeMap() {
+      return true
+    },
     stage() {
-      return this.player.stageMemory(this.level.id)
+      return this.wholeMap ? this.level : this.player.stageMemory(this.level.id)
     },
     animationFps() {
       return 1000 / this.interval
