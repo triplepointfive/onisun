@@ -164,7 +164,13 @@ export class Creature extends Phantom {
       BodyPart.Back,
       BodyPart.Body,
     ])
-    this.characteristics = new Characteristics(attack, defense, health, radius, speed)
+    this.characteristics = new Characteristics(
+      attack,
+      defense,
+      health,
+      radius,
+      speed
+    )
   }
 
   public putOn(item: Equipment) {

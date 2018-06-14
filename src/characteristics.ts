@@ -84,8 +84,7 @@ export class Characteristics {
 
   public damageTo(victim: Characteristics): number {
     return Math.round(
-      (10 * this.attack.currentValue()) /
-        victim.defense.currentValue()
+      (10 * this.attack.currentValue()) / victim.defense.currentValue()
     )
   }
 

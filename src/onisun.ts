@@ -13,8 +13,7 @@ import { Creature, Clan } from './creature'
 import { Dispatcher } from './ai'
 import { Weapon, Item } from './items'
 import { LevelMap } from './map'
-
-import { random } from 'lodash'
+import { Pool } from './pool'
 
 export type GeneratorOptions = {
   minSize: number
@@ -22,38 +21,6 @@ export type GeneratorOptions = {
   roomsCount: number
 
   addDoors: boolean
-}
-
-class Pool<T> {
-  private totalWeight: number = 0
-  private items: [number, T][] = []
-
-  constructor(items: [number, T][]) {
-    items.forEach(([weight, item]) => this.add(weight, item))
-  }
-
-  public add(weight: number, item: T): void {
-    if (weight < 1) {
-      throw `Item '${item}' weight is lower than 1`
-    }
-
-    this.items.push([weight, item])
-    this.totalWeight += Math.ceil(weight)
-  }
-
-  public pick(): T {
-    if (this.items.length === 0) {
-      throw 'Tried to use empty pool'
-    }
-
-    let pick = random(this.totalWeight - 1)
-
-    return this.items.find(([weight, item]) => {
-      pick -= weight
-
-      return pick <= 0
-    })[1]
-  }
 }
 
 export class Game {
@@ -95,7 +62,17 @@ export class Game {
       }
     }
 
-    this.player = new Creature(x, y, 1, 4, 20, radius, 101, Clan.PlayerOnlyEnemy, new Dispatcher())
+    this.player = new Creature(
+      x,
+      y,
+      1,
+      4,
+      20,
+      radius,
+      101,
+      Clan.PlayerOnlyEnemy,
+      new Dispatcher()
+    )
     this.player.addToMap(this.map)
     this.player.putOn(weapons.pick())
 
@@ -111,15 +88,45 @@ export class Game {
       }
     }
 
-    const creature2 = new Creature(x, y, 1, 4, 5, radius, 100, Clan.PlayerOnlyEnemy, new Dispatcher())
+    const creature2 = new Creature(
+      x,
+      y,
+      1,
+      4,
+      5,
+      radius,
+      100,
+      Clan.PlayerOnlyEnemy,
+      new Dispatcher()
+    )
     creature2.addToMap(this.map)
     creature2.putOn(weapons.pick())
 
-    const creature3 = new Creature(x - 1, y, 1, 4, 5, radius, 100, Clan.PlayerOnlyEnemy, new Dispatcher())
+    const creature3 = new Creature(
+      x - 1,
+      y,
+      1,
+      4,
+      5,
+      radius,
+      100,
+      Clan.PlayerOnlyEnemy,
+      new Dispatcher()
+    )
     creature3.addToMap(this.map)
     creature3.putOn(weapons.pick())
 
-    const creature4 = new Creature(x, y - 1, 1, 4, 5, radius, 100, Clan.PlayerOnlyEnemy, new Dispatcher())
+    const creature4 = new Creature(
+      x,
+      y - 1,
+      1,
+      4,
+      5,
+      radius,
+      100,
+      Clan.PlayerOnlyEnemy,
+      new Dispatcher()
+    )
     creature4.addToMap(this.map)
     creature4.putOn(weapons.pick())
   }

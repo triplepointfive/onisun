@@ -1,7 +1,5 @@
-import {
-  AI,
-} from '../ai'
-import { Creature } from '../creature';
+import { AI } from '../ai'
+import { Creature } from '../creature'
 
 export class SelfHealer extends AI {
   public available(actor: Creature): boolean {

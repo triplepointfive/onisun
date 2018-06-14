@@ -65,11 +65,17 @@ export class Dispatcher extends AI {
   }
 
   private feelsGood(actor: Creature): boolean {
-    return actor.characteristics.health.currentValue() > actor.characteristics.health.maximum() * 0.9
+    return (
+      actor.characteristics.health.currentValue() >
+      actor.characteristics.health.maximum() * 0.9
+    )
   }
 
   private healthCritical(actor: Creature): boolean {
-    return actor.characteristics.health.currentValue() < actor.characteristics.health.maximum() / 4
+    return (
+      actor.characteristics.health.currentValue() <
+      actor.characteristics.health.maximum() / 4
+    )
   }
 
   private enemyClose(actor: Creature): boolean {

@@ -4,7 +4,7 @@ import { Point, rand, succ } from '../utils'
 import { Creature } from '../creature'
 
 import * as graphlib from 'graphlib'
-import { Loiter } from './loiter';
+import { Loiter } from './loiter'
 
 type NodeID = string
 

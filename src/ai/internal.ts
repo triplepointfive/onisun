@@ -13,10 +13,7 @@ export abstract class AI {
     return this.lastId++
   }
 
-  constructor(
-    public prevAI?: AI,
-    public id: AIId = AI.getId(),
-  ) {}
+  constructor(public prevAI?: AI, public id: AIId = AI.getId()) {}
 
   public abstract act(actor: Creature, firstTurn: boolean): void
 
