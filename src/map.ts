@@ -41,6 +41,10 @@ export class Tile {
     private kind: TileTypes
   ) {}
 
+  public addItem(item: Item): void {
+    this.items.push(item)
+  }
+
   public isDoor(): boolean {
     return this.kind === TileTypes.Door
   }

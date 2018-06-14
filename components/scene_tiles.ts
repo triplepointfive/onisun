@@ -119,6 +119,7 @@ export class ItemTile extends DisplayTile {
 
 const WEAPON = new ItemTile('刀', 200, 200, 200)
 const CORPSE = new ItemTile('体', 200, 200, 200)
+const BODY_ARMOR = new ItemTile('胸', 200, 200, 200)
 
 export const displayItem = function(item: Item): ItemTile {
   switch (item.kind) {
@@ -126,6 +127,8 @@ export const displayItem = function(item: Item): ItemTile {
       return WEAPON
     case ItemKind.Corpse:
       return CORPSE
+    case ItemKind.BodyArmor:
+      return BODY_ARMOR
     default:
       throw `Unknow item ${item} with type ${item.kind}`
   }
