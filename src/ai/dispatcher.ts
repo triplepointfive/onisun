@@ -10,7 +10,8 @@ import {
   SelfHealer,
 } from '../ai'
 import { Creature } from '../creature'
-import { MetaAI } from './meta_ai'
+import { MetaAI, AIEventType } from './meta_ai'
+import { Wearer } from './wearer';
 
 export class Dispatcher extends MetaAI {
   private escaper: Escaper
@@ -42,6 +43,13 @@ export class Dispatcher extends MetaAI {
       throw 'Meta AI called recursively'
     }
 
+    this.events.forEach(event => {
+      switch (event.type) {
+        case AIEventType.ItemPickedUp:
+          new Wearer(this).act(actor)
+      }
+    })
+
     if (this.feelsGood(actor)) {
       if (this.enemyClose(actor)) {
         this.attack(actor)
@@ -60,6 +68,7 @@ export class Dispatcher extends MetaAI {
       this.rest(actor)
     }
 
+    this.resetEvents()
     this.aiToRun.act(actor, firstTurn)
   }
 

@@ -6,8 +6,8 @@ export enum AIEventType {
   ItemPickedUp
 }
 
-export interface AIEvent { type: AIEventType }
-export interface ItemPickedEvent extends AIEvent { item: Item }
+export class AIEvent { constructor(public type: AIEventType) {} }
+export class AIItemPickedEvent extends AIEvent { constructor(public items: Item[]) { super(AIEventType.ItemPickedUp) } }
 
 export abstract class MetaAI extends AI {
   protected events: AIEvent[] = []
@@ -18,5 +18,9 @@ export abstract class MetaAI extends AI {
 
   public pushEvent(event: AIEvent) {
     this.events.push(event)
+  }
+
+  protected resetEvents(): void {
+    this.events = []
   }
 }

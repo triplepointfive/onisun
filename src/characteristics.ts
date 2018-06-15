@@ -117,14 +117,14 @@ export class Characteristics extends AttributeSet<Attribute> {
   public addModifier(modifier: Modifier) {
     this.with(
       modifier,
-      (char, mod) => { if (mod !== 0) { char.addModifier(modifier.attack) } }
+      (char, mod) => { if (mod !== 0) { char.addModifier(mod) } }
     )
   }
 
   public removeModifier(modifier: Modifier) {
     this.with(
       modifier,
-      (char, mod) => { if (mod !== 0) { char.removeModifier(modifier.attack) } }
+      (char, mod) => { if (mod !== 0) { char.removeModifier(mod) } }
     )
   }
 

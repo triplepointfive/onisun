@@ -2,6 +2,7 @@ import { AI } from '../ai'
 import { Creature } from '../creature'
 import { Item, ItemId } from '../items'
 import { Point } from '../utils'
+import { AIItemPickedEvent } from './meta_ai';
 
 export class Picker extends AI {
   private desiredItemId: ItemId = null
@@ -18,6 +19,8 @@ export class Picker extends AI {
 
     if (actor.pos.eq(this.desiredItemPos)) {
       const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
+      this.prevAI.pushEvent(new AIItemPickedEvent(tile.items))
+
       tile.items.forEach(item => {
         actor.inventory.putToBag(item)
       })

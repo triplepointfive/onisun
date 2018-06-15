@@ -34,9 +34,9 @@ const weapons = new Pool<null, OneHandWeapon>([
 ])
 
 const itemsPool = new Pool<null, Item>([
-  [1, () => new BodyArmor('Кольчуга', new Modifier({ attack: 10 }))],
-  [1, () => new BodyArmor('Латы', new Modifier({ attack: 5 }))],
-  [5, () => new BodyArmor('Роба', new Modifier({ attack: 1 }))],
+  [1, () => new BodyArmor('Кольчуга', new Modifier({ defense: 10 }))],
+  [1, () => new BodyArmor('Латы', new Modifier({ defense: 5 }))],
+  [5, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
 ])
 
 const creaturesPool = new Pool<Point, Creature>([
