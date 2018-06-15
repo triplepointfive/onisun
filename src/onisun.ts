@@ -27,7 +27,7 @@ export type GeneratorOptions = {
 }
 
 const weapons = new Pool<null, OneHandWeapon>([
-  [1, () => new OneHandWeapon('Katana', new Modifier({ attack: 10 }))],
+  [10, () => new OneHandWeapon('Katana', new Modifier({ attack: 10 }))],
   [1, () => new OneHandWeapon('Axe', new Modifier({ attack: 7 }))],
   [1, () => new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))],
   [3, () => new OneHandWeapon('Hammer', new Modifier({ attack: 5 }))],
@@ -86,6 +86,8 @@ export class Game {
       }
     }
 
+    const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
+
     this.player = new Creature(
       x,
       y,
@@ -98,7 +100,7 @@ export class Game {
       new Dispatcher()
     )
     this.player.addToMap(this.map)
-    this.player.putOn(weapons.pick(null))
+    this.player.putOn(dagger)
 
     addCreatures(0.05, this.map, creaturesPool)
     addItems(0.01, this.map, itemsPool)

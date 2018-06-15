@@ -10,8 +10,9 @@ import {
   SelfHealer,
 } from '../ai'
 import { Creature } from '../creature'
+import { MetaAI } from './meta_ai'
 
-export class Dispatcher extends AI {
+export class Dispatcher extends MetaAI {
   private escaper: Escaper
   private explorer: Explorer
   private chaser: Chaser
@@ -19,6 +20,8 @@ export class Dispatcher extends AI {
   private picker: Picker
   private patrol: Patrol
   private loiter: Loiter
+
+  private aiToRun: AI
 
   private firstCallPatrol: boolean = true
 
@@ -31,10 +34,6 @@ export class Dispatcher extends AI {
     this.picker = new Picker(this)
     this.patrol = new Patrol(this)
     this.loiter = new Loiter(this)
-  }
-
-  public available(actor: Creature): boolean {
-    return true
   }
 
   public act(actor: Creature, firstTurn: boolean = true): void {
@@ -61,7 +60,7 @@ export class Dispatcher extends AI {
       this.rest(actor)
     }
 
-    this.prevAI.act(actor, firstTurn)
+    this.aiToRun.act(actor, firstTurn)
   }
 
   private feelsGood(actor: Creature): boolean {
@@ -122,10 +121,10 @@ export class Dispatcher extends AI {
   }
 
   private setAi(ai: AI): void {
-    if (this.prevAI && this.prevAI.id !== ai.id) {
-      this.prevAI.reset()
+    if (this.aiToRun && this.aiToRun.id !== ai.id) {
+      this.aiToRun.reset()
     }
 
-    this.prevAI = ai
+    this.aiToRun = ai
   }
 }

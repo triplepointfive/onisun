@@ -1,5 +1,5 @@
 import { Mapped, Point, twoDimArray } from './utils'
-import { AI } from './ai'
+import { MetaAI } from './ai'
 import { Fov } from './fov'
 import { Item, Equipment } from './items'
 
@@ -132,7 +132,7 @@ export enum Clan {
 }
 
 export class Creature extends Phantom {
-  ai: AI
+  ai: MetaAI
   public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
   public currentLevel: LevelMap
@@ -148,7 +148,7 @@ export class Creature extends Phantom {
     radius: number,
     speed: number,
     clan: Clan,
-    ai: AI
+    ai: MetaAI,
   ) {
     super(x, y, clan)
     this.previousPos = this.pos.copy()

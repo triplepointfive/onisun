@@ -5,6 +5,7 @@ import { Creature } from '../creature'
 
 import * as graphlib from 'graphlib'
 import { Loiter } from './loiter'
+import { MetaAI } from './meta_ai';
 
 type NodeID = string
 
@@ -19,7 +20,7 @@ export class Patrol extends AI {
   private path: Point[]
   private step: number = NEW_POINT_EVERY
 
-  constructor(ai: AI) {
+  constructor(ai: MetaAI) {
     super(ai)
     this.i = 'a'
 
@@ -101,7 +102,7 @@ export class Patrol extends AI {
         this.path = []
         this.act(actor, false)
       } else {
-        new Loiter(this).act(actor, firstTurn)
+        new Loiter(this.prevAI).act(actor, firstTurn)
       }
     } else if (
       actor

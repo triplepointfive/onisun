@@ -61,13 +61,25 @@ export class PositiveAttribute extends Attribute {
   }
 }
 
-export class Modifier {
-  public attack: number
-  public defense: number
-  public health: number
-  public radius: number
-  public speed: number
+export class AttributeSet<T> {
+  constructor(
+    public attack: T,
+    public defense: T,
+    public health: T,
+    public radius: T,
+    public speed: T,
+  ) {}
 
+  public with(pairSet: AttributeSet<any>, on: (first: T, second: any) => void) {
+    on(this.attack, pairSet.attack)
+    on(this.defense, pairSet.defense)
+    on(this.health, pairSet.health)
+    on(this.radius, pairSet.radius)
+    on(this.speed, pairSet.speed)
+  }
+}
+
+export class Modifier extends AttributeSet<number> {
   constructor({
     attack = 0,
     defense = 0,
@@ -75,21 +87,17 @@ export class Modifier {
     radius = 0,
     speed = 0,
   }) {
-    this.attack  = attack
-    this.defense = defense
-    this.health  = health
-    this.radius  = radius
-    this.speed   = speed
+    super(
+      attack,
+      defense,
+      health,
+      radius,
+      speed,
+    )
   }
 }
 
-export class Characteristics {
-  public attack: Attribute
-  public defense: Attribute
-  public health: Attribute
-  public radius: Attribute
-  public speed: Attribute
-
+export class Characteristics extends AttributeSet<Attribute> {
   constructor(
     attack: number,
     defense: number,
@@ -97,29 +105,27 @@ export class Characteristics {
     radius: number,
     speed: number
   ) {
-    this.attack = new PositiveAttribute(attack)
-    this.defense = new PositiveAttribute(defense)
-    this.health = new Attribute(health)
-    this.radius = new PositiveAttribute(radius)
-    this.speed = new PositiveAttribute(speed)
+    super(
+      new PositiveAttribute(attack),
+      new PositiveAttribute(defense),
+      new Attribute(health),
+      new PositiveAttribute(radius),
+      new PositiveAttribute(speed),
+    )
   }
 
   public addModifier(modifier: Modifier) {
-    // TODO: OMG
-    if (modifier.attack !== 0) { this.attack.addModifier(modifier.attack) }
-    if (modifier.defense !== 0) { this.defense.addModifier(modifier.defense) }
-    if (modifier.health !== 0) { this.health.addModifier(modifier.health) }
-    if (modifier.speed !== 0) { this.speed.addModifier(modifier.speed) }
-    if (modifier.radius !== 0) { this.radius.addModifier(modifier.radius) }
+    this.with(
+      modifier,
+      (char, mod) => { if (mod !== 0) { char.addModifier(modifier.attack) } }
+    )
   }
 
   public removeModifier(modifier: Modifier) {
-    // TODO: OMG
-    if (modifier.attack !== 0) { this.attack.removeModifier(modifier.attack) }
-    if (modifier.defense !== 0) { this.defense.removeModifier(modifier.defense) }
-    if (modifier.health !== 0) { this.health.removeModifier(modifier.health) }
-    if (modifier.speed !== 0) { this.speed.removeModifier(modifier.speed) }
-    if (modifier.radius !== 0) { this.radius.removeModifier(modifier.radius) }
+    this.with(
+      modifier,
+      (char, mod) => { if (mod !== 0) { char.removeModifier(modifier.attack) } }
+    )
   }
 
   public damageTo(victim: Characteristics): number {

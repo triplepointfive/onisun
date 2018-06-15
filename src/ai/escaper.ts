@@ -1,5 +1,4 @@
 import { AI } from './internal'
-import { Loiter } from '../ai'
 import { Phantom, Creature, CreatureId } from '../creature'
 import { Point } from '../utils'
 
@@ -12,7 +11,7 @@ export class Escaper extends AI {
   private runningTo?: Point
 
   public available(actor: Creature): boolean {
-    return this.foundEnemies(actor)
+    return this.foundEnemies(actor) || !!this.runningTo
   }
 
   public act(actor: Creature): void {
@@ -25,7 +24,7 @@ export class Escaper extends AI {
         this.runningTo = undefined
       }
     } else {
-      actor.ai = new Loiter(this)
+      throw 'Escaper called when there is nobody to run away from'
     }
   }
 

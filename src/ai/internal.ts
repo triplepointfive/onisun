@@ -2,6 +2,7 @@ import { Point, twoDimArray } from '../utils'
 import { Creature, MemoryTile, Phantom, Clan } from '../creature'
 
 import { sample } from 'lodash'
+import { MetaAI } from './meta_ai'
 
 const FIRST_STEP: number = 1
 
@@ -13,7 +14,7 @@ export abstract class AI {
     return this.lastId++
   }
 
-  constructor(public prevAI?: AI, public id: AIId = AI.getId()) {}
+  constructor(public prevAI?: MetaAI, public id: AIId = AI.getId()) {}
 
   public abstract act(actor: Creature, firstTurn: boolean): void
 
