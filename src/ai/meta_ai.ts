@@ -3,11 +3,17 @@ import { Creature } from '../creature'
 import { Item } from '../items/internal'
 
 export enum AIEventType {
-  ItemPickedUp
+  ItemPickedUp,
 }
 
-export class AIEvent { constructor(public type: AIEventType) {} }
-export class AIItemPickedEvent extends AIEvent { constructor(public items: Item[]) { super(AIEventType.ItemPickedUp) } }
+export class AIEvent {
+  constructor(public type: AIEventType) {}
+}
+export class AIItemPickedEvent extends AIEvent {
+  constructor(public items: Item[]) {
+    super(AIEventType.ItemPickedUp)
+  }
+}
 
 export abstract class MetaAI extends AI {
   protected events: AIEvent[] = []

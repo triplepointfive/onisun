@@ -67,7 +67,7 @@ export class AttributeSet<T> {
     public defense: T,
     public health: T,
     public radius: T,
-    public speed: T,
+    public speed: T
   ) {}
 
   public with(pairSet: AttributeSet<any>, on: (first: T, second: any) => void) {
@@ -80,20 +80,8 @@ export class AttributeSet<T> {
 }
 
 export class Modifier extends AttributeSet<number> {
-  constructor({
-    attack = 0,
-    defense = 0,
-    health = 0,
-    radius = 0,
-    speed = 0,
-  }) {
-    super(
-      attack,
-      defense,
-      health,
-      radius,
-      speed,
-    )
+  constructor({ attack = 0, defense = 0, health = 0, radius = 0, speed = 0 }) {
+    super(attack, defense, health, radius, speed)
   }
 }
 
@@ -110,22 +98,24 @@ export class Characteristics extends AttributeSet<Attribute> {
       new PositiveAttribute(defense),
       new Attribute(health),
       new PositiveAttribute(radius),
-      new PositiveAttribute(speed),
+      new PositiveAttribute(speed)
     )
   }
 
   public addModifier(modifier: Modifier) {
-    this.with(
-      modifier,
-      (char, mod) => { if (mod !== 0) { char.addModifier(mod) } }
-    )
+    this.with(modifier, (char, mod) => {
+      if (mod !== 0) {
+        char.addModifier(mod)
+      }
+    })
   }
 
   public removeModifier(modifier: Modifier) {
-    this.with(
-      modifier,
-      (char, mod) => { if (mod !== 0) { char.removeModifier(mod) } }
-    )
+    this.with(modifier, (char, mod) => {
+      if (mod !== 0) {
+        char.removeModifier(mod)
+      }
+    })
   }
 
   public damageTo(victim: Characteristics): number {

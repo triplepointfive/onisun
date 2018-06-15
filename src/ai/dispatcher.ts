@@ -11,7 +11,7 @@ import {
 } from '../ai'
 import { Creature } from '../creature'
 import { MetaAI, AIEventType } from './meta_ai'
-import { Wearer } from './wearer';
+import { Wearer } from './wearer'
 
 export class Dispatcher extends MetaAI {
   private escaper: Escaper

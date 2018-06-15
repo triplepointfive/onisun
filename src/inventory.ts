@@ -1,10 +1,10 @@
 import { Item, Equipment } from './items'
 
 import { remove } from 'lodash'
-import { Usage } from './items/internal';
+import { Usage } from './items/internal'
 
 import { includes } from 'lodash'
-import { Creature } from './creature';
+import { Creature } from './creature'
 
 export enum BodyPart {
   LeftHand,

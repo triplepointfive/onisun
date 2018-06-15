@@ -1,6 +1,6 @@
 import { AI } from './internal'
-import { Creature } from '../creature';
-import { Equipment, Usage } from '../items/internal';
+import { Creature } from '../creature'
+import { Equipment, Usage } from '../items/internal'
 
 export class Wearer extends AI {
   public available(actor: Creature): boolean {

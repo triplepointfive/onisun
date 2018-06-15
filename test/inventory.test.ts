@@ -1,8 +1,9 @@
 import { Inventory, BodyPart } from '../src/inventory'
-import { generateOneHandedWeapon } from './helpers'
+import { generateOneHandedWeapon, generateCreature } from './helpers'
 
 let item1 = generateOneHandedWeapon()
 let item2 = generateOneHandedWeapon()
+const creature = generateCreature()
 
 describe('puts on and takes off', () => {
   let inventory: Inventory
@@ -12,19 +13,19 @@ describe('puts on and takes off', () => {
   })
 
   test('empty slot', () => {
-    inventory.equip(item1)
+    inventory.equip(creature, item1)
     expect(inventory.wears()[0].equipment).toBe(item1)
-    inventory.takeOff(item1)
+    inventory.takeOff(creature, item1)
     expect(inventory.wears()[0].equipment).toBeNull
     expect(inventory.cares()).toEqual([item1])
   })
 
   test('already taken slot', () => {
-    inventory.equip(item1)
-    inventory.equip(item2)
+    inventory.equip(creature, item1)
+    inventory.equip(creature, item2)
     expect(inventory.wears()[0].equipment).toBe(item2)
     expect(inventory.cares()).toEqual([item1])
-    inventory.takeOff(item2)
+    inventory.takeOff(creature, item2)
     expect(inventory.wears()[0].equipment).toBeNull
     expect(inventory.cares()).toEqual([item1, item2])
   })
@@ -38,7 +39,7 @@ describe('failed', () => {
   })
 
   test('can not wear if there is no matching slot', () => {
-    inventory.equip(item1)
+    inventory.equip(creature, item1)
     expect(inventory.wears()[0].equipment).toBeNull
     expect(inventory.cares()).toEqual([])
   })
@@ -58,7 +59,7 @@ describe('failed', () => {
 
   test('takes off the item that is not put on yet', () => {
     expect(inventory.wears()[0].equipment).toBeNull
-    inventory.takeOff(item2)
+    inventory.takeOff(creature, item2)
     expect(inventory.wears()[0].equipment).toBeNull
   })
 })

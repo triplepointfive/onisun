@@ -148,7 +148,7 @@ export class Creature extends Phantom {
     radius: number,
     speed: number,
     clan: Clan,
-    ai: MetaAI,
+    ai: MetaAI
   ) {
     super(x, y, clan)
     this.previousPos = this.pos.copy()

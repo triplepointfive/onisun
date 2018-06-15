@@ -5,7 +5,7 @@ import { Creature } from '../creature'
 
 import * as graphlib from 'graphlib'
 import { Loiter } from './loiter'
-import { MetaAI } from './meta_ai';
+import { MetaAI } from './meta_ai'
 
 type NodeID = string
 

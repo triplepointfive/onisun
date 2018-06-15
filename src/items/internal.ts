@@ -43,13 +43,9 @@ export abstract class Equipment extends Item {
     group: ItemGroup,
     name: string,
     private modifier: Modifier,
-    usages: Usage[] = [],
+    usages: Usage[] = []
   ) {
-    super(
-      group,
-      name,
-      usages,
-    )
+    super(group, name, usages)
   }
 
   public canTakeOff(): boolean {

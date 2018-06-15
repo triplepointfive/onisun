@@ -15,8 +15,8 @@ import { OneHandWeapon, Item } from './items'
 import { LevelMap } from './map'
 import { Pool } from './pool'
 import { Point } from './utils'
-import { BodyArmor } from './items/internal';
-import { Modifier } from './characteristics';
+import { BodyArmor } from './items/internal'
+import { Modifier } from './characteristics'
 
 export type GeneratorOptions = {
   minSize: number

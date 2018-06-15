@@ -2,7 +2,7 @@ import { AI } from '../ai'
 import { Creature } from '../creature'
 import { Item, ItemId } from '../items'
 import { Point } from '../utils'
-import { AIItemPickedEvent } from './meta_ai';
+import { AIItemPickedEvent } from './meta_ai'
 
 export class Picker extends AI {
   private desiredItemId: ItemId = null
