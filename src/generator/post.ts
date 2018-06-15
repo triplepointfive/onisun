@@ -1,7 +1,7 @@
 import { LevelMap, Tile, TileTypes } from '../map'
 import { Pool } from '../pool'
 import { Creature } from '../creature'
-import { Point } from '../utils'
+import { Point, cycle } from '../utils'
 import { Item } from '../items/internal'
 
 export const addDoors = function(
@@ -56,7 +56,7 @@ export const addCreatures = function(
   creaturesPool: Pool<Point, Creature>
 ): LevelMap {
   for (let j = 1; j < level.height - 1; j++) {
-    for (let i = 1; i < level.width; i++) {
+    for (let i = 1; i < level.width - 1; i++) {
       if (level.at(i, j).passibleThrough() && Math.random() < chance) {
         creaturesPool.pick(new Point(i, j)).addToMap(level)
       }
@@ -72,13 +72,41 @@ export const addItems = function(
   itemsPool: Pool<null, Item>
 ): LevelMap {
   for (let j = 1; j < level.height - 1; j++) {
-    for (let i = 1; i < level.width; i++) {
+    for (let i = 1; i < level.width - 1; i++) {
       const tile = level.at(i, j)
       if (tile.passibleThrough() && Math.random() < chance) {
         tile.addItem(itemsPool.pick(null))
       }
     }
   }
+
+  return level
+}
+
+export const centrize = function(level: LevelMap): LevelMap {
+  let minX = level.width,
+      minY = level.height,
+      maxX = 0,
+      maxY = 0
+
+  for (let j = 1; j < level.height - 1; j++) {
+    for (let i = 1; i < level.width - 1; i++) {
+      if (!level.at(i, j).passibleThrough()) {
+        continue
+      }
+
+      maxY = Math.max(j, maxY)
+      maxX = Math.max(i, maxX)
+      minY = Math.min(j, minY)
+      minX = Math.min(i, minX)
+    }
+  }
+
+  const dx = Math.ceil((level.width - (maxX - minX)) / 2) - minX,
+        dy = Math.ceil((level.height - (maxY - minY)) / 2) - minY
+
+  cycle(level.map, dy)
+  level.map.forEach(row => cycle(row, dx))
 
   return level
 }

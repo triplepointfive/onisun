@@ -7,7 +7,7 @@ export * from './map'
 export * from './characteristics'
 
 import { generate } from './generator/dungeon'
-import { addDoors, addCreatures, addItems } from './generator/post'
+import { addDoors, addCreatures, addItems, centrize } from './generator/post'
 
 import { Creature, Clan } from './creature'
 import { Dispatcher } from './ai'
@@ -29,8 +29,8 @@ export type GeneratorOptions = {
 export let baseConfig = {
   addDoors: false,
   minSize: 3,
-  maxSize: 7,
-  roomsCount: 10,
+  maxSize: 10,
+  roomsCount: 20,
 }
 
 const weapons = new Pool<null, Item>([
@@ -80,6 +80,7 @@ export class Game {
     if (generatorOptions.addDoors) {
       this.map = addDoors(this.map)
     }
+    centrize(this.map)
 
     let x = 1,
       y = 1

@@ -95,7 +95,7 @@ export abstract class Mapped<T> {
   public readonly width: number
   public readonly height: number
 
-  constructor(protected map: T[][]) {
+  constructor(public map: T[][]) {
     this.width = map[0].length
     this.height = map.length
   }
@@ -103,4 +103,21 @@ export abstract class Mapped<T> {
   public at(x, y): T {
     return this.map[y][x]
   }
+}
+
+export const cycle = function(list: any[], dx: number): any[] {
+  let x
+  if (dx > 0) {
+    for (let i = 0; i < dx; i++) {
+      x = list.pop()
+      list.unshift(x)
+    }
+  } else if (dx < 0) {
+    for (let i = dx; i < 0; i++) {
+      x = list.shift()
+      list.push(x)
+    }
+  }
+
+  return list
 }
