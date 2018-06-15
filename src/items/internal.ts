@@ -1,17 +1,15 @@
-import { Phantom } from '../creature'
-import { BodyPart } from '../inventory'
+import { Phantom, Creature } from '../creature'
+import { Modifier } from '../characteristics'
+
+export enum Usage {
+  WeaponOneHand,
+  WearsOnBody,
+}
 
 export enum ItemGroup {
   BodyArmor,
-  Armor,
-  Weapon,
-  Corpse,
-}
-
-export enum ItemKind {
-  BodyArmor,
-  Weapon,
-  Corpse,
+  OneHandWeapon,
+  Consumable,
 }
 
 export type ItemId = number
@@ -24,45 +22,57 @@ export class Item {
 
   constructor(
     public group: ItemGroup,
-    public kind: ItemKind,
     public name: string,
+    public readonly usages: Usage[] = [],
     public id: ItemId = Item.getId()
   ) {}
 
   public clone(): Item {
-    return new Item(this.group, this.kind, this.name)
-  }
-}
-
-export abstract class Equipment extends Item {
-  public abstract bodyPart(): BodyPart
-  public canTakeOff(): boolean {
-    return true // TODO
-  }
-  public abstract onPutOn(creature): void
-  public abstract onTakeOff(creature): void
-}
-
-export class BodyArmor extends Equipment {
-  constructor(name: string, private defenseModifier: number) {
-    super(ItemGroup.BodyArmor, ItemKind.BodyArmor, name)
-  }
-
-  public bodyPart(): BodyPart {
-    return BodyPart.Body
-  }
-
-  public onPutOn(creature) {
-    creature.characteristics.attack.addModifier(this.defenseModifier)
-  }
-
-  public onTakeOff(creature) {
-    creature.characteristics.attack.removeModifier(this.defenseModifier)
+    return new Item(this.group, this.name)
   }
 }
 
 export class Corpse extends Item {
   constructor(creature: Phantom) {
-    super(ItemGroup.Corpse, ItemKind.Corpse, 'corpse')
+    super(ItemGroup.Consumable, 'corpse')
+  }
+}
+
+export abstract class Equipment extends Item {
+  constructor(
+    group: ItemGroup,
+    name: string,
+    private modifier: Modifier,
+    usages: Usage[] = [],
+  ) {
+    super(
+      group,
+      name,
+      usages,
+    )
+  }
+
+  public canTakeOff(): boolean {
+    return true // TODO
+  }
+
+  public onPutOn(creature: Creature): void {
+    creature.characteristics.addModifier(this.modifier)
+  }
+
+  public onTakeOff(creature: Creature): void {
+    creature.characteristics.addModifier(this.modifier)
+  }
+}
+
+export class BodyArmor extends Equipment {
+  constructor(name: string, modifier: Modifier) {
+    super(ItemGroup.BodyArmor, name, modifier, [Usage.WearsOnBody])
+  }
+}
+
+export class OneHandWeapon extends Equipment {
+  constructor(name: string, modifier: Modifier) {
+    super(ItemGroup.OneHandWeapon, name, modifier, [Usage.WeaponOneHand])
   }
 }

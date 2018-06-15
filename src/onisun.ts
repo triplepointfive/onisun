@@ -11,11 +11,12 @@ import { addDoors, addCreatures, addItems } from './generator/post'
 
 import { Creature, Clan } from './creature'
 import { Dispatcher } from './ai'
-import { Weapon, Item } from './items'
+import { OneHandWeapon, Item } from './items'
 import { LevelMap } from './map'
 import { Pool } from './pool'
 import { Point } from './utils'
 import { BodyArmor } from './items/internal';
+import { Modifier } from './characteristics';
 
 export type GeneratorOptions = {
   minSize: number
@@ -25,17 +26,17 @@ export type GeneratorOptions = {
   addDoors: boolean
 }
 
-const weapons = new Pool([
-  [1, () => new Weapon('Katana', 10)],
-  [1, () => new Weapon('Axe', 7)],
-  [1, () => new Weapon('Dagger', 3)],
-  [3, () => new Weapon('Hammer', 5)],
+const weapons = new Pool<null, OneHandWeapon>([
+  [1, () => new OneHandWeapon('Katana', new Modifier({ attack: 10 }))],
+  [1, () => new OneHandWeapon('Axe', new Modifier({ attack: 7 }))],
+  [1, () => new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))],
+  [3, () => new OneHandWeapon('Hammer', new Modifier({ attack: 5 }))],
 ])
 
 const itemsPool = new Pool<null, Item>([
-  [1, () => new BodyArmor('Кольчуга', 10)],
-  [1, () => new BodyArmor('Латы', 5)],
-  [5, () => new BodyArmor('Роба', 1)],
+  [1, () => new BodyArmor('Кольчуга', new Modifier({ attack: 10 }))],
+  [1, () => new BodyArmor('Латы', new Modifier({ attack: 5 }))],
+  [5, () => new BodyArmor('Роба', new Modifier({ attack: 1 }))],
 ])
 
 const creaturesPool = new Pool<Point, Creature>([
@@ -97,7 +98,7 @@ export class Game {
       new Dispatcher()
     )
     this.player.addToMap(this.map)
-    this.player.putOn(weapons.pick(new Point(0, 0)))
+    this.player.putOn(weapons.pick(null))
 
     addCreatures(0.05, this.map, creaturesPool)
     addItems(0.01, this.map, itemsPool)

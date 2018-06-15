@@ -1,6 +1,9 @@
 import { Item, Equipment } from './items'
 
 import { remove } from 'lodash'
+import { Usage } from './items/internal';
+
+import { includes } from 'lodash'
 
 export enum BodyPart {
   LeftHand,
@@ -17,6 +20,11 @@ export enum BodyPart {
 type Wearing = {
   bodyPart: BodyPart
   equipment?: Equipment
+}
+
+const bodyToUsage = {
+  [BodyPart.RightHand]: Usage.WeaponOneHand,
+  [BodyPart.Body]: Usage.WearsOnBody,
 }
 
 export class Inventory {
@@ -39,7 +47,7 @@ export class Inventory {
 
   public equip(item: Equipment) {
     this.wearings.forEach(wearing => {
-      if (wearing.bodyPart === item.bodyPart()) {
+      if (includes(item.usages, bodyToUsage[wearing.bodyPart])) {
         if (wearing.equipment) {
           this.putToBag(wearing.equipment)
         }

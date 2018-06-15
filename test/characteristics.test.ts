@@ -1,5 +1,4 @@
 import { Characteristics, PositiveAttribute, Attribute } from '../src/characteristics'
-import { Creature, Clan, Dispatcher } from '../src/onisun';
 
 describe('Attribute', () => {
   let attribute: Attribute

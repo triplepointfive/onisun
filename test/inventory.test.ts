@@ -1,8 +1,8 @@
 import { Inventory, BodyPart } from '../src/inventory'
-import { Weapon } from '../src/items'
+import { generateOneHandedWeapon } from './helpers'
 
-let item1 = new Weapon('Katana', 10)
-let item2 = new Weapon('Hatch', 5)
+let item1 = generateOneHandedWeapon()
+let item2 = generateOneHandedWeapon()
 
 describe('puts on and takes off', () => {
   let inventory: Inventory

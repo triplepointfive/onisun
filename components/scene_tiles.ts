@@ -2,7 +2,7 @@ import { Tile } from '../vendor/unicodetiles.ts/src/index'
 
 import {
   Item,
-  ItemKind,
+  ItemGroup,
 } from '../src/onisun'
 
 const DEFAULT_GREY: number = 120
@@ -122,14 +122,14 @@ const CORPSE = new ItemTile('体', 200, 200, 200)
 const BODY_ARMOR = new ItemTile('胸', 200, 200, 200)
 
 export const displayItem = function(item: Item): ItemTile {
-  switch (item.kind) {
-    case ItemKind.Weapon:
+  switch (item.group) {
+    case ItemGroup.OneHandWeapon:
       return WEAPON
-    case ItemKind.Corpse:
+    case ItemGroup.Consumable:
       return CORPSE
-    case ItemKind.BodyArmor:
+    case ItemGroup.BodyArmor:
       return BODY_ARMOR
     default:
-      throw `Unknow item ${item} with type ${item.kind}`
+      throw `Unknow group ${item} with type ${item.group}`
   }
 }

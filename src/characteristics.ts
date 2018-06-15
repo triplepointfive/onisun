@@ -61,6 +61,28 @@ export class PositiveAttribute extends Attribute {
   }
 }
 
+export class Modifier {
+  public attack: number
+  public defense: number
+  public health: number
+  public radius: number
+  public speed: number
+
+  constructor({
+    attack = 0,
+    defense = 0,
+    health = 0,
+    radius = 0,
+    speed = 0,
+  }) {
+    this.attack  = attack
+    this.defense = defense
+    this.health  = health
+    this.radius  = radius
+    this.speed   = speed
+  }
+}
+
 export class Characteristics {
   public attack: Attribute
   public defense: Attribute
@@ -80,6 +102,24 @@ export class Characteristics {
     this.health = new Attribute(health)
     this.radius = new PositiveAttribute(radius)
     this.speed = new PositiveAttribute(speed)
+  }
+
+  public addModifier(modifier: Modifier) {
+    // TODO: OMG
+    if (modifier.attack !== 0) { this.attack.addModifier(modifier.attack) }
+    if (modifier.defense !== 0) { this.defense.addModifier(modifier.defense) }
+    if (modifier.health !== 0) { this.health.addModifier(modifier.health) }
+    if (modifier.speed !== 0) { this.speed.addModifier(modifier.speed) }
+    if (modifier.radius !== 0) { this.radius.addModifier(modifier.radius) }
+  }
+
+  public removeModifier(modifier: Modifier) {
+    // TODO: OMG
+    if (modifier.attack !== 0) { this.attack.removeModifier(modifier.attack) }
+    if (modifier.defense !== 0) { this.defense.removeModifier(modifier.defense) }
+    if (modifier.health !== 0) { this.health.removeModifier(modifier.health) }
+    if (modifier.speed !== 0) { this.speed.removeModifier(modifier.speed) }
+    if (modifier.radius !== 0) { this.radius.removeModifier(modifier.radius) }
   }
 
   public damageTo(victim: Characteristics): number {
