@@ -12,7 +12,6 @@ export class Wearer extends AI {
       if (item instanceof Equipment) {
         if (this.shouldWear(actor, item)) {
           actor.putOn(item)
-          actor.inventory.removeFromBag(item)
         }
       }
     })

@@ -174,13 +174,12 @@ export class Creature extends Phantom {
   }
 
   public putOn(item: Equipment) {
-    this.inventory.equip(item)
-    item.onPutOn(this)
+    this.inventory.equip(this, item)
+    this.inventory.removeFromBag(item)
   }
 
   public takeOff(item: Equipment) {
-    this.inventory.equip(item)
-    item.onPutOn(this)
+    this.inventory.takeOff(this, item)
   }
 
   public name(): string {

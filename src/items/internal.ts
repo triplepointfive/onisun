@@ -61,7 +61,7 @@ export abstract class Equipment extends Item {
   }
 
   public onTakeOff(creature: Creature): void {
-    creature.characteristics.addModifier(this.modifier)
+    creature.characteristics.removeModifier(this.modifier)
   }
 }
 

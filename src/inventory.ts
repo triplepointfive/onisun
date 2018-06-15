@@ -4,6 +4,7 @@ import { remove } from 'lodash'
 import { Usage } from './items/internal';
 
 import { includes } from 'lodash'
+import { Creature } from './creature';
 
 export enum BodyPart {
   LeftHand,
@@ -45,23 +46,26 @@ export class Inventory {
     return this.bag
   }
 
-  public equip(item: Equipment) {
+  public equip(actor: Creature, item: Equipment) {
     this.wearings.forEach(wearing => {
       if (includes(item.usages, bodyToUsage[wearing.bodyPart])) {
         if (wearing.equipment) {
           this.putToBag(wearing.equipment)
+          wearing.equipment.onTakeOff(actor)
         }
 
-        return (wearing.equipment = item)
+        wearing.equipment = item
+        item.onPutOn(actor)
       }
     })
   }
 
-  public takeOff(item: Equipment) {
+  public takeOff(actor: Creature, item: Equipment) {
     this.wearings.forEach(wearing => {
       if (wearing.equipment && wearing.equipment.id === item.id) {
         this.putToBag(wearing.equipment)
-        return (wearing.equipment = null)
+        item.onTakeOff(actor)
+        wearing.equipment = null
       }
     })
   }

@@ -61,24 +61,15 @@ import Scene from './Scene.vue'
 import {
   LevelMap,
   Game,
+  baseConfig,
 } from '../src/onisun'
 
 export default Vue.extend({
   data() {
     return {
-      game: new Game({
-        addDoors: false,
-        minSize: 5,
-        maxSize: 5,
-        roomsCount: 10,
-      }),
+      game: new Game(baseConfig),
       ts: Date.now(),
-      generatorOptions: {
-        addDoors: false,
-        minSize: 5,
-        maxSize: 5,
-        roomsCount: 10,
-      }
+      generatorOptions: baseConfig
     }
   },
   components: {

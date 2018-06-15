@@ -26,6 +26,13 @@ export type GeneratorOptions = {
   addDoors: boolean
 }
 
+export let baseConfig = {
+  addDoors: false,
+  minSize: 3,
+  maxSize: 7,
+  roomsCount: 10,
+}
+
 const weapons = new Pool<null, OneHandWeapon>([
   [10, () => new OneHandWeapon('Katana', new Modifier({ attack: 10 }))],
   [1, () => new OneHandWeapon('Axe', new Modifier({ attack: 7 }))],
