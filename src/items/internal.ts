@@ -42,7 +42,7 @@ export abstract class Equipment extends Item {
   constructor(
     group: ItemGroup,
     name: string,
-    private modifier: Modifier,
+    public readonly modifier: Modifier,
     usages: Usage[] = []
   ) {
     super(group, name, usages)

@@ -1,9 +1,8 @@
 import { Item, Equipment } from './items'
 
-import { remove } from 'lodash'
 import { Usage } from './items/internal'
 
-import { includes } from 'lodash'
+import { remove, includes } from 'lodash'
 import { Creature } from './creature'
 
 export enum BodyPart {
@@ -18,7 +17,7 @@ export enum BodyPart {
   Body,
 }
 
-type Wearing = {
+export type Wearing = {
   bodyPart: BodyPart
   equipment?: Equipment
 }
@@ -46,17 +45,27 @@ export class Inventory {
     return this.bag
   }
 
-  public equip(actor: Creature, item: Equipment) {
-    this.wearings.forEach(wearing => {
-      if (includes(item.usages, bodyToUsage[wearing.bodyPart])) {
-        if (wearing.equipment) {
-          this.putToBag(wearing.equipment)
-          wearing.equipment.onTakeOff(actor)
-        }
+  public canWear(item: Equipment) {
+    return this.wearings.some(wearing =>
+      includes(item.usages, bodyToUsage[wearing.bodyPart])
+    )
+  }
 
-        wearing.equipment = item
-        item.onPutOn(actor)
+  public matchingEquip(item: Equipment): Wearing[] {
+    return this.wearings.filter(wearing =>
+      includes(item.usages, bodyToUsage[wearing.bodyPart])
+    )
+  }
+
+  public equip(actor: Creature, item: Equipment) {
+    this.matchingEquip(item).forEach(wearing => {
+      if (wearing.equipment) {
+        this.putToBag(wearing.equipment)
+        wearing.equipment.onTakeOff(actor)
       }
+
+      wearing.equipment = item
+      item.onPutOn(actor)
     })
   }
 

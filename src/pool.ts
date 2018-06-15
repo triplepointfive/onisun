@@ -30,4 +30,13 @@ export class Pool<Input, Output> {
       return pick <= 0
     })[1](input)
   }
+
+  public merge(pool: Pool<Input, Output>): Pool<Input, Output> {
+    let totalPool = new Pool<Input, Output>([])
+
+    this.items.forEach(([weight, item]) => totalPool.add(weight, item))
+    pool.items.forEach(([weight, item]) => totalPool.add(weight, item))
+
+    return totalPool
+  }
 }

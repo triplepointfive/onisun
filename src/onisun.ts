@@ -33,17 +33,17 @@ export let baseConfig = {
   roomsCount: 10,
 }
 
-const weapons = new Pool<null, OneHandWeapon>([
-  [10, () => new OneHandWeapon('Katana', new Modifier({ attack: 10 }))],
-  [1, () => new OneHandWeapon('Axe', new Modifier({ attack: 7 }))],
-  [1, () => new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))],
-  [3, () => new OneHandWeapon('Hammer', new Modifier({ attack: 5 }))],
+const weapons = new Pool<null, Item>([
+  [1, () => new OneHandWeapon('Katana', new Modifier({ attack: 10 }))],
+  [3, () => new OneHandWeapon('Axe', new Modifier({ attack: 7 }))],
+  [7, () => new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))],
+  [5, () => new OneHandWeapon('Hammer', new Modifier({ attack: 5 }))],
 ])
 
 const itemsPool = new Pool<null, Item>([
   [1, () => new BodyArmor('Кольчуга', new Modifier({ defense: 10 }))],
-  [1, () => new BodyArmor('Латы', new Modifier({ defense: 5 }))],
-  [5, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
+  [5, () => new BodyArmor('Латы', new Modifier({ defense: 5 }))],
+  [10, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
 ])
 
 const creaturesPool = new Pool<Point, Creature>([
@@ -110,6 +110,7 @@ export class Game {
     this.player.putOn(dagger)
 
     addCreatures(0.05, this.map, creaturesPool)
-    addItems(0.01, this.map, itemsPool)
+    // addItems(0.01, this.map, itemsPool)
+    addItems(0.1, this.map, weapons.merge(itemsPool))
   }
 }

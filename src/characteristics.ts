@@ -83,6 +83,18 @@ export class Modifier extends AttributeSet<number> {
   constructor({ attack = 0, defense = 0, health = 0, radius = 0, speed = 0 }) {
     super(attack, defense, health, radius, speed)
   }
+
+  public withWeight(
+    pairSet: Modifier,
+    weight: Modifier,
+    on: (first: number, second: number, weight: number) => void
+  ) {
+    on(this.attack, pairSet.attack, weight.attack)
+    on(this.defense, pairSet.defense, weight.defense)
+    on(this.health, pairSet.health, weight.health)
+    on(this.radius, pairSet.radius, weight.radius)
+    on(this.speed, pairSet.speed, weight.speed)
+  }
 }
 
 export class Characteristics extends AttributeSet<Attribute> {
