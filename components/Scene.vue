@@ -8,6 +8,8 @@
       <div class='col pl-0'>
         <div class='fps mb-2 '>FPS {{ fps }}</div>
 
+        <input type='checkbox' v-model='wholeMap'>
+
         <Stats :creature='level.creatures[0]'/>
 
         <div class='form-group row'>
@@ -80,6 +82,7 @@ export default Vue.extend({
   props: ['level'],
   data() {
     return {
+      wholeMap: true,
       term: null,
       eng: null,
       drawInterval: null,
@@ -211,9 +214,6 @@ export default Vue.extend({
     },
   },
   computed: {
-    wholeMap() {
-      return true
-    },
     stage() {
       return this.wholeMap ? this.level : this.player.stageMemory(this.level.id)
     },

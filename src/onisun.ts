@@ -7,6 +7,7 @@ export * from './map'
 export * from './characteristics'
 
 import { generate } from './generator/dungeon'
+import drawn from './generator/drawn'
 import { addDoors, addCreatures, addItems, centrize } from './generator/post'
 
 import { Creature, Clan } from './creature'
@@ -69,13 +70,27 @@ export class Game {
   public map: LevelMap
 
   constructor(generatorOptions: GeneratorOptions) {
-    this.map = generate(
-      50,
-      50,
-      generatorOptions.minSize,
-      generatorOptions.maxSize,
-      generatorOptions.roomsCount
-    )
+    // this.map = generate(
+    //   50,
+    //   50,
+    //   generatorOptions.minSize,
+    //   generatorOptions.maxSize,
+    //   generatorOptions.roomsCount
+    // )
+
+    this.map = drawn([
+      'WWWWWWWWWWW',
+      'WRRRCRRRRRW',
+      'WRRRWRRRRRW',
+      'WRRRWWWWWCW',
+      'WRRRCCCCCCW',
+      'WWWWWWWWWWW',
+      'WWWWWWWWWWW',
+      'WWWWWWWWWWW',
+      'WWWWWWWWWWW',
+      'WWWWWWWWWWW',
+      'WWWWWWWWWWW',
+    ])
 
     if (generatorOptions.addDoors) {
       this.map = addDoors(this.map)
