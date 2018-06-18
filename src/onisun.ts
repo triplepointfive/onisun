@@ -8,12 +8,12 @@ export * from './characteristics'
 
 import { generate } from './generator/dungeon'
 import drawn from './generator/drawn'
-import { addDoors, addCreatures, addItems, centrize } from './generator/post'
+import { addDoors, addCreatures, addItems, centrize, addOnTile } from './generator/post'
 
 import { Creature, Clan } from './creature'
 import { Dispatcher } from './ai'
 import { OneHandWeapon, Item } from './items'
-import { LevelMap } from './map'
+import { LevelMap, Tile } from './map'
 import { Pool } from './pool'
 import { Point } from './utils'
 import { BodyArmor } from './items/internal'
@@ -83,7 +83,7 @@ export class Onisun extends Game {
     this.map = drawn([
       'WWWWWWWWWWW',
       'WRRRCRRRRRW',
-      'WRRRWRR>RRW',
+      'WRRRWRRRRRW',
       'WRRRWWWWWCW',
       'WRRRCCCCCCW',
       'WWWWWWWWWWW',
@@ -95,35 +95,41 @@ export class Onisun extends Game {
     centrize(this.map)
     this.map.game = this
 
-    let x = 1,
-      y = 1
-
-    while (!this.map.visibleThrough(x, y)) {
-      if (x < this.map.width - 1) {
-        x += 1
-      } else {
-        x = 1
-        y += 1
-      }
-    }
-
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
 
     this.player = new Creature(
-      x,
-      y,
+      0,
+      0,
       1,
       4,
-      20,
+      2,
       5,
       100,
       Clan.Player,
       new Dispatcher()
     )
-    this.player.addToMap(this.map)
     this.player.putOn(dagger)
 
-    addCreatures(0.1, this.map, creaturesPool)
-    addItems(0.05, this.map, weapons.merge(itemsPool))
+    addOnTile(
+      this.map,
+      tile => tile.isFloor(),
+      (x, y) => {
+        console.log(x, y)
+        this.player.pos = new Point(x, y)
+        this.map.setTile(x, y, Tile.retrive('<'))
+        this.player.addToMap(this.map)
+      }
+    )
+
+    addOnTile(
+      this.map,
+      tile => tile.isFloor(),
+      (x, y) => {
+        this.map.setTile(x, y, Tile.retrive('>'))
+      }
+    )
+
+    // addCreatures(0.1, this.map, creaturesPool)
+    // addItems(0.05, this.map, weapons.merge(itemsPool))
   }
 }

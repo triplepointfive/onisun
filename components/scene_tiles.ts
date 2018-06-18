@@ -107,7 +107,7 @@ export class StairwayDown extends DisplayTile {
 
 export class StairwayUp extends DisplayTile {
   constructor() {
-    super('＞')
+    super('＜')
   }
 }
 

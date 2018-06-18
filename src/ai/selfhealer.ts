@@ -6,7 +6,7 @@ export class SelfHealer extends AI {
     return !actor.characteristics.health.atMax()
   }
 
-  public act(actor: Creature, firstTurn: boolean = true): void {
+  public act(actor: Creature): void {
     actor.characteristics.regenerate()
   }
 }

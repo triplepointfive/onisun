@@ -57,8 +57,12 @@ export class Tile {
     return this.kind === TileTypes.Wall
   }
 
+  public isFloor(): boolean {
+    return this.kind === TileTypes.Floor
+  }
+
   public visibleThrough(): boolean {
-    return (this.kind === TileTypes.Floor || this.kind === TileTypes.StairwayDown || this.kind === TileTypes.StairwayUp)
+    return this.isFloor() || this.kind === TileTypes.StairwayDown || this.kind === TileTypes.StairwayUp
   }
 
   public passibleThrough(actor?: Creature): boolean {
@@ -99,6 +103,10 @@ export class LevelMap extends Mapped<Tile> {
   constructor(map: Tile[][]) {
     super(map)
     this.id = LevelMap.getId()
+    this.timeline = new Timeline()
+  }
+
+  public reset(): void {
     this.timeline = new Timeline()
   }
 

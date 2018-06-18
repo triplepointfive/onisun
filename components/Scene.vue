@@ -10,7 +10,7 @@
 
         <input type='checkbox' v-model='wholeMap'>
 
-        <Stats :creature='level.creatures[0]'/>
+        <Stats :creature='player'/>
 
         <div class='form-group row'>
           <div class='col-sm-2'>Map</div>
@@ -84,7 +84,7 @@ const nextItemAnimation = [
 ]
 
 export default Vue.extend({
-  props: ['level'],
+  props: ['level', 'player'],
   data() {
     return {
       wholeMap: true,
@@ -98,7 +98,6 @@ export default Vue.extend({
       nextStep: false,
       step: 0,
       pause: false,
-      player: this.level.creatures[0]
     }
   },
   components: {
@@ -198,7 +197,6 @@ export default Vue.extend({
         this.nextStep = false
 
         this.level.turn()
-        this.player = this.level.creatures[0]
       }
 
       // this.eng.update(this.player.x, this.player.y);
