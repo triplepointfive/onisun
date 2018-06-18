@@ -9,7 +9,7 @@ const DEFAULT_GREY: number = 120
 const IMPORTANT_GREY: number = 180
 const DEFAULT_LIT = { r: 255, g: 165, b: 0 }
 
-class DisplayTile extends Tile {
+export class DisplayTile extends Tile {
   public lighted(degree: number): Tile {
     return this
   }
@@ -96,6 +96,18 @@ export class WallTile extends DisplayTile {
     tile.backgroundToColor()
 
     return tile
+  }
+}
+
+export class StairwayDown extends DisplayTile {
+  constructor() {
+    super('＞')
+  }
+}
+
+export class StairwayUp extends DisplayTile {
+  constructor() {
+    super('＞')
   }
 }
 

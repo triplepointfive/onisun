@@ -83,7 +83,7 @@ export class Onisun extends Game {
     this.map = drawn([
       'WWWWWWWWWWW',
       'WRRRCRRRRRW',
-      'WRRRWRRRRRW',
+      'WRRRWRR>RRW',
       'WRRRWWWWWCW',
       'WRRRCCCCCCW',
       'WWWWWWWWWWW',

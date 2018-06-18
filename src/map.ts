@@ -10,6 +10,8 @@ export enum TileTypes {
   Wall,
   Door,
   Floor,
+  StairwayDown,
+  StairwayUp,
 }
 
 export class Tile {
@@ -28,6 +30,10 @@ export class Tile {
         return new Tile('W', '#', TileTypes.Wall)
       case 'D':
         return new Tile('D', '+', TileTypes.Door)
+      case '>':
+        return new Tile('>', '>', TileTypes.StairwayDown)
+      case '<':
+        return new Tile('<', '<', TileTypes.StairwayUp)
       default:
         throw `Tile '${key}' is not registered!`
     }
@@ -52,7 +58,7 @@ export class Tile {
   }
 
   public visibleThrough(): boolean {
-    return this.kind === TileTypes.Floor
+    return (this.kind === TileTypes.Floor || this.kind === TileTypes.StairwayDown || this.kind === TileTypes.StairwayUp)
   }
 
   public passibleThrough(actor?: Creature): boolean {

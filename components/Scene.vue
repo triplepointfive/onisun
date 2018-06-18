@@ -56,6 +56,9 @@ import {
   FloorTile,
   ItemTile,
   WallTile,
+  StairwayUp,
+  StairwayDown,
+  DisplayTile,
 
   displayItem,
 } from './scene_tiles'
@@ -69,7 +72,9 @@ const HUMAN5 = new CreatureTile('俺', 0, 255, 255)
 const DOOR = new DoorTile()
 const WALL = new WallTile()
 const FLOOR = new FloorTile()
-const NULLTILE = new Tile('　', 0, 0, 0)
+const STAIRWAY_DOWN = new StairwayDown()
+const STAIRWAY_UP = new StairwayUp()
+const NULLTILE = new DisplayTile('　', 0, 0, 0)
 
 const nextItemAnimation = [
   new ItemTile('｜', 200, 200, 200),
@@ -144,6 +149,10 @@ export default Vue.extend({
         return DOOR
       case ' ':
         return FLOOR
+      case '<':
+        return STAIRWAY_UP
+      case '>':
+        return STAIRWAY_DOWN
       default:
         return NULLTILE
       }
@@ -241,9 +250,6 @@ export default Vue.extend({
 <style lang='scss'>
 .unicodetiles {
   background-color: black;
-}
-
-.unicodetiles {
   font-family: "DejaVuSansMono", "DejaVu Sans Mono", monospace;
   font-size: 16px;
   white-space: pre;
@@ -251,14 +257,14 @@ export default Vue.extend({
   line-height: 1;
   letter-spacing: 0px;
   display: inline-block;
-}
 
-.unicodetiles div {
-  float: left;
-  height: 1em;
-}
+  div {
+    float: left;
+    height: 1em;
+  }
 
-.unicodetiles br {
-  clear: both;
+  br {
+    clear: both;
+  }
 }
 </style>
