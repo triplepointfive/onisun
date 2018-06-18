@@ -1,18 +1,16 @@
 import { Phantom, Creature, CreatureId } from './creature'
 import { Item, Corpse } from './items'
-import { Point, Mapped } from './utils'
-import { Logger } from './logger'
+import { Mapped } from './utils'
 import { Timeline } from './timeline'
+import { Game } from './game'
 
-import { includes } from 'lodash'
+import { remove, includes } from 'lodash'
 
 export enum TileTypes {
   Wall,
   Door,
   Floor,
 }
-
-import { remove } from 'lodash'
 
 export class Tile {
   public creature?: Phantom
@@ -84,7 +82,7 @@ export type LevelMapId = number
 export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public id: LevelMapId
-  public logger: Logger
+  public game: Game
   protected timeline: Timeline<CreatureId>
 
   private static lastId: LevelMapId = 0
@@ -95,7 +93,6 @@ export class LevelMap extends Mapped<Tile> {
   constructor(map: Tile[][]) {
     super(map)
     this.id = LevelMap.getId()
-    this.logger = new Logger()
     this.timeline = new Timeline()
   }
 

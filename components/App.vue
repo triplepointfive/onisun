@@ -1,7 +1,7 @@
 <template>
   <div id='app' class='container' v-if='game'>
     <Scene :level='game.map' v-if='game.player'/>
-    <Logger :logger='game.map.logger' />
+    <Logger :logger='game.logger' />
     <div class=''>
       <div class=''>
         <div class='form-group row'>
@@ -60,14 +60,14 @@ import Scene from './Scene.vue'
 
 import {
   LevelMap,
-  Game,
+  Onisun,
   baseConfig,
 } from '../src/onisun'
 
 export default Vue.extend({
   data() {
     return {
-      game: new Game(baseConfig),
+      game: new Onisun(baseConfig),
       ts: Date.now(),
       generatorOptions: baseConfig
     }
@@ -79,7 +79,7 @@ export default Vue.extend({
   },
   methods: {
     generateMap() {
-      this.game = new Game(
+      this.game = new Onisun(
         this.generatorOptions,
       )
     }

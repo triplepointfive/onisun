@@ -18,6 +18,7 @@ import { Pool } from './pool'
 import { Point } from './utils'
 import { BodyArmor } from './items/internal'
 import { Modifier } from './characteristics'
+import { Game } from './game';
 
 export type GeneratorOptions = {
   minSize: number
@@ -65,11 +66,12 @@ const creaturesPool = new Pool<Point, Creature>([
   ],
 ])
 
-export class Game {
+export class Onisun extends Game {
   public player: Creature
   public map: LevelMap
 
   constructor(generatorOptions: GeneratorOptions) {
+    super()
     // this.map = generate(
     //   50,
     //   50,
@@ -91,6 +93,7 @@ export class Game {
       this.map = addDoors(this.map)
     }
     centrize(this.map)
+    this.map.game = this
 
     let x = 1,
       y = 1
@@ -120,7 +123,7 @@ export class Game {
     this.player.addToMap(this.map)
     this.player.putOn(dagger)
 
-    // addCreatures(0.5, this.map, creaturesPool)
-    addItems(0.5, this.map, weapons.merge(itemsPool))
+    addCreatures(0.1, this.map, creaturesPool)
+    addItems(0.05, this.map, weapons.merge(itemsPool))
   }
 }

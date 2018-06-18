@@ -91,12 +91,12 @@ export class Attack {
     const damage = this.actor.characteristics.damageTo(subject.characteristics)
 
     if (damage >= subject.characteristics.health.currentValue()) {
-      subject.currentLevel.logger.killMessage(damage, this.actor, subject)
+      subject.currentLevel.game.logger.killMessage(damage, this.actor, subject)
       subject.die()
       return Reaction.DIE
     } else {
       subject.characteristics.health.decrease(damage)
-      subject.currentLevel.logger.hurtMessage(damage, this.actor, subject)
+      subject.currentLevel.game.logger.hurtMessage(damage, this.actor, subject)
       return Reaction.HURT
     }
   }
