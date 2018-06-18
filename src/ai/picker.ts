@@ -59,17 +59,18 @@ export class Picker extends AI {
     actor: Creature,
     condition: (item: Item) => boolean
   ): boolean {
-    this.withinView(actor, ({ x, y }, tile) => {
-      const items = tile.items()
-      const item = items.find(condition)
+    let result: boolean = false
 
-      if (item) {
+    this.withinView(actor, ({ x, y }, tile) => {
+      const item = tile.items().find(condition)
+
+      if (item && !result) {
         this.desiredItemId = item.id
         this.desiredItemPos = new Point(x, y)
-        return true
+        result = true
       }
     })
 
-    return false
+    return result
   }
 }

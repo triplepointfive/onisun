@@ -113,14 +113,14 @@ export class Game {
       4,
       20,
       5,
-      10,
+      100,
       Clan.Player,
       new Dispatcher()
     )
     this.player.addToMap(this.map)
     this.player.putOn(dagger)
 
-    addCreatures(0.5, this.map, creaturesPool)
-    addItems(0.1, this.map, weapons.merge(itemsPool))
+    // addCreatures(0.5, this.map, creaturesPool)
+    addItems(0.5, this.map, weapons.merge(itemsPool))
   }
 }

@@ -49,7 +49,7 @@ export class Chaser extends FollowTargetAI {
     this.withinView(actor, ({ x, y }, tile) => {
       const creature = tile.creature()
 
-      if (creature && condition(creature)) {
+      if (!result && creature && condition(creature)) {
         this.destination = new Point(x, y)
         this.victimId = creature.id
         result = true
