@@ -34,9 +34,9 @@ export const twoDimArray = function(
 ): Array<Array<any>> {
   let field = Array(width)
 
-  for (let i = 0; i < width; i ++) {
+  for (let i = 0; i < width; i++) {
     field[i] = new Array(height)
-    for (let j = 0; j < height; j ++) {
+    for (let j = 0; j < height; j++) {
       field[i][j] = value(i, j)
     }
   }

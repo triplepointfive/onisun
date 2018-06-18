@@ -85,9 +85,9 @@ export const addItems = function(
 
 export const centrize = function(level: LevelMap): LevelMap {
   let minX = level.width,
-      minY = level.height,
-      maxX = 0,
-      maxY = 0
+    minY = level.height,
+    maxX = 0,
+    maxY = 0
 
   for (let j = 1; j < level.height - 1; j++) {
     for (let i = 1; i < level.width - 1; i++) {
@@ -103,7 +103,7 @@ export const centrize = function(level: LevelMap): LevelMap {
   }
 
   const dx = Math.floor((level.width - (maxX - minX)) / 2) - minX,
-        dy = Math.floor((level.height - (maxY - minY)) / 2) - minY
+    dy = Math.floor((level.height - (maxY - minY)) / 2) - minY
 
   cycle(level.map, dy)
   level.map.forEach(row => cycle(row, dx))
