@@ -126,7 +126,7 @@ export default Vue.extend({
         return `Loiter`
       }
       if (ai instanceof Dispatcher) {
-        return `Dispatcher (${this.aiName(ai.prevAI)})`
+        return `Dispatcher (${this.aiName(ai.aiToRun)})`
       }
       if (ai instanceof Attacker) {
         return `Attacker`

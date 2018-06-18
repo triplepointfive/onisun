@@ -16,6 +16,9 @@ export class AIItemPickedEvent extends AIEvent {
 }
 
 export abstract class MetaAI extends AI {
+  constructor(public aiToRun: AI = null) {
+    super()
+  }
   protected events: AIEvent[] = []
 
   public available(actor: Creature): boolean {

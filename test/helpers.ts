@@ -21,14 +21,12 @@ export const generateCreature = function(): Creature {
 
 class AIWrapper extends MetaAI {
   public available(actor: Creature): boolean {
-    return this.callAI.available(actor)
+    return this.aiToRun.available(actor)
   }
 
   public act(actor: Creature, firstTurn: boolean): void {
-    return this.callAI.act(actor, firstTurn)
+    return this.aiToRun.act(actor, firstTurn)
   }
-
-  constructor(public callAI: AI) { super() }
 }
 
 const wrapAI = function(ai: AI): MetaAI {

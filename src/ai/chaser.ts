@@ -1,73 +1,61 @@
-import { AI } from './internal'
+import { FollowTargetAI } from './internal'
 import { Phantom, Creature, CreatureId } from '../creature'
 import { Point } from '../utils'
 
-export class Chaser extends AI {
-  private victimPos?: Point
+export class Chaser extends FollowTargetAI {
   private victimId?: CreatureId
 
-  public available(actor: Creature): boolean {
-    return true
+  public reset(): void {
+    super.reset()
+    this.victimId = undefined
   }
 
-  public act(actor: Creature): void {
-    if (this.victimSet()) {
-      this.updateVictimPosition(actor)
-      this.chase(actor)
-    } else if (this.foundNewVictim(actor)) {
-      this.chase(actor)
-    } else if (this.victimPos) {
-      if (this.moveTo(actor, this.victimPos) && this.victimPos.eq(actor.pos)) {
-        this.victimPos = undefined
-      }
-    }
+  protected foundNewTarget(actor: Creature): boolean {
+    // Is there a victim and a path to it?
+    return (this.victimSet() && this.buildVictimPath(actor)) || this.foundNewVictim(actor)
+  }
 
-    if (this.victimSet() && this.caught(actor)) {
-      this.resetVictim()
-      // TODO: Loit here
-    } else {
-      // TODO: Loit here
-    }
+  protected onCantMove(): void {
+    this.victimId = undefined
+  }
+
+  protected onReach(): void {
+    this.victimId = undefined
   }
 
   private victimSet(): boolean {
-    return this.victimId !== undefined
+    return !!this.victimId
   }
 
-  private updateVictimPosition(actor: Creature) {
-    this.findCreature(actor, creature => creature.id === this.victimId)
+  protected goTo(actor: Creature): boolean {
+    return this.followTo(actor, this.destination)
   }
 
-  private chase(actor: Creature): void {
-    this.followTo(actor, this.victimPos)
+  private buildVictimPath(actor: Creature): boolean {
+    return this.findCreature(actor, creature => creature.id === this.victimId)
   }
 
   private foundNewVictim(actor: Creature): boolean {
-    return this.findCreature(actor, creature => this.enemies(actor, creature))
-  }
-
-  private caught(actor: Creature): boolean {
-    return actor.pos.nextTo(this.victimPos)
-  }
-
-  private resetVictim(): void {
-    this.victimId = undefined
+    // Found new victim and built path to it
+    return this.findCreature(actor, creature => this.enemies(actor, creature)) && this.buildVictimPath(actor)
   }
 
   private findCreature(
     actor: Creature,
     condition: (creature: Phantom) => boolean
   ): boolean {
+    let result: boolean = false
+
     this.withinView(actor, ({ x, y }, tile) => {
       const creature = tile.creature()
 
       if (creature && condition(creature)) {
-        this.victimPos = new Point(x, y)
+        this.destination = new Point(x, y)
         this.victimId = creature.id
-        return true
+        result = true
       }
     })
 
-    return false
+    return result
   }
 }

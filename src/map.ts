@@ -140,16 +140,12 @@ export class LevelMap extends Mapped<Tile> {
   public turn(): void {
     const turnCreatureIds = this.timeline.actors()
 
-    console.time('Creatures AI')
-
     // First loop to act
     this.creatures.forEach(creature => {
       if (includes(turnCreatureIds, creature.id)) {
         creature.act(this)
       }
     })
-
-    console.timeEnd('Creatures AI')
 
     // Second loop to add themselves to timeline again
     // and build vision after all actions

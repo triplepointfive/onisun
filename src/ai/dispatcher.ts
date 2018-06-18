@@ -22,8 +22,6 @@ export class Dispatcher extends MetaAI {
   private patrol: Patrol
   private loiter: Loiter
 
-  private aiToRun: AI
-
   private firstCallPatrol: boolean = true
 
   constructor() {
@@ -51,19 +49,21 @@ export class Dispatcher extends MetaAI {
     })
 
     if (this.feelsGood(actor)) {
-      if (this.enemyClose(actor)) {
-        this.attack(actor)
+      if (this.attacker.available(actor)) {
+        this.setAi(this.attacker)
+      } else if (this.chaser.available(actor)) {
+        this.setAi(this.chaser)
       } else if (this.seesItems(actor)) {
         this.pickItem(actor)
       } else {
         this.explore(actor)
       }
-    } else if (this.enemyClose(actor)) {
-      if (this.healthCritical(actor)) {
-        this.runAway(actor)
-      } else {
-        this.attack(actor)
-      }
+    } else if (this.healthCritical(actor) && this.escaper.available(actor)) {
+        this.setAi(this.escaper)
+    } else if (this.attacker.available(actor)) {
+      this.setAi(this.attacker)
+    } else if (this.chaser.available(actor)) {
+      this.setAi(this.chaser)
     } else {
       this.rest(actor)
     }
@@ -86,20 +86,8 @@ export class Dispatcher extends MetaAI {
     )
   }
 
-  private enemyClose(actor: Creature): boolean {
-    return this.escaper.available(actor)
-  }
-
   private seesItems(actor: Creature): boolean {
     return this.picker.available(actor)
-  }
-
-  private attack(actor: Creature): void {
-    if (this.attacker.available(actor)) {
-      this.setAi(this.attacker)
-    } else {
-      this.setAi(this.chaser)
-    }
   }
 
   private pickItem(actor: Creature): void {
@@ -119,10 +107,6 @@ export class Dispatcher extends MetaAI {
     } else {
       this.setAi(this.loiter)
     }
-  }
-
-  private runAway(actor: Creature): void {
-    this.setAi(this.escaper)
   }
 
   private rest(actor: Creature): void {

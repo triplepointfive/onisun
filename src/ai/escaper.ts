@@ -1,40 +1,24 @@
-import { AI } from './internal'
+import { FollowTargetAI } from './internal'
 import { Phantom, Creature, CreatureId } from '../creature'
-import { Point } from '../utils'
 
 import { sumBy } from 'lodash'
 
 const STEP_DISTANCE = 2
 
-export class Escaper extends AI {
+export class Escaper extends FollowTargetAI {
   private escapesFrom: Phantom[] = []
-  private runningTo?: Point
 
-  public available(actor: Creature): boolean {
-    return this.foundEnemies(actor) || !!this.runningTo
-  }
-
-  public act(actor: Creature): void {
-    if (this.foundEnemies(actor)) {
-      this.buildPath(actor)
-    }
-
-    if (this.runningTo) {
-      if (this.moveTo(actor, this.runningTo) && this.runningTo.eq(actor.pos)) {
-        this.runningTo = undefined
-      }
-    } else {
-      throw 'Escaper called when there is nobody to run away from'
-    }
+  protected foundNewTarget(actor: Creature): boolean {
+    return this.foundEnemies(actor) && this.buildPath(actor)
   }
 
   private buildPath(
     actor: Creature,
     minDistance: number = actor.radius() / 2
-  ): void {
+  ): boolean {
     if (minDistance <= 1) {
-      this.runningTo = undefined
-      return
+      this.destination = undefined
+      return false
     }
 
     const path = this.leePath(
@@ -53,9 +37,10 @@ export class Escaper extends AI {
     )
 
     if (path.length) {
-      this.runningTo = path.pop()
+      this.destination = path.pop()
+      return true
     } else {
-      this.buildPath(actor, minDistance - STEP_DISTANCE)
+      return this.buildPath(actor, minDistance - STEP_DISTANCE)
     }
   }
 

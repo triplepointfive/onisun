@@ -184,3 +184,43 @@ export abstract class AI {
     return false
   }
 }
+
+export abstract class FollowTargetAI extends AI {
+  public destination: Point = undefined
+
+  public available(actor: Creature): boolean {
+    return this.foundNewTarget(actor) || !!this.destination
+  }
+
+  public act(actor: Creature): void {
+    if (!this.destination) {
+      throw `FollowTargetAI's act got called when there is no destination!`
+    }
+
+    if (this.goTo(actor)) {
+      this.onMove(actor)
+      // If got the destination
+      if (this.destination.eq(actor.pos)) {
+        this.destination = undefined
+        this.onReach(actor)
+      }
+    } else {
+      // If can not move
+      this.destination = undefined
+      this.onCantMove(actor)
+    }
+  }
+
+  public reset(): void {
+    this.destination = undefined
+  }
+
+  protected goTo(actor: Creature): boolean {
+    return this.moveTo(actor, this.destination)
+  }
+
+  protected abstract foundNewTarget(actor: Creature): boolean
+  protected onMove(actor: Creature): void {}
+  protected onReach(actor: Creature): void {}
+  protected onCantMove(actor: Creature): void {}
+}
