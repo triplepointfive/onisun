@@ -36,7 +36,7 @@ const wrapAI = function(ai: AI): MetaAI {
 }
 
 export const generateCreatureWithAI = function(ai: AI): Creature {
-  return new Creature(1, 1, 0, 0, 0, 0, 0, Clan.FreeForAll, wrapAI(ai))
+  return new Creature(1, 1, 0, 0, 50, 0, 0, Clan.FreeForAll, wrapAI(ai))
 }
 
 export const generateLevel = function(): LevelMap {

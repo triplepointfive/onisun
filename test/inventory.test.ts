@@ -16,7 +16,7 @@ describe('puts on and takes off', () => {
     inventory.equip(creature, item1)
     expect(inventory.wears()[0].equipment).toBe(item1)
     inventory.takeOff(creature, item1)
-    expect(inventory.wears()[0].equipment).toBeNull
+    expect(inventory.wears()[0].equipment).toBeNull()
     expect(inventory.cares()).toEqual([item1])
   })
 
@@ -26,7 +26,7 @@ describe('puts on and takes off', () => {
     expect(inventory.wears()[0].equipment).toBe(item2)
     expect(inventory.cares()).toEqual([item1])
     inventory.takeOff(creature, item2)
-    expect(inventory.wears()[0].equipment).toBeNull
+    expect(inventory.wears()[0].equipment).toBeNull()
     expect(inventory.cares()).toEqual([item1, item2])
   })
 })
@@ -40,7 +40,7 @@ describe('failed', () => {
 
   test('can not wear if there is no matching slot', () => {
     inventory.equip(creature, item1)
-    expect(inventory.wears()[0].equipment).toBeNull
+    expect(inventory.wears()[0].equipment).toBeFalsy()
     expect(inventory.cares()).toEqual([])
   })
 
@@ -58,8 +58,8 @@ describe('failed', () => {
   })
 
   test('takes off the item that is not put on yet', () => {
-    expect(inventory.wears()[0].equipment).toBeNull
+    expect(inventory.wears()[0].equipment).toBeFalsy()
     inventory.takeOff(creature, item2)
-    expect(inventory.wears()[0].equipment).toBeNull
+    expect(inventory.wears()[0].equipment).toBeFalsy()
   })
 })

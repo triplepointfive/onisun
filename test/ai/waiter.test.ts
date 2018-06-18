@@ -15,5 +15,5 @@ it('Does not move', () => {
 })
 
 it('Always available', () => {
-  expect(creature.ai.available(creature)).toBeTruthy
+  expect(creature.ai.available(creature)).toBeTruthy()
 })
