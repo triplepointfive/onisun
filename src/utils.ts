@@ -28,21 +28,17 @@ export const rand = function(max: number): number {
 
 /* tslint:disable no-any */
 export const twoDimArray = function(
-  dimX: number,
-  dimY: number,
+  width: number,
+  height: number,
   value: (x: number, y: number) => any
 ): Array<Array<any>> {
-  let field = Array(dimX)
+  let field = Array(width)
 
-  let i = 0
-  while (i < dimX) {
-    field[i] = new Array(dimY)
-    let j = 0
-    while (j < dimY) {
+  for (let i = 0; i < width; i ++) {
+    field[i] = new Array(height)
+    for (let j = 0; j < height; j ++) {
       field[i][j] = value(i, j)
-      j++
     }
-    i++
   }
 
   return field
@@ -96,12 +92,29 @@ export abstract class Mapped<T> {
   public readonly height: number
 
   constructor(public map: T[][]) {
-    this.width = map[0].length
-    this.height = map.length
+    this.width = map.length
+    this.height = map[0].length
   }
 
   public at(x, y): T {
-    return this.map[y][x]
+    return this.map[x][y]
+  }
+
+  public inRange(point: Point): boolean {
+    return (
+      point.x >= 0 &&
+      point.y >= 0 &&
+      point.x < this.width &&
+      point.y < this.height
+    )
+  }
+
+  public each(on: (T) => any): void {
+    this.map.forEach(column => {
+      column.forEach(tile => {
+        on(tile)
+      })
+    })
   }
 }
 

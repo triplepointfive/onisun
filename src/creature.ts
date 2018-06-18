@@ -43,24 +43,11 @@ export class MemoryTile {
 export class Memory extends Mapped<MemoryTile> {
   constructor(width: number, height: number) {
     const baseTile = Tile.retrive('W')
-    super(twoDimArray(height, width, () => new MemoryTile(baseTile)))
-  }
-
-  public inRange(point: Point): boolean {
-    return (
-      point.x >= 0 &&
-      point.y >= 0 &&
-      point.x < this.width &&
-      point.y < this.height
-    )
+    super(twoDimArray(width, height, () => new MemoryTile(baseTile)))
   }
 
   public resetVisible(): void {
-    this.map.forEach(row => {
-      row.forEach(tile => {
-        tile.reset()
-      })
-    })
+    this.each(tile => tile.reset())
   }
 }
 

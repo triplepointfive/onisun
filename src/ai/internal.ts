@@ -50,8 +50,8 @@ export abstract class AI {
     const map = actor.stageMemory()
 
     let stageMemory: number[][] = twoDimArray(
-      map.height,
       map.width,
+      map.height,
       () => undefined
     )
     let pointsToVisit: Point[] = []
@@ -134,8 +134,8 @@ export abstract class AI {
     const map = actor.stageMemory()
 
     let tileVisited: boolean[][] = twoDimArray(
-      map.height,
       map.width,
+      map.height,
       () => false
     )
     let pointsToCheck: Point[] = [actor.pos]

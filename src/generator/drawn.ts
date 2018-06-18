@@ -8,7 +8,7 @@ export default function(
     twoDimArray(
       drawMap[0].length,
       drawMap.length,
-      (x, y) => Tile.retrive(drawMap[x].charAt(y))
+      (x, y) => Tile.retrive(drawMap[y].charAt(x))
     )
   )
 }

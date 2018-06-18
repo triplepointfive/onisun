@@ -126,28 +126,15 @@ export class LevelMap extends Mapped<Tile> {
   }
 
   public visibleThrough(x: number, y: number): boolean {
-    return this.map[y][x].visibleThrough()
+    return this.map[x][y].visibleThrough()
   }
 
   public passibleThrough(x: number, y: number): boolean {
-    return this.map[y][x].passibleThrough()
-  }
-
-  public at(x, y): Tile {
-    return this.map[y][x]
+    return this.map[x][y].passibleThrough()
   }
 
   public setTile(x, y, tile: Tile): void {
-    this.map[y][x] = tile
-  }
-
-  public inRange(point: Point): boolean {
-    return (
-      point.x >= 0 &&
-      point.y >= 0 &&
-      point.x < this.width &&
-      point.y < this.height
-    )
+    this.map[x][y] = tile
   }
 
   public turn(): void {

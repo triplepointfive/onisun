@@ -85,11 +85,6 @@ export class Game {
       'WRRRWWWWWCW',
       'WRRRCCCCCCW',
       'WWWWWWWWWWW',
-      'WWWWWWWWWWW',
-      'WWWWWWWWWWW',
-      'WWWWWWWWWWW',
-      'WWWWWWWWWWW',
-      'WWWWWWWWWWW',
     ])
 
     if (generatorOptions.addDoors) {
