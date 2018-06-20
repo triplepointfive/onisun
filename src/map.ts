@@ -42,7 +42,7 @@ export class Tile {
   private constructor(
     public key: string,
     public display: string,
-    private kind: TileTypes
+    public kind: TileTypes
   ) {}
 
   public addItem(item: Item): void {

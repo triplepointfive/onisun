@@ -3,6 +3,7 @@ import { Creature, MemoryTile, Phantom, Clan } from '../creature'
 
 import { sample } from 'lodash'
 import { MetaAI } from './meta_ai'
+import { Tile } from '../map'
 
 const FIRST_STEP: number = 1
 
@@ -223,4 +224,25 @@ export abstract class FollowTargetAI extends AI {
   protected onMove(actor: Creature): void {}
   protected onReach(actor: Creature): void {}
   protected onCantMove(actor: Creature): void {}
+}
+
+export class GoToTileAI extends FollowTargetAI {
+  constructor(metaAI: MetaAI, protected matcher: (tile: Tile) => boolean) {
+    super(metaAI)
+  }
+
+  protected foundNewTarget(actor: Creature): boolean {
+    const path = this.leePath(
+      actor,
+      (point, tile) => this.matcher(tile.tile),
+      true
+    )
+
+    if (path.length) {
+      this.destination = path.pop()
+      return true
+    } else {
+      return false
+    }
+  }
 }
