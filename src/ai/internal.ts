@@ -253,11 +253,33 @@ export class GoToTileAI extends FollowTargetAI {
 }
 
 export class Descender extends GoToTileAI {
+  private canDescend: boolean = false
+
   constructor(metaAI: MetaAI) {
     super(metaAI, tile => tile.kind === TileTypes.StairwayDown)
   }
 
+  public reset(): void {
+    super.reset()
+    this.canDescend = false
+  }
+
+  protected foundNewTarget(actor: Creature): boolean {
+    // When we are on a stairway
+    this.canDescend = this.matcher(actor.stageMemory().at(actor.pos.x, actor.pos.y).tile)
+
+    if (this.canDescend) {
+      this.destination = actor.pos
+      return true
+    } else {
+      return super.foundNewTarget(actor)
+    }
+  }
+
   protected onReach(actor: Creature) {
-    super.onReach(actor)
+    // Should stay here at least for a turn
+    if (this.canDescend) {
+      actor.currentLevel.onDescent && actor.currentLevel.onDescent()
+    }
   }
 }

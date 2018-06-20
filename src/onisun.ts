@@ -33,7 +33,7 @@ export let baseConfig = {
   addDoors: false,
   minSize: 3,
   maxSize: 10,
-  roomsCount: 20,
+  roomsCount: 5,
 }
 
 const weapons = new Pool<null, Item>([
@@ -95,6 +95,7 @@ export class Onisun extends Game {
     // let map1 = this.map
 
     this.map.onDescent = () => {
+      this.map.reset()
       this.player.addToMap(new Point(1, 1), map2)
       this.map = map2
     }
@@ -118,7 +119,7 @@ export class Onisun extends Game {
   }
 
   protected generateMap(options: GeneratorOptions): LevelMap {
-    // this.map = generate(
+    // let map = generate(
     //   50,
     //   50,
     //   options.minSize,
@@ -142,7 +143,7 @@ export class Onisun extends Game {
     map.game = this
 
     // addCreatures(0.1, this.map, creaturesPool)
-    addItems(5, map, weapons.merge(itemsPool))
+    // addItems(0.5, map, weapons.merge(itemsPool))
 
     return map
   }
