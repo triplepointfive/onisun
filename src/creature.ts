@@ -63,16 +63,16 @@ export class Phantom {
   public refToReal?: Creature
 
   constructor(
+    public clan: Clan,
     x: number,
     y: number,
-    public clan: Clan,
     public id: CreatureId = Phantom.getId()
   ) {
     this.pos = new Point(x, y)
   }
 
   public clone(): Phantom {
-    return new Phantom(this.pos.x, this.pos.y, this.clan, this.id)
+    return new Phantom(this.clan, this.id, this.pos.x, this.pos.y, )
   }
 
   public real(): Creature {
@@ -119,7 +119,7 @@ export enum Clan {
 }
 
 export class Creature extends Phantom {
-  ai: MetaAI
+  public ai: MetaAI
   public stageMemories: { [key: string]: Memory } = {}
   public previousPos: Point
   public currentLevel: LevelMap
@@ -127,8 +127,6 @@ export class Creature extends Phantom {
   public characteristics: Characteristics
 
   constructor(
-    x: number,
-    y: number,
     attack: number,
     defense: number,
     health: number,
@@ -137,7 +135,7 @@ export class Creature extends Phantom {
     clan: Clan,
     ai: MetaAI
   ) {
-    super(x, y, clan)
+    super(clan, null, null)
     this.previousPos = this.pos.copy()
     this.ai = ai
     this.inventory = new Inventory([
@@ -173,7 +171,8 @@ export class Creature extends Phantom {
     return `${this.id}`
   }
 
-  public addToMap(level: LevelMap) {
+  public addToMap(pos: Point, level: LevelMap) {
+    this.pos = pos
     this.currentLevel = level
     this.visionMask(level)
     level.addCreature(this)
@@ -225,7 +224,7 @@ export class Creature extends Phantom {
   }
 
   public clone(): Phantom {
-    let phantom = new Phantom(this.pos.x, this.pos.y, this.clan, this.id)
+    let phantom = new Phantom(this.clan, this.pos.x, this.pos.y, this.id)
     phantom.refToReal = this
     return phantom
   }

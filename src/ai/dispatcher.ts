@@ -8,12 +8,11 @@ import {
   Picker,
   Patrol,
   SelfHealer,
-  GoToTileAI,
+  Descender,
 } from '../ai'
 import { Creature } from '../creature'
 import { MetaAI, AIEventType } from './meta_ai'
 import { Wearer } from './wearer'
-import { TileTypes } from '../map'
 
 export class Dispatcher extends MetaAI {
   private escaper: Escaper
@@ -24,7 +23,7 @@ export class Dispatcher extends MetaAI {
   private patrol: Patrol
   private loiter: Loiter
 
-  private descender: GoToTileAI
+  private descender: Descender
 
   private firstCallPatrol: boolean = true
 
@@ -38,7 +37,7 @@ export class Dispatcher extends MetaAI {
     this.patrol = new Patrol(this)
     this.loiter = new Loiter(this)
 
-    this.descender = new GoToTileAI(this, tile => tile.kind === TileTypes.StairwayDown)
+    this.descender = new Descender(this)
   }
 
   public act(actor: Creature, firstTurn: boolean = true): void {

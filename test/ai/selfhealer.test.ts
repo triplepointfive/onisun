@@ -1,11 +1,11 @@
 import { generateCreatureWithAI, generateLevel } from '../helpers'
-import { SelfHealer } from '../../src/onisun'
+import { SelfHealer, Point } from '../../src/onisun'
 
 let creature = generateCreatureWithAI(new SelfHealer())
 const map = generateLevel()
 
 beforeEach(() => {
-  creature.addToMap(map)
+  creature.addToMap(new Point(1, 1), map)
 })
 
 describe('With full health', () => {

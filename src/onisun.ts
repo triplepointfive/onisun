@@ -5,6 +5,7 @@ export * from './items'
 export * from './logger'
 export * from './map'
 export * from './characteristics'
+export * from './utils'
 
 import { generate } from './generator/dungeon'
 import drawn from './generator/drawn'
@@ -48,13 +49,11 @@ const itemsPool = new Pool<null, Item>([
   [10, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
 ])
 
-const creaturesPool = new Pool<Point, Creature>([
+const creaturesPool = new Pool<null, Creature>([
   [
     1,
-    ({ x, y }) =>
+    () =>
       new Creature(
-        x,
-        y,
         1,
         4,
         5,
@@ -72,52 +71,15 @@ export class Onisun extends Game {
 
   constructor(generatorOptions: GeneratorOptions) {
     super()
-    // this.map = generate(
-    //   50,
-    //   50,
-    //   generatorOptions.minSize,
-    //   generatorOptions.maxSize,
-    //   generatorOptions.roomsCount
-    // )
-
-    this.map = drawn([
-      'WWWWWWWWWWW',
-      'WRRRCRRRRRW',
-      'WRRRWRRRRRW',
-      'WRRRWWWWWCW',
-      'WRRRCCCCCCW',
-      'WWWWWWWWWWW',
-    ])
-
-    if (generatorOptions.addDoors) {
-      this.map = addDoors(this.map)
-    }
-    centrize(this.map)
-    this.map.game = this
-
-    const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
-
-    this.player = new Creature(
-      0,
-      0,
-      1,
-      4,
-      2,
-      5,
-      100,
-      Clan.Player,
-      new Dispatcher()
-    )
-    this.player.putOn(dagger)
+    this.map = this.generateMap(generatorOptions)
+    this.player = this.initPlayer()
 
     addOnTile(
       this.map,
       tile => tile.isFloor(),
       (x, y) => {
-        console.log(x, y)
-        this.player.pos = new Point(x, y)
-        this.map.setTile(x, y, Tile.retrive('<'))
-        this.player.addToMap(this.map)
+        // this.map.setTile(x, y, Tile.retrive('<'))
+        this.player.addToMap(new Point(x, y), this.map)
       }
     )
 
@@ -129,7 +91,59 @@ export class Onisun extends Game {
       }
     )
 
+    let map2 = this.generateMap(generatorOptions)
+    // let map1 = this.map
+
+    this.map.onDescent = () => {
+      this.player.addToMap(new Point(1, 1), map2)
+      this.map = map2
+    }
+  }
+
+  protected initPlayer(): Creature {
+    const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
+
+    let player = new Creature(
+      1,
+      4,
+      2,
+      5,
+      100,
+      Clan.Player,
+      new Dispatcher()
+    )
+    player.putOn(dagger)
+
+    return player
+  }
+
+  protected generateMap(options: GeneratorOptions): LevelMap {
+    // this.map = generate(
+    //   50,
+    //   50,
+    //   options.minSize,
+    //   options.maxSize,
+    //   options.roomsCount
+    // )
+
+    let map = drawn([
+      'WWWWWWWWWWW',
+      'WRRRCRRRRRW',
+      'WRRRWRRRRRW',
+      'WRRRWWWWWCW',
+      'WRRRCCCCCCW',
+      'WWWWWWWWWWW',
+    ])
+
+    if (options.addDoors) {
+      addDoors(map)
+    }
+    centrize(map)
+    map.game = this
+
     // addCreatures(0.1, this.map, creaturesPool)
-    addItems(0.5, this.map, weapons.merge(itemsPool))
+    addItems(5, map, weapons.merge(itemsPool))
+
+    return map
   }
 }

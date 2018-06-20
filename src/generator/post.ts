@@ -55,12 +55,12 @@ export const addDoors = function(
 export const addCreatures = function(
   chance: number,
   level: LevelMap,
-  creaturesPool: Pool<Point, Creature>
+  creaturesPool: Pool<null, Creature>
 ): LevelMap {
   for (let j = 1; j < level.height - 1; j++) {
     for (let i = 1; i < level.width - 1; i++) {
       if (level.at(i, j).passibleThrough() && Math.random() < chance) {
-        creaturesPool.pick(new Point(i, j)).addToMap(level)
+        creaturesPool.pick(null).addToMap(new Point(i, j), level)
       }
     }
   }

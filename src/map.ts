@@ -93,6 +93,7 @@ export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public id: LevelMapId
   public game: Game
+  public onDescent?: () => void
   protected timeline: Timeline<CreatureId>
 
   private static lastId: LevelMapId = 0

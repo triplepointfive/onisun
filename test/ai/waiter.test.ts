@@ -1,11 +1,11 @@
 import { generateCreatureWithAI, generateLevel } from '../helpers'
-import { Waiter } from '../../src/onisun'
+import { Waiter, Point } from '../../src/onisun'
 
 let creature = generateCreatureWithAI(new Waiter())
 const map = generateLevel()
 
 beforeEach(() => {
-  creature.addToMap(map)
+  creature.addToMap(new Point(1, 1), map)
   creature.act(map)
 })
 
