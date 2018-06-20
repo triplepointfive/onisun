@@ -130,6 +130,6 @@ export class Onisun extends Game {
     )
 
     // addCreatures(0.1, this.map, creaturesPool)
-    // addItems(0.05, this.map, weapons.merge(itemsPool))
+    addItems(0.5, this.map, weapons.merge(itemsPool))
   }
 }

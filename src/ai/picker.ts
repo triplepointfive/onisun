@@ -1,58 +1,28 @@
-import { AI } from '../ai'
+import { FollowTargetAI } from '../ai'
 import { Creature } from '../creature'
 import { Item, ItemId } from '../items'
 import { Point } from '../utils'
 import { AIItemPickedEvent } from './meta_ai'
 
-export class Picker extends AI {
+export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId = null
-  private desiredItemPos: Point = null
 
-  public available(actor: Creature): boolean {
-    return this.seesItem(actor)
+  protected foundNewTarget(actor: Creature): boolean {
+    return this.findItem(actor, item => item.id === this.desiredItemId) ||
+      this.findItem(actor, item => true)
   }
 
-  public act(actor: Creature, firstTurn: boolean = true): void {
-    if (!firstTurn) {
-      throw 'Picker got called twice'
-    }
+  protected onReach(actor: Creature): void {
+    const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
+    this.prevAI.pushEvent(new AIItemPickedEvent(tile.items))
 
-    if (actor.pos.eq(this.desiredItemPos)) {
-      const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
-      this.prevAI.pushEvent(new AIItemPickedEvent(tile.items))
+    tile.items.forEach(item => {
+      actor.inventory.putToBag(item)
+    })
 
-      tile.items.forEach(item => {
-        actor.inventory.putToBag(item)
-      })
+    tile.items = []
 
-      tile.items = []
-
-      this.desiredItemId = null
-      this.desiredItemPos = null
-
-      return
-    }
-
-    this.moveTo(actor, this.desiredItemPos)
-  }
-
-  protected canTakeMore(actor: Creature): boolean {
-    // TODO:
-    return true
-  }
-
-  protected seesItem(actor: Creature): boolean {
-    this.findItem(actor, item => item.id === this.desiredItemId)
-
-    if (this.desiredItemId !== null) {
-      return true
-    }
     this.desiredItemId = null
-    this.desiredItemPos = null
-
-    this.findItem(actor, item => true)
-
-    return this.desiredItemId !== null
   }
 
   private findItem(
@@ -66,7 +36,7 @@ export class Picker extends AI {
 
       if (item && !result) {
         this.desiredItemId = item.id
-        this.desiredItemPos = new Point(x, y)
+        this.destination = new Point(x, y)
         result = true
       }
     })
