@@ -174,8 +174,8 @@ export class Creature extends Phantom {
   public addToMap(pos: Point, level: LevelMap) {
     this.pos = pos
     this.currentLevel = level
-    this.visionMask(level)
     level.addCreature(this)
+    this.visionMask(level)
   }
 
   public emit(eventType: EventType): Event {
@@ -183,7 +183,7 @@ export class Creature extends Phantom {
       case EventType.Attack:
         return new Attack(this)
       default:
-        throw `Unknow event type ${eventType} for ${this}`
+        throw `Unknown event type ${eventType} for ${this}`
     }
   }
 

@@ -1,6 +1,6 @@
 import { OneHandWeapon, Modifier, Creature, Clan, MetaAI, Dispatcher, AI, LevelMap } from '../src/onisun'
 import drawn from '../src/generator/drawn'
-import { Game } from '../src/game';
+import { Game } from '../src/game'
 
 export const generateString = function(length: number = 7): string {
   return Math.random().toString(36).substring(length)

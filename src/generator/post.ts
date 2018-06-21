@@ -107,8 +107,8 @@ export const centrize = function(level: LevelMap): LevelMap {
   const dx = Math.floor((level.width - (maxX - minX)) / 2) - minX,
     dy = Math.floor((level.height - (maxY - minY)) / 2) - minY
 
-  cycle(level.map, dy)
-  level.map.forEach(row => cycle(row, dx))
+  cycle(level.map, dx)
+  level.map.forEach(row => cycle(row, dy))
 
   return level
 }

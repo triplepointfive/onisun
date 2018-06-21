@@ -7,6 +7,8 @@ export * from './logger'
 export * from './map'
 export * from './characteristics'
 export * from './utils'
+export * from './generator/post'
+export { default as drawn } from './generator/drawn'
 
 import { generate } from './generator/dungeon'
 import drawn from './generator/drawn'
@@ -83,13 +85,15 @@ export class Onisun extends Game {
     connectMaps(map3, map4)
     connectMaps(map4, map5)
 
+    connectMaps(map5, map1)
+
     this.currentMap = map1
 
     addOnTile(
       this.currentMap,
       tile => tile.isFloor(),
       (x, y) => {
-        this.currentMap.setTile(x, y, Tile.retrive('<'))
+        // this.currentMap.setTile(x, y, Tile.retrive('<'))
         this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )
@@ -105,22 +109,26 @@ export class Onisun extends Game {
   }
 
   protected generateMap(options: GeneratorOptions): LevelMap {
-    let map = generate(
-      50,
-      50,
-      options.minSize,
-      options.maxSize,
-      options.roomsCount
-    )
+    // let map = generate(
+    //   50,
+    //   50,
+    //   options.minSize,
+    //   options.maxSize,
+    //   options.roomsCount
+    // )
 
-    // let map = drawn([
-    //   'WWWWWWWWWWW',
-    //   'WRRRCRRRRRW',
-    //   'WRRRWRRRRRW',
-    //   'WRRRWWWWWCW',
-    //   'WRRRCCCCCCW',
-    //   'WWWWWWWWWWW',
-    // ])
+    let map = drawn([
+      'WWWWWWWWWWW',
+      'WRRRCRRRRRW',
+      'WRRRWRRRRRW',
+      'WRRRWWWWWCW',
+      'WRRRCCCCCCW',
+      'WWWWWWWWWWW',
+      'WWWWWWWWWWW',
+      'WWWWWWWWWWW',
+      'WWWWWWWWWWW',
+      'WWWWWWWWWWW',
+    ])
 
     if (options.addDoors) {
       addDoors(map)
