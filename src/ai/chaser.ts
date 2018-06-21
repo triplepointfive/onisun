@@ -12,7 +12,10 @@ export class Chaser extends FollowTargetAI {
 
   protected foundNewTarget(actor: Creature): boolean {
     // Is there a victim and a path to it?
-    return (this.victimSet() && this.buildVictimPath(actor)) || this.foundNewVictim(actor)
+    return (
+      (this.victimSet() && this.buildVictimPath(actor)) ||
+      this.foundNewVictim(actor)
+    )
   }
 
   protected onCantMove(): void {
@@ -37,7 +40,10 @@ export class Chaser extends FollowTargetAI {
 
   private foundNewVictim(actor: Creature): boolean {
     // Found new victim and built path to it
-    return this.findCreature(actor, creature => this.enemies(actor, creature)) && this.buildVictimPath(actor)
+    return (
+      this.findCreature(actor, creature => this.enemies(actor, creature)) &&
+      this.buildVictimPath(actor)
+    )
   }
 
   private findCreature(

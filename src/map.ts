@@ -36,7 +36,9 @@ export class LevelMap extends Mapped<Tile> {
 
   public enter(actor: Creature, enterPos: Point): void {
     this.reset()
-    this.creatures.forEach(creature => this.timeline.add(creature.id, creature.speed()))
+    this.creatures.forEach(creature =>
+      this.timeline.add(creature.id, creature.speed())
+    )
 
     actor.pos = enterPos
     this.addCreature(actor)

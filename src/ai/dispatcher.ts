@@ -64,7 +64,7 @@ export class Dispatcher extends MetaAI {
         this.explore(actor)
       }
     } else if (this.healthCritical(actor) && this.escaper.available(actor)) {
-        this.setAi(this.escaper)
+      this.setAi(this.escaper)
     } else if (this.attacker.available(actor)) {
       this.setAi(this.attacker)
     } else if (this.chaser.available(actor)) {

@@ -72,7 +72,7 @@ export class Phantom {
   }
 
   public clone(): Phantom {
-    return new Phantom(this.clan, this.id, this.pos.x, this.pos.y, )
+    return new Phantom(this.clan, this.id, this.pos.x, this.pos.y)
   }
 
   public real(): Creature {

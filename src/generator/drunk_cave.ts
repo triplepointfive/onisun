@@ -9,10 +9,7 @@ const newWall = function(): Tile {
   return Tile.retrive('W')
 }
 
-const generate = function(
-  dimX: number,
-  dimY: number,
-): LevelMap {
+const generate = function(dimX: number, dimY: number): LevelMap {
   let level = new LevelMap(twoDimArray(dimX, dimY, newWall))
   let freeCellsCount = 1
   let pos = new Point(Math.floor(dimX / 2), Math.floor(dimY / 2))

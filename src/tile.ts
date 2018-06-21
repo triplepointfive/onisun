@@ -59,7 +59,11 @@ export class Tile {
   }
 
   public visibleThrough(): boolean {
-    return this.isFloor() || this.kind === TileTypes.StairwayDown || this.kind === TileTypes.StairwayUp
+    return (
+      this.isFloor() ||
+      this.kind === TileTypes.StairwayDown ||
+      this.kind === TileTypes.StairwayUp
+    )
   }
 
   public passibleThrough(actor?: Creature): boolean {
@@ -101,13 +105,9 @@ export class StairwayDown extends Stairway {
   constructor(
     protected currentMap: LevelMap,
     protected adjacentMap: LevelMap,
-    protected enterPos: Point,
+    protected enterPos: Point
   ) {
-    super(
-      '>',
-      '>',
-      TileTypes.StairwayDown,
-      )
+    super('>', '>', TileTypes.StairwayDown)
   }
 }
 
@@ -115,13 +115,8 @@ export class StairwayUp extends Stairway {
   constructor(
     protected currentMap: LevelMap,
     protected adjacentMap: LevelMap,
-    protected enterPos: Point,
+    protected enterPos: Point
   ) {
-    super(
-      '<',
-      '<',
-      TileTypes.StairwayUp,
-      )
+    super('<', '<', TileTypes.StairwayUp)
   }
-
 }

@@ -10,7 +10,13 @@ export * from './utils'
 
 import { generate } from './generator/dungeon'
 import drawn from './generator/drawn'
-import { addDoors, addCreatures, addItems, centrize, addOnTile } from './generator/post'
+import {
+  addDoors,
+  addCreatures,
+  addItems,
+  centrize,
+  addOnTile,
+} from './generator/post'
 
 import { Creature, Clan } from './creature'
 import { Dispatcher } from './ai'
@@ -20,8 +26,8 @@ import { Tile, StairwayDown, StairwayUp } from './tile'
 import { Pool } from './pool'
 import { BodyArmor } from './items/internal'
 import { Modifier } from './characteristics'
-import { Game } from './game';
-import { Point } from './utils';
+import { Game } from './game'
+import { Point } from './utils'
 
 export type GeneratorOptions = {
   minSize: number
@@ -54,16 +60,7 @@ const itemsPool = new Pool<null, Item>([
 const creaturesPool = new Pool<null, Creature>([
   [
     1,
-    () =>
-      new Creature(
-        1,
-        4,
-        5,
-        5,
-        100,
-        Clan.PlayerOnlyEnemy,
-        new Dispatcher()
-      ),
+    () => new Creature(1, 4, 5, 5, 100, Clan.PlayerOnlyEnemy, new Dispatcher()),
   ],
 ])
 
@@ -82,7 +79,6 @@ export class Onisun extends Game {
       tile => tile.isFloor(),
       (dx, dy) => {
         let downTile
-
 
         addOnTile(
           map2,
@@ -114,15 +110,7 @@ export class Onisun extends Game {
   protected initPlayer(): Creature {
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
 
-    let player = new Creature(
-      1,
-      4,
-      2,
-      5,
-      100,
-      Clan.Player,
-      new Dispatcher()
-    )
+    let player = new Creature(1, 4, 2, 5, 100, Clan.Player, new Dispatcher())
     player.putOn(dagger)
 
     return player

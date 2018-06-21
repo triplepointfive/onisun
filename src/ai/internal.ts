@@ -266,7 +266,9 @@ export class Descender extends GoToTileAI {
 
   protected foundNewTarget(actor: Creature): boolean {
     // When we are on a stairway
-    this.canDescend = this.matcher(actor.stageMemory().at(actor.pos.x, actor.pos.y).tile)
+    this.canDescend = this.matcher(
+      actor.stageMemory().at(actor.pos.x, actor.pos.y).tile
+    )
 
     if (this.canDescend) {
       this.destination = actor.pos

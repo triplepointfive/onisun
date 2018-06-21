@@ -113,12 +113,16 @@ export const centrize = function(level: LevelMap): LevelMap {
   return level
 }
 
-export const addOnTile = function(level: LevelMap, match: (tile: Tile) => boolean, onValid: (x: number, y: number) => void): LevelMap {
+export const addOnTile = function(
+  level: LevelMap,
+  match: (tile: Tile) => boolean,
+  onValid: (x: number, y: number) => void
+): LevelMap {
   let iters = level.width * level.height
 
   while (iters > 0) {
     const x = random(0, level.width - 1),
-          y = random(0, level.height - 1)
+      y = random(0, level.height - 1)
 
     if (match(level.at(x, y))) {
       onValid(x, y)

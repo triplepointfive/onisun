@@ -8,8 +8,10 @@ export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId = null
 
   protected foundNewTarget(actor: Creature): boolean {
-    return this.findItem(actor, item => item.id === this.desiredItemId) ||
+    return (
+      this.findItem(actor, item => item.id === this.desiredItemId) ||
       this.findItem(actor, item => true)
+    )
   }
 
   protected onReach(actor: Creature): void {
