@@ -16,6 +16,7 @@ import {
   addItems,
   centrize,
   addOnTile,
+  connectMaps,
 } from './generator/post'
 
 import { Creature, Clan } from './creature'
@@ -73,27 +74,14 @@ export class Onisun extends Game {
 
     let map1 = this.generateMap(generatorOptions)
     let map2 = this.generateMap(generatorOptions)
+    let map3 = this.generateMap(generatorOptions)
+    let map4 = this.generateMap(generatorOptions)
+    let map5 = this.generateMap(generatorOptions)
 
-    addOnTile(
-      map1,
-      tile => tile.isFloor(),
-      (dx, dy) => {
-        let downTile
-
-        addOnTile(
-          map2,
-          tile => tile.isFloor(),
-          (ux, uy) => {
-            const upTile = new StairwayUp(map2, map1, new Point(dx, dy))
-            map2.setTile(ux, uy, upTile)
-
-            downTile = new StairwayDown(map1, map2, new Point(ux, uy))
-          }
-        )
-
-        map1.setTile(dx, dy, downTile)
-      }
-    )
+    connectMaps(map1, map2)
+    connectMaps(map2, map3)
+    connectMaps(map3, map4)
+    connectMaps(map4, map5)
 
     this.currentMap = map1
 
@@ -101,7 +89,7 @@ export class Onisun extends Game {
       this.currentMap,
       tile => tile.isFloor(),
       (x, y) => {
-        // this.map.setTile(x, y, Tile.retrive('>'))
+        this.currentMap.setTile(x, y, Tile.retrive('<'))
         this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )

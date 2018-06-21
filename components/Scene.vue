@@ -7,6 +7,7 @@
 
       <div class='col pl-0'>
         <div class='fps mb-2 '>FPS {{ fps }}</div>
+        <div>MAP {{ level.id }}</div>
 
         <input type='checkbox' v-model='wholeMap'>
 
