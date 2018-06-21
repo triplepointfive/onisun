@@ -89,13 +89,11 @@ abstract class Stairway extends Tile {
   protected adjacentMap: LevelMap
   protected enterPos: Point
 
-  public onAction?: () => void
-
   public go(actor: Creature): void {
     this.currentMap.leave(actor)
     this.adjacentMap.enter(actor, this.enterPos)
 
-    this.onAction && this.onAction()
+    this.adjacentMap.game.currentMap = this.adjacentMap
   }
 }
 

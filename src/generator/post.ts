@@ -130,3 +130,5 @@ export const addOnTile = function(level: LevelMap, match: (tile: Tile) => boolea
 
   throw 'post add failed to add tile'
 }
+
+// export const connect = function(map1: LevelMap, map2: LevelMap)

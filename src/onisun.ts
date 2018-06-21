@@ -16,7 +16,7 @@ import { Creature, Clan } from './creature'
 import { Dispatcher } from './ai'
 import { OneHandWeapon, Item } from './items'
 import { LevelMap } from './map'
-import { Tile, StairwayDown } from './tile'
+import { Tile, StairwayDown, StairwayUp } from './tile'
 import { Pool } from './pool'
 import { BodyArmor } from './items/internal'
 import { Modifier } from './characteristics'
@@ -35,7 +35,7 @@ export let baseConfig = {
   addDoors: false,
   minSize: 3,
   maxSize: 10,
-  roomsCount: 5,
+  roomsCount: 2,
 }
 
 const weapons = new Pool<null, Item>([
@@ -69,33 +69,44 @@ const creaturesPool = new Pool<null, Creature>([
 
 export class Onisun extends Game {
   public player: Creature
-  public map: LevelMap
 
   constructor(generatorOptions: GeneratorOptions) {
     super()
     this.player = this.initPlayer()
 
-    this.map = this.generateMap(generatorOptions)
+    let map1 = this.generateMap(generatorOptions)
     let map2 = this.generateMap(generatorOptions)
 
     addOnTile(
-      this.map,
+      map1,
       tile => tile.isFloor(),
-      (x, y) => {
-        const tile = new StairwayDown(this.map, map2, new Point(1, 1))
-        tile.onAction = () => {
-          this.map = map2
-        }
-        this.map.setTile(x, y, tile)
+      (dx, dy) => {
+        let downTile
+
+
+        addOnTile(
+          map2,
+          tile => tile.isFloor(),
+          (ux, uy) => {
+            const upTile = new StairwayUp(map2, map1, new Point(dx, dy))
+            map2.setTile(ux, uy, upTile)
+
+            downTile = new StairwayDown(map1, map2, new Point(ux, uy))
+          }
+        )
+
+        map1.setTile(dx, dy, downTile)
       }
     )
 
+    this.currentMap = map1
+
     addOnTile(
-      this.map,
+      this.currentMap,
       tile => tile.isFloor(),
       (x, y) => {
         // this.map.setTile(x, y, Tile.retrive('>'))
-        this.player.addToMap(new Point(x, y), this.map)
+        this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )
   }
@@ -118,22 +129,22 @@ export class Onisun extends Game {
   }
 
   protected generateMap(options: GeneratorOptions): LevelMap {
-    // let map = generate(
-    //   50,
-    //   50,
-    //   options.minSize,
-    //   options.maxSize,
-    //   options.roomsCount
-    // )
+    let map = generate(
+      50,
+      50,
+      options.minSize,
+      options.maxSize,
+      options.roomsCount
+    )
 
-    let map = drawn([
-      'WWWWWWWWWWW',
-      'WRRRCRRRRRW',
-      'WRRRWRRRRRW',
-      'WRRRWWWWWCW',
-      'WRRRCCCCCCW',
-      'WWWWWWWWWWW',
-    ])
+    // let map = drawn([
+    //   'WWWWWWWWWWW',
+    //   'WRRRCRRRRRW',
+    //   'WRRRWRRRRRW',
+    //   'WRRRWWWWWCW',
+    //   'WRRRCCCCCCW',
+    //   'WWWWWWWWWWW',
+    // ])
 
     if (options.addDoors) {
       addDoors(map)

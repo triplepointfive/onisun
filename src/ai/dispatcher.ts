@@ -100,11 +100,11 @@ export class Dispatcher extends MetaAI {
   }
 
   private explore(actor: Creature): void {
-    if (this.descender.available(actor)) {
-      this.setAi(this.descender)
-    } else if (this.explorer.available(actor)) {
+    if (this.explorer.available(actor)) {
       this.patrol.trackMovement(actor)
       this.setAi(this.explorer)
+    } else if (this.descender.available(actor)) {
+      this.setAi(this.descender)
     } else if (this.patrol.available(actor)) {
       if (this.firstCallPatrol) {
         this.firstCallPatrol = false

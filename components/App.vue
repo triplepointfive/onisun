@@ -1,6 +1,6 @@
 <template>
   <div id='app' class='container' v-if='game'>
-    <Scene :level='game.map' :player='game.player' v-if='game.player'/>
+    <Scene :level='game.currentMap' :player='game.player' v-if='game.player'/>
     <Logger :logger='game.logger' />
     <div class=''>
       <div class=''>
