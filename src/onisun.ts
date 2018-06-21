@@ -2,6 +2,7 @@ export * from './ai'
 export * from './creature'
 export * from './inventory'
 export * from './items'
+export * from './tile'
 export * from './logger'
 export * from './map'
 export * from './characteristics'
@@ -14,12 +15,13 @@ import { addDoors, addCreatures, addItems, centrize, addOnTile } from './generat
 import { Creature, Clan } from './creature'
 import { Dispatcher } from './ai'
 import { OneHandWeapon, Item } from './items'
-import { LevelMap, Tile } from './map'
+import { LevelMap } from './map'
+import { Tile, StairwayDown } from './tile'
 import { Pool } from './pool'
-import { Point } from './utils'
 import { BodyArmor } from './items/internal'
 import { Modifier } from './characteristics'
 import { Game } from './game';
+import { Point } from './utils';
 
 export type GeneratorOptions = {
   minSize: number
@@ -71,34 +73,31 @@ export class Onisun extends Game {
 
   constructor(generatorOptions: GeneratorOptions) {
     super()
-    this.map = this.generateMap(generatorOptions)
     this.player = this.initPlayer()
+
+    this.map = this.generateMap(generatorOptions)
+    let map2 = this.generateMap(generatorOptions)
 
     addOnTile(
       this.map,
       tile => tile.isFloor(),
       (x, y) => {
-        // this.map.setTile(x, y, Tile.retrive('<'))
+        const tile = new StairwayDown(this.map, map2, new Point(1, 1))
+        tile.onAction = () => {
+          this.map = map2
+        }
+        this.map.setTile(x, y, tile)
+      }
+    )
+
+    addOnTile(
+      this.map,
+      tile => tile.isFloor(),
+      (x, y) => {
+        // this.map.setTile(x, y, Tile.retrive('>'))
         this.player.addToMap(new Point(x, y), this.map)
       }
     )
-
-    addOnTile(
-      this.map,
-      tile => tile.isFloor(),
-      (x, y) => {
-        this.map.setTile(x, y, Tile.retrive('>'))
-      }
-    )
-
-    let map2 = this.generateMap(generatorOptions)
-    // let map1 = this.map
-
-    this.map.onDescent = () => {
-      this.map.reset()
-      this.player.addToMap(new Point(1, 1), map2)
-      this.map = map2
-    }
   }
 
   protected initPlayer(): Creature {

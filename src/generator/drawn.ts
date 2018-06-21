@@ -1,5 +1,5 @@
 import { twoDimArray } from '../utils'
-import { LevelMap, Tile } from '../map'
+import { LevelMap, Tile } from '../onisun'
 
 export default function(drawMap: string[]): LevelMap {
   return new LevelMap(

@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 
-import { LevelMap, Tile, TileTypes } from '../map'
+import { LevelMap, Tile } from '../onisun'
 
 type BlockId = string
 

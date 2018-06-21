@@ -1,4 +1,4 @@
-import { LevelMap, Tile, TileTypes } from '../map'
+import { LevelMap, Tile } from '../onisun'
 import { Pool } from '../pool'
 import { Creature } from '../creature'
 import { Point, cycle } from '../utils'

@@ -3,10 +3,10 @@ import { MetaAI } from './ai'
 import { Fov } from './fov'
 import { Item, Equipment } from './items'
 
-import { LevelMap, LevelMapId, Tile } from './map'
+import { LevelMap, LevelMapId, Tile } from './onisun'
 import { Inventory, BodyPart } from './inventory'
 
-import { Characteristics } from './onisun'
+import { Characteristics, Corpse } from './onisun'
 
 export class MemoryTile {
   public visible: boolean = false
@@ -189,6 +189,19 @@ export class Creature extends Phantom {
 
   public die(): void {
     this.currentLevel.removeCreature(this)
+
+    let tile = this.currentLevel.at(this.pos.x, this.pos.y)
+    tile.items.push(new Corpse(this))
+
+    this.inventory.wears().forEach(({ equipment }) => {
+      if (equipment) {
+        tile.items.push(equipment)
+      }
+    })
+
+    this.inventory.cares().forEach(item => {
+      tile.items.push(item)
+    })
   }
 
   public on(event: Event): Reaction {

@@ -67,7 +67,7 @@ describe('When items on every single cell around', () => {
     expect(creature.ai.available(creature)).toBeTruthy()
   })
 
-  it.only('Moves to adjacent cell', () => {
+  it('Moves to adjacent cell', () => {
     creature.act(map)
     expect(creature.pos.x === 2 || creature.pos.y === 2).toBeTruthy()
   })

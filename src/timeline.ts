@@ -16,7 +16,7 @@ export class Timeline<T> {
 
   public remove(actor: T): void {
     forEach(this.turns, (value, key) => {
-      remove(value, element => element == actor)
+      remove(value, element => element === actor)
     })
   }
 

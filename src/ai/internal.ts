@@ -3,7 +3,7 @@ import { Creature, MemoryTile, Phantom, Clan } from '../creature'
 
 import { sample } from 'lodash'
 import { MetaAI } from './meta_ai'
-import { Tile, TileTypes } from '../map'
+import { Tile, TileTypes, StairwayDown } from '../onisun'
 
 const FIRST_STEP: number = 1
 
@@ -278,8 +278,9 @@ export class Descender extends GoToTileAI {
 
   protected onReach(actor: Creature) {
     // Should stay here at least for a turn
-    if (this.canDescend) {
-      actor.currentLevel.onDescent && actor.currentLevel.onDescent()
+    const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
+    if (this.canDescend && tile instanceof StairwayDown) {
+      tile.go(actor)
     }
   }
 }

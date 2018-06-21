@@ -1,91 +1,10 @@
-import { Phantom, Creature, CreatureId } from './creature'
-import { Item, Corpse } from './items'
-import { Mapped } from './utils'
+import { Creature, CreatureId } from './creature'
+import { Mapped, Point } from './utils'
 import { Timeline } from './timeline'
 import { Game } from './game'
+import { Tile } from './tile'
 
 import { remove, includes } from 'lodash'
-
-export enum TileTypes {
-  Wall,
-  Door,
-  Floor,
-  StairwayDown,
-  StairwayUp,
-}
-
-export class Tile {
-  public creature?: Phantom
-  public items: Item[] = []
-
-  private static repository: { [key: string]: Tile } = {}
-
-  public static retrive(key: string): Tile {
-    switch (key) {
-      case 'R':
-        return new Tile('R', ' ', TileTypes.Floor)
-      case 'C':
-        return new Tile('C', ' ', TileTypes.Floor)
-      case 'W':
-        return new Tile('W', '#', TileTypes.Wall)
-      case 'D':
-        return new Tile('D', '+', TileTypes.Door)
-      case '>':
-        return new Tile('>', '>', TileTypes.StairwayDown)
-      case '<':
-        return new Tile('<', '<', TileTypes.StairwayUp)
-      default:
-        throw `Tile '${key}' is not registered!`
-    }
-  }
-
-  private constructor(
-    public key: string,
-    public display: string,
-    public kind: TileTypes
-  ) {}
-
-  public addItem(item: Item): void {
-    this.items.push(item)
-  }
-
-  public isDoor(): boolean {
-    return this.kind === TileTypes.Door
-  }
-
-  public isWall(): boolean {
-    return this.kind === TileTypes.Wall
-  }
-
-  public isFloor(): boolean {
-    return this.kind === TileTypes.Floor
-  }
-
-  public visibleThrough(): boolean {
-    return this.isFloor() || this.kind === TileTypes.StairwayDown || this.kind === TileTypes.StairwayUp
-  }
-
-  public passibleThrough(actor?: Creature): boolean {
-    if (actor && this.creature) {
-      return this.kind !== TileTypes.Wall && this.creature.id === actor.id
-    }
-
-    return this.kind !== TileTypes.Wall && !this.creature
-  }
-
-  public clone(): Tile {
-    let tile = Tile.retrive(this.key)
-    if (this.creature) {
-      tile.creature = this.creature.clone()
-    }
-    this.items.forEach(item => tile.items.push(item.clone()))
-    return tile
-  }
-
-  protected uniq(): boolean {
-    return this.creature !== undefined
-  }
-}
 
 export type LevelMapId = number
 
@@ -93,7 +12,6 @@ export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public id: LevelMapId
   public game: Game
-  public onDescent?: () => void
   protected timeline: Timeline<CreatureId>
 
   private static lastId: LevelMapId = 0
@@ -111,6 +29,19 @@ export class LevelMap extends Mapped<Tile> {
     this.timeline = new Timeline()
   }
 
+  public leave(actor: Creature): void {
+    this.reset()
+    this.removeCreature(actor)
+  }
+
+  public enter(actor: Creature, enterPos: Point): void {
+    this.reset()
+    this.creatures.forEach(creature => this.timeline.add(creature.id, creature.speed()))
+
+    actor.pos = enterPos
+    this.addCreature(actor)
+  }
+
   public addCreature(creature: Creature) {
     this.creatures.push(creature)
     // TODO fail if taken
@@ -121,18 +52,6 @@ export class LevelMap extends Mapped<Tile> {
   public removeCreature(creature: Creature) {
     let tile = this.at(creature.pos.x, creature.pos.y)
     tile.creature = undefined
-    tile.items.push(new Corpse(creature))
-
-    creature.inventory.wears().forEach(({ bodyPart, equipment }) => {
-      if (equipment) {
-        tile.items.push(equipment)
-      }
-    })
-
-    creature.inventory.cares().forEach(item => {
-      tile.items.push(item)
-    })
-
     remove(this.creatures, c => c.id === creature.id)
     this.timeline.remove(creature.id)
   }
@@ -145,7 +64,7 @@ export class LevelMap extends Mapped<Tile> {
     return this.map[x][y].passibleThrough()
   }
 
-  public setTile(x, y, tile: Tile): void {
+  public setTile(x: number, y: number, tile: Tile): void {
     this.map[x][y] = tile
   }
 

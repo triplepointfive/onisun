@@ -1,8 +1,5 @@
-import { Point, rand, min, max, twoDimArray } from '../utils'
-
-import { LevelMap, Tile, TileTypes } from '../map'
-
-const THICKNESS = 0
+import { Point, rand, twoDimArray } from '../utils'
+import { LevelMap, Tile } from '../onisun'
 
 const newSpace = function(): Tile {
   return Tile.retrive('C')
@@ -15,9 +12,6 @@ const newWall = function(): Tile {
 const generate = function(
   dimX: number,
   dimY: number,
-  minSize: number = 5,
-  maxSize: number = 5,
-  roomsCount: number = 3
 ): LevelMap {
   let level = new LevelMap(twoDimArray(dimX, dimY, newWall))
   let freeCellsCount = 1

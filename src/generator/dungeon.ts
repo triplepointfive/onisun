@@ -1,6 +1,6 @@
-import { Rect, Point, rand, min, max, twoDimArray } from '../utils'
+import { Rect, Point, rand, min, twoDimArray } from '../utils'
 
-import { LevelMap, Tile, TileTypes } from '../map'
+import { LevelMap, Tile } from '../onisun'
 
 const THICKNESS = 0
 
