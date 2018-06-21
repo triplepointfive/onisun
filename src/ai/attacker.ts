@@ -2,7 +2,7 @@ import { AI } from './internal'
 import { Phantom, Creature, EventType, Reaction } from '../creature'
 
 export class Attacker extends AI {
-  private victim?: Creature
+  public victim?: Creature
 
   public available(actor: Creature): boolean {
     return this.canAttack(actor)

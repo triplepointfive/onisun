@@ -84,21 +84,12 @@ export class Tile {
   }
 }
 
-export class StairwayDown extends Tile {
-  public onAction?: () => void
+abstract class Stairway extends Tile {
+  protected currentMap: LevelMap
+  protected adjacentMap: LevelMap
+  protected enterPos: Point
 
-  constructor(
-    protected currentMap: LevelMap,
-    protected adjacentMap: LevelMap,
-    protected enterPos: Point,
-    isDown: boolean = true,
-  ) {
-    super(
-      isDown ? '>' : '<',
-      isDown ? '>' : '<',
-      isDown ? TileTypes.StairwayDown : TileTypes.StairwayUp,
-      )
-}
+  public onAction?: () => void
 
   public go(actor: Creature): void {
     this.currentMap.leave(actor)
@@ -106,4 +97,33 @@ export class StairwayDown extends Tile {
 
     this.onAction && this.onAction()
   }
+}
+
+export class StairwayDown extends Stairway {
+  constructor(
+    protected currentMap: LevelMap,
+    protected adjacentMap: LevelMap,
+    protected enterPos: Point,
+  ) {
+    super(
+      '>',
+      '>',
+      TileTypes.StairwayDown,
+      )
+  }
+}
+
+export class StairwayUp extends Stairway {
+  constructor(
+    protected currentMap: LevelMap,
+    protected adjacentMap: LevelMap,
+    protected enterPos: Point,
+  ) {
+    super(
+      '<',
+      '<',
+      TileTypes.StairwayUp,
+      )
+  }
+
 }
