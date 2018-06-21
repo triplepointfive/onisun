@@ -347,7 +347,7 @@ const rawToTiles = function(map: string[]): Tile[][] {
   map.forEach(row => {
     let tileRow: Tile[] = []
     row.split('').forEach(key => {
-      tileRow.push(Tile.retrive(key))
+      tileRow.push(Tile.retrieve(key))
     })
     tiles.push(tileRow)
   })

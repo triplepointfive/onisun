@@ -2,11 +2,11 @@ import { Point, rand, twoDimArray } from '../utils'
 import { LevelMap, Tile } from '../onisun'
 
 const newSpace = function(): Tile {
-  return Tile.retrive('C')
+  return Tile.retrieve('C')
 }
 
 const newWall = function(): Tile {
-  return Tile.retrive('W')
+  return Tile.retrieve('W')
 }
 
 const generate = function(dimX: number, dimY: number): LevelMap {

@@ -17,7 +17,7 @@ export class Tile {
 
   private static repository: { [key: string]: Tile } = {}
 
-  public static retrive(key: string): Tile {
+  public static retrieve(key: string): Tile {
     switch (key) {
       case 'R':
         return new Tile('R', ' ', TileTypes.Floor)
@@ -75,7 +75,7 @@ export class Tile {
   }
 
   public clone(): Tile {
-    let tile = Tile.retrive(this.key)
+    let tile = Tile.retrieve(this.key)
     if (this.creature) {
       tile.creature = this.creature.clone()
     }

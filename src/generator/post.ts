@@ -44,7 +44,7 @@ export const addDoors = function(
         (left.key === 'W' && right.key === 'W') ||
         (up.key === 'W' && down.key === 'W')
       ) {
-        level.setTile(i, j, Tile.retrive('D'))
+        level.setTile(i, j, Tile.retrieve('D'))
       }
     }
   }

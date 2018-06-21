@@ -42,7 +42,7 @@ export class MemoryTile {
 
 export class Memory extends Mapped<MemoryTile> {
   constructor(width: number, height: number) {
-    const baseTile = Tile.retrive('W')
+    const baseTile = Tile.retrieve('W')
     super(twoDimArray(width, height, () => new MemoryTile(baseTile)))
   }
 

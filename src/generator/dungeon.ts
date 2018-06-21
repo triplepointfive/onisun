@@ -5,15 +5,15 @@ import { LevelMap, Tile } from '../onisun'
 const THICKNESS = 0
 
 const newRoomSpace = function(): Tile {
-  return Tile.retrive('R')
+  return Tile.retrieve('R')
 }
 
 const newCoridor = function(): Tile {
-  return Tile.retrive('C')
+  return Tile.retrieve('C')
 }
 
 const newWall = function(): Tile {
-  return Tile.retrive('W')
+  return Tile.retrieve('W')
 }
 
 type Stage = Tile[][]

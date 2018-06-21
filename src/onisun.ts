@@ -93,7 +93,7 @@ export class Onisun extends Game {
       this.currentMap,
       tile => tile.isFloor(),
       (x, y) => {
-        // this.currentMap.setTile(x, y, Tile.retrive('<'))
+        // this.currentMap.setTile(x, y, Tile.retrieve('<'))
         this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )
