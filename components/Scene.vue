@@ -236,9 +236,6 @@ export default Vue.extend({
     clearInterval(this.drawInterval)
   },
   watch: {
-    level() {
-      this.initViewport()
-    },
     interval() {
       this.initViewport()
     }

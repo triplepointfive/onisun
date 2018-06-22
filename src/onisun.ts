@@ -43,7 +43,7 @@ export type GeneratorOptions = {
 export let baseConfig = {
   addDoors: false,
   minSize: 3,
-  maxSize: 10,
+  maxSize: 3,
   roomsCount: 2,
 }
 
@@ -81,11 +81,10 @@ export class Onisun extends Game {
     let map5 = this.generateMap(generatorOptions)
 
     connectMaps(map1, map2)
-    // connectMaps(map2, map3)
-    // connectMaps(map3, map4)
-    // connectMaps(map4, map5)
-
-    connectMaps(map2, map1)
+    connectMaps(map2, map3)
+    connectMaps(map3, map4)
+    connectMaps(map4, map5)
+    connectMaps(map5, map1)
 
     this.currentMap = map1
 
