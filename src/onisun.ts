@@ -7,6 +7,7 @@ export * from './logger'
 export * from './map'
 export * from './characteristics'
 export * from './utils'
+export * from './level'
 
 export * from './generator/post'
 export { default as drawn } from './generator/drawn'
@@ -33,6 +34,7 @@ import { BodyArmor } from './items/internal'
 import { Modifier } from './characteristics'
 import { Game } from './game'
 import { Point } from './utils'
+import { Level } from './level'
 
 export type GeneratorOptions = {
   minSize: number
@@ -74,6 +76,14 @@ export class Onisun extends Game {
 
   constructor(generatorOptions: GeneratorOptions) {
     super()
+
+    Level.requires = [
+      3,
+      5,
+      7,
+      10,
+    ]
+
     this.player = this.initPlayer()
 
     let map1 = this.generateMap(generatorOptions)
@@ -103,7 +113,7 @@ export class Onisun extends Game {
   protected initPlayer(): Creature {
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
 
-    let player = new Creature(1, 4, 2, 5, 100, Clan.Player, new Dispatcher())
+    let player = new Creature(1, 4, 10, 5, 100, Clan.Player, new Dispatcher())
     player.putOn(dagger)
 
     return player
@@ -137,8 +147,8 @@ export class Onisun extends Game {
     centralize(map)
     map.game = this
 
-    // addCreatures(0.1, this.map, creaturesPool)
-    // addItems(0.5, map, weapons.merge(itemsPool))
+    addCreatures(0.05, map, creaturesPool)
+    addItems(0.01, map, weapons.merge(itemsPool))
 
     return map
   }

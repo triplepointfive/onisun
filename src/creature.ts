@@ -7,6 +7,8 @@ import { LevelMap, LevelMapId, Tile } from './onisun'
 import { Inventory, BodyPart } from './inventory'
 
 import { Characteristics, Corpse } from './onisun'
+import { Level } from './level';
+import { relativeTimeThreshold } from 'moment';
 
 export class MemoryTile {
   public visible: boolean = false
@@ -127,6 +129,7 @@ export class Creature extends Phantom {
 
   public previousPos: Point
   public previousLevel: LevelMap
+  public level: Level
 
   constructor(
     attack: number,
@@ -158,6 +161,7 @@ export class Creature extends Phantom {
       radius,
       speed
     )
+    this.level = new Level()
   }
 
   public putOn(item: Equipment) {

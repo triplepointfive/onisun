@@ -24,6 +24,7 @@ export class Attacker extends AI {
   protected attack(actor: Creature) {
     if (this.victim.on(actor.emit(EventType.Attack)) === Reaction.DIE) {
       this.victim = undefined
+      actor.level.add(1)
     }
   }
 

@@ -15,6 +15,13 @@
     </dt>
 
     <dd class='col-sm-4'>
+      Level
+    </dd>
+    <dt class='col-sm-8'>
+      {{ creature.level.current }} [{{ creature.level.currentExperience }} - {{ creature.level.requiredExperience }}]
+    </dt>
+
+    <dd class='col-sm-4'>
       Здоровье
     </dd>
     <dt class='col-sm-8'>
