@@ -121,10 +121,12 @@ export enum Clan {
 export class Creature extends Phantom {
   public ai: MetaAI
   public stageMemories: { [key: string]: Memory } = {}
-  public previousPos: Point
   public currentLevel: LevelMap
   public inventory: Inventory
   public characteristics: Characteristics
+
+  public previousPos: Point
+  public previousLevel: LevelMap
 
   constructor(
     attack: number,
@@ -173,6 +175,7 @@ export class Creature extends Phantom {
 
   public addToMap(pos: Point, level: LevelMap) {
     this.pos = pos
+    this.previousLevel = this.currentLevel
     this.currentLevel = level
     level.addCreature(this)
     this.visionMask(level)
@@ -228,8 +231,12 @@ export class Creature extends Phantom {
     this.visionMask(stage)
     this.previousPos = this.pos.copy()
     this.ai.act(this, true)
-    stage.at(this.previousPos.x, this.previousPos.y).creature = undefined
-    stage.at(this.pos.x, this.pos.y).creature = this
+
+    let previousPosLevel = this.previousLevel || this.currentLevel
+    previousPosLevel.at(this.previousPos.x, this.previousPos.y).creature = undefined
+    this.currentLevel.at(this.pos.x, this.pos.y).creature = this
+
+    this.previousLevel = undefined
   }
 
   public move(nextPoint: Point) {
