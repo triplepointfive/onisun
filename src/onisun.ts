@@ -112,7 +112,7 @@ export class Onisun extends Game {
   protected generateMap(options: GeneratorOptions): LevelMap {
     let map = dungeon(
       20,
-      20,
+      40,
       options.minSize,
       options.maxSize,
       options.roomsCount

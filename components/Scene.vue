@@ -170,7 +170,7 @@ export default Vue.extend({
         this.term,
         (x, y) => this.getTile(x, y),
         this.level.width,
-        this.level.height
+        this.level.height,
       )
 
       this.eng.setMaskFunc((x, y) => {
