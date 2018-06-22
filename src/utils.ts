@@ -1,16 +1,11 @@
 export class Rect {
-  x: number
-  y: number
-  w: number
-  h: number
-
-  constructor(x: number, y: number, w: number, h: number) {
-    // TODO: Validate?
-    this.x = x
-    this.y = y
-    this.w = w
-    this.h = h
-  }
+  // TODO: Validate?
+  constructor(
+    public x: number,
+    public y: number,
+    public w: number,
+    public h: number,
+  ) {}
 
   move(x: number, y: number): void {
     this.x += x

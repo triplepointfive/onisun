@@ -85,7 +85,7 @@ export const addItems = function(
   return level
 }
 
-export const centrize = function(level: LevelMap): LevelMap {
+export const centralize = function(level: LevelMap): LevelMap {
   let minX = level.width,
     minY = level.height,
     maxX = 0,

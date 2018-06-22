@@ -1,5 +1,4 @@
 import { Rect, Point, rand, min, twoDimArray } from '../utils'
-
 import { LevelMap, Tile } from '../onisun'
 
 const THICKNESS = 0
@@ -8,7 +7,7 @@ const newRoomSpace = function(): Tile {
   return Tile.retrieve('R')
 }
 
-const newCoridor = function(): Tile {
+const newCorridor = function(): Tile {
   return Tile.retrieve('C')
 }
 
@@ -18,23 +17,8 @@ const newWall = function(): Tile {
 
 type Stage = Tile[][]
 
-const generate = function(
-  dimX: number,
-  dimY: number,
-  minSize: number = 5,
-  maxSize: number = 5,
-  roomsCount: number = 3
-): LevelMap {
-  const dungeon = new DungeonGenerator(dimX, dimY, minSize, maxSize, roomsCount)
-
-  let stage = twoDimArray(dimX, dimY, newWall)
-
-  for (let i = 0; i < dungeon.rooms.length; i++) dungeon.rooms[i].add(stage)
-
-  for (let i = 0; i < dungeon.roads.length; i++) dungeon.roads[i].add(stage)
-
-  return new LevelMap(stage)
-}
+const RAY_TURNS = 60
+const DELTA_ANGLE = Math.PI / (RAY_TURNS * 2)
 
 class Room extends Rect {
   notCross(rect: Rect): boolean {
@@ -81,16 +65,16 @@ class Road extends Rect {
     let i = 0
     while (i < w) {
       if (stage[hx + i][hy].key === 'W') {
-        stage[hx + i][hy] = newCoridor()
+        stage[hx + i][hy] = newCorridor()
       }
       i += 1
     }
 
-    let [vx, vy, h] = this.verticallLine()
+    let [vx, vy, h] = this.verticalLine()
     let j = 0
     while (j < h) {
       if (stage[vx][vy + j].key === 'W') {
-        stage[vx][vy + j] = newCoridor()
+        stage[vx][vy + j] = newCorridor()
       }
       j += 1
     }
@@ -117,7 +101,7 @@ class Road extends Rect {
       ]
   }
 
-  verticallLine(): [number, number, number] {
+  verticalLine(): [number, number, number] {
     // x
     // |\
     // .-x
@@ -150,15 +134,9 @@ class DungeonGenerator {
     private maxSize: number,
     private roomsCount: number
   ) {
-    let rooms: Array<Room> = []
+    let rooms: Room[] = new Array(this.roomsCount).fill(undefined).map(_ => this.generateRoom())
 
-    let i = 0
-    while (i < this.roomsCount) {
-      rooms.push(this.generateRoom())
-      i += 1
-    }
-
-    this.rooms = this.normalize(this.fuzzifyRooms(rooms))
+    this.rooms = this.normalize(this.ray(rooms))
     this.roads = this.buildRoads(this.rooms)
   }
 
@@ -171,47 +149,44 @@ class DungeonGenerator {
     )
   }
 
-  private fuzzifyRooms(rooms: Array<Room>): Array<Room> {
-    let pickedRooms: Array<Room> = [rooms.shift()]
+  // Takes a room and tries to put it on a ray coming from (0, 0)
+  // until the room finds empty place for it.
+  private ray(rooms: Room[]): Room[] {
+    return rooms.reduce((pickedRooms: Room[], currentRoom: Room) => {
+      for (let i = 0, angle = (rand(360) / 180) * Math.PI; i < RAY_TURNS; angle += DELTA_ANGLE, i++) {
+        // TODO: Build table with these values.
+        const cos: number = Math.cos(angle)
+        const sin: number = Math.sin(angle)
+        let l: number = 1
+        let dx: number = 0
+        let dy: number = 0
 
-    while (rooms.length) {
-      let currentRoom: Room = rooms.shift()
+        while (Math.abs(dx) < this.maxX / 2 && Math.abs(dy) < this.maxY / 2) {
+          let ndx = Math.round(l * cos)
+          let ndy = Math.round(l * sin)
 
-      let angle: number = (rand(360) / 180) * Math.PI
+          while (ndx === dx && ndy === dy) {
+            l += 1
+            ndx = Math.round(l * cos)
+            ndy = Math.round(l * sin)
+          }
 
-      // TODO: Build table with these values.
-      const cos: number = Math.cos(angle)
-      const sin: number = Math.sin(angle)
-      let l: number = 0
-      let dx: number = 0
-      let dy: number = 0
+          currentRoom.move(ndx - dx, ndy - dy)
+          dx = ndx
+          dy = ndy
 
-      while (!pickedRooms.every(room => currentRoom.notCross(room))) {
-        let ndx = Math.round(l * cos)
-        let ndy = Math.round(l * sin)
-
-        while (true) {
-          l += 1
-          ndx = Math.round(l * cos)
-          ndy = Math.round(l * sin)
-
-          if (ndx !== dx || ndy !== dy) {
-            break
+          if (pickedRooms.every(room => currentRoom.notCross(room))) {
+            pickedRooms.push(currentRoom)
+            return pickedRooms
           }
         }
-
-        currentRoom.move(ndx - dx, ndy - dy)
-        dx = ndx
-        dy = ndy
       }
 
-      pickedRooms.push(currentRoom)
-    }
-
-    return pickedRooms
+      return pickedRooms
+    }, [])
   }
 
-  private normalize(rooms: Array<Room>): Array<Room> {
+  private normalize(rooms: Room[]): Room[] {
     const minX = min(rooms.map(room => room.x)) - 1
     const minY = min(rooms.map(room => room.y)) - 1
     rooms.forEach(room => {
@@ -223,13 +198,13 @@ class DungeonGenerator {
     })
   }
 
-  private buildRoads(rooms: Array<Room>): Array<Road> {
-    let points: Array<Point> = rooms.map(room => {
+  private buildRoads(rooms: Room[]): Road[] {
+    let points: Point[] = rooms.map(room => {
       return room.pointWithin()
     })
 
-    let connectedPoints: Array<Point> = [points.shift()]
-    let roads: Array<Road> = []
+    let connectedPoints: Point[] = [points.shift()]
+    let roads: Road[] = []
 
     const distance = function(point1: Point, point2: Point): number {
       // No need to calc square root since it's being used for comparison only.
@@ -266,4 +241,21 @@ class DungeonGenerator {
   }
 }
 
-export { generate }
+export default function(
+  dimX: number,
+  dimY: number,
+  minSize: number,
+  maxSize: number,
+  roomsCount: number,
+): LevelMap {
+  // TODO: Validate min or max size is lower than map's sizes
+  const dungeon = new DungeonGenerator(dimX, dimY, minSize, maxSize, roomsCount)
+
+  let stage = twoDimArray(dimX, dimY, newWall)
+
+  for (let i = 0; i < dungeon.rooms.length; i++) dungeon.rooms[i].add(stage)
+
+  for (let i = 0; i < dungeon.roads.length; i++) dungeon.roads[i].add(stage)
+
+  return new LevelMap(stage)
+}

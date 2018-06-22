@@ -7,16 +7,18 @@ export * from './logger'
 export * from './map'
 export * from './characteristics'
 export * from './utils'
+
 export * from './generator/post'
 export { default as drawn } from './generator/drawn'
+export { default as dungeon } from './generator/dungeon'
 
-import { generate } from './generator/dungeon'
+import dungeon from './generator/dungeon'
 import drawn from './generator/drawn'
 import {
   addDoors,
   addCreatures,
   addItems,
-  centrize,
+  centralize,
   addOnTile,
   connectMaps,
 } from './generator/post'
@@ -108,31 +110,31 @@ export class Onisun extends Game {
   }
 
   protected generateMap(options: GeneratorOptions): LevelMap {
-    // let map = generate(
-    //   50,
-    //   50,
-    //   options.minSize,
-    //   options.maxSize,
-    //   options.roomsCount
-    // )
+    let map = dungeon(
+      50,
+      50,
+      options.minSize,
+      options.maxSize,
+      options.roomsCount
+    )
 
-    let map = drawn([
-      'WWWWWWWWWWW',
-      'WRRRCRRRRRW',
-      'WRRRWRRRRRW',
-      'WRRRWWWWWCW',
-      'WRRRCCCCCCW',
-      'WWWWWWWWWWW',
-      'WWWWWWWWWWW',
-      'WWWWWWWWWWW',
-      'WWWWWWWWWWW',
-      'WWWWWWWWWWW',
-    ])
+    // let map = drawn([
+    //   'WWWWWWWWWWW',
+    //   'WRRRCRRRRRW',
+    //   'WRRRWRRRRRW',
+    //   'WRRRWWWWWCW',
+    //   'WRRRCCCCCCW',
+    //   'WWWWWWWWWWW',
+    //   'WWWWWWWWWWW',
+    //   'WWWWWWWWWWW',
+    //   'WWWWWWWWWWW',
+    //   'WWWWWWWWWWW',
+    // ])
 
     if (options.addDoors) {
       addDoors(map)
     }
-    centrize(map)
+    centralize(map)
     map.game = this
 
     // addCreatures(0.1, this.map, creaturesPool)

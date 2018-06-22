@@ -48,10 +48,6 @@ export abstract class Equipment extends Item {
     super(group, name, usages)
   }
 
-  public canTakeOff(): boolean {
-    return true // TODO
-  }
-
   public onPutOn(creature: Creature): void {
     creature.characteristics.addModifier(this.modifier)
   }

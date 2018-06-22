@@ -1,31 +1,8 @@
-import { drawn, centrize, LevelMap, Tile } from '../../src/onisun'
+import { drawn, centralize } from '../../src/onisun'
+import { prettyMap } from '../helpers'
 
-const tileToChar = function(tile: Tile): string {
-  if (tile.isWall()) {
-    return 'W'
-  } else if (tile.isDoor()) {
-    return 'D'
-  } else if (tile.isFloor) {
-    return ' '
-  } else {
-    return '?'
-  }
-}
-
-const prettyMap = function(map: LevelMap): string[] {
-  let stringMap = new Array(map.map[0].length).fill('')
-
-  map.map.forEach(column => {
-    column.forEach((tile, i) => {
-      stringMap[i] += tileToChar(tile)
-    })
-  })
-
-  return stringMap
-}
-
-describe('centrize', () => {
-  describe('When is already centrized', () => {
+describe('centralize', () => {
+  describe('When is already centralized', () => {
     let map = drawn([
       'WWW',
       'WRW',
@@ -33,7 +10,7 @@ describe('centrize', () => {
     ])
 
     test('Does nothing', () => {
-      centrize(map)
+      centralize(map)
       expect(prettyMap(map)).toEqual(
         ['WWW', 'W W', 'WWW']
       )
@@ -50,7 +27,7 @@ describe('centrize', () => {
     ])
 
     test('Does nothing', () => {
-      centrize(map)
+      centralize(map)
       expect(prettyMap(map)).toEqual(
         ['WWW', 'WWW', 'W W', 'WWW', 'WWW']
       )
@@ -65,7 +42,7 @@ describe('centrize', () => {
     ])
 
     test('Does nothing', () => {
-      centrize(map)
+      centralize(map)
       expect(prettyMap(map)).toEqual(
         ['WWWWW', 'WW WW', 'WWWWW']
       )
@@ -82,8 +59,8 @@ describe('centrize', () => {
     ])
 
     test('Does nothing', () => {
-      centrize(map)
-      expect(prettyMap(map)).toEqual(
+        centralize(map)
+        expect(prettyMap(map)).toEqual(
         ['WWWWW', 'WWWWW', 'WW WW', 'WWWWW', 'WWWWW']
       )
     })
