@@ -188,14 +188,12 @@ class DungeonGenerator {
 
   private normalize(rooms: Room[]): Room[] {
     const minX = min(rooms.map(room => room.x)) - 1
-    const minY = min(rooms.map(room => room.y)) - 1
-    rooms.forEach(room => {
-      room.move(-minX, -minY)
-    })
+    rooms.forEach(room => { room.move(-minX, 0) })
+    rooms = rooms.filter((room: Room) => room.x + room.w < this.maxX)
 
-    return rooms.filter((room: Room) => {
-      return room.x + room.w < this.maxX && room.y + room.h < this.maxY
-    })
+    const minY = min(rooms.map(room => room.y)) - 1
+    rooms.forEach(room => { room.move(0, -minY) })
+    return rooms.filter((room: Room) => room.y + room.h < this.maxY)
   }
 
   private buildRoads(rooms: Room[]): Road[] {

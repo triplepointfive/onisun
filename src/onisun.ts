@@ -45,8 +45,8 @@ export type GeneratorOptions = {
 export let baseConfig = {
   addDoors: false,
   minSize: 3,
-  maxSize: 3,
-  roomsCount: 2,
+  maxSize: 10,
+  roomsCount: 10,
 }
 
 const weapons = new Pool<null, Item>([
@@ -111,8 +111,8 @@ export class Onisun extends Game {
 
   protected generateMap(options: GeneratorOptions): LevelMap {
     let map = dungeon(
-      50,
-      50,
+      20,
+      20,
       options.minSize,
       options.maxSize,
       options.roomsCount

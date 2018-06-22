@@ -11,7 +11,7 @@ it('When exact match', () => {
 
 describe('When there is multiple rooms', () => {
   it('Builds a road between them', () => {
-    const map = dungeon(10, 10, 3, 3, 5)
+    const map = dungeon(20, 20, 3, 3, 100)
     expect(map.map.some(row => row.some(tile => tile.key === 'C'))).toBeTruthy()
   })
 })
