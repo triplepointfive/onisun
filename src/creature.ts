@@ -283,6 +283,7 @@ export class Creature extends Phantom {
 
 export class Player extends Creature {
   public level: Level
+  public dead: boolean = false
 
   constructor(
     characteristics: Characteristics,
@@ -299,5 +300,10 @@ export class Player extends Creature {
 
   public canDescend(): boolean {
     return true
+  }
+
+  public die(): void {
+    super.die() // We do not want player to act after they death
+    this.dead = true
   }
 }
