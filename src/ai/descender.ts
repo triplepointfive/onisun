@@ -5,7 +5,7 @@ export class Descender extends GoToTileAI {
   private canDescend: boolean = false
 
   constructor(metaAI: MetaAI) {
-    super(metaAI, tile => tile.kind === TileTypes.StairwayDown)
+    super(metaAI, tile => tile.tile.kind === TileTypes.StairwayDown)
   }
 
   public available(actor: Creature): boolean {
@@ -20,7 +20,7 @@ export class Descender extends GoToTileAI {
   protected foundNewTarget(actor: Creature): boolean {
     // When we are on a stairway
     this.canDescend = this.matcher(
-      actor.stageMemory().at(actor.pos.x, actor.pos.y).tile
+      actor.stageMemory().at(actor.pos.x, actor.pos.y)
     )
 
     if (this.canDescend) {

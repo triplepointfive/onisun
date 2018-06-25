@@ -1,5 +1,5 @@
 import { Point, twoDimArray } from '../utils'
-import { Creature, MemoryTile, Phantom, Clan } from '../creature'
+import { Creature, MemoryTile, Phantom, Clan, Memory } from '../creature'
 
 import { sample } from 'lodash'
 import { MetaAI } from './meta_ai'
@@ -231,15 +231,15 @@ export abstract class FollowTargetAI extends AI {
   protected onCantMove(actor: Creature): void {}
 }
 
-export class GoToTileAI extends FollowTargetAI {
-  constructor(metaAI: MetaAI, protected matcher: (tile: Tile) => boolean) {
+export abstract class GoToTileAI extends FollowTargetAI {
+  constructor(metaAI: MetaAI, protected matcher: (tile: MemoryTile) => boolean) {
     super(metaAI)
   }
 
   protected foundNewTarget(actor: Creature): boolean {
     const path = this.leePath(
       actor,
-      (point, tile) => this.matcher(tile.tile),
+      (point, tile) => this.matcher(tile),
       true
     )
 
