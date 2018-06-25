@@ -71,15 +71,16 @@ const creaturesPool = new Pool<null, Creature>([
       return new Creature(
         new Characteristics({
           attack: 1,
-          defense: 4,
+          defense: 1,
           dexterity: 1,
-          health: 5,
+          health: 1,
           radius: 5,
           speed: 100,
         }),
 
         Clan.PlayerOnlyEnemy,
-        new Dispatcher()
+        new Dispatcher(),
+        'Rat',
       )
     },
   ],

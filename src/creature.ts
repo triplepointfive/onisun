@@ -134,7 +134,7 @@ export class Creature extends Phantom {
   public previousPos: Point
   public previousLevel: LevelMap
 
-  constructor(public characteristics: Characteristics, clan: Clan, ai: MetaAI) {
+  constructor(public characteristics: Characteristics, clan: Clan, ai: MetaAI, private _name: string) {
     super(clan, null, null)
     this.previousPos = this.pos.copy()
     this.ai = ai
@@ -161,7 +161,7 @@ export class Creature extends Phantom {
   }
 
   public name(): string {
-    return `${this.id}`
+    return this._name
   }
 
   public addToMap(pos: Point, level: LevelMap) {
@@ -294,7 +294,7 @@ export class Player extends Creature {
     characteristics: Characteristics,
     ai: MetaAI
   ) {
-    super(characteristics, Clan.Player, ai)
+    super(characteristics, Clan.Player, ai, 'Player')
   }
 
   public canDescend(): boolean {
