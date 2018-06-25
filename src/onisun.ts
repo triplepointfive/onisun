@@ -72,6 +72,7 @@ const creaturesPool = new Pool<null, Creature>([
         new Characteristics({
           attack: 1,
           defense: 4,
+          dexterity: 1,
           health: 5,
           radius: 5,
           speed: 100,
@@ -120,7 +121,14 @@ export class Onisun extends Game {
 
     let player = new Player(
       new Level([3, 5, 7, 10]),
-      new Characteristics(1, 4, 10, 5, 100),
+      new Characteristics({
+        attack: 1,
+        defense: 4,
+        dexterity: 3,
+        health: 10,
+        radius: 5,
+        speed: 100,
+      }),
       new Dispatcher()
     )
     player.putOn(dagger)

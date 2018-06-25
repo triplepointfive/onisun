@@ -9,6 +9,7 @@ let map: LevelMap
 beforeEach(() => {
   map = generateLevel()
   actor.addToMap(new Point(1, 1), map)
+  actor.characteristics.dexterity.constantIncrease(10000)
 })
 
 describe('When there are no enemies', () => {

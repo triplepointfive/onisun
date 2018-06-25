@@ -55,6 +55,7 @@ export const generateCharacteristics = function(): Characteristics {
   return new Characteristics({
       attack: 0,
       defense: 0,
+      dexterity: 0,
       health: 50,
       radius: 5,
       speed: 0,

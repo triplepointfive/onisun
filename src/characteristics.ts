@@ -64,6 +64,7 @@ export class AttributeSet<T> {
   constructor(
     public attack: T,
     public defense: T,
+    public dexterity: T,
     public health: T,
     public radius: T,
     public speed: T
@@ -79,8 +80,15 @@ export class AttributeSet<T> {
 }
 
 export class Modifier extends AttributeSet<number> {
-  constructor({ attack = 0, defense = 0, health = 0, radius = 0, speed = 0 }) {
-    super(attack, defense, health, radius, speed)
+  constructor({
+    attack = 0,
+    defense = 0,
+    dexterity = 0,
+    health = 0,
+    radius = 0,
+    speed = 0,
+  }) {
+    super(attack, defense, dexterity, health, radius, speed)
   }
 
   public withWeight(
@@ -97,10 +105,11 @@ export class Modifier extends AttributeSet<number> {
 }
 
 export class Characteristics extends AttributeSet<Attribute> {
-  constructor({ attack, defense, health, radius, speed }) {
+  constructor({ attack, defense, dexterity, health, radius, speed }) {
     super(
       new PositiveAttribute(attack),
       new PositiveAttribute(defense),
+      new PositiveAttribute(dexterity),
       new Attribute(health),
       new PositiveAttribute(radius),
       new PositiveAttribute(speed)
@@ -127,6 +136,12 @@ export class Characteristics extends AttributeSet<Attribute> {
     return Math.round(
       (10 * this.attack.currentValue()) / victim.defense.currentValue()
     )
+  }
+
+  public misses(victim: Characteristics): boolean {
+    let dex = this.dexterity.currentValue()
+
+    return Math.random() > dex / (dex + Math.pow(victim.dexterity.currentValue() * 0.25, 0.8))
   }
 
   public regenerate(): void {

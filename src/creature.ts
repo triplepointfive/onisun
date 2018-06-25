@@ -89,6 +89,11 @@ export class Attack {
   constructor(public actor: Creature) {}
 
   public affect(subject: Creature): Reaction {
+    if (this.actor.characteristics.misses(subject.characteristics)) {
+      subject.currentLevel.game.logger.missMessage(this.actor, subject)
+      return Reaction.DODGE
+    }
+
     const damage = this.actor.characteristics.damageTo(subject.characteristics)
 
     if (damage >= subject.characteristics.health.currentValue()) {
@@ -110,6 +115,7 @@ export enum EventType {
 export enum Reaction {
   DIE,
   HURT,
+  DODGE,
   NOTHING,
 }
 
