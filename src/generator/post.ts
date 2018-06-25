@@ -138,13 +138,13 @@ export const addOnTile = function(
 export const connectMaps = function(map1: LevelMap, map2: LevelMap) {
   addOnTile(
     map1,
-    tile => tile.isFloor(),
+    tile => tile.isFloor() && tile.passibleThrough(),
     (dx, dy) => {
       let downTile
 
       addOnTile(
         map2,
-        tile => tile.isFloor(),
+        tile => tile.isFloor() && tile.passibleThrough(),
         (ux, uy) => {
           const upTile = new StairwayUp(map2, map1, new Point(dx, dy))
           map2.setTile(ux, uy, upTile)

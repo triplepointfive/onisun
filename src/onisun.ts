@@ -102,9 +102,8 @@ export class Onisun extends Game {
 
     addOnTile(
       this.currentMap,
-      tile => tile.isFloor(),
+      tile => tile.isFloor() && tile.passibleThrough(),
       (x, y) => {
-        // this.currentMap.setTile(x, y, Tile.retrieve('<'))
         this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )
@@ -134,10 +133,6 @@ export class Onisun extends Game {
     //   'WRRRWRRRRRW',
     //   'WRRRWWWWWCW',
     //   'WRRRCCCCCCW',
-    //   'WWWWWWWWWWW',
-    //   'WWWWWWWWWWW',
-    //   'WWWWWWWWWWW',
-    //   'WWWWWWWWWWW',
     //   'WWWWWWWWWWW',
     // ])
 
