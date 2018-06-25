@@ -161,6 +161,8 @@ class DungeonGenerator {
         let dx: number = 0
         let dy: number = 0
 
+        let roomToMove = new Room(currentRoom.x, currentRoom.y, currentRoom.w, currentRoom.h)
+
         while (Math.abs(dx) < this.maxX / 2 && Math.abs(dy) < this.maxY / 2) {
           let ndx = Math.round(l * cos)
           let ndy = Math.round(l * sin)
@@ -171,12 +173,12 @@ class DungeonGenerator {
             ndy = Math.round(l * sin)
           }
 
-          currentRoom.move(ndx - dx, ndy - dy)
+          roomToMove.move(ndx - dx, ndy - dy)
           dx = ndx
           dy = ndy
 
-          if (pickedRooms.every(room => currentRoom.notCross(room))) {
-            pickedRooms.push(currentRoom)
+          if (pickedRooms.every(room => roomToMove.notCross(room))) {
+            pickedRooms.push(roomToMove)
             return pickedRooms
           }
         }
