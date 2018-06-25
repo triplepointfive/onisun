@@ -67,7 +67,20 @@ const itemsPool = new Pool<null, Item>([
 const creaturesPool = new Pool<null, Creature>([
   [
     1,
-    () => new Creature(new Characteristics(1, 4, 5, 5, 100), Clan.PlayerOnlyEnemy, new Dispatcher()),
+    () => {
+      return new Creature(
+        new Characteristics({
+          attack: 1,
+          defense: 4,
+          health: 5,
+          radius: 5,
+          speed: 100,
+        }),
+
+        Clan.PlayerOnlyEnemy,
+        new Dispatcher()
+      )
+    },
   ],
 ])
 
@@ -106,8 +119,10 @@ export class Onisun extends Game {
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
 
     let player = new Player(
-      new Level([ 3, 5, 7, 10, ]),
-      new Characteristics(1, 4, 10, 5, 100), new Dispatcher())
+      new Level([3, 5, 7, 10]),
+      new Characteristics(1, 4, 10, 5, 100),
+      new Dispatcher()
+    )
     player.putOn(dagger)
 
     return player

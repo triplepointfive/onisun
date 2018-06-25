@@ -145,23 +145,23 @@ describe('Characteristics', () => {
   const maxHealth: number = 100
 
   beforeEach(() => {
-    characteristics = new Characteristics(
-      10,
-      10,
-      maxHealth,
-      10,
-      100,
-    )
+    characteristics = new Characteristics({
+      attack: 10,
+      defense: 10,
+      health: maxHealth,
+      radius: 10,
+      speed: 100,
+    })
   })
 
   it('damageTo', () => {
-    const opponent = new Characteristics(
-      10,
-      1,
-      maxHealth,
-      10,
-      100,
-    )
+    const opponent = new Characteristics({
+      attack: 10,
+      defense: 1,
+      health: maxHealth,
+      radius: 10,
+      speed: 100,
+    })
 
     expect(characteristics.damageTo(opponent)).toBeGreaterThan(0)
   })

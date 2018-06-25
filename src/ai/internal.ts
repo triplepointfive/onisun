@@ -232,16 +232,15 @@ export abstract class FollowTargetAI extends AI {
 }
 
 export abstract class GoToTileAI extends FollowTargetAI {
-  constructor(metaAI: MetaAI, protected matcher: (tile: MemoryTile) => boolean) {
+  constructor(
+    metaAI: MetaAI,
+    protected matcher: (tile: MemoryTile) => boolean
+  ) {
     super(metaAI)
   }
 
   protected foundNewTarget(actor: Creature): boolean {
-    const path = this.leePath(
-      actor,
-      (point, tile) => this.matcher(tile),
-      true
-    )
+    const path = this.leePath(actor, (point, tile) => this.matcher(tile), true)
 
     if (path.length) {
       this.destination = path.pop()

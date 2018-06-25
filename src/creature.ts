@@ -7,7 +7,7 @@ import { LevelMap, LevelMapId, Tile } from './onisun'
 import { Inventory, BodyPart } from './inventory'
 
 import { Characteristics, Corpse } from './onisun'
-import { Level } from './level';
+import { Level } from './level'
 
 export class MemoryTile {
   public visible: boolean = false
@@ -128,11 +128,7 @@ export class Creature extends Phantom {
   public previousPos: Point
   public previousLevel: LevelMap
 
-  constructor(
-    public characteristics: Characteristics,
-    clan: Clan,
-    ai: MetaAI
-  ) {
+  constructor(public characteristics: Characteristics, clan: Clan, ai: MetaAI) {
     super(clan, null, null)
     this.previousPos = this.pos.copy()
     this.ai = ai
@@ -222,7 +218,10 @@ export class Creature extends Phantom {
     this.ai.act(this, true)
 
     let previousPosLevel = this.previousLevel || this.currentLevel
-    previousPosLevel.at(this.previousPos.x, this.previousPos.y).creature = undefined
+    previousPosLevel.at(
+      this.previousPos.x,
+      this.previousPos.y
+    ).creature = undefined
     this.currentLevel.at(this.pos.x, this.pos.y).creature = this
 
     this.previousLevel = undefined
@@ -287,13 +286,9 @@ export class Player extends Creature {
   constructor(
     public level: Level,
     characteristics: Characteristics,
-    ai: MetaAI,
+    ai: MetaAI
   ) {
-    super(
-      characteristics,
-      Clan.Player,
-      ai,
-    )
+    super(characteristics, Clan.Player, ai)
   }
 
   public canDescend(): boolean {

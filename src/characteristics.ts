@@ -1,5 +1,4 @@
 import { remove, sum } from 'lodash'
-import { Creature } from './onisun'
 
 export class Attribute {
   public modifiers: number[] = []
@@ -98,13 +97,7 @@ export class Modifier extends AttributeSet<number> {
 }
 
 export class Characteristics extends AttributeSet<Attribute> {
-  constructor(
-    attack: number,
-    defense: number,
-    health: number,
-    radius: number,
-    speed: number
-  ) {
+  constructor({ attack, defense, health, radius, speed }) {
     super(
       new PositiveAttribute(attack),
       new PositiveAttribute(defense),

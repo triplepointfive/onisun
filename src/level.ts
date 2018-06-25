@@ -16,7 +16,10 @@ export class Level {
 
     this.currentExperience += exp
 
-    while (!this.doneLeveling && this.currentExperience >= this.requiredExperience) {
+    while (
+      !this.doneLeveling &&
+      this.currentExperience >= this.requiredExperience
+    ) {
       this.levelUp()
     }
   }

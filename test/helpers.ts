@@ -52,7 +52,13 @@ export const generateCreatureWithAI = function(ai: AI): Creature {
 }
 
 export const generateCharacteristics = function(): Characteristics {
-  return new Characteristics(0, 0, 50, 5, 0)
+  return new Characteristics({
+      attack: 0,
+      defense: 0,
+      health: 50,
+      radius: 5,
+      speed: 0,
+  })
 }
 
 class TestGame extends Game {}

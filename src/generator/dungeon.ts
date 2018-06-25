@@ -134,7 +134,9 @@ class DungeonGenerator {
     private maxSize: number,
     private roomsCount: number
   ) {
-    let rooms: Room[] = new Array(this.roomsCount).fill(undefined).map(_ => this.generateRoom())
+    let rooms: Room[] = new Array(this.roomsCount)
+      .fill(undefined)
+      .map(_ => this.generateRoom())
 
     this.rooms = this.normalize(this.ray(rooms))
     this.roads = this.buildRoads(this.rooms)
@@ -153,7 +155,11 @@ class DungeonGenerator {
   // until the room finds empty place for it.
   private ray(rooms: Room[]): Room[] {
     return rooms.reduce((pickedRooms: Room[], currentRoom: Room) => {
-      for (let i = 0, angle = (rand(360) / 180) * Math.PI; i < RAY_TURNS; angle += DELTA_ANGLE, i++) {
+      for (
+        let i = 0, angle = (rand(360) / 180) * Math.PI;
+        i < RAY_TURNS;
+        angle += DELTA_ANGLE, i++
+      ) {
         // TODO: Build table with these values.
         const cos: number = Math.cos(angle)
         const sin: number = Math.sin(angle)
@@ -161,7 +167,12 @@ class DungeonGenerator {
         let dx: number = 0
         let dy: number = 0
 
-        let roomToMove = new Room(currentRoom.x, currentRoom.y, currentRoom.w, currentRoom.h)
+        let roomToMove = new Room(
+          currentRoom.x,
+          currentRoom.y,
+          currentRoom.w,
+          currentRoom.h
+        )
 
         while (Math.abs(dx) < this.maxX / 2 && Math.abs(dy) < this.maxY / 2) {
           let ndx = Math.round(l * cos)
@@ -190,11 +201,15 @@ class DungeonGenerator {
 
   private normalize(rooms: Room[]): Room[] {
     const minX = min(rooms.map(room => room.x)) - 1
-    rooms.forEach(room => { room.move(-minX, 0) })
+    rooms.forEach(room => {
+      room.move(-minX, 0)
+    })
     rooms = rooms.filter((room: Room) => room.x + room.w < this.maxX)
 
     const minY = min(rooms.map(room => room.y)) - 1
-    rooms.forEach(room => { room.move(0, -minY) })
+    rooms.forEach(room => {
+      room.move(0, -minY)
+    })
     return rooms.filter((room: Room) => room.y + room.h < this.maxY)
   }
 
@@ -246,7 +261,7 @@ export default function(
   dimY: number,
   minSize: number,
   maxSize: number,
-  roomsCount: number,
+  roomsCount: number
 ): LevelMap {
   // TODO: Validate min or max size is lower than map's sizes
   const dungeon = new DungeonGenerator(dimX, dimY, minSize, maxSize, roomsCount)
