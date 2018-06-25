@@ -70,6 +70,8 @@ const HUMAN3 = new CreatureTile('俺', 0, 0, 255)
 const HUMAN4 = new CreatureTile('俺', 255, 0, 255)
 const HUMAN5 = new CreatureTile('俺', 0, 255, 255)
 
+const RAT = new CreatureTile('ｄ', 197, 65, 38)
+
 const DOOR = new DoorTile()
 const WALL = new WallTile()
 const FLOOR = new FloorTile()
@@ -113,6 +115,10 @@ export default Vue.extend({
       }
 
       if (tile.creature) {
+        if (tile.creature.name() == 'Rat') {
+          return RAT
+        }
+
         switch (tile.creature.id % 5) {
           case 0:
             return HUMAN5

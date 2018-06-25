@@ -67,13 +67,18 @@ export class Phantom {
     public clan: Clan,
     x: number,
     y: number,
+    private _name: string,
     public id: CreatureId = Phantom.getId()
   ) {
     this.pos = new Point(x, y)
   }
 
+  public name(): string {
+    return this._name
+  }
+
   public clone(): Phantom {
-    return new Phantom(this.clan, this.id, this.pos.x, this.pos.y)
+    return new Phantom(this.clan, this.pos.x, this.pos.y, this._name, this.id)
   }
 
   public real(): Creature {
@@ -135,7 +140,7 @@ export class Creature extends Phantom {
   public previousLevel: LevelMap
 
   constructor(public characteristics: Characteristics, clan: Clan, ai: MetaAI, private _name: string) {
-    super(clan, null, null)
+    super(clan, null, null, _name)
     this.previousPos = this.pos.copy()
     this.ai = ai
     this.inventory = new Inventory([
@@ -158,10 +163,6 @@ export class Creature extends Phantom {
 
   public takeOff(item: Equipment) {
     this.inventory.takeOff(this, item)
-  }
-
-  public name(): string {
-    return this._name
   }
 
   public addToMap(pos: Point, level: LevelMap) {
@@ -238,7 +239,7 @@ export class Creature extends Phantom {
   }
 
   public clone(): Phantom {
-    let phantom = new Phantom(this.clan, this.pos.x, this.pos.y, this.id)
+    let phantom = new Phantom(this.clan, this.pos.x, this.pos.y, this._name, this.id)
     phantom.refToReal = this
     return phantom
   }

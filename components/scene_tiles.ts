@@ -142,6 +142,6 @@ export const displayItem = function(item: Item): ItemTile {
     case ItemGroup.BodyArmor:
       return BODY_ARMOR
     default:
-      throw `Unknow group ${item} with type ${item.group}`
+      throw `Unknown group ${item} with type ${item.group}`
   }
 }
