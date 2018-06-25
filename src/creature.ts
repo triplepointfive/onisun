@@ -277,6 +277,10 @@ export class Creature extends Phantom {
     ).calc()
   }
 
+  public canDescend(): boolean {
+    return this.clan === Clan.Player
+  }
+
   private isSolid(stage: LevelMap): (x: number, y: number) => boolean {
     return (x: number, y: number) => {
       if (stage.visibleThrough(x, y)) {
