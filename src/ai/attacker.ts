@@ -1,5 +1,5 @@
 import { AI } from './internal'
-import { Phantom, Creature, EventType, Reaction } from '../creature'
+import { Phantom, Creature, EventType, Reaction, Player } from '../creature'
 
 export class Attacker extends AI {
   public victim?: Creature
@@ -24,7 +24,10 @@ export class Attacker extends AI {
   protected attack(actor: Creature) {
     if (this.victim.on(actor.emit(EventType.Attack)) === Reaction.DIE) {
       this.victim = undefined
-      actor.level.add(1)
+
+      if (actor instanceof Player) {
+        actor.level.add(1)
+      }
     }
   }
 

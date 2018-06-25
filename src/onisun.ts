@@ -24,14 +24,14 @@ import {
   connectMaps,
 } from './generator/post'
 
-import { Creature, Clan } from './creature'
+import { Creature, Clan, Player } from './creature'
 import { Dispatcher } from './ai'
 import { OneHandWeapon, Item } from './items'
 import { LevelMap } from './map'
 import { Tile, StairwayDown, StairwayUp } from './tile'
 import { Pool } from './pool'
 import { BodyArmor } from './items/internal'
-import { Modifier } from './characteristics'
+import { Modifier, Characteristics } from './characteristics'
 import { Game } from './game'
 import { Point } from './utils'
 import { Level } from './level'
@@ -67,7 +67,7 @@ const itemsPool = new Pool<null, Item>([
 const creaturesPool = new Pool<null, Creature>([
   [
     1,
-    () => new Creature(1, 4, 5, 5, 100, Clan.PlayerOnlyEnemy, new Dispatcher()),
+    () => new Creature(new Characteristics(1, 4, 5, 5, 100), Clan.PlayerOnlyEnemy, new Dispatcher()),
   ],
 ])
 
@@ -113,7 +113,7 @@ export class Onisun extends Game {
   protected initPlayer(): Creature {
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
 
-    let player = new Creature(1, 4, 10, 5, 100, Clan.Player, new Dispatcher())
+    let player = new Player(new Characteristics(1, 4, 10, 5, 100), new Dispatcher())
     player.putOn(dagger)
 
     return player

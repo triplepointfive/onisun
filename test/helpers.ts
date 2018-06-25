@@ -1,4 +1,4 @@
-import { OneHandWeapon, Modifier, Creature, Clan, MetaAI, Dispatcher, AI, LevelMap, Tile } from '../src/onisun'
+import { OneHandWeapon, Modifier, Creature, Clan, MetaAI, Dispatcher, AI, LevelMap, Tile, Characteristics } from '../src/onisun'
 import drawn from '../src/generator/drawn'
 import { Game } from '../src/game'
 
@@ -48,7 +48,11 @@ const wrapAI = function(ai: AI): MetaAI {
 }
 
 export const generateCreatureWithAI = function(ai: AI): Creature {
-  return new Creature(0, 0, 50, 5, 0, Clan.FreeForAll, wrapAI(ai))
+  return new Creature(generateCharacteristics(), Clan.FreeForAll, wrapAI(ai))
+}
+
+export const generateCharacteristics = function(): Characteristics {
+  return new Characteristics(0, 0, 50, 5, 0)
 }
 
 class TestGame extends Game {}

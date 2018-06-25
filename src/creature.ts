@@ -8,7 +8,6 @@ import { Inventory, BodyPart } from './inventory'
 
 import { Characteristics, Corpse } from './onisun'
 import { Level } from './level';
-import { relativeTimeThreshold } from 'moment';
 
 export class MemoryTile {
   public visible: boolean = false
@@ -125,18 +124,12 @@ export class Creature extends Phantom {
   public stageMemories: { [key: string]: Memory } = {}
   public currentLevel: LevelMap
   public inventory: Inventory
-  public characteristics: Characteristics
 
   public previousPos: Point
   public previousLevel: LevelMap
-  public level: Level
 
   constructor(
-    attack: number,
-    defense: number,
-    health: number,
-    radius: number,
-    speed: number,
+    public characteristics: Characteristics,
     clan: Clan,
     ai: MetaAI
   ) {
@@ -154,14 +147,6 @@ export class Creature extends Phantom {
       BodyPart.Back,
       BodyPart.Body,
     ])
-    this.characteristics = new Characteristics(
-      attack,
-      defense,
-      health,
-      radius,
-      speed
-    )
-    this.level = new Level()
   }
 
   public putOn(item: Equipment) {
@@ -278,7 +263,7 @@ export class Creature extends Phantom {
   }
 
   public canDescend(): boolean {
-    return this.clan === Clan.Player
+    return false
   }
 
   private isSolid(stage: LevelMap): (x: number, y: number) => boolean {
@@ -293,5 +278,26 @@ export class Creature extends Phantom {
         )
       }
     }
+  }
+}
+
+export class Player extends Creature {
+  public level: Level
+
+  constructor(
+    characteristics: Characteristics,
+    ai: MetaAI,
+  ) {
+    super(
+      characteristics,
+      Clan.Player,
+      ai,
+    )
+
+    this.level = new Level()
+  }
+
+  public canDescend(): boolean {
+    return true
   }
 }
