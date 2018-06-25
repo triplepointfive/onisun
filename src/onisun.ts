@@ -77,13 +77,6 @@ export class Onisun extends Game {
   constructor(generatorOptions: GeneratorOptions) {
     super()
 
-    Level.requires = [
-      3,
-      5,
-      7,
-      10,
-    ]
-
     this.player = this.initPlayer()
 
     let map1 = this.generateMap(generatorOptions)
@@ -112,7 +105,9 @@ export class Onisun extends Game {
   protected initPlayer(): Creature {
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
 
-    let player = new Player(new Characteristics(1, 4, 10, 5, 100), new Dispatcher())
+    let player = new Player(
+      new Level([ 3, 5, 7, 10, ]),
+      new Characteristics(1, 4, 10, 5, 100), new Dispatcher())
     player.putOn(dagger)
 
     return player

@@ -5,14 +5,8 @@ export class Level {
 
   private doneLeveling: boolean = false
 
-  public static requires: number[] = [1]
-
-  constructor() {
-    if (Level.requires.length < 1) {
-      throw 'There must be at least one level!'
-    }
-
-    this.requiredExperience = Level.requires[0]
+  constructor(private requires: number[]) {
+    this.requiredExperience = this.requires[0]
   }
 
   public add(exp: number): void {
@@ -22,7 +16,7 @@ export class Level {
 
     this.currentExperience += exp
 
-    if (this.currentExperience >= this.requiredExperience) {
+    while (!this.doneLeveling && this.currentExperience >= this.requiredExperience) {
       this.levelUp()
     }
   }
@@ -30,7 +24,7 @@ export class Level {
   protected levelUp(): void {
     this.current += 1
 
-    let level = Level.requires[this.current]
+    let level = this.requires[this.current - 1]
 
     if (level) {
       this.currentExperience -= this.requiredExperience

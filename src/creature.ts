@@ -282,10 +282,10 @@ export class Creature extends Phantom {
 }
 
 export class Player extends Creature {
-  public level: Level
   public dead: boolean = false
 
   constructor(
+    public level: Level,
     characteristics: Characteristics,
     ai: MetaAI,
   ) {
@@ -294,8 +294,6 @@ export class Player extends Creature {
       Clan.Player,
       ai,
     )
-
-    this.level = new Level()
   }
 
   public canDescend(): boolean {
