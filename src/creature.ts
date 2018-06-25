@@ -67,7 +67,7 @@ export class Phantom {
     public clan: Clan,
     x: number,
     y: number,
-    private _name: string,
+    protected _name: string,
     public id: CreatureId = Phantom.getId()
   ) {
     this.pos = new Point(x, y)
@@ -139,7 +139,7 @@ export class Creature extends Phantom {
   public previousPos: Point
   public previousLevel: LevelMap
 
-  constructor(public characteristics: Characteristics, clan: Clan, ai: MetaAI, private _name: string) {
+  constructor(public characteristics: Characteristics, clan: Clan, ai: MetaAI, _name: string) {
     super(clan, null, null, _name)
     this.previousPos = this.pos.copy()
     this.ai = ai

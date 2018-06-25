@@ -1,4 +1,4 @@
-import { drawn, centralize } from '../../src/onisun'
+import { drawn, centralize, connectMaps, StairwayDown, StairwayUp, addOnTile } from '../../src/onisun'
 import { prettyMap } from '../helpers'
 
 describe('centralize', () => {
@@ -64,5 +64,35 @@ describe('centralize', () => {
         ['WWWWW', 'WWWWW', 'WW WW', 'WWWWW', 'WWWWW']
       )
     })
+  })
+})
+
+describe('connectMaps', () => {
+  let map1 = drawn([ 'R' ])
+  let map2 = drawn([ 'R' ])
+  connectMaps(map1, map2)
+
+  it('adds downstairs on first map', () => {
+    expect(map1.at(0, 0)).toBeInstanceOf(StairwayDown)
+  })
+
+  it('adds upstairs on second map', () => {
+    expect(map2.at(0, 0)).toBeInstanceOf(StairwayUp)
+  })
+})
+
+describe('addOnTile', () => {
+  let map = drawn([ 'R' ])
+
+  test('Fail when there is no matching tiles', () => {
+    expect(() => {
+      addOnTile(
+        map,
+        tile => false,
+        (ux, uy) => {
+          // Shouldn't get here
+        }
+      )
+    }).toThrowError()
   })
 })
