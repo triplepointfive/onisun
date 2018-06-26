@@ -8,6 +8,7 @@ export * from './map'
 export * from './characteristics'
 export * from './utils'
 export * from './level'
+export * from './memory'
 
 export * from './generator/post'
 export { default as drawn } from './generator/drawn'
@@ -24,11 +25,10 @@ import {
   connectMaps,
 } from './generator/post'
 
-import { Creature, Clan, Player } from './creature'
+import { Creature, Clan, Player, Specie, allAbilities } from './creature'
 import { Dispatcher } from './ai'
 import { OneHandWeapon, Item } from './items'
 import { LevelMap } from './map'
-import { Tile, StairwayDown, StairwayUp } from './tile'
 import { Pool } from './pool'
 import { BodyArmor } from './items/internal'
 import { Modifier, Characteristics } from './characteristics'
@@ -64,13 +64,14 @@ const itemsPool = new Pool<null, Item>([
   [10, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
 ])
 
+
+
 const newCreature = (characteristics: Characteristics, name: string) => {
-      return new Creature(
-        characteristics,
-        Clan.PlayerOnlyEnemy,
-        new Dispatcher(),
-        name
-      )
+  return new Creature(
+    characteristics,
+    new Dispatcher(),
+    new Specie(name, Clan.PlayerOnlyEnemy, [])
+  )
 }
 
 const rat = () => {
@@ -188,6 +189,12 @@ export class Onisun extends Game {
   protected initPlayer(): Creature {
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
 
+    const playerSpecie = new Specie(
+      'Player',
+      Clan.Player,
+      allAbilities,
+    )
+
     let player = new Player(
       new Level([3, 5, 7, 10]),
       new Characteristics({
@@ -198,7 +205,8 @@ export class Onisun extends Game {
         radius: 5,
         speed: 100,
       }),
-      new Dispatcher()
+      new Dispatcher(),
+      playerSpecie
     )
     player.putOn(dagger)
 

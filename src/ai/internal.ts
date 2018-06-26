@@ -1,9 +1,9 @@
 import { Point, twoDimArray } from '../utils'
-import { Creature, MemoryTile, Phantom, Clan, Memory } from '../creature'
+import { Creature, Phantom, Clan } from '../creature'
 
 import { sample } from 'lodash'
 import { MetaAI } from './meta_ai'
-import { Tile, TileTypes, StairwayDown } from '../onisun'
+import { MemoryTile } from '../memory';
 
 const FIRST_STEP: number = 1
 
@@ -175,15 +175,15 @@ export abstract class AI {
       return false
     }
 
-    if (actor.clan === Clan.FreeForAll || enemy.clan === Clan.FreeForAll) {
+    if (actor.clan() === Clan.FreeForAll || enemy.clan() === Clan.FreeForAll) {
       return true
     }
 
-    if (actor.clan === Clan.Player && enemy.clan === Clan.PlayerOnlyEnemy) {
+    if (actor.clan() === Clan.Player && enemy.clan() === Clan.PlayerOnlyEnemy) {
       return true
     }
 
-    if (enemy.clan === Clan.Player && actor.clan === Clan.PlayerOnlyEnemy) {
+    if (enemy.clan() === Clan.Player && actor.clan() === Clan.PlayerOnlyEnemy) {
       return true
     }
 

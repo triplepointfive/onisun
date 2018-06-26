@@ -1,56 +1,13 @@
-import { Mapped, Point, twoDimArray } from './utils'
+import { Point } from './utils'
 import { MetaAI } from './ai'
 import { Fov } from './fov'
-import { Item, Equipment } from './items'
+import { Equipment } from './items'
 
-import { LevelMap, LevelMapId, Tile } from './onisun'
+import { LevelMap, LevelMapId, Memory } from './onisun'
 import { Inventory, BodyPart } from './inventory'
 
 import { Characteristics, Corpse } from './onisun'
 import { Level } from './level'
-
-export class MemoryTile {
-  public visible: boolean = false
-  public degree: number = 0
-  public seen: boolean = false
-
-  constructor(public tile?: Tile) {}
-
-  public see(tile: Tile, degree: number) {
-    this.visible = true
-    this.degree = degree
-    this.seen = true
-    this.tile = tile.clone()
-  }
-
-  public items(): Item[] {
-    return this.tile.items
-  }
-
-  public tangible(actor?: Creature): boolean {
-    return this.seen && !this.tile.passibleThrough(actor)
-  }
-
-  public creature(): Phantom {
-    return this.tile && this.tile.creature
-  }
-
-  public reset(): void {
-    this.visible = false
-    this.tile.creature = undefined
-  }
-}
-
-export class Memory extends Mapped<MemoryTile> {
-  constructor(width: number, height: number) {
-    const baseTile = Tile.retrieve('W')
-    super(twoDimArray(width, height, () => new MemoryTile(baseTile)))
-  }
-
-  public resetVisible(): void {
-    this.each(tile => tile.reset())
-  }
-}
 
 export type CreatureId = number
 
@@ -64,21 +21,24 @@ export class Phantom {
   public refToReal?: Creature
 
   constructor(
-    public clan: Clan,
     x: number,
     y: number,
-    protected _name: string,
+    public specie: Specie,
     public id: CreatureId = Phantom.getId()
   ) {
     this.pos = new Point(x, y)
   }
 
   public name(): string {
-    return this._name
+    return this.specie.name
+  }
+
+  public clan(): Clan {
+    return this.specie.clan
   }
 
   public clone(): Phantom {
-    return new Phantom(this.clan, this.pos.x, this.pos.y, this._name, this.id)
+    return new Phantom(this.pos.x, this.pos.y, this.specie, this.id)
   }
 
   public real(): Creature {
@@ -130,6 +90,22 @@ export enum Clan {
   FreeForAll,
 }
 
+export enum Ability {
+  GoStairwayDown,
+  Inventory,
+  PutOn,
+}
+
+export const allAbilities = Object.keys(Ability).map(key => Ability[key])
+
+export class Specie {
+  constructor(
+    public readonly name: string,
+    public readonly clan: Clan,
+    public readonly abilities: Ability[],
+  ) { }
+}
+
 export class Creature extends Phantom {
   public ai: MetaAI
   public stageMemories: { [key: string]: Memory } = {}
@@ -139,8 +115,8 @@ export class Creature extends Phantom {
   public previousPos: Point
   public previousLevel: LevelMap
 
-  constructor(public characteristics: Characteristics, clan: Clan, ai: MetaAI, _name: string) {
-    super(clan, null, null, _name)
+  constructor(public characteristics: Characteristics, ai: MetaAI, specie: Specie) {
+    super(null, null, specie)
     this.previousPos = this.pos.copy()
     this.ai = ai
     this.inventory = new Inventory([
@@ -239,7 +215,7 @@ export class Creature extends Phantom {
   }
 
   public clone(): Phantom {
-    let phantom = new Phantom(this.clan, this.pos.x, this.pos.y, this._name, this.id)
+    let phantom = new Phantom(this.pos.x, this.pos.y, this.specie, this.id)
     phantom.refToReal = this
     return phantom
   }
@@ -293,9 +269,10 @@ export class Player extends Creature {
   constructor(
     public level: Level,
     characteristics: Characteristics,
-    ai: MetaAI
+    ai: MetaAI,
+    specie: Specie,
   ) {
-    super(characteristics, Clan.Player, ai, 'Player')
+    super(characteristics, ai, specie)
   }
 
   public canDescend(): boolean {
