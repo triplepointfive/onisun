@@ -7,6 +7,7 @@ export class SelfHealer extends AI {
   }
 
   public act(actor: Creature): void {
-    actor.characteristics.regenerate()
+    // Does nothing, just waiting
+    // actor.characteristics.regenerate()
   }
 }

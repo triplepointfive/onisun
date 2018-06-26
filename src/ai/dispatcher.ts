@@ -27,6 +27,8 @@ export class Dispatcher extends MetaAI {
 
   private firstCallPatrol: boolean = true
 
+  private step: number = 0
+
   constructor() {
     super()
     this.escaper = new Escaper(this)
@@ -44,6 +46,12 @@ export class Dispatcher extends MetaAI {
     // Never dispatch twice
     if (!firstTurn) {
       throw 'Meta AI called recursively'
+    }
+
+    this.step += 1
+
+    if (this.step % actor.characteristics.regenerateEvery() === 0) {
+      actor.characteristics.regenerate()
     }
 
     this.events.forEach(event => {

@@ -175,7 +175,7 @@ describe('Characteristics', () => {
     test('health restoration', () => {
       characteristics.health.decrease(50)
       characteristics.regenerate()
-      expect(characteristics.health.currentValue()).toEqual(55)
+      expect(characteristics.health.currentValue()).toEqual(51)
     })
   })
 })

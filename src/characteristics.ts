@@ -148,6 +148,14 @@ export class Characteristics extends AttributeSet<Attribute> {
   }
 
   public regenerate(): void {
-    this.health.increase(Math.ceil(this.health.maximum() / 20))
+    this.health.increase(this.regenerationValue())
+  }
+
+  protected regenerationValue(): number {
+    return 1
+  }
+
+  public regenerateEvery(): number {
+    return 8
   }
 }
