@@ -10,7 +10,7 @@ export class Pool<Input, Output> {
 
   public add(weight: number, item: (Input) => Output): void {
     if (weight < 1) {
-      throw `Item '${item}' weight is lower than 1`
+      throw `Item's weight is lower than 1`
     }
 
     this.items.push([weight, item])

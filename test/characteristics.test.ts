@@ -148,6 +148,7 @@ describe('Characteristics', () => {
     characteristics = new Characteristics({
       attack: 10,
       defense: 10,
+      dexterity: 0,
       health: maxHealth,
       radius: 10,
       speed: 100,
@@ -158,6 +159,7 @@ describe('Characteristics', () => {
     const opponent = new Characteristics({
       attack: 10,
       defense: 1,
+      dexterity: 0,
       health: maxHealth,
       radius: 10,
       speed: 100,
