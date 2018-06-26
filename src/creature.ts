@@ -51,12 +51,12 @@ export class Phantom {
 }
 
 export abstract class Event {
-  public abstract affect(actor: Creature): Reaction
-}
-
-export class Attack {
   constructor(public actor: Creature) {}
 
+  public abstract affect(subject: Creature): Reaction
+}
+
+export class AttackEvent extends Event {
   public affect(subject: Creature): Reaction {
     if (this.actor.characteristics.misses(subject.characteristics)) {
       subject.currentLevel.game.logger.missMessage(this.actor, subject)
@@ -66,6 +66,7 @@ export class Attack {
     const damage = this.actor.characteristics.damageTo(subject.characteristics)
 
     if (damage >= subject.characteristics.health.currentValue()) {
+      this.actor.on(new AddExperience(subject))
       subject.currentLevel.game.logger.killMessage(damage, this.actor, subject)
       subject.die()
       return Reaction.DIE
@@ -77,8 +78,14 @@ export class Attack {
   }
 }
 
-export enum EventType {
-  Attack,
+export class AddExperience extends Event {
+  public affect(subject: Creature): Reaction {
+    if (subject instanceof Player) {
+      subject.level.add(1)
+    }
+
+    return Reaction.NOTHING
+  }
 }
 
 export enum Reaction {
@@ -155,15 +162,6 @@ export class Creature extends Phantom {
     this.currentLevel = level
     level.addCreature(this)
     this.visionMask(level)
-  }
-
-  public emit(eventType: EventType): Event {
-    switch (eventType) {
-      case EventType.Attack:
-        return new Attack(this)
-      default:
-        throw `Unknown event type ${eventType} for ${this}`
-    }
   }
 
   public die(): void {

@@ -70,7 +70,7 @@ const rat = () => {
       dexterity: 1,
       health: 1,
       radius: 5,
-      speed: 110,
+      speed: 90,
     }),
     'Rat'
   )
@@ -98,7 +98,7 @@ const undead = () => {
       dexterity: 1,
       health: 10,
       radius: 5,
-      speed: 80,
+      speed: 120,
     }),
     'Undead'
   )
@@ -112,7 +112,7 @@ const robot = () => {
       dexterity: 3,
       health: 7,
       radius: 7,
-      speed: 110,
+      speed: 90,
     }),
     'Robot'
   )
