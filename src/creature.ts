@@ -7,6 +7,7 @@ import { Characteristics, Corpse, LevelMap, LevelMapId, Memory } from './engine'
 import { Inventory, BodyPart } from './inventory'
 
 import { Level } from './level'
+import { includes } from 'lodash'
 
 export type CreatureId = number
 
@@ -42,6 +43,10 @@ export class Phantom {
 
   public real(): Creature {
     return this.refToReal
+  }
+
+  public can(ability: Ability) {
+    return includes(this.specie.abilities, ability)
   }
 }
 
@@ -247,10 +252,6 @@ export class Creature extends Phantom {
     ).calc()
   }
 
-  public canDescend(): boolean {
-    return false
-  }
-
   private isSolid(stage: LevelMap): (x: number, y: number) => boolean {
     return (x: number, y: number) => {
       if (stage.visibleThrough(x, y)) {
@@ -276,10 +277,6 @@ export class Player extends Creature {
     specie: Specie
   ) {
     super(characteristics, ai, specie)
-  }
-
-  public canDescend(): boolean {
-    return true
   }
 
   public die(): void {

@@ -1,12 +1,12 @@
 import { AI } from './internal'
-import { Creature } from '../creature'
+import { Creature, Ability } from '../creature'
 import { Equipment, Usage } from '../items/internal'
 import { Modifier } from '../characteristics'
 import { Wearing } from '../inventory'
 
 export class Wearer extends AI {
   public available(actor: Creature): boolean {
-    return true
+    return actor.can(Ability.PutOn)
   }
 
   public act(actor: Creature, firstTurn: boolean = true) {

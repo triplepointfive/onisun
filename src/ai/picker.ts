@@ -1,11 +1,15 @@
 import { FollowTargetAI } from '../ai'
-import { Creature } from '../creature'
+import { Creature, Ability } from '../creature'
 import { Item, ItemId } from '../items'
 import { Point } from '../utils'
 import { AIItemPickedEvent } from './meta_ai'
 
 export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId = null
+
+  public available(actor: Creature): boolean {
+    return actor.can(Ability.Inventory) && super.available(actor)
+  }
 
   protected foundNewTarget(actor: Creature): boolean {
     return (

@@ -23,6 +23,7 @@ import {
   Game,
   Point,
   Level,
+  Ability,
 } from './engine'
 
 export type GeneratorOptions = {

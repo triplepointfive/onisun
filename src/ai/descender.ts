@@ -1,5 +1,5 @@
 import { GoToTileAI, MetaAI } from '../ai'
-import { Creature, StairwayDown, TileTypes } from '../engine'
+import { Ability, Creature, StairwayDown, TileTypes } from '../engine'
 
 export class Descender extends GoToTileAI {
   private canDescend: boolean = false
@@ -9,7 +9,7 @@ export class Descender extends GoToTileAI {
   }
 
   public available(actor: Creature): boolean {
-    return actor.canDescend() && super.available(actor)
+    return actor.can(Ability.GoStairwayDown) && super.available(actor)
   }
 
   public reset(): void {
