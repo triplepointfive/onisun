@@ -9,19 +9,24 @@ export class Level {
     this.requiredExperience = this.requires[0]
   }
 
-  public add(exp: number): void {
+  public add(exp: number): number {
     if (this.doneLeveling) {
       return
     }
 
     this.currentExperience += exp
 
+    let levelUps = 0
+
     while (
       !this.doneLeveling &&
       this.currentExperience >= this.requiredExperience
     ) {
+      levelUps += 1
       this.levelUp()
     }
+
+    return levelUps
   }
 
   protected levelUp(): void {

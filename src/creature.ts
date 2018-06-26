@@ -43,12 +43,12 @@ export class Phantom {
 }
 
 export abstract class Event {
-  constructor(public actor: Creature) {}
-
   public abstract affect(subject: Creature): Reaction
 }
 
 export class AttackEvent extends Event {
+  constructor(public actor: Creature) { super() }
+
   public affect(subject: Creature): Reaction {
     if (this.actor.characteristics.misses(subject.characteristics)) {
       subject.currentLevel.game.logger.missMessage(this.actor, subject)
@@ -58,7 +58,7 @@ export class AttackEvent extends Event {
     const damage = this.actor.characteristics.damageTo(subject.characteristics)
 
     if (damage >= subject.characteristics.health.currentValue()) {
-      this.actor.on(new AddExperience(subject))
+      this.actor.on(new AddExperienceEvent(subject))
       subject.currentLevel.game.logger.killMessage(damage, this.actor, subject)
       subject.die()
       return Reaction.DIE
@@ -70,10 +70,12 @@ export class AttackEvent extends Event {
   }
 }
 
-export class AddExperience extends Event {
+export class AddExperienceEvent extends Event {
+  constructor(public actor: Creature) { super() }
+
   public affect(subject: Creature): Reaction {
     if (subject instanceof Player) {
-      subject.level.add(1)
+      subject.levelUps += subject.level.add(1)
     }
 
     return Reaction.NOTHING
@@ -260,6 +262,8 @@ export class Creature extends Phantom {
 export class Player extends Creature {
   public dead: boolean = false
 
+  public levelUps: number = 0
+
   constructor(
     public level: Level,
     characteristics: Characteristics,
@@ -267,6 +271,16 @@ export class Player extends Creature {
     specie: Specie
   ) {
     super(characteristics, ai, specie)
+  }
+
+  public act(stage: LevelMap) {
+    while (this.levelUps > 0) {
+      this.characteristics.levelUp(this.specie)
+
+      this.levelUps -= 1
+    }
+
+    super.act(stage)
   }
 
   public die(): void {
