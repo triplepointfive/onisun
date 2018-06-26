@@ -15,7 +15,7 @@
 import Vue from 'vue'
 import { takeRight } from 'lodash'
 
-import { LogLevel } from '../src/onisun'
+import { LogLevel } from '../src/engine'
 
 import * as moment from 'moment'
 

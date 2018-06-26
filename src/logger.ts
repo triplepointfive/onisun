@@ -31,9 +31,7 @@ export class Logger {
   }
 
   public missMessage(actor: Creature, target: Creature) {
-    this.debug(
-      `${actor.name()} misses ${target.name()}!`
-    )
+    this.debug(`${actor.name()} misses ${target.name()}!`)
   }
 
   protected debug(message: string): void {

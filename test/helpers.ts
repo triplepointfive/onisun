@@ -1,4 +1,4 @@
-import { OneHandWeapon, Modifier, Creature, Clan, MetaAI, Dispatcher, AI, LevelMap, Tile, Characteristics, Specie, allAbilities } from '../src/onisun'
+import { OneHandWeapon, Modifier, Creature, Clan, MetaAI, Dispatcher, AI, LevelMap, Tile, Characteristics, Specie, allAbilities } from '../src/engine'
 import drawn from '../src/generator/drawn'
 import { Game } from '../src/game'
 

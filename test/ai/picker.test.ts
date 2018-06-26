@@ -1,5 +1,5 @@
 import { generateCreatureWithAI, generateLevel, generateItem } from '../helpers'
-import { Picker, Point } from '../../src/onisun'
+import { Picker, Point } from '../../src/engine'
 
 let internalAI = new Picker()
 let creature = generateCreatureWithAI(internalAI)

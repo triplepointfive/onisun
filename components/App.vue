@@ -61,8 +61,9 @@ import Cell from './Cell.vue'
 import Logger from './Logger.vue'
 import Scene from './Scene.vue'
 
+import { LevelMap, } from '../src/engine'
+
 import {
-  LevelMap,
   Onisun,
   baseConfig,
 } from '../src/onisun'

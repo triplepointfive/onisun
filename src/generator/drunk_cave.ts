@@ -1,5 +1,5 @@
 import { Point, rand, twoDimArray } from '../utils'
-import { LevelMap, Tile } from '../onisun'
+import { LevelMap, Tile } from '../engine'
 
 const newSpace = function(): Tile {
   return Tile.retrieve('C')

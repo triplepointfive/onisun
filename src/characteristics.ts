@@ -141,7 +141,10 @@ export class Characteristics extends AttributeSet<Attribute> {
   public misses(victim: Characteristics): boolean {
     let dex = this.dexterity.currentValue()
 
-    return Math.random() > dex / (dex + Math.pow(victim.dexterity.currentValue() * 0.25, 0.8))
+    return (
+      Math.random() >
+      dex / (dex + Math.pow(victim.dexterity.currentValue() * 0.25, 0.8))
+    )
   }
 
   public regenerate(): void {

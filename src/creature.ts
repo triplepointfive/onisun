@@ -3,10 +3,9 @@ import { MetaAI } from './ai'
 import { Fov } from './fov'
 import { Equipment } from './items'
 
-import { LevelMap, LevelMapId, Memory } from './onisun'
+import { Characteristics, Corpse, LevelMap, LevelMapId, Memory } from './engine'
 import { Inventory, BodyPart } from './inventory'
 
-import { Characteristics, Corpse } from './onisun'
 import { Level } from './level'
 
 export type CreatureId = number
@@ -102,8 +101,8 @@ export class Specie {
   constructor(
     public readonly name: string,
     public readonly clan: Clan,
-    public readonly abilities: Ability[],
-  ) { }
+    public readonly abilities: Ability[]
+  ) {}
 }
 
 export class Creature extends Phantom {
@@ -115,7 +114,11 @@ export class Creature extends Phantom {
   public previousPos: Point
   public previousLevel: LevelMap
 
-  constructor(public characteristics: Characteristics, ai: MetaAI, specie: Specie) {
+  constructor(
+    public characteristics: Characteristics,
+    ai: MetaAI,
+    specie: Specie
+  ) {
     super(null, null, specie)
     this.previousPos = this.pos.copy()
     this.ai = ai
@@ -270,7 +273,7 @@ export class Player extends Creature {
     public level: Level,
     characteristics: Characteristics,
     ai: MetaAI,
-    specie: Specie,
+    specie: Specie
   ) {
     super(characteristics, ai, specie)
   }

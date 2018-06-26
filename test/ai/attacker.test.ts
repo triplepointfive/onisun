@@ -1,5 +1,5 @@
 import { generateCreatureWithAI, generateCreature, generateLevel } from '../helpers'
-import { Point, LevelMap, Attacker } from '../../src/onisun'
+import { Point, LevelMap, Attacker } from '../../src/engine'
 
 let internalAI = new Attacker()
 let actor = generateCreatureWithAI(internalAI)

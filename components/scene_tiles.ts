@@ -3,7 +3,7 @@ import { Tile } from '../vendor/unicodetiles.ts/src/index'
 import {
   Item,
   ItemGroup,
-} from '../src/onisun'
+} from '../src/engine'
 
 const DEFAULT_GREY: number = 120
 const IMPORTANT_GREY: number = 180

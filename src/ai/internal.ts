@@ -3,7 +3,7 @@ import { Creature, Phantom, Clan } from '../creature'
 
 import { sample } from 'lodash'
 import { MetaAI } from './meta_ai'
-import { MemoryTile } from '../memory';
+import { MemoryTile } from '../memory'
 
 const FIRST_STEP: number = 1
 

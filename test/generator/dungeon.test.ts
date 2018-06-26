@@ -1,4 +1,4 @@
-import { dungeon } from '../../src/onisun'
+import { dungeon } from '../../src/engine'
 import { prettyMap } from '../helpers'
 
 it('When exact match', () => {

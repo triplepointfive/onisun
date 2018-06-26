@@ -1,40 +1,29 @@
-export * from './ai'
-export * from './creature'
-export * from './inventory'
-export * from './items'
-export * from './tile'
-export * from './logger'
-export * from './map'
-export * from './characteristics'
-export * from './utils'
-export * from './level'
-export * from './memory'
-
-export * from './generator/post'
-export { default as drawn } from './generator/drawn'
-export { default as dungeon } from './generator/dungeon'
-
-import dungeon from './generator/dungeon'
-import drawn from './generator/drawn'
 import {
+  dungeon,
+  drawn,
   addDoors,
   addCreatures,
   addItems,
   centralize,
   addOnTile,
   connectMaps,
-} from './generator/post'
-
-import { Creature, Clan, Player, Specie, allAbilities } from './creature'
-import { Dispatcher } from './ai'
-import { OneHandWeapon, Item } from './items'
-import { LevelMap } from './map'
-import { Pool } from './pool'
-import { BodyArmor } from './items/internal'
-import { Modifier, Characteristics } from './characteristics'
-import { Game } from './game'
-import { Point } from './utils'
-import { Level } from './level'
+  Creature,
+  Clan,
+  Player,
+  Specie,
+  allAbilities,
+  Dispatcher,
+  OneHandWeapon,
+  Item,
+  LevelMap,
+  Pool,
+  BodyArmor,
+  Modifier,
+  Characteristics,
+  Game,
+  Point,
+  Level,
+} from './engine'
 
 export type GeneratorOptions = {
   minSize: number
@@ -64,8 +53,6 @@ const itemsPool = new Pool<null, Item>([
   [10, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
 ])
 
-
-
 const newCreature = (characteristics: Characteristics, name: string) => {
   return new Creature(
     characteristics,
@@ -76,79 +63,83 @@ const newCreature = (characteristics: Characteristics, name: string) => {
 
 const rat = () => {
   return newCreature(
-        new Characteristics({
-          attack: 1,
-          defense: 1,
-          dexterity: 1,
-          health: 1,
-          radius: 5,
-          speed: 110,
-        }),
-        'Rat',
-   )
+    new Characteristics({
+      attack: 1,
+      defense: 1,
+      dexterity: 1,
+      health: 1,
+      radius: 5,
+      speed: 110,
+    }),
+    'Rat'
+  )
 }
 
 const orc = () => {
   return newCreature(
-        new Characteristics({
-          attack: 3,
-          defense: 3,
-          dexterity: 2,
-          health: 5,
-          radius: 5,
-          speed: 100,
-        }),
-        'Orc',
-   )
+    new Characteristics({
+      attack: 3,
+      defense: 3,
+      dexterity: 2,
+      health: 5,
+      radius: 5,
+      speed: 100,
+    }),
+    'Orc'
+  )
 }
 
 const undead = () => {
   return newCreature(
-        new Characteristics({
-          attack: 2,
-          defense: 7,
-          dexterity: 1,
-          health: 10,
-          radius: 5,
-          speed: 80,
-        }),
-        'Undead',
-   )
+    new Characteristics({
+      attack: 2,
+      defense: 7,
+      dexterity: 1,
+      health: 10,
+      radius: 5,
+      speed: 80,
+    }),
+    'Undead'
+  )
 }
 
 const robot = () => {
   return newCreature(
-        new Characteristics({
-          attack: 5,
-          defense: 5,
-          dexterity: 3,
-          health: 7,
-          radius: 7,
-          speed: 110,
-        }),
-        'Robot',
-   )
+    new Characteristics({
+      attack: 5,
+      defense: 5,
+      dexterity: 3,
+      health: 7,
+      radius: 7,
+      speed: 110,
+    }),
+    'Robot'
+  )
 }
 
 const dragon = () => {
   return newCreature(
-        new Characteristics({
-          attack: 7,
-          defense: 7,
-          dexterity: 7,
-          health: 30,
-          radius: 5,
-          speed: 100,
-        }),
-        'Dragon',
-   )
+    new Characteristics({
+      attack: 7,
+      defense: 7,
+      dexterity: 7,
+      health: 30,
+      radius: 5,
+      speed: 100,
+    }),
+    'Dragon'
+  )
 }
 
-const creaturesPool1 = new Pool<null, Creature>([ [ 1, rat, ], ])
-const creaturesPool2 = new Pool<null, Creature>([ [ 1, rat, ], [2, orc ]])
-const creaturesPool3 = new Pool<null, Creature>([ [ 1, rat, ], [ 1, orc], [2, undead] ])
-const creaturesPool4 = new Pool<null, Creature>([ [ 2, undead ], [ 2, robot ] ])
-const creaturesPool5 = new Pool<null, Creature>([ [ 2, robot, ], [1, dragon ] ])
+const creaturesPool1 = new Pool<null, Creature>([[1, rat]])
+const creaturesPool2 = new Pool<null, Creature>([[1, rat], [2, orc]])
+const creaturesPool3 = new Pool<null, Creature>([
+  [1, rat],
+  [1, orc],
+  [2, undead],
+])
+const creaturesPool4 = new Pool<null, Creature>([[2, undead], [2, robot]])
+const creaturesPool5 = new Pool<null, Creature>([[2, robot], [1, dragon]])
 
 export class Onisun extends Game {
   public player: Creature
@@ -189,11 +180,7 @@ export class Onisun extends Game {
   protected initPlayer(): Creature {
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
 
-    const playerSpecie = new Specie(
-      'Player',
-      Clan.Player,
-      allAbilities,
-    )
+    const playerSpecie = new Specie('Player', Clan.Player, allAbilities)
 
     let player = new Player(
       new Level([3, 5, 7, 10]),

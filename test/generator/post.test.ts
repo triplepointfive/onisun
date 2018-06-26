@@ -1,4 +1,4 @@
-import { drawn, centralize, connectMaps, StairwayDown, StairwayUp, addOnTile } from '../../src/onisun'
+import { drawn, centralize, connectMaps, StairwayDown, StairwayUp, addOnTile } from '../../src/engine'
 import { prettyMap } from '../helpers'
 
 describe('centralize', () => {

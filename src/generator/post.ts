@@ -1,4 +1,4 @@
-import { LevelMap, Tile, StairwayDown, StairwayUp } from '../onisun'
+import { LevelMap, Tile, StairwayDown, StairwayUp } from '../engine'
 import { Pool } from '../pool'
 import { Creature } from '../creature'
 import { Point, cycle } from '../utils'

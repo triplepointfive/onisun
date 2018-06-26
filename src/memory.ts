@@ -1,6 +1,6 @@
-import { Tile } from './tile';
-import { Item } from './items';
-import { Creature, Phantom, Mapped, twoDimArray } from './onisun';
+import { Tile } from './tile'
+import { Item } from './items'
+import { Creature, Phantom, Mapped, twoDimArray } from './engine'
 
 export class MemoryTile {
   public visible: boolean = false

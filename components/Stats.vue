@@ -103,9 +103,9 @@ import {
   Loiter,
   Dispatcher,
   Picker,
-SelfHealer,
-Attacker,
-} from '../src/onisun'
+  SelfHealer,
+  Attacker,
+} from '../src/engine'
 
 export default Vue.extend({
   name: 'Stats',
