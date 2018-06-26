@@ -17,17 +17,9 @@ export class Phantom {
     return this.lastId++
   }
 
-  public pos: Point
   public refToReal?: Creature
 
-  constructor(
-    x: number,
-    y: number,
-    public specie: Specie,
-    public id: CreatureId = Phantom.getId()
-  ) {
-    this.pos = new Point(x, y)
-  }
+  constructor(public specie: Specie, public id: CreatureId = Phantom.getId()) {}
 
   public name(): string {
     return this.specie.name
@@ -38,7 +30,7 @@ export class Phantom {
   }
 
   public clone(): Phantom {
-    return new Phantom(this.pos.x, this.pos.y, this.specie, this.id)
+    return new Phantom(this.specie, this.id)
   }
 
   public real(): Creature {
@@ -125,14 +117,14 @@ export class Creature extends Phantom {
 
   public previousPos: Point
   public previousLevel: LevelMap
+  public pos: Point
 
   constructor(
     public characteristics: Characteristics,
     ai: MetaAI,
     specie: Specie
   ) {
-    super(null, null, specie)
-    this.previousPos = this.pos.copy()
+    super(specie)
     this.ai = ai
     this.inventory = new Inventory([
       BodyPart.LeftHand,
@@ -221,7 +213,7 @@ export class Creature extends Phantom {
   }
 
   public clone(): Phantom {
-    let phantom = new Phantom(this.pos.x, this.pos.y, this.specie, this.id)
+    let phantom = new Phantom(this.specie, this.id)
     phantom.refToReal = this
     return phantom
   }

@@ -1,12 +1,13 @@
 import { FollowTargetAI } from './internal'
-import { Phantom, Creature, CreatureId } from '../creature'
+import { Phantom, Creature } from '../creature'
 
 import { sumBy } from 'lodash'
+import { Point } from 'src/engine'
 
 const STEP_DISTANCE = 2
 
 export class Escaper extends FollowTargetAI {
-  private escapesFrom: Phantom[] = []
+  private escapesFrom: [Point, Phantom][] = []
 
   protected foundNewTarget(actor: Creature): boolean {
     return this.foundEnemies(actor) && this.buildPath(actor)
@@ -24,11 +25,11 @@ export class Escaper extends FollowTargetAI {
     const path = this.leePath(
       actor,
       ({ x, y }) => {
-        const score = sumBy(this.escapesFrom, enemy => {
+        const score = sumBy(this.escapesFrom, ([pos, enemy]) => {
           // I don't use pathfinding since it should try
           // to run away from those who are visible, so the path
           // to them should be straightforward.
-          return Math.max(Math.abs(x - enemy.pos.x), Math.abs(y - enemy.pos.y))
+          return Math.max(Math.abs(x - pos.x), Math.abs(y - pos.y))
         })
 
         return score >= minDistance
@@ -51,7 +52,7 @@ export class Escaper extends FollowTargetAI {
       const creature = tile.creature()
 
       if (creature && this.enemies(actor, creature)) {
-        this.escapesFrom.push(creature)
+        this.escapesFrom.push([point, creature])
       }
     })
 
