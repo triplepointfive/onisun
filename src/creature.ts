@@ -162,7 +162,7 @@ export class Creature extends Phantom {
     this.currentLevel.removeCreature(this)
 
     let tile = this.currentLevel.at(this.pos.x, this.pos.y)
-    tile.items.push(new Corpse(this))
+    tile.items.push(new Corpse(this.specie))
 
     this.inventory.wears().forEach(({ equipment }) => {
       if (equipment) {

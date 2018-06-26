@@ -1,4 +1,4 @@
-import { Phantom, Creature } from '../creature'
+import { Specie, Creature } from '../creature'
 import { Modifier } from '../characteristics'
 
 export enum Usage {
@@ -33,8 +33,8 @@ export class Item {
 }
 
 export class Corpse extends Item {
-  constructor(creature: Phantom) {
-    super(ItemGroup.Consumable, 'corpse')
+  constructor(public readonly specie: Specie) {
+    super(ItemGroup.Consumable, `${specie.name}'s corpse`)
   }
 }
 

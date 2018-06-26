@@ -77,8 +77,8 @@
     </dd>
     <dt class='col-sm-8'>
       <ul>
-        <li v-for='item in creature.inventory.cares()' :key='item.id'>
-            {{ displayItem(item) }}
+        <li v-for='(count, name) in groupedCares(creature.inventory.cares())' :key='name'>
+            {{name}} {{ count === 1 ? '' : `: ${count}` }}
         </li>
       </ul>
     </dt>
@@ -164,6 +164,19 @@ export default Vue.extend({
       } else {
         return attribute.currentValue()
       }
+    },
+    groupedCares(cares) {
+      let grouped = {}
+
+      cares.forEach(item => {
+        if (grouped[item.name]) {
+          grouped[item.name] += 1
+        } else {
+          grouped[item.name] = 1
+        }
+      })
+
+      return grouped
     },
     displayBodyPart(bodyPart) {
       switch (bodyPart) {
