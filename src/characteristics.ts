@@ -1,5 +1,5 @@
 import { remove, sum } from 'lodash'
-import { Specie } from './creature';
+import { Specie } from './creature'
 
 export class Attribute {
   public modifiers: number[] = []

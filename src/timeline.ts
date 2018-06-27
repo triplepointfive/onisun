@@ -25,7 +25,7 @@ export class Timeline<T> {
       return []
     }
 
-    this.step = min(keys(this.turns).map(parseInt))
+    this.step = min(keys(this.turns).map(x => parseInt(x)))
     const actors = this.turns[this.step]
 
     delete this.turns[this.step]

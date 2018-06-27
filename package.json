@@ -7,7 +7,7 @@
     "build": "poi build",
     "deploy": "npm run build && gh-pages -d dist",
     "test": "npx jest",
-    "prettier": "prettier --parser typescript --single-quote --no-semi --trailing-comma es5 --write \"src/**/*.{ts,tsx}\""
+    "prettier": "prettier --parser typescript --tab-width 2 --single-quote --no-semi --trailing-comma es5 --write \"src/**/*.{ts,tsx}\""
   },
   "devDependencies": {
     "@poi/plugin-typescript": "^10.1.2",

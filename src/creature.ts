@@ -47,7 +47,9 @@ export abstract class Event {
 }
 
 export class AttackEvent extends Event {
-  constructor(public actor: Creature) { super() }
+  constructor(public actor: Creature) {
+    super()
+  }
 
   public affect(subject: Creature): Reaction {
     if (this.actor.characteristics.misses(subject.characteristics)) {
@@ -71,7 +73,9 @@ export class AttackEvent extends Event {
 }
 
 export class AddExperienceEvent extends Event {
-  constructor(public actor: Creature) { super() }
+  constructor(public actor: Creature) {
+    super()
+  }
 
   public affect(subject: Creature): Reaction {
     if (subject instanceof Player) {

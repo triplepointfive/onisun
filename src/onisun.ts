@@ -210,7 +210,7 @@ export class Onisun extends Game {
       options.roomsCount
     )
 
-    // let map = drawn([
+    // map = drawn([
     //   'WWWWWWWWWWW',
     //   'WRRRCRRRRRW',
     //   'WRRRWRRRRRW',
