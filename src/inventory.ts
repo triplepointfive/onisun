@@ -42,7 +42,9 @@ export class Inventory {
   }
 
   public inSlot(usage: Usage): Equipment[] {
-    const match = this.wears().find(({ bodyPart }) => usage === bodyToUsage[bodyPart])
+    const match = this.wears().find(
+      ({ bodyPart }) => usage === bodyToUsage[bodyPart]
+    )
     return match ? [match.equipment] : []
   }
 

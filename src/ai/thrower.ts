@@ -1,5 +1,12 @@
 import { AI } from './internal'
-import { Creature, Ability, CreatureId, Phantom, Reaction, ThrowEvent } from '../creature'
+import {
+  Creature,
+  Ability,
+  CreatureId,
+  Phantom,
+  Reaction,
+  ThrowEvent,
+} from '../creature'
 import { Usage, Equipment } from '../items/internal'
 
 export class Thrower extends AI {
@@ -8,7 +15,7 @@ export class Thrower extends AI {
   public missiles: Equipment[]
 
   public available(actor: Creature): boolean {
-    return(
+    return (
       actor.can(Ability.Throwing) &&
       this.hasMissile(actor) &&
       this.canAttack(actor)
@@ -33,7 +40,9 @@ export class Thrower extends AI {
 
   private canAttack(actor: Creature): boolean {
     if (this.victim) {
-      if (this.findCreature(actor, creature => this.victim.id === creature.id)) {
+      if (
+        this.findCreature(actor, creature => this.victim.id === creature.id)
+      ) {
         return true
       }
     }

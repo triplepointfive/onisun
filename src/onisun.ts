@@ -24,6 +24,7 @@ import {
   Point,
   Level,
   Ability,
+  Missile,
 } from './engine'
 
 export type GeneratorOptions = {
@@ -59,6 +60,20 @@ const newCreature = (characteristics: Characteristics, name: string) => {
     characteristics,
     new Dispatcher(),
     new Specie(name, Clan.PlayerOnlyEnemy, [])
+  )
+}
+
+const floatingEye = () => {
+  return newCreature(
+    new Characteristics({
+      attack: 1,
+      defense: 1,
+      dexterity: 1,
+      health: 100,
+      radius: 5,
+      speed: 200,
+    }),
+    'Floating eye'
   )
 }
 
@@ -151,35 +166,40 @@ export class Onisun extends Game {
     this.player = this.initPlayer()
 
     let map1 = this.generateMap(generatorOptions)
-    let map2 = this.generateMap(generatorOptions)
-    let map3 = this.generateMap(generatorOptions)
-    let map4 = this.generateMap(generatorOptions)
-    let map5 = this.generateMap(generatorOptions)
+    // let map2 = this.generateMap(generatorOptions)
+    // let map3 = this.generateMap(generatorOptions)
+    // let map4 = this.generateMap(generatorOptions)
+    // let map5 = this.generateMap(generatorOptions)
 
-    addCreatures(0.05, map1, creaturesPool1)
-    addCreatures(0.06, map2, creaturesPool2)
-    addCreatures(0.07, map3, creaturesPool3)
-    addCreatures(0.08, map4, creaturesPool4)
-    addCreatures(0.09, map5, creaturesPool5)
+    // addCreatures(0.05, map1, creaturesPool1)
+    // addCreatures(0.06, map2, creaturesPool2)
+    // addCreatures(0.07, map3, creaturesPool3)
+    // addCreatures(0.08, map4, creaturesPool4)
+    // addCreatures(0.09, map5, creaturesPool5)
 
-    connectMaps(map1, map2)
-    connectMaps(map2, map3)
-    connectMaps(map3, map4)
-    connectMaps(map4, map5)
+    // connectMaps(map1, map2)
+    // connectMaps(map2, map3)
+    // connectMaps(map3, map4)
+    // connectMaps(map4, map5)
 
     this.currentMap = map1
 
-    addOnTile(
-      this.currentMap,
-      tile => tile.isFloor() && tile.passibleThrough(),
-      (x, y) => {
-        this.player.addToMap(new Point(x, y), this.currentMap)
-      }
-    )
+    floatingEye().addToMap(new Point(9, 3), this.currentMap)
+
+    this.player.addToMap(new Point(1, 3), this.currentMap)
+
+    // addOnTile(
+    //   this.currentMap,
+    //   tile => tile.isFloor() && tile.passibleThrough(),
+    //   (x, y) => {
+    //     this.player.addToMap(new Point(x, y), this.currentMap)
+    //   }
+    // )
   }
 
   protected initPlayer(): Creature {
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
+    const rock = new Missile('Rock', new Modifier({}))
 
     const playerSpecie = new Specie('Player', Clan.Player, allAbilities)
 
@@ -197,6 +217,7 @@ export class Onisun extends Game {
       playerSpecie
     )
     player.putOn(dagger)
+    player.putOn(rock)
 
     return player
   }
@@ -210,14 +231,15 @@ export class Onisun extends Game {
       options.roomsCount
     )
 
-    // map = drawn([
-    //   'WWWWWWWWWWW',
-    //   'WRRRCRRRRRW',
-    //   'WRRRWRRRRRW',
-    //   'WRRRWWWWWCW',
-    //   'WRRRCCCCCCW',
-    //   'WWWWWWWWWWW',
-    // ])
+    map = drawn([
+      'WWWWWWWWWWW',
+      'WRRRRRRRRRW',
+      'WRRRRRRRRRW',
+      'WRRRRRRRRRW',
+      'WRRRRRRRRRW',
+      'WRRRRRRRRRW',
+      'WWWWWWWWWWW',
+    ])
 
     if (options.addDoors) {
       addDoors(map)

@@ -103,20 +103,37 @@ export class ThrowEvent extends Event {
 
   public affect(subject: Creature): Reaction {
     if (this.actor.characteristics.throwMisses(subject.characteristics)) {
-      subject.currentLevel.game.logger.throwMissMessage(this.actor, subject, this.missile)
+      subject.currentLevel.game.logger.throwMissMessage(
+        this.actor,
+        subject,
+        this.missile
+      )
       return Reaction.THROW_DODGE
     }
 
-    const damage = this.actor.characteristics.throwDamageTo(subject.characteristics, this.missile)
+    const damage = this.actor.characteristics.throwDamageTo(
+      subject.characteristics,
+      this.missile
+    )
 
     if (damage >= subject.characteristics.health.currentValue()) {
       this.actor.on(new AddExperienceEvent(subject))
-      subject.currentLevel.game.logger.throwKillMessage(damage, this.actor, subject, this.missile)
+      subject.currentLevel.game.logger.throwKillMessage(
+        damage,
+        this.actor,
+        subject,
+        this.missile
+      )
       subject.die()
       return Reaction.DIE
     } else {
       subject.characteristics.health.decrease(damage)
-      subject.currentLevel.game.logger.throwHurtMessage(damage, this.actor, subject, this.missile)
+      subject.currentLevel.game.logger.throwHurtMessage(
+        damage,
+        this.actor,
+        subject,
+        this.missile
+      )
       return Reaction.HURT
     }
   }

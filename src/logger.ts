@@ -1,7 +1,7 @@
 import * as moment from 'moment'
 import { Creature } from './creature'
 import { Moment } from 'moment'
-import { Item } from './items/internal';
+import { Item } from './items/internal'
 
 export enum LogLevel {
   DEBUG,
@@ -36,17 +36,35 @@ export class Logger {
   }
 
   public throwMissMessage(actor: Creature, target: Creature, missile: Item) {
-    this.debug(`${actor.name()} throws ${missile.name} in ${target.name()}, but misses!`)
-  }
-
-  public throwKillMessage(damage: number, actor: Creature, target: Creature, missile: Item) {
-    this.warning(
-      `${target.name()} got ${damage} damage from ${actor.name()} by ${missile.name} causes them to die`
+    this.debug(
+      `${actor.name()} throws ${missile.name} in ${target.name()}, but misses!`
     )
   }
 
-  public throwHurtMessage(damage: number, actor: Creature, target: Creature, missile: Item) {
-    this.debug(`${target.name()} got ${damage} damage from ${actor.name()} by ${missile.name}`)
+  public throwKillMessage(
+    damage: number,
+    actor: Creature,
+    target: Creature,
+    missile: Item
+  ) {
+    this.warning(
+      `${target.name()} got ${damage} damage from ${actor.name()} by ${
+        missile.name
+      } causes them to die`
+    )
+  }
+
+  public throwHurtMessage(
+    damage: number,
+    actor: Creature,
+    target: Creature,
+    missile: Item
+  ) {
+    this.debug(
+      `${target.name()} got ${damage} damage from ${actor.name()} by ${
+        missile.name
+      }`
+    )
   }
 
   protected debug(message: string): void {
