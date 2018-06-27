@@ -7,25 +7,25 @@ describe('Attribute', () => {
     attribute = new Attribute(10)
   })
 
-  test('raw', () => {
+  it('raw', () => {
     expect(attribute.currentValue()).toEqual(10)
     expect(attribute.atMax()).toBeTruthy()
   })
 
-  test('increase over maximum does nothing', () => {
+  it('increase over maximum does nothing', () => {
     attribute.increase(2)
     expect(attribute.currentValue()).toEqual(10)
     expect(attribute.maximum()).toEqual(10)
   })
 
-  test('decreased', () => {
+  it('decreased', () => {
     attribute.decrease(2)
     expect(attribute.currentValue()).toEqual(8)
     expect(attribute.maximum()).toEqual(10)
     expect(attribute.atMax()).toBeFalsy()
   })
 
-  test('increase when decreased', () => {
+  it('increase when decreased', () => {
     attribute.decrease(4)
     expect(attribute.currentValue()).toEqual(6)
     attribute.increase(2)
@@ -33,32 +33,32 @@ describe('Attribute', () => {
     expect(attribute.maximum()).toEqual(10)
   })
 
-  test('decreased below 0', () => {
+  it('decreased below 0', () => {
     attribute.decrease(12)
     expect(attribute.currentValue()).toEqual(-2)
     expect(attribute.maximum()).toEqual(10)
   })
 
-  test('increased with maximum', () => {
+  it('increased with maximum', () => {
     attribute.constantIncrease(2)
     expect(attribute.currentValue()).toEqual(12)
     expect(attribute.maximum()).toEqual(12)
   })
 
-  test('decreased with maximum', () => {
+  it('decreased with maximum', () => {
     attribute.constantDecrease(2)
     expect(attribute.currentValue()).toEqual(8)
     expect(attribute.maximum()).toEqual(8)
   })
 
-  test('increase with maximum when decreased', () => {
+  it('increase with maximum when decreased', () => {
     attribute.decrease(5)
     attribute.constantIncrease(3)
     expect(attribute.currentValue()).toEqual(8)
     expect(attribute.maximum()).toEqual(13)
   })
 
-  test('modifier increases over maximum', () => {
+  it('modifier increases over maximum', () => {
     attribute.addModifier(5)
     expect(attribute.currentValue()).toEqual(15)
     attribute.removeModifier(5)
@@ -73,25 +73,25 @@ describe('PositiveAttribute', () => {
     attribute = new PositiveAttribute(10)
   })
 
-  test('raw', () => {
+  it('raw', () => {
     expect(attribute.currentValue()).toEqual(10)
     expect(attribute.atMax()).toBeTruthy()
   })
 
-  test('increase over maximum does nothing', () => {
+  it('increase over maximum does nothing', () => {
     attribute.increase(2)
     expect(attribute.currentValue()).toEqual(10)
     expect(attribute.maximum()).toEqual(10)
   })
 
-  test('decreased', () => {
+  it('decreased', () => {
     attribute.decrease(2)
     expect(attribute.currentValue()).toEqual(8)
     expect(attribute.maximum()).toEqual(10)
     expect(attribute.atMax()).toBeFalsy()
   })
 
-  test('increase when decreased', () => {
+  it('increase when decreased', () => {
     attribute.decrease(4)
     expect(attribute.currentValue()).toEqual(6)
     attribute.increase(2)
@@ -99,25 +99,25 @@ describe('PositiveAttribute', () => {
     expect(attribute.maximum()).toEqual(10)
   })
 
-  test('never decreases below 0', () => {
+  it('never decreases below 0', () => {
     attribute.decrease(12)
     expect(attribute.currentValue()).toEqual(1)
     expect(attribute.maximum()).toEqual(10)
   })
 
-  test('increased with maximum', () => {
+  it('increased with maximum', () => {
     attribute.constantIncrease(2)
     expect(attribute.currentValue()).toEqual(12)
     expect(attribute.maximum()).toEqual(12)
   })
 
-  test('decreased with maximum', () => {
+  it('decreased with maximum', () => {
     attribute.constantDecrease(2)
     expect(attribute.currentValue()).toEqual(8)
     expect(attribute.maximum()).toEqual(8)
   })
 
-  test('decreased with maximum below 0', () => {
+  it('decreased with maximum below 0', () => {
     attribute.constantDecrease(12)
     expect(attribute.currentValue()).toEqual(1)
     expect(attribute.maximum()).toEqual(1)
@@ -125,14 +125,14 @@ describe('PositiveAttribute', () => {
     expect(attribute.currentValue()).toEqual(1)
   })
 
-  test('increase with maximum when decreased', () => {
+  it('increase with maximum when decreased', () => {
     attribute.decrease(5)
     attribute.constantIncrease(3)
     expect(attribute.currentValue()).toEqual(8)
     expect(attribute.maximum()).toEqual(13)
   })
 
-  test('modifier increases over maximum', () => {
+  it('modifier increases over maximum', () => {
     attribute.addModifier(5)
     expect(attribute.currentValue()).toEqual(15)
     attribute.removeModifier(5)
@@ -169,12 +169,12 @@ describe('Characteristics', () => {
   })
 
   describe('regenerate', () => {
-    test('health over its maximum', () => {
+    it('health over its maximum', () => {
       characteristics.regenerate()
       expect(characteristics.health.currentValue()).toEqual(maxHealth)
     })
 
-    test('health restoration', () => {
+    it('health restoration', () => {
       characteristics.health.decrease(50)
       characteristics.regenerate()
       expect(characteristics.health.currentValue()).toEqual(51)

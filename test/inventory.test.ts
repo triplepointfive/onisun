@@ -12,7 +12,7 @@ describe('puts on and takes off', () => {
     inventory = new Inventory([BodyPart.RightHand])
   })
 
-  test('empty slot', () => {
+  it('empty slot', () => {
     inventory.equip(creature, item1)
     expect(inventory.wears()[0].equipment).toBe(item1)
     inventory.takeOff(creature, item1)
@@ -20,7 +20,7 @@ describe('puts on and takes off', () => {
     expect(inventory.cares()).toEqual([item1])
   })
 
-  test('already taken slot', () => {
+  it('already taken slot', () => {
     inventory.equip(creature, item1)
     inventory.equip(creature, item2)
     expect(inventory.wears()[0].equipment).toBe(item2)
@@ -38,26 +38,26 @@ describe('failed', () => {
     inventory = new Inventory([BodyPart.Head])
   })
 
-  test('can not wear if there is no matching slot', () => {
+  it('can not wear if there is no matching slot', () => {
     inventory.equip(creature, item1)
     expect(inventory.wears()[0].equipment).toBeFalsy()
     expect(inventory.cares()).toEqual([])
   })
 
-  test('drops item', () => {
+  it('drops item', () => {
     inventory.putToBag(item1)
     expect(inventory.cares()).toEqual([item1])
     inventory.removeFromBag(item1)
     expect(inventory.cares()).toEqual([])
   })
 
-  test('removes item that is not in inventory', () => {
+  it('removes item that is not in inventory', () => {
     expect(inventory.cares()).toEqual([])
     inventory.removeFromBag(item1)
     expect(inventory.cares()).toEqual([])
   })
 
-  test('takes off the item that is not put on yet', () => {
+  it('takes off the item that is not put on yet', () => {
     expect(inventory.wears()[0].equipment).toBeFalsy()
     inventory.takeOff(creature, item2)
     expect(inventory.wears()[0].equipment).toBeFalsy()

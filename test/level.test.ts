@@ -1,6 +1,6 @@
 import { Level } from '../src/level'
 
-test('Increases experience', () => {
+it('Increases experience', () => {
   let level = new Level([2, 5])
 
   expect(level.currentExperience).toEqual(0)
@@ -8,7 +8,7 @@ test('Increases experience', () => {
   expect(level.currentExperience).toEqual(1)
 })
 
-test('By one level', () => {
+it('By one level', () => {
   let level = new Level([2, 5])
 
   expect(level.currentExperience).toEqual(0)
@@ -18,7 +18,7 @@ test('By one level', () => {
   expect(level.current).toEqual(2)
 })
 
-test('By multiple levels at once', () => {
+it('By multiple levels at once', () => {
   let level = new Level([2, 2, 5])
 
   expect(level.currentExperience).toEqual(0)
@@ -30,7 +30,7 @@ test('By multiple levels at once', () => {
   expect(level.current).toEqual(3)
 })
 
-test('Gains max level', () => {
+it('Gains max level', () => {
   let level = new Level([2, 2])
 
   expect(level.currentExperience).toEqual(0)

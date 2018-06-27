@@ -1,5 +1,5 @@
 import { succ } from '../src/utils'
 
-test('succ', () => {
+it('succ', () => {
   expect(succ('a')).toBe('b')
 });

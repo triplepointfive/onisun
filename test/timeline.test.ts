@@ -1,6 +1,6 @@
 import { Timeline } from '../src/Timeline'
 
-test('empty', () => {
+it('empty', () => {
   let timeline = new Timeline()
   expect(timeline.actors()).toEqual([])
 })
@@ -13,7 +13,7 @@ describe('with two creatures', () => {
     timeline = new Timeline()
   })
 
-  test('at different moments', () => {
+  it('at different moments', () => {
     timeline.add(actor1, 4)
     timeline.add(actor2, 6)
     expect(timeline.actors()).toEqual([actor1])
@@ -21,13 +21,13 @@ describe('with two creatures', () => {
     expect(timeline.actors()).toEqual([])
   })
 
-  test('at the same moments', () => {
+  it('at the same moments', () => {
     timeline.add(actor1, 4)
     timeline.add(actor2, 4)
     expect(timeline.actors()).toEqual([actor1, actor2])
   })
 
-  test('moment equals on second turn', () => {
+  it('moment equals on second turn', () => {
     timeline.add(actor1, 4)
     timeline.add(actor2, 8)
     expect(timeline.actors()).toEqual([actor1])
@@ -35,7 +35,7 @@ describe('with two creatures', () => {
     expect(timeline.actors()).toEqual([actor2, actor1])
   })
 
-  test('removes actors', () => {
+  it('removes actors', () => {
     timeline.add(actor1, 4)
     timeline.add(actor2, 8)
     expect(timeline.actors()).toEqual([actor1])

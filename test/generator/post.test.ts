@@ -9,7 +9,7 @@ describe('centralize', () => {
       'WWW',
     ])
 
-    test('Does nothing', () => {
+    it('Does nothing', () => {
       centralize(map)
       expect(prettyMap(map)).toEqual(
         ['WWW', 'W W', 'WWW']
@@ -26,7 +26,7 @@ describe('centralize', () => {
       'WWW',
     ])
 
-    test('Does nothing', () => {
+    it('Does nothing', () => {
       centralize(map)
       expect(prettyMap(map)).toEqual(
         ['WWW', 'WWW', 'W W', 'WWW', 'WWW']
@@ -41,7 +41,7 @@ describe('centralize', () => {
       'WWWWW',
     ])
 
-    test('Does nothing', () => {
+    it('Does nothing', () => {
       centralize(map)
       expect(prettyMap(map)).toEqual(
         ['WWWWW', 'WW WW', 'WWWWW']
@@ -58,7 +58,7 @@ describe('centralize', () => {
       'WWWWW',
     ])
 
-    test('Does nothing', () => {
+    it('Does nothing', () => {
         centralize(map)
         expect(prettyMap(map)).toEqual(
         ['WWWWW', 'WWWWW', 'WW WW', 'WWWWW', 'WWWWW']
@@ -84,7 +84,7 @@ describe('connectMaps', () => {
 describe('addOnTile', () => {
   let map = drawn([ 'R' ])
 
-  test('Fail when there is no matching tiles', () => {
+  it('Fail when there is no matching tiles', () => {
     expect(() => {
       addOnTile(
         map,
