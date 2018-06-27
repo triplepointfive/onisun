@@ -105,6 +105,7 @@ import {
   Picker,
   SelfHealer,
   Attacker,
+  Thrower,
 } from '../src/engine'
 
 export default Vue.extend({
@@ -143,6 +144,9 @@ export default Vue.extend({
       }
       if (ai instanceof Picker) {
         return 'Picker'
+      }
+      if (ai instanceof Thrower) {
+        return 'Thrower'
       }
     },
     displayItem(item) {
@@ -198,6 +202,10 @@ export default Vue.extend({
           return '背'
         case BodyPart.Body:
           return '体'
+        case BodyPart.MissileWeapon:
+          return 'MissileWeapon'
+        case BodyPart.Missile:
+          return 'Missile'
         default:
           throw `Unknow body part ${bodyPart}`
       }

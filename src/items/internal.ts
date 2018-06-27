@@ -4,12 +4,14 @@ import { Modifier } from '../characteristics'
 export enum Usage {
   WeaponOneHand,
   WearsOnBody,
+  Throw,
 }
 
 export enum ItemGroup {
   BodyArmor,
   OneHandWeapon,
   Consumable,
+  Missile,
 }
 
 export type ItemId = number
@@ -54,6 +56,12 @@ export abstract class Equipment extends Item {
 
   public onTakeOff(creature: Creature): void {
     creature.characteristics.removeModifier(this.modifier)
+  }
+}
+
+export class Missile extends Equipment {
+  constructor(name: string, modifier: Modifier) {
+    super(ItemGroup.Missile, name, modifier, [Usage.Throw])
   }
 }
 

@@ -8,6 +8,30 @@ import { Inventory, BodyPart } from './inventory'
 
 import { Level } from './level'
 import { includes } from 'lodash'
+import { Item } from './items'
+
+export enum Clan {
+  Player,
+  PlayerOnlyEnemy,
+  FreeForAll,
+}
+
+export enum Ability {
+  GoStairwayDown,
+  Inventory,
+  PutOn,
+  Throwing,
+}
+
+export const allAbilities = Object.keys(Ability).map(key => Ability[key])
+
+export class Specie {
+  constructor(
+    public readonly name: string,
+    public readonly clan: Clan,
+    public readonly abilities: Ability[]
+  ) {}
+}
 
 export type CreatureId = number
 
@@ -72,6 +96,32 @@ export class AttackEvent extends Event {
   }
 }
 
+export class ThrowEvent extends Event {
+  constructor(public actor: Creature, public missile: Item) {
+    super()
+  }
+
+  public affect(subject: Creature): Reaction {
+    if (this.actor.characteristics.throwMisses(subject.characteristics)) {
+      subject.currentLevel.game.logger.throwMissMessage(this.actor, subject, this.missile)
+      return Reaction.THROW_DODGE
+    }
+
+    const damage = this.actor.characteristics.throwDamageTo(subject.characteristics, this.missile)
+
+    if (damage >= subject.characteristics.health.currentValue()) {
+      this.actor.on(new AddExperienceEvent(subject))
+      subject.currentLevel.game.logger.throwKillMessage(damage, this.actor, subject, this.missile)
+      subject.die()
+      return Reaction.DIE
+    } else {
+      subject.characteristics.health.decrease(damage)
+      subject.currentLevel.game.logger.throwHurtMessage(damage, this.actor, subject, this.missile)
+      return Reaction.HURT
+    }
+  }
+}
+
 export class AddExperienceEvent extends Event {
   constructor(public actor: Creature) {
     super()
@@ -90,29 +140,8 @@ export enum Reaction {
   DIE,
   HURT,
   DODGE,
+  THROW_DODGE,
   NOTHING,
-}
-
-export enum Clan {
-  Player,
-  PlayerOnlyEnemy,
-  FreeForAll,
-}
-
-export enum Ability {
-  GoStairwayDown,
-  Inventory,
-  PutOn,
-}
-
-export const allAbilities = Object.keys(Ability).map(key => Ability[key])
-
-export class Specie {
-  constructor(
-    public readonly name: string,
-    public readonly clan: Clan,
-    public readonly abilities: Ability[]
-  ) {}
 }
 
 export class Creature extends Phantom {
@@ -132,6 +161,7 @@ export class Creature extends Phantom {
   ) {
     super(specie)
     this.ai = ai
+
     this.inventory = new Inventory([
       BodyPart.LeftHand,
       BodyPart.RightHand,
@@ -142,6 +172,9 @@ export class Creature extends Phantom {
       BodyPart.Neck,
       BodyPart.Back,
       BodyPart.Body,
+
+      BodyPart.MissileWeapon,
+      BodyPart.Missile,
     ])
   }
 

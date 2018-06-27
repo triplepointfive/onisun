@@ -15,6 +15,9 @@ export enum BodyPart {
   Neck,
   Back,
   Body,
+
+  MissileWeapon,
+  Missile,
 }
 
 export type Wearing = {
@@ -25,6 +28,7 @@ export type Wearing = {
 const bodyToUsage = {
   [BodyPart.RightHand]: Usage.WeaponOneHand,
   [BodyPart.Body]: Usage.WearsOnBody,
+  [BodyPart.Missile]: Usage.Throw,
 }
 
 export class Inventory {
@@ -35,6 +39,11 @@ export class Inventory {
     this.wearings = parts.map(bodyPart => {
       return { bodyPart: bodyPart }
     })
+  }
+
+  public inSlot(usage: Usage): Equipment[] {
+    const match = this.wears().find(({ bodyPart }) => usage === bodyToUsage[bodyPart])
+    return match ? [match.equipment] : []
   }
 
   public wears(): Wearing[] {

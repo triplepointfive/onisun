@@ -132,6 +132,7 @@ export class ItemTile extends DisplayTile {
 const WEAPON = new ItemTile('刀', 200, 200, 200)
 const CORPSE = new ItemTile('体', 200, 200, 200)
 const BODY_ARMOR = new ItemTile('胸', 200, 200, 200)
+const MISSILE = new ItemTile('石', 200, 200, 200)
 
 export const displayItem = function(item: Item): ItemTile {
   switch (item.group) {
@@ -141,6 +142,8 @@ export const displayItem = function(item: Item): ItemTile {
       return CORPSE
     case ItemGroup.BodyArmor:
       return BODY_ARMOR
+    case ItemGroup.Missile:
+      return MISSILE
     default:
       throw `Unknown group ${item} with type ${item.group}`
   }

@@ -9,6 +9,7 @@ import {
   Patrol,
   SelfHealer,
   Descender,
+  Thrower,
 } from '../ai'
 import { Creature } from '../creature'
 import { MetaAI, AIEventType } from './meta_ai'
@@ -22,6 +23,7 @@ export class Dispatcher extends MetaAI {
   private picker: Picker
   private patrol: Patrol
   private loiter: Loiter
+  private thrower: Thrower
 
   private descender: Descender
 
@@ -38,6 +40,7 @@ export class Dispatcher extends MetaAI {
     this.picker = new Picker(this)
     this.patrol = new Patrol(this)
     this.loiter = new Loiter(this)
+    this.thrower = new Thrower(this)
 
     this.descender = new Descender(this)
   }
@@ -64,6 +67,8 @@ export class Dispatcher extends MetaAI {
     if (this.feelsGood(actor)) {
       if (this.attacker.available(actor)) {
         this.setAi(this.attacker)
+      } else if (this.thrower.available(actor)) {
+        this.setAi(this.thrower)
       } else if (this.chaser.available(actor)) {
         this.setAi(this.chaser)
       } else if (this.seesItems(actor)) {
@@ -75,6 +80,8 @@ export class Dispatcher extends MetaAI {
       this.setAi(this.escaper)
     } else if (this.attacker.available(actor)) {
       this.setAi(this.attacker)
+    } else if (this.thrower.available(actor)) {
+      this.setAi(this.thrower)
     } else if (this.chaser.available(actor)) {
       this.setAi(this.chaser)
     } else {

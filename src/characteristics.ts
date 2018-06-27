@@ -1,5 +1,6 @@
 import { remove, sum } from 'lodash'
 import { Specie } from './creature'
+import { Item } from './items'
 
 export class Attribute {
   public modifiers: number[] = []
@@ -146,6 +147,14 @@ export class Characteristics extends AttributeSet<Attribute> {
       Math.random() >
       dex / (dex + Math.pow(victim.dexterity.currentValue() * 0.25, 0.8))
     )
+  }
+
+  public throwMisses(victim: Characteristics): boolean {
+    return this.misses(victim)
+  }
+
+  public throwDamageTo(victim: Characteristics, missile: Item): number {
+    return 100
   }
 
   public regenerate(): void {
