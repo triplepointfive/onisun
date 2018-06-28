@@ -1,4 +1,8 @@
-import { Characteristics, PositiveAttribute, Attribute } from '../src/characteristics'
+import {
+  Characteristics,
+  PositiveAttribute,
+  Attribute,
+} from '../src/characteristics'
 
 describe('Attribute', () => {
   let attribute: Attribute

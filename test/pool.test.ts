@@ -1,7 +1,9 @@
 import { Pool } from '../src/engine'
 
 it('Weight can not be 0', () => {
-  expect(() => new Pool([[0, x => x]])).toThrowError(`Item's weight is lower than 1`)
+  expect(() => new Pool([[0, x => x]])).toThrowError(
+    `Item's weight is lower than 1`
+  )
 })
 
 it('Pool is empty', () => {
@@ -9,10 +11,7 @@ it('Pool is empty', () => {
 })
 
 describe('Picks', () => {
-  let pool = new Pool([
-    [1, x => x * 2],
-    [10, x => x + 2],
-  ])
+  let pool = new Pool([[1, x => x * 2], [10, x => x + 2]])
 
   it('Picks and initialize output', () => {
     expect(pool.pick(2)).toEqual(4)

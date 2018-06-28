@@ -6,7 +6,8 @@ it('empty', () => {
 })
 
 describe('with two creatures', () => {
-  const actor1 = 'actor1', actor2 = 'actor2'
+  const actor1 = 'actor1',
+    actor2 = 'actor2'
   let timeline: Timeline<string>
 
   beforeEach(() => {
@@ -45,7 +46,9 @@ describe('with two creatures', () => {
 })
 
 describe('multiple ones', () => {
-  const actor1 = 'actor1', actor2 = 'actor2', actor3 = 'actor3'
+  const actor1 = 'actor1',
+    actor2 = 'actor2',
+    actor3 = 'actor3'
   let timeline: Timeline<string> = new Timeline()
   timeline.add(actor1, 90)
   timeline.add(actor2, 100)

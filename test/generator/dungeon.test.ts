@@ -4,9 +4,7 @@ import { prettyMap } from '../helpers'
 it('When exact match', () => {
   let map = dungeon(5, 5, 3, 3, 1)
 
-  expect(prettyMap(map)).toEqual(
-    ['WWWWW', 'W   W', 'W   W', 'W   W', 'WWWWW']
-  )
+  expect(prettyMap(map)).toEqual(['WWWWW', 'W   W', 'W   W', 'W   W', 'WWWWW'])
 })
 
 describe('When there is multiple rooms', () => {

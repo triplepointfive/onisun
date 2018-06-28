@@ -1,75 +1,60 @@
-import { drawn, centralize, connectMaps, StairwayDown, StairwayUp, addOnTile } from '../../src/engine'
+import {
+  drawn,
+  centralize,
+  connectMaps,
+  StairwayDown,
+  StairwayUp,
+  addOnTile,
+} from '../../src/engine'
 import { prettyMap } from '../helpers'
 
 describe('centralize', () => {
   describe('When is already centralized', () => {
-    let map = drawn([
-      'WWW',
-      'WRW',
-      'WWW',
-    ])
+    let map = drawn(['WWW', 'WRW', 'WWW'])
 
     it('Does nothing', () => {
       centralize(map)
-      expect(prettyMap(map)).toEqual(
-        ['WWW', 'W W', 'WWW']
-      )
+      expect(prettyMap(map)).toEqual(['WWW', 'W W', 'WWW'])
     })
   })
 
   describe('Vertically', () => {
-    let map = drawn([
-      'WWW',
-      'WRW',
-      'WWW',
-      'WWW',
-      'WWW',
-    ])
+    let map = drawn(['WWW', 'WRW', 'WWW', 'WWW', 'WWW'])
 
     it('Does nothing', () => {
       centralize(map)
-      expect(prettyMap(map)).toEqual(
-        ['WWW', 'WWW', 'W W', 'WWW', 'WWW']
-      )
+      expect(prettyMap(map)).toEqual(['WWW', 'WWW', 'W W', 'WWW', 'WWW'])
     })
   })
 
   describe('Horizontally', () => {
-    let map = drawn([
-      'WWWWW',
-      'WWWRW',
-      'WWWWW',
-    ])
+    let map = drawn(['WWWWW', 'WWWRW', 'WWWWW'])
 
     it('Does nothing', () => {
       centralize(map)
-      expect(prettyMap(map)).toEqual(
-        ['WWWWW', 'WW WW', 'WWWWW']
-      )
+      expect(prettyMap(map)).toEqual(['WWWWW', 'WW WW', 'WWWWW'])
     })
   })
 
   describe('Both', () => {
-    let map = drawn([
-      'WWWWW',
-      'WWWWW',
-      'WWWWW',
-      'WWWRW',
-      'WWWWW',
-    ])
+    let map = drawn(['WWWWW', 'WWWWW', 'WWWWW', 'WWWRW', 'WWWWW'])
 
     it('Does nothing', () => {
-        centralize(map)
-        expect(prettyMap(map)).toEqual(
-        ['WWWWW', 'WWWWW', 'WW WW', 'WWWWW', 'WWWWW']
-      )
+      centralize(map)
+      expect(prettyMap(map)).toEqual([
+        'WWWWW',
+        'WWWWW',
+        'WW WW',
+        'WWWWW',
+        'WWWWW',
+      ])
     })
   })
 })
 
 describe('connectMaps', () => {
-  let map1 = drawn([ 'R' ])
-  let map2 = drawn([ 'R' ])
+  let map1 = drawn(['R'])
+  let map2 = drawn(['R'])
   connectMaps(map1, map2)
 
   it('adds downstairs on first map', () => {
@@ -82,7 +67,7 @@ describe('connectMaps', () => {
 })
 
 describe('addOnTile', () => {
-  let map = drawn([ 'R' ])
+  let map = drawn(['R'])
 
   it('Fail when there is no matching tiles', () => {
     expect(() => {

@@ -42,7 +42,7 @@ describe('When there are multiple items', () => {
     expect(internalAI.available(creature)).toBeTruthy()
   })
 
-  it('Destination is set to the closest item\'s position', () => {
+  it("Destination is set to the closest item's position", () => {
     expect(internalAI.destination).toBeTruthy()
     expect(internalAI.destination.eq(new Point(3, 3))).toBeTruthy()
   })

@@ -30,6 +30,8 @@ describe('When health is not full', () => {
   it.skip('Regenerates health', () => {
     const oldHealth = creature.characteristics.health.currentValue()
     creature.act(map)
-    expect(creature.characteristics.health.currentValue()).toBeGreaterThan(oldHealth)
+    expect(creature.characteristics.health.currentValue()).toBeGreaterThan(
+      oldHealth
+    )
   })
 })

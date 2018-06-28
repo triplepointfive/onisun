@@ -1,4 +1,8 @@
-import { generateCreatureWithAI, generateCreature, generateLevel } from '../helpers'
+import {
+  generateCreatureWithAI,
+  generateCreature,
+  generateLevel,
+} from '../helpers'
 import { Point, LevelMap, Attacker } from '../../src/engine'
 
 let internalAI = new Attacker()

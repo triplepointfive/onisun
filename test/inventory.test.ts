@@ -1,6 +1,10 @@
 import { Inventory, BodyPart } from '../src/inventory'
-import { generateOneHandedWeapon, generateCreature, generateBodyArmor } from './helpers'
-import { Usage } from '../src/items';
+import {
+  generateOneHandedWeapon,
+  generateCreature,
+  generateBodyArmor,
+} from './helpers'
+import { Usage } from '../src/items'
 
 let item1 = generateOneHandedWeapon()
 let item2 = generateOneHandedWeapon()

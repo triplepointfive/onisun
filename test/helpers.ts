@@ -1,9 +1,25 @@
-import { OneHandWeapon, Modifier, Creature, Clan, MetaAI, Dispatcher, AI, LevelMap, Tile, Characteristics, Specie, allAbilities, BodyArmor } from '../src/engine'
+import {
+  OneHandWeapon,
+  Modifier,
+  Creature,
+  Clan,
+  MetaAI,
+  Dispatcher,
+  AI,
+  LevelMap,
+  Tile,
+  Characteristics,
+  Specie,
+  allAbilities,
+  BodyArmor,
+} from '../src/engine'
 import drawn from '../src/generator/drawn'
 import { Game } from '../src/game'
 
 export const generateString = function(length: number = 7): string {
-  return Math.random().toString(36).substring(length)
+  return Math.random()
+    .toString(36)
+    .substring(length)
 }
 
 export const generateOneHandedWeapon = function(
@@ -59,12 +75,12 @@ export const generateCreatureWithAI = function(ai: AI): Creature {
 
 export const generateCharacteristics = function(): Characteristics {
   return new Characteristics({
-      attack: 0,
-      defense: 0,
-      dexterity: 0,
-      health: 50,
-      radius: 5,
-      speed: 0,
+    attack: 0,
+    defense: 0,
+    dexterity: 0,
+    health: 50,
+    radius: 5,
+    speed: 0,
   })
 }
 
