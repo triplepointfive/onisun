@@ -154,7 +154,7 @@ export class Characteristics extends AttributeSet<Attribute> {
   }
 
   public throwDamageTo(victim: Characteristics, missile: Item): number {
-    return 100
+    return 10
   }
 
   public regenerate(): void {

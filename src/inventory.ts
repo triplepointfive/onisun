@@ -45,7 +45,7 @@ export class Inventory {
     const match = this.wears().find(
       ({ bodyPart }) => usage === bodyToUsage[bodyPart]
     )
-    return match ? [match.equipment] : []
+    return (match && match.equipment) ? [match.equipment] : []
   }
 
   public wears(): Wearing[] {

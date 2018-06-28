@@ -1,4 +1,4 @@
-import { OneHandWeapon, Modifier, Creature, Clan, MetaAI, Dispatcher, AI, LevelMap, Tile, Characteristics, Specie, allAbilities } from '../src/engine'
+import { OneHandWeapon, Modifier, Creature, Clan, MetaAI, Dispatcher, AI, LevelMap, Tile, Characteristics, Specie, allAbilities, BodyArmor } from '../src/engine'
 import drawn from '../src/generator/drawn'
 import { Game } from '../src/game'
 
@@ -10,6 +10,10 @@ export const generateOneHandedWeapon = function(
   modifier: Modifier = new Modifier({})
 ): OneHandWeapon {
   return new OneHandWeapon(generateString(), modifier)
+}
+
+export const generateBodyArmor = function(): BodyArmor {
+  return new BodyArmor(generateString(), new Modifier({}))
 }
 
 export const generateItem = function() {

@@ -1,5 +1,6 @@
 import { Inventory, BodyPart } from '../src/inventory'
-import { generateOneHandedWeapon, generateCreature } from './helpers'
+import { generateOneHandedWeapon, generateCreature, generateBodyArmor } from './helpers'
+import { Usage } from '../src/items';
 
 let item1 = generateOneHandedWeapon()
 let item2 = generateOneHandedWeapon()
@@ -28,6 +29,23 @@ describe('puts on and takes off', () => {
     inventory.takeOff(creature, item2)
     expect(inventory.wears()[0].equipment).toBeNull()
     expect(inventory.cares()).toEqual([item1, item2])
+  })
+
+  it('checks what is put in a slot', () => {
+    expect(inventory.inSlot(Usage.WeaponOneHand)).toEqual([])
+
+    inventory.equip(creature, item1)
+    expect(inventory.wears()[0].equipment).toBe(item1)
+
+    expect(inventory.inSlot(Usage.WeaponOneHand)).toEqual([item1])
+  })
+
+  it('checks if can put an item on', () => {
+    expect(inventory.canWear(item1)).toBeTruthy()
+
+    const bodyArmor = generateBodyArmor()
+
+    expect(inventory.canWear(bodyArmor)).toBeFalsy()
   })
 })
 
