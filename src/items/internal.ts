@@ -45,7 +45,7 @@ export abstract class Equipment extends Item {
     group: ItemGroup,
     name: string,
     public readonly modifier: Modifier,
-    usages: Usage[] = []
+    usages: Usage[]
   ) {
     super(group, name, usages)
   }

@@ -12,6 +12,7 @@ import {
   Specie,
   allAbilities,
   BodyArmor,
+  Missile,
 } from '../src/engine'
 import drawn from '../src/generator/drawn'
 import { Game } from '../src/game'
@@ -30,6 +31,10 @@ export const generateOneHandedWeapon = function(
 
 export const generateBodyArmor = function(): BodyArmor {
   return new BodyArmor(generateString(), new Modifier({}))
+}
+
+export const generateMissile = function(): Missile {
+  return new Missile('test missile', new Modifier({}))
 }
 
 export const generateItem = function() {
@@ -89,6 +94,8 @@ class TestGame extends Game {}
 export const generateLevel = function(): LevelMap {
   let map = drawn([
     'WWWWW',
+    'WRRRW',
+    'WRRRW',
     'WRRRW',
     'WRRRW',
     'WRRRW',

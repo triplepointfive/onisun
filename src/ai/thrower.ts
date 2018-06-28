@@ -10,8 +10,8 @@ import {
 import { Usage, Equipment } from '../items/internal'
 
 export class Thrower extends AI {
-  protected victimId?: CreatureId
-  protected victim: Creature
+  public victim: Creature
+  public previousVictim: Creature
   public missiles: Equipment[]
 
   public available(actor: Creature): boolean {
@@ -30,6 +30,7 @@ export class Thrower extends AI {
 
     if (this.victim.on(new ThrowEvent(actor, missile)) === Reaction.DIE) {
       this.victim = undefined
+      this.previousVictim = undefined
     }
   }
 
@@ -39,15 +40,16 @@ export class Thrower extends AI {
   }
 
   private canAttack(actor: Creature): boolean {
-    if (this.victim) {
+    this.previousVictim = this.victim
+    this.victim = undefined
+
+    if (this.previousVictim) {
       if (
-        this.findCreature(actor, creature => this.victim.id === creature.id)
+        this.findCreature(actor, creature => this.previousVictim.id === creature.id)
       ) {
         return true
       }
     }
-
-    this.victim = undefined
 
     return this.findCreature(actor, creature => this.enemies(actor, creature))
   }
