@@ -28,6 +28,15 @@ describe('with two creatures', () => {
     expect(timeline.actors()).toEqual([actor1, actor2])
   })
 
+  describe('next', () => {
+    it('at the same moments', () => {
+      timeline.add(actor1, 4)
+      timeline.add(actor2, 4)
+      expect(timeline.next()).toEqual(actor1)
+      expect(timeline.next()).toEqual(actor2)
+    })
+  })
+
   it('moment equals on second turn', () => {
     timeline.add(actor1, 4)
     timeline.add(actor2, 8)

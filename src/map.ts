@@ -70,22 +70,17 @@ export class LevelMap extends Mapped<Tile> {
   }
 
   public turn(): void {
-    const turnCreatureIds = this.timeline.actors()
+    const actorID = this.timeline.next()
+    const actor = this.creatures.find(creature => actorID === creature.id)
 
-    // First loop to act
-    this.creatures.forEach(creature => {
-      if (includes(turnCreatureIds, creature.id)) {
-        creature.act(this)
-      }
-    })
+    if (actor) {
+      actor.act(this)
 
-    // Second loop to add themselves to timeline again
-    // and build vision after all actions
-    this.creatures.forEach(creature => {
-      if (includes(turnCreatureIds, creature.id)) {
-        this.timeline.add(creature.id, creature.speed())
+      // If they are still on a map
+      if (this.creatures.find(creature => actorID === creature.id)) {
+        this.timeline.add(actorID, actor.speed())
       }
-    })
+    }
 
     this.game.player.rebuildVision()
   }

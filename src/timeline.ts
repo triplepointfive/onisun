@@ -1,4 +1,4 @@
-import { forEach, keys, min, remove, size } from 'lodash'
+import { forEach, keys, min, remove, size, pullAt } from 'lodash'
 
 export class Timeline<T> {
   private step: number = 0
@@ -18,6 +18,18 @@ export class Timeline<T> {
     forEach(this.turns, (value, key) => {
       remove(value, element => element === actor)
     })
+  }
+
+  public next(): T {
+    this.step = min(keys(this.turns).map(x => parseInt(x)))
+
+    const [element] = pullAt(this.turns[this.step], 0)
+
+    if (this.turns[this.step].length === 0) {
+      delete this.turns[this.step]
+    }
+
+    return element
   }
 
   public actors(): T[] {
