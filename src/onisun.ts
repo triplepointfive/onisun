@@ -158,8 +158,6 @@ const creaturesPool4 = new Pool<null, Creature>([[2, undead], [2, robot]])
 const creaturesPool5 = new Pool<null, Creature>([[2, robot], [1, dragon]])
 
 export class Onisun extends Game {
-  public player: Creature
-
   constructor(generatorOptions: GeneratorOptions) {
     super()
 
@@ -197,7 +195,7 @@ export class Onisun extends Game {
     // )
   }
 
-  protected initPlayer(): Creature {
+  protected initPlayer(): Player {
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
     const rock = new Missile('Rock', new Modifier({}))
 

@@ -129,3 +129,18 @@ export const cycle = function(list: any[], dx: number): any[] {
 
   return list
 }
+
+export const bresenham = function(p0: Point, p1: Point, on: (x, y) => void): void {
+  let [x0, x1, y0, y1] = [p0.x, p1.x, p0.y, p1.y]
+  let steps = Math.max(Math.abs(x0 - x1), Math.abs(y0 - y1))
+  const delta = new Point((x1 - x0) / steps, (y1 - y0) / steps)
+
+  while (steps > 1) {
+    x0 += delta.x
+    y0 += delta.y
+
+    on(Math.round(x0), Math.round(y0))
+
+    steps -= 1
+  }
+}

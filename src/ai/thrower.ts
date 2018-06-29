@@ -8,7 +8,7 @@ import {
   ThrowEvent,
 } from '../creature'
 import { Usage, Equipment } from '../items/internal'
-import { Point } from '../utils'
+import { Point, bresenham } from '../utils'
 
 export class Thrower extends AI {
   public victim: Creature
@@ -69,7 +69,7 @@ export class Thrower extends AI {
         !this.victim &&
         creature &&
         condition(creature) &&
-        this.noObstacles(actor, point)
+        !this.obstacles(actor, point)
       ) {
         this.victim = actor.currentLevel.at(point.x, point.y).creature.real()
       }
@@ -78,27 +78,17 @@ export class Thrower extends AI {
     return !!this.victim
   }
 
-  private noObstacles(actor: Creature, target: Point): boolean {
-    let [x0, x1, y0, y1] = [actor.pos.x, target.x, actor.pos.y, target.y]
-    let steps = Math.max(Math.abs(x0 - x1), Math.abs(y0 - y1))
-    const delta = new Point((x1 - x0) / steps, (y1 - y0) / steps)
+  private obstacles(actor: Creature, target: Point): boolean {
+    let obstacles = false
 
-    while (steps > 1) {
-      x0 += delta.x
-      y0 += delta.y
-
-      if (
-        actor
-          .stageMemory()
-          .at(Math.round(x0), Math.round(y0))
-          .tangible(actor)
-      ) {
-        return false
+    bresenham(
+      actor.pos,
+      target,
+      (x, y) => {
+        obstacles = obstacles || actor.stageMemory().at(x, y).tangible(actor)
       }
+    )
 
-      steps -= 1
-    }
-
-    return true
+    return obstacles
   }
 }
