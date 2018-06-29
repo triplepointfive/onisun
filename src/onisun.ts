@@ -184,9 +184,9 @@ export class Onisun extends Game {
 
     this.currentMap = map1
 
-    floatingEye().addToMap(new Point(9, 3), this.currentMap)
+    floatingEye().addToMap(new Point(1, 3), this.currentMap)
 
-    this.player.addToMap(new Point(1, 3), this.currentMap)
+    this.player.addToMap(new Point(9, 3), this.currentMap)
 
     // addOnTile(
     //   this.currentMap,

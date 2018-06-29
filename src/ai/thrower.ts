@@ -8,6 +8,7 @@ import {
   ThrowEvent,
 } from '../creature'
 import { Usage, Equipment } from '../items/internal'
+import { Point } from '../utils'
 
 export class Thrower extends AI {
   public victim: Creature
@@ -45,7 +46,10 @@ export class Thrower extends AI {
 
     if (this.previousVictim) {
       if (
-        this.findCreature(actor, creature => this.previousVictim.id === creature.id)
+        this.findCreature(
+          actor,
+          creature => this.previousVictim.id === creature.id
+        )
       ) {
         return true
       }
@@ -61,11 +65,40 @@ export class Thrower extends AI {
     this.withinView(actor, (point, tile) => {
       const creature = tile.creature()
 
-      if (!this.victim && creature && condition(creature)) {
+      if (
+        !this.victim &&
+        creature &&
+        condition(creature) &&
+        this.noObstacles(actor, point)
+      ) {
         this.victim = actor.currentLevel.at(point.x, point.y).creature.real()
       }
     })
 
     return !!this.victim
+  }
+
+  private noObstacles(actor: Creature, target: Point): boolean {
+    let [x0, x1, y0, y1] = [actor.pos.x, target.x, actor.pos.y, target.y]
+    let steps = Math.max(Math.abs(x0 - x1), Math.abs(y0 - y1))
+    const delta = new Point((x1 - x0) / steps, (y1 - y0) / steps)
+
+    while (steps > 1) {
+      x0 += delta.x
+      y0 += delta.y
+
+      if (
+        actor
+          .stageMemory()
+          .at(Math.round(x0), Math.round(y0))
+          .tangible(actor)
+      ) {
+        return false
+      }
+
+      steps -= 1
+    }
+
+    return true
   }
 }

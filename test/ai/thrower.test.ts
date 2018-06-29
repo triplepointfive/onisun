@@ -32,7 +32,9 @@ describe('Throwing at enemy', () => {
   })
 
   it('Kills enemy with low health', () => {
-    enemy.characteristics.health.decrease(enemy.characteristics.health.currentValue() - 1)
+    enemy.characteristics.health.decrease(
+      enemy.characteristics.health.currentValue() - 1
+    )
     actor.act(map)
 
     expect(map.at(enemy.pos.x, enemy.pos.y).creature).toBeFalsy()
@@ -57,7 +59,7 @@ describe('When there is someone else', () => {
     internalAI.victim = enemy
   })
 
-  it.skip('Changes victim to the available one on a throw line', () => {
+  it('Changes victim to the available one on a throw line', () => {
     enemy2.addToMap(new Point(1, 3), map)
     enemy.addToMap(new Point(1, 4), map)
 
