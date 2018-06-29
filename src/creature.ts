@@ -341,4 +341,8 @@ export class Player extends Creature {
     super.die() // We do not want player to act after they death
     this.dead = true
   }
+
+  public rebuildVision(): void {
+    this.visionMask(this.currentLevel)
+  }
 }

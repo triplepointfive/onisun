@@ -85,7 +85,8 @@ export class LevelMap extends Mapped<Tile> {
       if (includes(turnCreatureIds, creature.id)) {
         this.timeline.add(creature.id, creature.speed())
       }
-      creature.visionMask(this)
     })
+
+    this.game.player.rebuildVision()
   }
 }
