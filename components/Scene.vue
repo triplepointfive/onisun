@@ -90,7 +90,7 @@ export default Vue.extend({
   props: ['level', 'player'],
   data() {
     return {
-      wholeMap: true,
+      wholeMap: false,
       term: null,
       eng: null,
       drawInterval: null,
@@ -108,6 +108,11 @@ export default Vue.extend({
   },
   methods: {
     getTile(x, y) {
+      const effect = this.stage.at(x, y).effect
+      if (effect) {
+        return new DisplayTile(effect, 200, 200, 0)
+      }
+
       const tile = this.wholeMap ? this.stage.at(x, y) : this.stage.at(x, y).tile
 
       if (!tile) {

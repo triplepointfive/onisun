@@ -4,19 +4,19 @@ export class Timeline<T> {
   private step: number = 0
   private turns: { [key: number]: T[] } = {}
 
-  public add(actor: T, delta: number): void {
+  public add(item: T, delta: number): void {
     const ts = this.step + delta
 
     if (this.turns[ts]) {
-      this.turns[ts].push(actor)
+      this.turns[ts].push(item)
     } else {
-      this.turns[ts] = [actor]
+      this.turns[ts] = [item]
     }
   }
 
-  public remove(actor: T): void {
+  public remove(item: T): void {
     forEach(this.turns, (value, key) => {
-      remove(value, element => element === actor)
+      remove(value, element => element === item)
     })
   }
 

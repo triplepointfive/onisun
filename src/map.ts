@@ -4,15 +4,18 @@ import { Timeline } from './timeline'
 import { Game } from './game'
 import { Tile } from './tile'
 
-import { remove, includes } from 'lodash'
+import { remove } from 'lodash'
+import { Effect } from './engine';
 
 export type LevelMapId = number
+
+export type TimeEvent = [CreatureId, Effect]
 
 export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public id: LevelMapId
   public game: Game
-  protected timeline: Timeline<CreatureId>
+  protected timeline: Timeline<TimeEvent>
 
   private static lastId: LevelMapId = 0
   public static getId(): LevelMapId {
@@ -37,7 +40,7 @@ export class LevelMap extends Mapped<Tile> {
   public enter(actor: Creature, enterPos: Point): void {
     this.reset()
     this.creatures.forEach(creature =>
-      this.timeline.add(creature.id, creature.speed())
+      this.timeline.add([creature.id, undefined], creature.speed())
     )
 
     actor.addToMap(enterPos, this)
@@ -47,14 +50,14 @@ export class LevelMap extends Mapped<Tile> {
     this.creatures.push(creature)
     // TODO fail if taken
     this.at(creature.pos.x, creature.pos.y).creature = creature
-    this.timeline.add(creature.id, creature.speed())
+    this.timeline.add([creature.id, undefined], creature.speed())
   }
 
   public removeCreature(creature: Creature) {
     let tile = this.at(creature.pos.x, creature.pos.y)
     tile.creature = undefined
     remove(this.creatures, c => c.id === creature.id)
-    this.timeline.remove(creature.id)
+    this.timeline.remove([creature.id, undefined])
   }
 
   public visibleThrough(x: number, y: number): boolean {
@@ -69,19 +72,36 @@ export class LevelMap extends Mapped<Tile> {
     this.map[x][y] = tile
   }
 
+  public addEffect(effect: Effect): void {
+    this.timeline.add([undefined, effect], effect.speed())
+  }
+
   public turn(): void {
-    const actorID = this.timeline.next()
-    const actor = this.creatures.find(creature => actorID === creature.id)
+    const [actorId, effect] = this.timeline.next()
 
-    if (actor) {
-      actor.act(this)
+    if (actorId !== undefined) {
+      const actor = this.creatures.find(creature => actorId === creature.id)
 
-      // If they are still on a map
-      if (this.creatures.find(creature => actorID === creature.id)) {
-        this.timeline.add(actorID, actor.speed())
+      if (actor) {
+        actor.act(this)
+
+        // If they are still on a map
+        if (this.creatures.find(creature => actorId === creature.id)) {
+          this.timeline.add([actorId, undefined], actor.speed())
+        }
       }
-    }
 
-    this.game.player.rebuildVision()
+      this.game.player.rebuildVision()
+    } else if (effect) {
+      this.game.player.rebuildVision()
+
+      effect.patchMemory(this.game.player.stageMemory())
+
+      if (!effect.done()) {
+        this.timeline.add([undefined, effect], effect.speed())
+      }
+    } else {
+      throw 'Timeline event is empty!'
+    }
   }
 }

@@ -7,8 +7,9 @@ import {
   Reaction,
   ThrowEvent,
 } from '../creature'
-import { Usage, Equipment } from '../items/internal'
+import { Usage, Equipment, Item } from '../items/internal'
 import { Point, bresenham } from '../utils'
+import { ItemFlightEffect } from '../effect';
 
 export class Thrower extends AI {
   public victim: Creature
@@ -26,8 +27,10 @@ export class Thrower extends AI {
   public act(actor: Creature): void {
     const missile = this.missiles.pop()
 
-    actor.inventory.takeOff(actor, missile)
-    actor.inventory.removeFromBag(missile)
+    // actor.inventory.takeOff(actor, missile)
+    // actor.inventory.removeFromBag(missile)
+
+    this.throwEffect(actor, missile)
 
     if (this.victim.on(new ThrowEvent(actor, missile)) === Reaction.DIE) {
       this.victim = undefined
@@ -90,5 +93,19 @@ export class Thrower extends AI {
     )
 
     return obstacles
+  }
+
+  private throwEffect(actor: Creature, missile: Item): void {
+    let path = []
+
+    bresenham(
+      actor.pos,
+      this.victim.pos,
+      (x, y) => path.push(new Point(x, y))
+    )
+
+    const effect = new ItemFlightEffect(missile, path)
+
+    actor.currentLevel.addEffect(effect)
   }
 }

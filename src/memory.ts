@@ -6,6 +6,7 @@ export class MemoryTile {
   public visible: boolean = false
   public degree: number = 0
   public seen: boolean = false
+  public effect?: string
 
   constructor(public tile?: Tile) {}
 
@@ -30,6 +31,7 @@ export class MemoryTile {
 
   public reset(): void {
     this.visible = false
+    this.effect = undefined
     this.tile.creature = undefined
   }
 }
