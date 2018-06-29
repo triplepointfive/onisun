@@ -27,6 +27,7 @@ export class Thrower extends AI {
   public act(actor: Creature): void {
     const missile = this.missiles.pop()
 
+    // TODO: TEST IT!
     // actor.inventory.takeOff(actor, missile)
     // actor.inventory.removeFromBag(missile)
 
