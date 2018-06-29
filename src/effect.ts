@@ -16,7 +16,7 @@ export class ItemFlightEffect extends Effect {
   constructor(
     public readonly item: Item,
     private frames: Point[],
-    onDone: () => void,
+    onDone: () => void
   ) {
     super(onDone)
   }
