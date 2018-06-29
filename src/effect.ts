@@ -1,11 +1,13 @@
-import { Item } from './items/internal';
-import { Point } from './utils';
-import { Memory } from './memory';
+import { Item } from './items/internal'
+import { Point } from './utils'
+import { Memory } from './memory'
 
 export abstract class Effect {
   public abstract done(): boolean
   public abstract patchMemory(memory: Memory): void
-  public speed(): number { return -1 }
+  public speed(): number {
+    return -1
+  }
 }
 
 export class ItemFlightEffect extends Effect {

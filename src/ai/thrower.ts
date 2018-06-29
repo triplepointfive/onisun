@@ -9,7 +9,7 @@ import {
 } from '../creature'
 import { Usage, Equipment, Item } from '../items/internal'
 import { Point, bresenham } from '../utils'
-import { ItemFlightEffect } from '../effect';
+import { ItemFlightEffect } from '../effect'
 
 export class Thrower extends AI {
   public victim: Creature
@@ -85,13 +85,14 @@ export class Thrower extends AI {
   private obstacles(actor: Creature, target: Point): boolean {
     let obstacles = false
 
-    bresenham(
-      actor.pos,
-      target,
-      (x, y) => {
-        obstacles = obstacles || actor.stageMemory().at(x, y).tangible(actor)
-      }
-    )
+    bresenham(actor.pos, target, (x, y) => {
+      obstacles =
+        obstacles ||
+        actor
+          .stageMemory()
+          .at(x, y)
+          .tangible(actor)
+    })
 
     return obstacles
   }
@@ -99,11 +100,7 @@ export class Thrower extends AI {
   private throwEffect(actor: Creature, missile: Item): void {
     let path = []
 
-    bresenham(
-      actor.pos,
-      this.victim.pos,
-      (x, y) => path.push(new Point(x, y))
-    )
+    bresenham(actor.pos, this.victim.pos, (x, y) => path.push(new Point(x, y)))
 
     const effect = new ItemFlightEffect(missile, path)
 

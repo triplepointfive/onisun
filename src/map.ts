@@ -5,7 +5,7 @@ import { Game } from './game'
 import { Tile } from './tile'
 
 import { remove } from 'lodash'
-import { Effect } from './engine';
+import { Effect } from './engine'
 
 export type LevelMapId = number
 
