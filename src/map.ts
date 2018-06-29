@@ -93,13 +93,14 @@ export class LevelMap extends Mapped<Tile> {
 
       this.game.player.rebuildVision()
     } else if (effect) {
-      this.game.player.rebuildVision()
-
-      effect.patchMemory(this.game.player.stageMemory())
-
-      if (!effect.done()) {
+      if (effect.done()) {
+        effect.onDone()
+      } else {
         this.timeline.add([undefined, effect], effect.speed())
       }
+
+      this.game.player.rebuildVision()
+      effect.patchMemory(this.game.player.stageMemory())
     } else {
       throw 'Timeline event is empty!'
     }

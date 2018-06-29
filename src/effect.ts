@@ -3,6 +3,8 @@ import { Point } from './utils'
 import { Memory } from './memory'
 
 export abstract class Effect {
+  constructor(public onDone: () => void) {}
+
   public abstract done(): boolean
   public abstract patchMemory(memory: Memory): void
   public speed(): number {
@@ -11,8 +13,12 @@ export abstract class Effect {
 }
 
 export class ItemFlightEffect extends Effect {
-  constructor(public readonly item: Item, private frames: Point[]) {
-    super()
+  constructor(
+    public readonly item: Item,
+    private frames: Point[],
+    onDone: () => void,
+  ) {
+    super(onDone)
   }
 
   public patchMemory(memory: Memory): void {

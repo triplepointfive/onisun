@@ -31,12 +31,18 @@ export class Thrower extends AI {
     // actor.inventory.takeOff(actor, missile)
     // actor.inventory.removeFromBag(missile)
 
-    this.throwEffect(actor, missile)
+    let path = []
 
-    if (this.victim.on(new ThrowEvent(actor, missile)) === Reaction.DIE) {
-      this.victim = undefined
-      this.previousVictim = undefined
-    }
+    bresenham(actor.pos, this.victim.pos, (x, y) => path.push(new Point(x, y)))
+
+    const effect = new ItemFlightEffect(missile, path, () => {
+      if (this.victim.on(new ThrowEvent(actor, missile)) === Reaction.DIE) {
+        this.victim = undefined
+        this.previousVictim = undefined
+      }
+    })
+
+    actor.currentLevel.addEffect(effect)
   }
 
   private hasMissile(actor: Creature): boolean {
@@ -95,15 +101,5 @@ export class Thrower extends AI {
     })
 
     return obstacles
-  }
-
-  private throwEffect(actor: Creature, missile: Item): void {
-    let path = []
-
-    bresenham(actor.pos, this.victim.pos, (x, y) => path.push(new Point(x, y)))
-
-    const effect = new ItemFlightEffect(missile, path)
-
-    actor.currentLevel.addEffect(effect)
   }
 }
