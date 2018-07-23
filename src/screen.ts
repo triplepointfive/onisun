@@ -2,7 +2,6 @@ import { Game } from './game'
 import { Player } from './creature'
 
 export abstract class Screen {
-  public Scene
   constructor(
     protected game: Game,
     // protected onDone: () => void,
@@ -13,10 +12,6 @@ export abstract class Screen {
   public onInput() {
     this.game.screen = undefined
   }
-}
-
-export class Scene extends Screen {
-
 }
 
 export class LevelUp extends Screen {
@@ -30,16 +25,11 @@ export class LevelUp extends Screen {
   }
 
   public onInput() {
+    while (this.player.levelUps > 0) {
+      this.player.characteristics.levelUp(this.player.specie)
 
-    // while (this.levelUps > 0) {
-    //   this.characteristics.levelUp(this.specie)
-
-    //   this.levelUps -= 1
-    // }
-
-
-
-
+      this.player.levelUps -= 1
+    }
 
     // this.onDone()
     this.game.screen = undefined

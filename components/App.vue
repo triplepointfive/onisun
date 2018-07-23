@@ -92,9 +92,6 @@ export default Vue.extend({
         this.generatorOptions,
       )
     }
-  },
-  beforeCreate() {
-    this.$watch('game.screen', () => {})
   }
 })
 </script>

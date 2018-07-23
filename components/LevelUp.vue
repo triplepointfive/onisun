@@ -1,8 +1,8 @@
 <template>
-  <h3>
+  <div class='level-up'>
     123123
     <a @click='close'>XXX</a>
-  </h3>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -21,3 +21,17 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang='scss'>
+.level-up {
+  position: fixed;
+  top: 10%;
+  left: 30%;
+  width: 40%;
+  height: 40%;
+  border: 1px solid black;
+  background: white;
+  border-radius: 50px;
+  padding: 30px;
+}
+</style>

@@ -8,6 +8,6 @@ export abstract class Game {
   public screen: Screen
 
   constructor() {
-    this.screen = new Scene(this)
+    this.screen = null
   }
 }
