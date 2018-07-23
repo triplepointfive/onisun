@@ -9,6 +9,7 @@ import { Inventory, BodyPart } from './inventory'
 import { Level } from './level'
 import { includes } from 'lodash'
 import { Item } from './items'
+import { LevelUp } from './screen';
 
 export enum Clan {
   Player,
@@ -328,13 +329,11 @@ export class Player extends Creature {
   }
 
   public act(stage: LevelMap) {
-    while (this.levelUps > 0) {
-      this.characteristics.levelUp(this.specie)
-
-      this.levelUps -= 1
-    }
-
     super.act(stage)
+
+    if (this.levelUps > 0) {
+      stage.game.screen = new LevelUp(stage.game, this)
+    }
   }
 
   public die(): void {

@@ -4,6 +4,8 @@
 
     <div v-if='game.player && game.player.dead'>You are dead</div>
 
+    <LevelUp v-if='game.screen' :screen='game.screen'/>
+
     <Logger :logger='game.logger' />
     <div class=''>
       <div class=''>
@@ -61,6 +63,8 @@ import Cell from './Cell.vue'
 import Logger from './Logger.vue'
 import Scene from './Scene.vue'
 
+import LevelUp from './LevelUp.vue'
+
 import { LevelMap, } from '../src/engine'
 
 import {
@@ -73,13 +77,14 @@ export default Vue.extend({
     return {
       game: new Onisun(baseConfig),
       ts: Date.now(),
-      generatorOptions: baseConfig
+      generatorOptions: baseConfig,
     }
   },
   components: {
     Cell,
     Logger,
     Scene,
+    LevelUp,
   },
   methods: {
     generateMap() {
@@ -87,6 +92,9 @@ export default Vue.extend({
         this.generatorOptions,
       )
     }
+  },
+  beforeCreate() {
+    this.$watch('game.screen', () => {})
   }
 })
 </script>

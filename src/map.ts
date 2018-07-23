@@ -77,6 +77,10 @@ export class LevelMap extends Mapped<Tile> {
   }
 
   public turn(): void {
+    if (this.game.screen) {
+      return
+    }
+
     const [actorId, effect] = this.timeline.next()
 
     if (actorId !== undefined) {
