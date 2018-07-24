@@ -10,6 +10,7 @@ import { Level } from './level'
 import { includes } from 'lodash'
 import { Item } from './items'
 import { LevelUp } from './screen';
+import { Profession } from './profession';
 
 export enum Clan {
   Player,
@@ -318,6 +319,7 @@ export class Player extends Creature {
   public dead: boolean = false
 
   public levelUps: number = 0
+  public professions: Profession[] = []
 
   constructor(
     public level: Level,

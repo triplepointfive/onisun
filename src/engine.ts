@@ -12,6 +12,7 @@ export * from './level'
 export * from './memory'
 export * from './game'
 export * from './pool'
+export * from './profession'
 
 export * from './generator/post'
 export { default as drawn } from './generator/drawn'

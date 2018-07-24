@@ -82,6 +82,17 @@
         </li>
       </ul>
     </dt>
+
+    <dd class='col-sm-4'>
+      Профессии
+    </dd>
+    <dt class='col-sm-8'>
+      <ul>
+        <li v-for='profession in creature.professions' :key='profession.name'>
+            {{profession.name}} {{profession.level}}
+        </li>
+      </ul>
+    </dt>
   </dl>
 </template>
 

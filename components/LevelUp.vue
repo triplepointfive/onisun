@@ -1,7 +1,18 @@
 <template>
-  <div class='level-up'>
-    123123
-    <a @click='close'>XXX</a>
+  <div class='level-up text-center'>
+    <div>
+      <span
+        class='option p-2 m-3'
+        v-for='option in screen.options'
+        :key='option.id'
+        @click='picked = option'
+        :class="{ 'picked': picked && picked.id === option.id }"
+      >
+        {{ option.name }}
+      </span>
+    </div>
+
+    <a @click='close' v-if='picked !== null'>Подтвердить</a>
   </div>
 </template>
 
@@ -14,9 +25,19 @@ import Logger from './Logger.vue'
 
 export default Vue.extend({
   props: ['screen'],
+  data() {
+    return {
+      picked: null
+    }
+  },
+  computed: {
+    valid() {
+      return
+    }
+  },
   methods: {
     close() {
-      this.screen.onInput()
+      this.screen.onInput(this.picked)
     }
   }
 })
@@ -33,5 +54,12 @@ export default Vue.extend({
   background: white;
   border-radius: 50px;
   padding: 30px;
+}
+.option {
+  border: 1px solid black;
+
+  &.picked {
+    border-color: red;
+  }
 }
 </style>
