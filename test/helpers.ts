@@ -13,9 +13,13 @@ import {
   allAbilities,
   BodyArmor,
   Missile,
+  Profession,
+  Player,
+  Level,
 } from '../src/engine'
 import drawn from '../src/generator/drawn'
 import { Game } from '../src/game'
+import { times, random } from 'lodash'
 
 export const generateString = function(length: number = 7): string {
   return Math.random()
@@ -89,9 +93,17 @@ export const generateCharacteristics = function(): Characteristics {
   })
 }
 
+export const generateLevel = function(): Level {
+  return new Level([1])
+}
+
+export const generatePlayer = function(): Player {
+  return new Player(generateLevel(), generateCharacteristics(), generateMetaAI(), fakeSpecie)
+}
+
 class TestGame extends Game {}
 
-export const generateLevel = function(): LevelMap {
+export const generateLevelMap = function(): LevelMap {
   let map = drawn([
     'WWWWW',
     'WRRRW',
@@ -135,4 +147,10 @@ export const prettyMap = function(map: LevelMap): string[] {
   })
 
   return stringMap
+}
+
+let professionId = 0
+export const generateProfession = function(level: number = 1): Profession {
+  const name = times(4, () => random(35).toString(36)).join('')
+  return new Profession(professionId++, name, level)
 }

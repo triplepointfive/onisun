@@ -1,9 +1,9 @@
-import { generateCreatureWithAI, generateLevel, generateItem } from '../helpers'
+import { generateCreatureWithAI, generateLevelMap, generateItem } from '../helpers'
 import { Picker, Point } from '../../src/engine'
 
 let internalAI = new Picker()
 let creature = generateCreatureWithAI(internalAI)
-const map = generateLevel()
+const map = generateLevelMap()
 
 beforeEach(() => {
   creature.addToMap(new Point(1, 1), map)

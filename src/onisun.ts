@@ -25,7 +25,10 @@ import {
   Level,
   Ability,
   Missile,
+  ProfessionPicker,
+  Profession,
 } from './engine'
+import { includes, sample } from 'lodash'
 
 export type GeneratorOptions = {
   minSize: number
@@ -157,9 +160,76 @@ const creaturesPool3 = new Pool<null, Creature>([
 const creaturesPool4 = new Pool<null, Creature>([[2, undead], [2, robot]])
 const creaturesPool5 = new Pool<null, Creature>([[2, robot], [1, dragon]])
 
+export class OnisunProfessionPicker extends ProfessionPicker {
+  constructor(
+    private pool: Profession[],
+    private maxLevel: number,
+    private maxTaken: number,
+  ) {
+    super()
+  }
+
+  public available(player: Player): Profession[] {
+    let professions: Profession[] = []
+
+    if (this.canUpdate(player)) {
+      professions.push(this.updatableProfession(player))
+    } else if (this.canTakeNewProfession(player)) {
+      professions.push(this.newFromPool(player))
+    }
+
+    if (this.canTakeNewProfession(player)) {
+      professions.push(this.newFromPool(player, professions.map(profession => profession.id)))
+    } else if (this.canUpdate(player)) {
+      professions.push(this.updatableProfession(player, professions.map(profession => profession.id)))
+    }
+
+    return professions
+  }
+
+  protected canUpdate(player: Player): boolean {
+    return player.professions.some(profession => profession.level < this.maxLevel)
+  }
+
+  protected updatableProfession(player: Player, excludeProfessions: number[] = []): Profession {
+    return sample(player.professions.filter(profession => player.professions.length < this.maxTaken && !includes(excludeProfessions, profession.id)))
+  }
+
+  protected canTakeNewProfession(player: Player): boolean {
+    return player.professions.length < this.maxTaken
+  }
+
+  protected newFromPool(player: Player, excludeProfessions: number[] = []): Profession {
+    const excluding = excludeProfessions.concat(player.professions.map(profession => profession.id))
+    return sample(this.pool.filter(profession => !includes(excluding, profession.id)))
+  }
+}
+
 export class Onisun extends Game {
   constructor(generatorOptions: GeneratorOptions) {
-    super()
+    let pool: Profession[] = [];
+
+    [
+      'Lorem',
+      'ipsum',
+      'dolor',
+
+      'sit',
+      'amet',
+      'consectetur',
+
+      'adipiscing',
+      'elit',
+      'Suspendisse',
+
+      'dignissim',
+      'mi',
+      'tincidunt',
+    ].forEach((name, i) => {
+      pool.push(new Profession(i, name, 1))
+    })
+
+    super(new OnisunProfessionPicker(pool, 3, 6))
 
     this.player = this.initPlayer()
 
@@ -202,7 +272,7 @@ export class Onisun extends Game {
     const playerSpecie = new Specie('Player', Clan.Player, allAbilities)
 
     let player = new Player(
-      new Level([3, 5, 7, 10]),
+      new Level([1, 1, 1, 3, 10]),
       new Characteristics({
         attack: 1,
         defense: 4,
@@ -229,15 +299,15 @@ export class Onisun extends Game {
       options.roomsCount
     )
 
-    // map = drawn([
-    //   'WWWWWWWWWWW',
-    //   'WRRRRRRRRRW',
-    //   'WRRRRRRRRRW',
-    //   'WRRRRRRRRRW',
-    //   'WRRRRRRRRRW',
-    //   'WRRRRRRRRRW',
-    //   'WWWWWWWWWWW',
-    // ])
+    map = drawn([
+      'WWWWWWWWWWW',
+      'WRRRRRRRRRW',
+      'WRRRRRRRRRW',
+      'WRRRRRRRRRW',
+      'WRRRRRRRRRW',
+      'WRRRRRRRRRW',
+      'WWWWWWWWWWW',
+    ])
 
     if (options.addDoors) {
       addDoors(map)
