@@ -2,6 +2,10 @@
 
 poi
 
+# Test
+
+npx jest
+
 # Prettier
 
 npm run prettier
