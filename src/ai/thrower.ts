@@ -7,7 +7,7 @@ import {
   Reaction,
   ThrowEvent,
 } from '../creature'
-import { Usage, Equipment, Item } from '../items/internal'
+import { Usage, Item } from '../items/internal'
 import { Point, bresenham } from '../utils'
 import { ItemFlightEffect } from '../effect'
 import { MissileSlot, Wearing, InventoryItem } from '../inventory'

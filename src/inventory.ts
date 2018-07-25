@@ -1,4 +1,4 @@
-import { Item, Equipment } from './items'
+import { Item } from './items'
 
 import { Usage } from './items/internal'
 
@@ -54,7 +54,7 @@ let inventoryItemId = 1
 export class InventoryItem {
   public id: number
 
-  constructor(public count: number, public item: Equipment) {
+  constructor(public count: number, public item: Item) {
     this.id = inventoryItemId++
   }
 }
@@ -106,7 +106,7 @@ export class Inventory {
     return this.bag
   }
 
-  public canWear(item: Equipment) {
+  public canWear(item: Item) {
     return this.wearings.some(wearing =>
       includes(item.usages, wearing.bodyPart.usage)
     )
@@ -133,7 +133,7 @@ export class Inventory {
     }
   }
 
-  public takeOff(actor: Creature, item: Equipment) {
+  public takeOff(actor: Creature, item: Item) {
     this.wearings.forEach(wearing => {
       if (wearing.equipment && wearing.equipment.id === item.id) {
         this.putToBag(wearing.equipment)

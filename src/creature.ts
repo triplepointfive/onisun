@@ -18,7 +18,6 @@ import { includes } from 'lodash'
 import { Item } from './items'
 import { LevelUp } from './screen'
 import { Profession } from './profession'
-import { Equipment } from './items/internal'
 
 export enum Clan {
   Player,
@@ -203,7 +202,7 @@ export class Creature extends Phantom {
     // this.inventory.removeFromBag(equipment)
   }
 
-  public takeOff(item: Equipment) {
+  public takeOff(item: Item) {
     this.inventory.takeOff(this, item)
   }
 

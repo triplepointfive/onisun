@@ -1,6 +1,6 @@
 import { AI } from './internal'
 import { Creature, Ability } from '../creature'
-import { Equipment } from '../items/internal'
+import { Item } from '../items/internal'
 import { Modifier } from '../characteristics'
 import { Wearing, allInventorySlots } from '../inventory'
 
@@ -13,20 +13,16 @@ export class Wearer extends AI {
 
   public act(actor: Creature, firstTurn: boolean = true) {
     actor.inventory.cares().forEach(item => {
-      if (item instanceof Equipment) {
-        if (actor.inventory.canWear(item)) {
-          const wearing = this.whereToWear(actor, item)
+      const wearing = this.whereToWear(actor, item.item)
 
-          if (wearing) {
-            // TODO: Use matching slot
-            actor.putOn(wearing.bodyPart, item)
-          }
-        }
+      if (wearing) {
+        // TODO: Use matching slot
+        actor.putOn(wearing.bodyPart, item)
       }
     })
   }
 
-  private whereToWear(actor: Creature, item: Equipment): Wearing {
+  private whereToWear(actor: Creature, item: Item): Wearing {
     const matches: Wearing[] = flatten(
       item.usages.map(usage =>
         allInventorySlots.filter(slot => slot.usage === usage)

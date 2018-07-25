@@ -26,28 +26,12 @@ export class Item {
     public group: ItemGroup,
     public name: string,
     public readonly usages: Usage[] = [],
+    public readonly modifier: Modifier = new Modifier({}),
     public id: ItemId = Item.getId()
   ) {}
 
   public clone(): Item {
     return new Item(this.group, this.name)
-  }
-}
-
-export class Corpse extends Item {
-  constructor(public readonly specie: Specie) {
-    super(ItemGroup.Consumable, `${specie.name}'s corpse`)
-  }
-}
-
-export abstract class Equipment extends Item {
-  constructor(
-    group: ItemGroup,
-    name: string,
-    public readonly modifier: Modifier,
-    usages: Usage[]
-  ) {
-    super(group, name, usages)
   }
 
   public onPutOn(creature: Creature): void {
@@ -59,20 +43,26 @@ export abstract class Equipment extends Item {
   }
 }
 
-export class Missile extends Equipment {
-  constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.Missile, name, modifier, [Usage.Throw])
+export class Corpse extends Item {
+  constructor(public readonly specie: Specie) {
+    super(ItemGroup.Consumable, `${specie.name}'s corpse`)
   }
 }
 
-export class BodyArmor extends Equipment {
+export class Missile extends Item {
   constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.BodyArmor, name, modifier, [Usage.WearsOnBody])
+    super(ItemGroup.Missile, name, [Usage.Throw], modifier)
   }
 }
 
-export class OneHandWeapon extends Equipment {
+export class BodyArmor extends Item {
   constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.OneHandWeapon, name, modifier, [Usage.WeaponOneHand])
+    super(ItemGroup.BodyArmor, name, [Usage.WearsOnBody], modifier)
+  }
+}
+
+export class OneHandWeapon extends Item {
+  constructor(name: string, modifier: Modifier) {
+    super(ItemGroup.OneHandWeapon, name, [Usage.WeaponOneHand], modifier)
   }
 }
