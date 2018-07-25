@@ -104,7 +104,10 @@ import {
 } from './scene_tiles'
 
 import {
-  BodyPart,
+  LeftHandSlot,
+  RightHandSlot,
+  BodySlot,
+  MissileSlot,
 
   Patrol,
   Explorer,
@@ -195,28 +198,28 @@ export default Vue.extend({
     },
     displayBodyPart(bodyPart) {
       switch (bodyPart) {
-        case BodyPart.LeftHand:
-          return '手'
-        case BodyPart.RightHand:
-          return '手'
-        case BodyPart.Legs:
-          return '足'
-        case BodyPart.Finger:
-          return '指'
-        case BodyPart.Head:
-          return '頭'
-        case BodyPart.Eye:
-          return '目'
-        case BodyPart.Neck:
-          return '首'
-        case BodyPart.Back:
-          return '背'
-        case BodyPart.Body:
-          return '体'
-        case BodyPart.MissileWeapon:
-          return 'MissileWeapon'
-        case BodyPart.Missile:
-          return 'Missile'
+        case LeftHandSlot:
+          return 'Левая рука'
+        case RightHandSlot:
+          return 'Правая рука'
+        // case BodyPart.Legs:
+        //   return '足'
+        // case BodyPart.Finger:
+        //   return '指'
+        // case BodyPart.Head:
+        //   return '頭'
+        // case BodyPart.Eye:
+        //   return '目'
+        // case BodyPart.Neck:
+        //   return '首'
+        // case BodyPart.Back:
+        //   return '背'
+        case BodySlot:
+          return 'Корпус'
+        // case BodyPart.MissileWeapon:
+        //   return 'MissileWeapon'
+        case MissileSlot:
+          return 'Снаряды'
         default:
           throw `Unknow body part ${bodyPart}`
       }

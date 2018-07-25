@@ -5,37 +5,37 @@ import { Usage } from './items/internal'
 import { remove, includes } from 'lodash'
 import { Creature } from './creature'
 
-export enum BodyPart {
-  LeftHand,
-  RightHand,
-  Legs,
-  Finger,
-  Head,
-  Eye,
-  Neck,
-  Back,
-  Body,
-
-  MissileWeapon,
-  Missile,
+export interface InventorySlot {
+  // What kind of items can be put in slot
+  usage: Usage
+  // Has to put only a single item or can put a bunch of them
+  useSingleItem: boolean
 }
+
+export const RightHandSlot: InventorySlot = { usage: Usage.WeaponOneHand, useSingleItem: true  }
+export const LeftHandSlot:  InventorySlot = { usage: Usage.WeaponOneHand, useSingleItem: true  }
+export const BodySlot:      InventorySlot = { usage: Usage.WearsOnBody,   useSingleItem: true  }
+export const MissileSlot:   InventorySlot = { usage: Usage.Throw,         useSingleItem: false }
+  // LeftHand,
+  // Legs,
+  // Finger,
+  // Head,
+  // Eye,
+  // Neck,
+  // Back,
+
+  // MissileWeapon,
 
 export type Wearing = {
-  bodyPart: BodyPart
+  bodyPart: InventorySlot
   equipment?: Equipment
-}
-
-const bodyToUsage = {
-  [BodyPart.RightHand]: Usage.WeaponOneHand,
-  [BodyPart.Body]: Usage.WearsOnBody,
-  [BodyPart.Missile]: Usage.Throw,
 }
 
 export class Inventory {
   private wearings: Wearing[] = []
   private bag: Item[] = []
 
-  constructor(parts: BodyPart[]) {
+  constructor(parts: InventorySlot[]) {
     this.wearings = parts.map(bodyPart => {
       return { bodyPart: bodyPart }
     })
@@ -43,7 +43,7 @@ export class Inventory {
 
   public inSlot(usage: Usage): Equipment[] {
     const match = this.wears().find(
-      ({ bodyPart }) => usage === bodyToUsage[bodyPart]
+      ({ bodyPart }) => usage === bodyPart.usage
     )
     return match && match.equipment ? [match.equipment] : []
   }
@@ -58,13 +58,13 @@ export class Inventory {
 
   public canWear(item: Equipment) {
     return this.wearings.some(wearing =>
-      includes(item.usages, bodyToUsage[wearing.bodyPart])
+      includes(item.usages, wearing.bodyPart.usage)
     )
   }
 
   public matchingEquip(item: Equipment): Wearing[] {
     return this.wearings.filter(wearing =>
-      includes(item.usages, bodyToUsage[wearing.bodyPart])
+      includes(item.usages, wearing.bodyPart.usage)
     )
   }
 

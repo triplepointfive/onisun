@@ -4,7 +4,7 @@ import { Fov } from './fov'
 import { Equipment } from './items'
 
 import { Characteristics, Corpse, LevelMap, LevelMapId, Memory } from './engine'
-import { Inventory, BodyPart } from './inventory'
+import { Inventory, MissileSlot, BodySlot, RightHandSlot, LeftHandSlot } from './inventory'
 
 import { Level } from './level'
 import { includes } from 'lodash'
@@ -182,18 +182,11 @@ export class Creature extends Phantom {
     this.ai = ai
 
     this.inventory = new Inventory([
-      BodyPart.LeftHand,
-      BodyPart.RightHand,
-      BodyPart.Legs,
-      BodyPart.Finger,
-      BodyPart.Head,
-      BodyPart.Eye,
-      BodyPart.Neck,
-      BodyPart.Back,
-      BodyPart.Body,
+      LeftHandSlot,
+      RightHandSlot,
+      BodySlot,
 
-      BodyPart.MissileWeapon,
-      BodyPart.Missile,
+      MissileSlot,
     ])
   }
 

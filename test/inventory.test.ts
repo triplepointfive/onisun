@@ -1,4 +1,4 @@
-import { Inventory, BodyPart } from '../src/inventory'
+import { Inventory, RightHandSlot, BodySlot } from '../src/inventory'
 import {
   generateOneHandedWeapon,
   generateCreature,
@@ -14,7 +14,7 @@ describe('puts on and takes off', () => {
   let inventory: Inventory
 
   beforeEach(() => {
-    inventory = new Inventory([BodyPart.RightHand])
+    inventory = new Inventory([RightHandSlot])
   })
 
   it('empty slot', () => {
@@ -57,7 +57,7 @@ describe('failed', () => {
   let inventory: Inventory
 
   beforeEach(() => {
-    inventory = new Inventory([BodyPart.Head])
+    inventory = new Inventory([BodySlot])
   })
 
   it('can not wear if there is no matching slot', () => {
