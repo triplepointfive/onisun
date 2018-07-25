@@ -98,7 +98,12 @@ export const generateLevel = function(): Level {
 }
 
 export const generatePlayer = function(): Player {
-  return new Player(generateLevel(), generateCharacteristics(), generateMetaAI(), fakeSpecie)
+  return new Player(
+    generateLevel(),
+    generateCharacteristics(),
+    generateMetaAI(),
+    fakeSpecie
+  )
 }
 
 class TestGame extends Game {}

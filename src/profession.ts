@@ -1,4 +1,4 @@
-import { Player } from './creature';
+import { Player } from './creature'
 
 export class Profession {
   constructor(

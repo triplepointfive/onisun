@@ -1,8 +1,10 @@
 import { AI } from './internal'
 import { Creature, Ability } from '../creature'
-import { Equipment, Usage } from '../items/internal'
+import { Equipment } from '../items/internal'
 import { Modifier } from '../characteristics'
-import { Wearing } from '../inventory'
+import { Wearing, allInventorySlots } from '../inventory'
+
+import { flatten } from 'lodash'
 
 export class Wearer extends AI {
   public available(actor: Creature): boolean {
@@ -17,7 +19,7 @@ export class Wearer extends AI {
 
           if (wearing) {
             // TODO: Use matching slot
-            actor.putOn(item)
+            actor.putOn(wearing.bodyPart, item)
           }
         }
       }
@@ -25,7 +27,11 @@ export class Wearer extends AI {
   }
 
   private whereToWear(actor: Creature, item: Equipment): Wearing {
-    const matches = actor.inventory.matchingEquip(item)
+    const matches: Wearing[] = flatten(
+      item.usages.map(usage =>
+        allInventorySlots.filter(slot => slot.usage === usage)
+      )
+    ).map(slot => actor.inventory.matchingEquip(slot))
 
     if (matches.length === 0) {
       return null
@@ -45,7 +51,7 @@ export class Wearer extends AI {
 
         if (wearing.equipment) {
           item.modifier.withWeight(
-            wearing.equipment.modifier,
+            wearing.equipment.item.modifier,
             weightModifier,
             (f, s, w) => (weight += w * (f - s))
           )

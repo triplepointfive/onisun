@@ -1,16 +1,24 @@
 import { Point } from './utils'
 import { MetaAI } from './ai'
 import { Fov } from './fov'
-import { Equipment } from './items'
 
 import { Characteristics, Corpse, LevelMap, LevelMapId, Memory } from './engine'
-import { Inventory, MissileSlot, BodySlot, RightHandSlot, LeftHandSlot } from './inventory'
+import {
+  Inventory,
+  MissileSlot,
+  BodySlot,
+  RightHandSlot,
+  LeftHandSlot,
+  InventorySlot,
+  InventoryItem,
+} from './inventory'
 
 import { Level } from './level'
 import { includes } from 'lodash'
 import { Item } from './items'
-import { LevelUp } from './screen';
-import { Profession } from './profession';
+import { LevelUp } from './screen'
+import { Profession } from './profession'
+import { Equipment } from './items/internal'
 
 export enum Clan {
   Player,
@@ -190,9 +198,9 @@ export class Creature extends Phantom {
     ])
   }
 
-  public putOn(item: Equipment) {
-    this.inventory.equip(this, item)
-    this.inventory.removeFromBag(item)
+  public putOn(slot: InventorySlot, equipment: InventoryItem) {
+    this.inventory.equip(this, slot, equipment)
+    // this.inventory.removeFromBag(equipment)
   }
 
   public takeOff(item: Equipment) {
@@ -215,12 +223,12 @@ export class Creature extends Phantom {
 
     this.inventory.wears().forEach(({ equipment }) => {
       if (equipment) {
-        tile.items.push(equipment)
+        tile.items.push(equipment.item)
       }
     })
 
-    this.inventory.cares().forEach(item => {
-      tile.items.push(item)
+    this.inventory.cares().forEach(invItem => {
+      tile.items.push(invItem.item)
     })
   }
 

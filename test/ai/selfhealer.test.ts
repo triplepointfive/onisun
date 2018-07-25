@@ -26,12 +26,4 @@ describe('When health is not full', () => {
   it('Available', () => {
     expect(creature.ai.available(creature)).toBeTruthy()
   })
-
-  it.skip('Regenerates health', () => {
-    const oldHealth = creature.characteristics.health.currentValue()
-    creature.act(map)
-    expect(creature.characteristics.health.currentValue()).toBeGreaterThan(
-      oldHealth
-    )
-  })
 })

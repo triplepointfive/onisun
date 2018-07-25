@@ -4,7 +4,13 @@ import {
   generateLevelMap,
   generateMissile,
 } from '../helpers'
-import { Point, Thrower, Ability } from '../../src/engine'
+import {
+  Point,
+  Thrower,
+  Ability,
+  InventoryItem,
+  MissileSlot,
+} from '../../src/engine'
 
 let internalAI = new Thrower()
 let actor, enemy, map
@@ -25,26 +31,24 @@ describe('When there is nothing to throw', () => {
   })
 })
 
-describe.skip('Throwing at enemy', () => {
+describe('Throwing at enemy', () => {
   beforeEach(() => {
-    actor.putOn(generateMissile())
+    const invItem = new InventoryItem(1, generateMissile())
+    actor.putOn(MissileSlot, invItem)
+
     enemy.addToMap(new Point(1, 4), map)
+
+    actor.act(map)
   })
 
-  it('Kills enemy with low health', () => {
-    enemy.characteristics.health.decrease(
-      enemy.characteristics.health.currentValue() - 1
-    )
-    actor.act(map)
-
-    expect(map.at(enemy.pos.x, enemy.pos.y).creature).toBeFalsy()
+  it('Adds throwing effect', () => {
+    const [nextActor, effect] = map.timeline.next()
+    expect(nextActor).toBeFalsy()
+    expect(effect).toBeTruthy()
   })
 
   it('Removes missile from inventory', () => {
-    actor.act(map)
-
-    expect(actor.inventory.inSlot(Ability.Throwing)).toEqual([])
-    expect(enemy.characteristics.health.atMax()).toBeFalsy()
+    expect(actor.inventory.inSlot(Ability.Throwing)).toBeUndefined()
   })
 })
 
@@ -54,12 +58,13 @@ describe('When there is someone else', () => {
   beforeEach(() => {
     enemy2 = generateCreature()
 
-    actor.putOn(generateMissile())
+    const invItem = new InventoryItem(1, generateMissile())
+    actor.putOn(MissileSlot, invItem)
 
     internalAI.victim = enemy
   })
 
-  it('Changes victim to the available one on a throw line', () => {
+  it.only('Changes victim to the available one on a throw line', () => {
     enemy2.addToMap(new Point(1, 3), map)
     enemy.addToMap(new Point(1, 4), map)
 

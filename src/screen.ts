@@ -3,10 +3,8 @@ import { Player } from './creature'
 import { Profession } from './profession'
 
 export abstract class Screen {
-  constructor(
-    protected game: Game,
-    // protected onDone: () => void,
-  ) {}
+  constructor(protected game: Game) // protected onDone: () => void,
+  {}
 
   public build() {}
 
@@ -18,11 +16,8 @@ export abstract class Screen {
 export class LevelUp extends Screen {
   public options: Profession[]
 
-  constructor(
-    game: Game,
-    public player: Player,
-    // onDone: () => void,
-  ) {
+  constructor(game: Game, public player: Player) // onDone: () => void,
+  {
     super(game)
     // super(onDone)
     this.options = this.game.professionPicker.available(this.player)
@@ -35,7 +30,9 @@ export class LevelUp extends Screen {
       this.player.levelUps -= 1
     }
 
-    let playerProfession = this.player.professions.find(profession => profession.id === pickedProfession.id)
+    let playerProfession = this.player.professions.find(
+      profession => profession.id === pickedProfession.id
+    )
     if (playerProfession) {
       playerProfession.level += 1
     } else {

@@ -10,11 +10,12 @@ import {
 import { Usage, Equipment, Item } from '../items/internal'
 import { Point, bresenham } from '../utils'
 import { ItemFlightEffect } from '../effect'
+import { MissileSlot, Wearing, InventoryItem } from '../inventory'
 
 export class Thrower extends AI {
   public victim: Creature
   public previousVictim: Creature
-  public missiles: Equipment[]
+  public missiles: InventoryItem
 
   public available(actor: Creature): boolean {
     return (
@@ -25,11 +26,8 @@ export class Thrower extends AI {
   }
 
   public act(actor: Creature): void {
-    const missile = this.missiles.pop()
-
-    // TODO: TEST IT!
-    // actor.inventory.takeOff(actor, missile)
-    // actor.inventory.removeFromBag(missile)
+    const missile = this.missiles.item
+    actor.inventory.removeWearing(actor, MissileSlot, 1)
 
     let path = []
 
@@ -46,8 +44,8 @@ export class Thrower extends AI {
   }
 
   private hasMissile(actor: Creature): boolean {
-    this.missiles = actor.inventory.inSlot(Usage.Throw)
-    return this.missiles.length > 0
+    this.missiles = actor.inventory.inSlot(MissileSlot)
+    return this.missiles !== undefined
   }
 
   private canAttack(actor: Creature): boolean {

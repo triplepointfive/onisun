@@ -6,34 +6,67 @@ import { remove, includes } from 'lodash'
 import { Creature } from './creature'
 
 export interface InventorySlot {
+  id: number // TODO: OMG do something with it
   // What kind of items can be put in slot
   usage: Usage
   // Has to put only a single item or can put a bunch of them
   useSingleItem: boolean
 }
 
-export const RightHandSlot: InventorySlot = { usage: Usage.WeaponOneHand, useSingleItem: true  }
-export const LeftHandSlot:  InventorySlot = { usage: Usage.WeaponOneHand, useSingleItem: true  }
-export const BodySlot:      InventorySlot = { usage: Usage.WearsOnBody,   useSingleItem: true  }
-export const MissileSlot:   InventorySlot = { usage: Usage.Throw,         useSingleItem: false }
-  // LeftHand,
-  // Legs,
-  // Finger,
-  // Head,
-  // Eye,
-  // Neck,
-  // Back,
+export const RightHandSlot: InventorySlot = {
+  id: 1,
+  usage: Usage.WeaponOneHand,
+  useSingleItem: true,
+}
+export const LeftHandSlot: InventorySlot = {
+  id: 2,
+  usage: Usage.WeaponOneHand,
+  useSingleItem: true,
+}
+export const BodySlot: InventorySlot = {
+  id: 3,
+  usage: Usage.WearsOnBody,
+  useSingleItem: true,
+}
+export const MissileSlot: InventorySlot = {
+  id: 4,
+  usage: Usage.Throw,
+  useSingleItem: false,
+}
 
-  // MissileWeapon,
+export const allInventorySlots = [
+  RightHandSlot,
+  LeftHandSlot,
+  BodySlot,
+  MissileSlot,
+]
+// LeftHand,
+// Legs,
+// Finger,
+// Head,
+// Eye,
+// Neck,
+// Back,
+
+// MissileWeapon,
+
+let inventoryItemId = 1
+export class InventoryItem {
+  public id: number
+
+  constructor(public count: number, public item: Equipment) {
+    this.id = inventoryItemId++
+  }
+}
 
 export type Wearing = {
   bodyPart: InventorySlot
-  equipment?: Equipment
+  equipment?: InventoryItem
 }
 
 export class Inventory {
   private wearings: Wearing[] = []
-  private bag: Item[] = []
+  private bag: InventoryItem[] = []
 
   constructor(parts: InventorySlot[]) {
     this.wearings = parts.map(bodyPart => {
@@ -41,18 +74,35 @@ export class Inventory {
     })
   }
 
-  public inSlot(usage: Usage): Equipment[] {
-    const match = this.wears().find(
-      ({ bodyPart }) => usage === bodyPart.usage
-    )
-    return match && match.equipment ? [match.equipment] : []
+  public inSlot(slot: InventorySlot): InventoryItem {
+    const wearing = this.matchingEquip(slot)
+    return wearing && wearing.equipment
+  }
+
+  public removeWearing(
+    actor: Creature,
+    slot: InventorySlot,
+    count: number
+  ): void {
+    let wearing = this.matchingEquip(slot)
+
+    if (wearing && wearing.equipment) {
+      if (wearing.equipment.count === count) {
+        wearing.equipment.item.onTakeOff(actor)
+        wearing.equipment = undefined
+      } else {
+        wearing.equipment.count -= count
+      }
+    } else {
+      // TODO: fail here
+    }
   }
 
   public wears(): Wearing[] {
     return this.wearings
   }
 
-  public cares(): Item[] {
+  public cares(): InventoryItem[] {
     return this.bag
   }
 
@@ -62,22 +112,25 @@ export class Inventory {
     )
   }
 
-  public matchingEquip(item: Equipment): Wearing[] {
-    return this.wearings.filter(wearing =>
-      includes(item.usages, wearing.bodyPart.usage)
-    )
+  public matchingEquip(slot: InventorySlot): Wearing {
+    return this.wearings.find(wearSlot => wearSlot.bodyPart.id === slot.id)
   }
 
-  public equip(actor: Creature, item: Equipment) {
-    this.matchingEquip(item).forEach(wearing => {
+  public equip(actor: Creature, slot: InventorySlot, equipment: InventoryItem) {
+    let wearing = this.matchingEquip(slot)
+
+    if (wearing) {
       if (wearing.equipment) {
         this.putToBag(wearing.equipment)
-        wearing.equipment.onTakeOff(actor)
+        wearing.equipment.item.onTakeOff(actor)
       }
 
-      wearing.equipment = item
-      item.onPutOn(actor)
-    })
+      // TODO: check how many items can put on
+      wearing.equipment = equipment
+      equipment.item.onPutOn(actor)
+    } else {
+      // TODO: fail here
+    }
   }
 
   public takeOff(actor: Creature, item: Equipment) {
@@ -90,11 +143,12 @@ export class Inventory {
     })
   }
 
-  public putToBag(item: Item) {
-    this.bag.push(item)
+  public putToBag(invItem: InventoryItem) {
+    this.bag.push(invItem)
   }
 
-  public removeFromBag(item: Item) {
-    remove(this.bag, inventoryItem => inventoryItem.id === item.id)
+  public removeFromBag(invItem: InventoryItem) {
+    // TODO: Allow to remove only a part of items
+    remove(this.bag, inventoryItem => inventoryItem.id === invItem.id)
   }
 }

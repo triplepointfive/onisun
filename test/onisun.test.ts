@@ -3,7 +3,12 @@ import { OnisunProfessionPicker } from '../src/onisun'
 import { generateProfession, generatePlayer } from './helpers'
 
 describe('OnisunProfessionPicker', () => {
-  let profession1, profession2, profession3, pool, player: Player, picker: ProfessionPicker
+  let profession1,
+    profession2,
+    profession3,
+    pool,
+    player: Player,
+    picker: ProfessionPicker
 
   beforeEach(() => {
     profession1 = generateProfession()
@@ -26,7 +31,9 @@ describe('OnisunProfessionPicker', () => {
 
     it('returns updatable profession', () => {
       player.professions.push(profession1)
-      expect(picker.available(player).find(p => p.id === profession1.id)).toBeTruthy()
+      expect(
+        picker.available(player).find(p => p.id === profession1.id)
+      ).toBeTruthy()
     })
   })
 
@@ -41,7 +48,12 @@ describe('OnisunProfessionPicker', () => {
 
     it('picks remaining ones', () => {
       player.professions.push(profession1)
-      expect(picker.available(player).map(p => p.id).sort()).toEqual([profession2.id, profession3.id].sort())
+      expect(
+        picker
+          .available(player)
+          .map(p => p.id)
+          .sort()
+      ).toEqual([profession2.id, profession3.id].sort())
     })
 
     it('nothing to return', () => {

@@ -57,28 +57,28 @@
     </dt>
 
     <dd class='col-sm-4'>
-      服
+      Надето
     </dd>
     <dt class='col-sm-8'>
       <table>
-        <tr v-for='(wearing, i) in creature.inventory.wears()' :key='"bodyPart" + i'>
+        <tr v-for='wearing in creature.inventory.wears()' :key='wearing.bodyPart.id'>
           <td>
             {{ displayBodyPart(wearing.bodyPart) }}
           </td>
-          <td>
-            {{ displayItem(wearing.equipment) }}
+          <td v-if='wearing.equipment'>
+            {{ displayItem(wearing.equipment.item) }} {{ wearing.equipment.count }}
           </td>
         </tr>
       </table>
     </dt>
 
     <dd class='col-sm-4'>
-      鞄
+      В сумке
     </dd>
     <dt class='col-sm-8'>
       <ul>
-        <li v-for='(count, name) in groupedCares(creature.inventory.cares())' :key='name'>
-            {{name}} {{ count === 1 ? '' : `: ${count}` }}
+        <li v-for='invItem in creature.inventory.cares()' :key='invItem.id'>
+            {{invItem.item.name}} {{ invItem.count === 1 ? '' : `: ${invItem.count}` }}
         </li>
       </ul>
     </dt>
@@ -183,24 +183,11 @@ export default Vue.extend({
         return attribute.currentValue()
       }
     },
-    groupedCares(cares) {
-      let grouped = {}
-
-      cares.forEach(item => {
-        if (grouped[item.name]) {
-          grouped[item.name] += 1
-        } else {
-          grouped[item.name] = 1
-        }
-      })
-
-      return grouped
-    },
     displayBodyPart(bodyPart) {
-      switch (bodyPart) {
-        case LeftHandSlot:
+      switch (bodyPart.id) {
+        case LeftHandSlot.id:
           return 'Левая рука'
-        case RightHandSlot:
+        case RightHandSlot.id:
           return 'Правая рука'
         // case BodyPart.Legs:
         //   return '足'
@@ -214,11 +201,11 @@ export default Vue.extend({
         //   return '首'
         // case BodyPart.Back:
         //   return '背'
-        case BodySlot:
+        case BodySlot.id:
           return 'Корпус'
         // case BodyPart.MissileWeapon:
         //   return 'MissileWeapon'
-        case MissileSlot:
+        case MissileSlot.id:
           return 'Снаряды'
         default:
           throw `Unknow body part ${bodyPart}`

@@ -1,10 +1,14 @@
-import { Inventory, RightHandSlot, BodySlot } from '../src/inventory'
+import {
+  Inventory,
+  RightHandSlot,
+  BodySlot,
+  InventoryItem,
+} from '../src/inventory'
 import {
   generateOneHandedWeapon,
   generateCreature,
   generateBodyArmor,
 } from './helpers'
-import { Usage } from '../src/items'
 
 let item1 = generateOneHandedWeapon()
 let item2 = generateOneHandedWeapon()
@@ -18,7 +22,7 @@ describe('puts on and takes off', () => {
   })
 
   it('empty slot', () => {
-    inventory.equip(creature, item1)
+    inventory.equip(creature, RightHandSlot, new InventoryItem(1, item1))
     expect(inventory.wears()[0].equipment).toBe(item1)
     inventory.takeOff(creature, item1)
     expect(inventory.wears()[0].equipment).toBeNull()
@@ -26,8 +30,8 @@ describe('puts on and takes off', () => {
   })
 
   it('already taken slot', () => {
-    inventory.equip(creature, item1)
-    inventory.equip(creature, item2)
+    inventory.equip(creature, RightHandSlot, new InventoryItem(1, item1))
+    inventory.equip(creature, RightHandSlot, new InventoryItem(1, item2))
     expect(inventory.wears()[0].equipment).toBe(item2)
     expect(inventory.cares()).toEqual([item1])
     inventory.takeOff(creature, item2)
@@ -35,13 +39,14 @@ describe('puts on and takes off', () => {
     expect(inventory.cares()).toEqual([item1, item2])
   })
 
-  it('checks what is put in a slot', () => {
-    expect(inventory.inSlot(Usage.WeaponOneHand)).toEqual([])
+  it.only('checks what is put in a slot', () => {
+    expect(inventory.inSlot(RightHandSlot)).toBeUndefined()
 
-    inventory.equip(creature, item1)
-    expect(inventory.wears()[0].equipment).toBe(item1)
+    const invItem = new InventoryItem(1, item1)
+    inventory.equip(creature, RightHandSlot, invItem)
+    expect(inventory.wears()[0].equipment.item).toBe(item1)
 
-    expect(inventory.inSlot(Usage.WeaponOneHand)).toEqual([item1])
+    expect(inventory.inSlot(RightHandSlot)).toEqual(invItem)
   })
 
   it('checks if can put an item on', () => {
@@ -61,21 +66,23 @@ describe('failed', () => {
   })
 
   it('can not wear if there is no matching slot', () => {
-    inventory.equip(creature, item1)
+    inventory.equip(creature, RightHandSlot, new InventoryItem(1, item1))
     expect(inventory.wears()[0].equipment).toBeFalsy()
     expect(inventory.cares()).toEqual([])
   })
 
   it('drops item', () => {
-    inventory.putToBag(item1)
-    expect(inventory.cares()).toEqual([item1])
-    inventory.removeFromBag(item1)
+    const invItem = new InventoryItem(1, item1)
+    inventory.putToBag(invItem)
+    expect(inventory.cares().length).toEqual(1)
+    expect(inventory.cares()[0].item).toEqual(item1)
+    inventory.removeFromBag(invItem)
     expect(inventory.cares()).toEqual([])
   })
 
   it('removes item that is not in inventory', () => {
     expect(inventory.cares()).toEqual([])
-    inventory.removeFromBag(item1)
+    inventory.removeFromBag(new InventoryItem(1, item1))
     expect(inventory.cares()).toEqual([])
   })
 

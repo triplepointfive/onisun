@@ -27,8 +27,11 @@ import {
   Missile,
   ProfessionPicker,
   Profession,
+  InventoryItem,
+  MissileSlot,
 } from './engine'
 import { includes, sample } from 'lodash'
+import { RightHandSlot } from './inventory'
 
 export type GeneratorOptions = {
   minSize: number
@@ -164,7 +167,7 @@ export class OnisunProfessionPicker extends ProfessionPicker {
   constructor(
     private pool: Profession[],
     private maxLevel: number,
-    private maxTaken: number,
+    private maxTaken: number
   ) {
     super()
   }
@@ -179,37 +182,62 @@ export class OnisunProfessionPicker extends ProfessionPicker {
     }
 
     if (this.canTakeNewProfession(player)) {
-      professions.push(this.newFromPool(player, professions.map(profession => profession.id)))
+      professions.push(
+        this.newFromPool(player, professions.map(profession => profession.id))
+      )
     } else if (this.canUpdate(player)) {
-      professions.push(this.updatableProfession(player, professions.map(profession => profession.id)))
+      professions.push(
+        this.updatableProfession(
+          player,
+          professions.map(profession => profession.id)
+        )
+      )
     }
 
     return professions
   }
 
   protected canUpdate(player: Player): boolean {
-    return player.professions.some(profession => profession.level < this.maxLevel)
+    return player.professions.some(
+      profession => profession.level < this.maxLevel
+    )
   }
 
-  protected updatableProfession(player: Player, excludeProfessions: number[] = []): Profession {
-    return sample(player.professions.filter(profession => player.professions.length < this.maxTaken && !includes(excludeProfessions, profession.id)))
+  protected updatableProfession(
+    player: Player,
+    excludeProfessions: number[] = []
+  ): Profession {
+    return sample(
+      player.professions.filter(
+        profession =>
+          player.professions.length < this.maxTaken &&
+          !includes(excludeProfessions, profession.id)
+      )
+    )
   }
 
   protected canTakeNewProfession(player: Player): boolean {
     return player.professions.length < this.maxTaken
   }
 
-  protected newFromPool(player: Player, excludeProfessions: number[] = []): Profession {
-    const excluding = excludeProfessions.concat(player.professions.map(profession => profession.id))
-    return sample(this.pool.filter(profession => !includes(excluding, profession.id)))
+  protected newFromPool(
+    player: Player,
+    excludeProfessions: number[] = []
+  ): Profession {
+    const excluding = excludeProfessions.concat(
+      player.professions.map(profession => profession.id)
+    )
+    return sample(
+      this.pool.filter(profession => !includes(excluding, profession.id))
+    )
   }
 }
 
 export class Onisun extends Game {
   constructor(generatorOptions: GeneratorOptions) {
-    let pool: Profession[] = [];
+    let pool: Profession[] = []
 
-    [
+    ;[
       'ботаник',
       'библиотекарь',
       'архитектор',
@@ -284,8 +312,9 @@ export class Onisun extends Game {
       new Dispatcher(),
       playerSpecie
     )
-    player.putOn(dagger)
-    player.putOn(rock)
+    player.putOn(RightHandSlot, new InventoryItem(1, dagger))
+    player.putOn(MissileSlot, new InventoryItem(30, rock))
+    player.inventory.putToBag(new InventoryItem(1, dagger))
 
     return player
   }

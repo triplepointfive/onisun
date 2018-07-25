@@ -1,4 +1,8 @@
-import { generateCreatureWithAI, generateLevelMap, generateItem } from '../helpers'
+import {
+  generateCreatureWithAI,
+  generateLevelMap,
+  generateItem,
+} from '../helpers'
 import { Picker, Point } from '../../src/engine'
 
 let internalAI = new Picker()
