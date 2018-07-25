@@ -22,24 +22,32 @@ describe('puts on and takes off', () => {
   })
 
   it('empty slot', () => {
-    inventory.equip(creature, RightHandSlot, new InventoryItem(1, item1))
-    expect(inventory.wears()[0].equipment).toBe(item1)
-    inventory.takeOff(creature, item1)
+    const invItem = new InventoryItem(1, item1)
+    inventory.equip(creature, RightHandSlot, invItem)
+    expect(inventory.wears()[0].equipment.item).toEqual(item1)
+    inventory.takeOff(creature, invItem)
     expect(inventory.wears()[0].equipment).toBeNull()
-    expect(inventory.cares()).toEqual([item1])
+    expect(inventory.cares().length).toEqual(1)
+    expect(inventory.cares()[0].item).toEqual(item1)
   })
 
   it('already taken slot', () => {
     inventory.equip(creature, RightHandSlot, new InventoryItem(1, item1))
-    inventory.equip(creature, RightHandSlot, new InventoryItem(1, item2))
-    expect(inventory.wears()[0].equipment).toBe(item2)
-    expect(inventory.cares()).toEqual([item1])
-    inventory.takeOff(creature, item2)
+
+    const invItem = new InventoryItem(1, item2)
+    inventory.equip(creature, RightHandSlot, invItem)
+    expect(inventory.wears()[0].equipment.item).toBe(item2)
+    expect(inventory.cares().length).toEqual(1)
+    expect(inventory.cares()[0].item).toEqual(item1)
+
+    inventory.takeOff(creature, invItem)
     expect(inventory.wears()[0].equipment).toBeNull()
-    expect(inventory.cares()).toEqual([item1, item2])
+    expect(inventory.cares().length).toEqual(2)
+    expect(inventory.cares()[0].item).toEqual(item1)
+    expect(inventory.cares()[1].item).toEqual(item2)
   })
 
-  it.only('checks what is put in a slot', () => {
+  it('checks what is put in a slot', () => {
     expect(inventory.inSlot(RightHandSlot)).toBeUndefined()
 
     const invItem = new InventoryItem(1, item1)

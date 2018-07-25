@@ -133,11 +133,11 @@ export class Inventory {
     }
   }
 
-  public takeOff(actor: Creature, item: Item) {
+  public takeOff(actor: Creature, invItem: InventoryItem) {
     this.wearings.forEach(wearing => {
-      if (wearing.equipment && wearing.equipment.id === item.id) {
+      if (wearing.equipment && wearing.equipment.id === invItem.id) {
         this.putToBag(wearing.equipment)
-        item.onTakeOff(actor)
+        invItem.item.onTakeOff(actor)
         wearing.equipment = null
       }
     })

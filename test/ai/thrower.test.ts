@@ -64,7 +64,7 @@ describe('When there is someone else', () => {
     internalAI.victim = enemy
   })
 
-  it.only('Changes victim to the available one on a throw line', () => {
+  it('Changes victim to the available one on a throw line', () => {
     enemy2.addToMap(new Point(1, 3), map)
     enemy.addToMap(new Point(1, 4), map)
 
