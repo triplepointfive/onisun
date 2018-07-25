@@ -210,21 +210,21 @@ export class Onisun extends Game {
     let pool: Profession[] = [];
 
     [
-      'Lorem',
-      'ipsum',
-      'dolor',
+      'ботаник',
+      'библиотекарь',
+      'архитектор',
 
-      'sit',
-      'amet',
-      'consectetur',
+      'ученый',
+      'флорист',
+      'художник',
 
-      'adipiscing',
-      'elit',
-      'Suspendisse',
+      'судья',
+      'солдат',
+      'спасатель',
 
-      'dignissim',
-      'mi',
-      'tincidunt',
+      'программист',
+      'портной',
+      'повар',
     ].forEach((name, i) => {
       pool.push(new Profession(i, name, 1))
     })

@@ -1,15 +1,16 @@
 <template>
   <div class='level-up text-center'>
     <div>
-      <span
+      <div
         class='option p-2 m-3'
         v-for='option in screen.options'
         :key='option.id'
         @click='picked = option'
         :class="{ 'picked': picked && picked.id === option.id }"
       >
-        {{ option.name }}
-      </span>
+        <div>{{ option.name }}</div>
+        <img class='icon' :src='iconPath(option.id)'>
+      </div>
     </div>
 
     <a @click='close' v-if='picked !== null'>Подтвердить</a>
@@ -38,6 +39,42 @@ export default Vue.extend({
   methods: {
     close() {
       this.screen.onInput(this.picked)
+    },
+    iconPath(professionId: number) {
+      return 'assets/professions/' + [
+        'acrobatic.svg',
+        'button-finger.svg',
+        'disintegrate.svg',
+        'flying-fox.svg',
+        'amputation.svg',
+        'catch.svg',
+        'divert.svg',
+        'fruiting.svg',
+        'annexation.svg',
+        'conversation.svg',
+        'dodging.svg',
+        'grab.svg',
+        'arrest.svg',
+        'convince.svg',
+        'drinking.svg',
+        'journey.svg',
+        'back-forth.svg',
+        'coronation.svg',
+        'drop-weapon.svg',
+        'juggler.svg',
+        'backstab.svg',
+        'crafting.svg',
+        'drowning.svg',
+        'jump-across.svg',
+        'boot-stomp.svg',
+        'crush.svg',
+        'eating.svg',
+        'kindle.svg',
+        'bowman.svg',
+        'discussion.svg',
+        'expander.svg',
+        'kneeling.svg',
+      ][professionId]
     }
   }
 })
@@ -60,6 +97,11 @@ export default Vue.extend({
 
   &.picked {
     border-color: red;
+  }
+
+  .icon {
+    width: 100px;
+    height: 100px;
   }
 }
 </style>
