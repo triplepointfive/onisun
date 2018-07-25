@@ -6,6 +6,7 @@
         v-for='option in screen.options'
         :key='option.id'
         @click='picked = option'
+        @dblclick="close(option)"
         :class="{ 'picked': picked && picked.id === option.id }"
       >
         <div>{{ option.name }}</div>
@@ -37,8 +38,8 @@ export default Vue.extend({
     }
   },
   methods: {
-    close() {
-      this.screen.onInput(this.picked)
+    close(doubleClickOption) {
+      this.screen.onInput(doubleClickOption || this.picked)
     },
     iconPath(professionId: number) {
       return 'assets/professions/' + [

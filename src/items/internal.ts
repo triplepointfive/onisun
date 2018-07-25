@@ -41,6 +41,10 @@ export class Item {
   public onTakeOff(creature: Creature): void {
     creature.characteristics.removeModifier(this.modifier)
   }
+
+  public groupsWith(item: Item): boolean {
+    return this.name === item.name
+  }
 }
 
 export class Corpse extends Item {

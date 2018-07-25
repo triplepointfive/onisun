@@ -202,8 +202,8 @@ export class Creature extends Phantom {
     // this.inventory.removeFromBag(equipment)
   }
 
-  public takeOff(item: Item) {
-    this.inventory.takeOff(this, item)
+  public takeOff(invItem: InventoryItem) {
+    this.inventory.takeOff(this, invItem)
   }
 
   public addToMap(pos: Point, level: LevelMap) {

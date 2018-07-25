@@ -50,11 +50,10 @@ describe('puts on and takes off', () => {
   it('checks what is put in a slot', () => {
     expect(inventory.inSlot(RightHandSlot)).toBeUndefined()
 
-    const invItem = new InventoryItem(1, item1)
-    inventory.equip(creature, RightHandSlot, invItem)
+    inventory.equip(creature, RightHandSlot, new InventoryItem(1, item1))
     expect(inventory.wears()[0].equipment.item).toBe(item1)
 
-    expect(inventory.inSlot(RightHandSlot)).toEqual(invItem)
+    expect(inventory.inSlot(RightHandSlot).item).toEqual(item1)
   })
 
   it('checks if can put an item on', () => {

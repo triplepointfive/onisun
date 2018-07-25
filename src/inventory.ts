@@ -125,8 +125,9 @@ export class Inventory {
         wearing.equipment.item.onTakeOff(actor)
       }
 
-      // TODO: check how many items can put on
-      wearing.equipment = equipment
+      const count = slot.useSingleItem ? 1 : equipment.count
+      this.removeFromBag(equipment, count)
+      wearing.equipment = new InventoryItem(count, equipment.item)
       equipment.item.onPutOn(actor)
     } else {
       // TODO: fail here
@@ -135,7 +136,7 @@ export class Inventory {
 
   public takeOff(actor: Creature, invItem: InventoryItem) {
     this.wearings.forEach(wearing => {
-      if (wearing.equipment && wearing.equipment.id === invItem.id) {
+      if (wearing.equipment && wearing.equipment.item.id === invItem.item.id) {
         this.putToBag(wearing.equipment)
         invItem.item.onTakeOff(actor)
         wearing.equipment = null
@@ -144,11 +145,20 @@ export class Inventory {
   }
 
   public putToBag(invItem: InventoryItem) {
-    this.bag.push(invItem)
+    const inv = this.bag.find(inv => inv.item.groupsWith(invItem.item))
+
+    if (inv) {
+      inv.count += invItem.count
+    } else {
+      this.bag.push(invItem)
+    }
   }
 
-  public removeFromBag(invItem: InventoryItem) {
-    // TODO: Allow to remove only a part of items
-    remove(this.bag, inventoryItem => inventoryItem.id === invItem.id)
+  public removeFromBag(invItem: InventoryItem, count: number = invItem.count) {
+    if (invItem.count === count) {
+      remove(this.bag, inventoryItem => inventoryItem.id === invItem.id)
+    } else {
+      invItem.count -= count
+    }
   }
 }
