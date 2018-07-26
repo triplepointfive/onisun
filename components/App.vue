@@ -4,7 +4,7 @@
 
     <div v-if='game.player && game.player.dead'>You are dead</div>
 
-    <LevelUp v-if='game.screen' :screen='game.screen'/>
+    <component v-if='game.screen' :is='screenComponent' :screen='game.screen'/>
 
     <Logger :logger='game.logger' />
     <div class=''>
@@ -64,8 +64,9 @@ import Logger from './Logger.vue'
 import Scene from './Scene.vue'
 
 import LevelUp from './LevelUp.vue'
+import Idle from './Idle.vue'
 
-import { LevelMap, } from '../src/engine'
+import { LevelMap, ScreenType } from '../src/engine'
 
 import {
   Onisun,
@@ -85,6 +86,17 @@ export default Vue.extend({
     Logger,
     Scene,
     LevelUp,
+    Idle,
+  },
+  computed: {
+    screenComponent() {
+      switch (this.game.screen && this.game.screen.type) {
+      case ScreenType.LevelUp:
+        return LevelUp
+      case ScreenType.Idle:
+        return Idle
+      }
+    }
   },
   methods: {
     generateMap() {

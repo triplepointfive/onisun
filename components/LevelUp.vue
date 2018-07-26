@@ -20,21 +20,12 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import * as _ from 'lodash'
-
-import Cell from './Cell.vue'
-import Logger from './Logger.vue'
 
 export default Vue.extend({
   props: ['screen'],
   data() {
     return {
       picked: null
-    }
-  },
-  computed: {
-    valid() {
-      return
     }
   },
   methods: {

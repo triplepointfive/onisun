@@ -2,9 +2,20 @@ import { Game } from './game'
 import { Player } from './creature'
 import { Profession } from './profession'
 
+export enum ScreenType {
+  LevelUp,
+  Idle,
+}
+
 export abstract class Screen {
-  constructor(protected game: Game) // protected onDone: () => void,
-  {}
+  public player: Player
+
+  constructor(
+    public readonly type: ScreenType,
+    protected game: Game,
+  ) {
+    this.player = this.game.player
+  }
 
   public build() {}
 
@@ -13,13 +24,25 @@ export abstract class Screen {
   }
 }
 
-export class LevelUp extends Screen {
+export enum IdleInputKey {
+  Right
+}
+
+export class IdleScreen extends Screen {
+  constructor(game: Game) {
+    super(ScreenType.Idle, game)
+  }
+
+  public onInput() {
+    this.game.screen = undefined
+  }
+}
+
+export class LevelUpScreen extends Screen {
   public options: Profession[]
 
-  constructor(game: Game, public player: Player) // onDone: () => void,
-  {
-    super(game)
-    // super(onDone)
+  constructor(game: Game) {
+    super(ScreenType.LevelUp, game)
     this.options = this.game.professionPicker.available(this.player)
   }
 

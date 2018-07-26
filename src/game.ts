@@ -1,5 +1,5 @@
 import { Logger, LevelMap, Player } from './engine'
-import { Screen, LevelUp } from './screen'
+import { Screen } from './screen'
 import { ProfessionPicker } from './profession'
 
 export abstract class Game {
