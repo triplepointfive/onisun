@@ -1,8 +1,8 @@
-import { Item } from './items'
+import { Item, GroupedItem, ItemsBunch } from './items'
 
 import { Usage } from './items/internal'
 
-import { remove, includes } from 'lodash'
+import { includes } from 'lodash'
 import { Creature } from './creature'
 
 export interface InventorySlot {
@@ -50,23 +50,14 @@ export const allInventorySlots = [
 
 // MissileWeapon,
 
-let inventoryItemId = 1
-export class InventoryItem {
-  public id: number
-
-  constructor(public count: number, public item: Item) {
-    this.id = inventoryItemId++
-  }
-}
-
 export type Wearing = {
   bodyPart: InventorySlot
-  equipment?: InventoryItem
+  equipment?: GroupedItem
 }
 
 export class Inventory {
   private wearings: Wearing[] = []
-  private bag: InventoryItem[] = []
+  private bag: ItemsBunch = new ItemsBunch()
 
   constructor(parts: InventorySlot[]) {
     this.wearings = parts.map(bodyPart => {
@@ -74,7 +65,7 @@ export class Inventory {
     })
   }
 
-  public inSlot(slot: InventorySlot): InventoryItem {
+  public inSlot(slot: InventorySlot): GroupedItem {
     const wearing = this.matchingEquip(slot)
     return wearing && wearing.equipment
   }
@@ -102,8 +93,8 @@ export class Inventory {
     return this.wearings
   }
 
-  public cares(): InventoryItem[] {
-    return this.bag
+  public cares(): GroupedItem[] {
+    return this.bag.bunch
   }
 
   public canWear(item: Item) {
@@ -116,49 +107,46 @@ export class Inventory {
     return this.wearings.find(wearSlot => wearSlot.bodyPart.id === slot.id)
   }
 
-  public equip(actor: Creature, slot: InventorySlot, equipment: InventoryItem) {
-    let wearing = this.matchingEquip(slot)
+  public equip(actor: Creature, slot: InventorySlot, item: Item) {
+    let wearing = this.matchingEquip(slot),
+        groupItem = this.bag.find(item)
 
-    if (wearing) {
+
+    if (wearing && groupItem) {
       if (wearing.equipment) {
-        this.putToBag(wearing.equipment)
+        this.putToBag(wearing.equipment.item, wearing.equipment.count)
         wearing.equipment.item.onTakeOff(actor)
       }
 
-      const count = slot.useSingleItem ? 1 : equipment.count
-      this.removeFromBag(equipment, count)
-      wearing.equipment = new InventoryItem(count, equipment.item)
-      equipment.item.onPutOn(actor)
+      // TODO: Check that can't equip more than have in inventory
+
+      const count = slot.useSingleItem ? 1 : groupItem.count
+      wearing.equipment = new GroupedItem(count, item)
+
+      this.bag.remove(item, count)
+      item.onPutOn(actor)
     } else {
       // TODO: fail here
     }
   }
 
-  public takeOff(actor: Creature, invItem: InventoryItem) {
-    this.wearings.forEach(wearing => {
-      if (wearing.equipment && wearing.equipment.item.id === invItem.item.id) {
-        this.putToBag(wearing.equipment)
-        invItem.item.onTakeOff(actor)
-        wearing.equipment = null
-      }
-    })
+  public takeOff(actor: Creature, slot: InventorySlot): void {
+    const wearing = this.wearings.find(wearing => wearing.bodyPart === slot)
+
+    if (wearing && wearing.equipment) {
+      this.putToBag(wearing.equipment.item, wearing.equipment.count)
+      wearing.equipment.item.onTakeOff(actor)
+      wearing.equipment = null
+    }
+
+    // TODO: Fail if nothing to remove?
   }
 
-  public putToBag(invItem: InventoryItem) {
-    const inv = this.bag.find(inv => inv.item.groupsWith(invItem.item))
-
-    if (inv) {
-      inv.count += invItem.count
-    } else {
-      this.bag.push(invItem)
-    }
+  public putToBag(item: Item, count: number = 1): void {
+    this.bag.put(item, count)
   }
 
-  public removeFromBag(invItem: InventoryItem, count: number = invItem.count) {
-    if (invItem.count === count) {
-      remove(this.bag, inventoryItem => inventoryItem.id === invItem.id)
-    } else {
-      invItem.count -= count
-    }
+  public removeFromBag(item: Item, count: number = 1): void {
+    this.bag.remove(item, count)
   }
 }

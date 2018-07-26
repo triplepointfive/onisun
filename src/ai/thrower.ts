@@ -7,15 +7,15 @@ import {
   Reaction,
   ThrowEvent,
 } from '../creature'
-import { Usage, Item } from '../items/internal'
+import { Usage, Item, GroupedItem } from '../items/internal'
 import { Point, bresenham } from '../utils'
 import { ItemFlightEffect } from '../effect'
-import { MissileSlot, Wearing, InventoryItem } from '../inventory'
+import { MissileSlot, Wearing } from '../inventory'
 
 export class Thrower extends AI {
   public victim: Creature
   public previousVictim: Creature
-  public missiles: InventoryItem
+  public missiles: GroupedItem
 
   public available(actor: Creature): boolean {
     return (

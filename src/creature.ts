@@ -10,7 +10,6 @@ import {
   RightHandSlot,
   LeftHandSlot,
   InventorySlot,
-  InventoryItem,
 } from './inventory'
 
 import { Level } from './level'
@@ -197,13 +196,12 @@ export class Creature extends Phantom {
     ])
   }
 
-  public putOn(slot: InventorySlot, equipment: InventoryItem) {
-    this.inventory.equip(this, slot, equipment)
-    // this.inventory.removeFromBag(equipment)
+  public putOn(slot: InventorySlot, item: Item) {
+    this.inventory.equip(this, slot, item)
   }
 
-  public takeOff(invItem: InventoryItem) {
-    this.inventory.takeOff(this, invItem)
+  public takeOff(slot: InventorySlot) {
+    this.inventory.takeOff(this, slot)
   }
 
   public addToMap(pos: Point, level: LevelMap) {

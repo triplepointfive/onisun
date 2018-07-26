@@ -177,7 +177,7 @@ export default Vue.extend({
     },
     displayAttributeWithModifiers(attribute) {
       if (attribute.currentValue() != attribute.maximum()) {
-        const mods = attribute.modifiers.map(x => x > 0 ? `+ ${x}` : `- ${x}`)
+        const mods = attribute.modifiers.map(x => x > 0 ? `+ ${x}` : `- ${x}`).join(' ')
         return `${attribute.currentValue()} = [${attribute.maximum()}] ${mods}`
       } else {
         return attribute.currentValue()

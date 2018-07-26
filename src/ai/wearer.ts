@@ -17,7 +17,7 @@ export class Wearer extends AI {
 
       if (wearing) {
         // TODO: Use matching slot
-        actor.putOn(wearing.bodyPart, item)
+        actor.putOn(wearing.bodyPart, item.item)
       }
     })
   }

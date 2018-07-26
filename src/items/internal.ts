@@ -1,6 +1,8 @@
 import { Specie, Creature } from '../creature'
 import { Modifier } from '../characteristics'
 
+import { remove } from 'lodash'
+
 export enum Usage {
   WeaponOneHand,
   WearsOnBody,
@@ -44,6 +46,50 @@ export class Item {
 
   public groupsWith(item: Item): boolean {
     return this.name === item.name
+  }
+}
+
+let inventoryItemId = 1
+export class GroupedItem {
+  public id: number
+
+  constructor(public count: number, public item: Item) {
+    this.id = inventoryItemId++
+  }
+
+  public groupsWith(item: Item): boolean {
+    return this.item.groupsWith(item)
+  }
+}
+
+export class ItemsBunch {
+  public bunch: GroupedItem[] = []
+
+  public find(item: Item): GroupedItem {
+    return this.bunch.find(invItem => invItem.groupsWith(item))
+  }
+
+  public remove(item: Item, count: number): void {
+    const invItem: GroupedItem = this.find(item)
+
+    if (!invItem) {
+      // TODO: Fail if removes item that's not in bunch yet?
+      return
+    } else if (invItem.count === count) {
+      remove(this.bunch, inventoryItem => inventoryItem.id === invItem.id)
+    } else {
+      invItem.count -= count
+    }
+  }
+
+  public put(item: Item, count: number): void {
+    const invItem = this.bunch.find(inv => inv.groupsWith(item))
+
+    if (invItem) {
+      invItem.count += invItem.count
+    } else {
+      this.bunch.push(new GroupedItem(count, item))
+    }
   }
 }
 

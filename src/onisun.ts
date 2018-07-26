@@ -27,7 +27,7 @@ import {
   Missile,
   ProfessionPicker,
   Profession,
-  InventoryItem,
+  GroupedItem,
   MissileSlot,
 } from './engine'
 import { includes, sample } from 'lodash'
@@ -313,9 +313,11 @@ export class Onisun extends Game {
       new Dispatcher(),
       playerSpecie
     )
-    player.putOn(RightHandSlot, new InventoryItem(1, dagger))
-    player.putOn(MissileSlot, new InventoryItem(30, rock))
-    player.inventory.putToBag(new InventoryItem(1, dagger))
+
+    player.inventory.putToBag(dagger, 2)
+    player.inventory.putToBag(rock, 30)
+    player.putOn(RightHandSlot, dagger)
+    player.putOn(MissileSlot, rock)
 
     return player
   }

@@ -3,7 +3,7 @@ import { Creature, Ability } from '../creature'
 import { Item, ItemId } from '../items'
 import { Point } from '../utils'
 import { AIItemPickedEvent } from './meta_ai'
-import { InventoryItem } from '../engine'
+import { GroupedItem } from '../engine'
 
 export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId = null
@@ -24,7 +24,7 @@ export class Picker extends FollowTargetAI {
     this.prevAI.pushEvent(new AIItemPickedEvent(tile.items))
 
     tile.items.forEach(item => {
-      actor.inventory.putToBag(new InventoryItem(1, item))
+      actor.inventory.putToBag(item)
     })
 
     tile.items = []

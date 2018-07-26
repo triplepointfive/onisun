@@ -8,12 +8,14 @@ import {
   Point,
   Thrower,
   Ability,
-  InventoryItem,
+  GroupedItem,
   MissileSlot,
+  Creature,
+  LevelMap,
 } from '../../src/engine'
 
 let internalAI = new Thrower()
-let actor, enemy, map
+let actor: Creature, enemy: Creature, map: LevelMap
 
 beforeEach(() => {
   actor = generateCreatureWithAI(internalAI)
@@ -33,8 +35,9 @@ describe('When there is nothing to throw', () => {
 
 describe('Throwing at enemy', () => {
   beforeEach(() => {
-    const invItem = new InventoryItem(1, generateMissile())
-    actor.putOn(MissileSlot, invItem)
+    const item = generateMissile()
+    actor.inventory.putToBag(item, 1)
+    actor.putOn(MissileSlot, item)
 
     enemy.addToMap(new Point(1, 4), map)
 
@@ -48,7 +51,7 @@ describe('Throwing at enemy', () => {
   })
 
   it('Removes missile from inventory', () => {
-    expect(actor.inventory.inSlot(Ability.Throwing)).toBeUndefined()
+    expect(actor.inventory.inSlot(MissileSlot)).toBeUndefined()
   })
 })
 
@@ -58,8 +61,9 @@ describe('When there is someone else', () => {
   beforeEach(() => {
     enemy2 = generateCreature()
 
-    const invItem = new InventoryItem(1, generateMissile())
-    actor.putOn(MissileSlot, invItem)
+    const item = generateMissile()
+    actor.inventory.putToBag(item, 1)
+    actor.putOn(MissileSlot, item)
 
     internalAI.victim = enemy
   })

@@ -15,7 +15,7 @@ export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public id: LevelMapId
   public game: Game
-  protected timeline: Timeline<TimeEvent>
+  public timeline: Timeline<TimeEvent>
 
   private static lastId: LevelMapId = 0
   public static getId(): LevelMapId {
