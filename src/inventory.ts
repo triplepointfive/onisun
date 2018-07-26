@@ -142,11 +142,11 @@ export class Inventory {
     // TODO: Fail if nothing to remove?
   }
 
-  public putToBag(item: Item, count: number = 1): void {
+  public putToBag(item: Item, count: number): void {
     this.bag.put(item, count)
   }
 
-  public removeFromBag(item: Item, count: number = 1): void {
+  public removeFromBag(item: Item, count: number): void {
     this.bag.remove(item, count)
   }
 }

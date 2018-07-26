@@ -188,10 +188,9 @@ export class Creature extends Phantom {
     this.ai = ai
 
     this.inventory = new Inventory([
-      LeftHandSlot,
       RightHandSlot,
+      LeftHandSlot,
       BodySlot,
-
       MissileSlot,
     ])
   }
@@ -216,16 +215,16 @@ export class Creature extends Phantom {
     this.currentLevel.removeCreature(this)
 
     let tile = this.currentLevel.at(this.pos.x, this.pos.y)
-    tile.items.push(new Corpse(this.specie))
+    tile.addItem(new Corpse(this.specie), 1)
 
     this.inventory.wears().forEach(({ equipment }) => {
       if (equipment) {
-        tile.items.push(equipment.item)
+        tile.addItem(equipment.item, equipment.count)
       }
     })
 
     this.inventory.cares().forEach(invItem => {
-      tile.items.push(invItem.item)
+      tile.addItem(invItem.item, invItem.count)
     })
   }
 

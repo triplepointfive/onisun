@@ -86,10 +86,20 @@ export class ItemsBunch {
     const invItem = this.bunch.find(inv => inv.groupsWith(item))
 
     if (invItem) {
-      invItem.count += invItem.count
+      invItem.count += count
     } else {
       this.bunch.push(new GroupedItem(count, item))
     }
+  }
+
+  public clone(): ItemsBunch {
+    let bunch = new ItemsBunch()
+
+    this.bunch.forEach(groupedItem => {
+      bunch.put(groupedItem.item, groupedItem.count)
+    })
+
+    return bunch
   }
 }
 

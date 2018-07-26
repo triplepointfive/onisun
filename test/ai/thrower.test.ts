@@ -56,7 +56,7 @@ describe('Throwing at enemy', () => {
 })
 
 describe('When there is someone else', () => {
-  let enemy2
+  let enemy2: Creature
 
   beforeEach(() => {
     enemy2 = generateCreature()

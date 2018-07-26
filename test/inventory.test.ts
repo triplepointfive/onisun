@@ -22,7 +22,7 @@ describe('puts on and takes off', () => {
   })
 
   it('empty slot', () => {
-    inventory.putToBag(item1)
+    inventory.putToBag(item1, 1)
     inventory.equip(creature, RightHandSlot, item1)
     expect(inventory.wears()[0].equipment.item).toEqual(item1)
     inventory.takeOff(creature, RightHandSlot)
@@ -32,8 +32,8 @@ describe('puts on and takes off', () => {
   })
 
   it('already taken slot', () => {
-    inventory.putToBag(item1)
-    inventory.putToBag(item2)
+    inventory.putToBag(item1, 1)
+    inventory.putToBag(item2, 1)
     inventory.equip(creature, RightHandSlot, item1)
     inventory.equip(creature, RightHandSlot, item2)
 

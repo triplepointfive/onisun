@@ -2,6 +2,7 @@ import { Phantom, Creature } from './creature'
 import { Item } from './items'
 import { Point } from './utils'
 import { LevelMap } from './map'
+import { ItemsBunch } from './items/internal';
 
 export enum TileTypes {
   Wall,
@@ -13,7 +14,7 @@ export enum TileTypes {
 
 export class Tile {
   public creature?: Phantom
-  public items: Item[] = []
+  public items: ItemsBunch
 
   private static repository: { [key: string]: Tile } = {}
 
@@ -42,8 +43,12 @@ export class Tile {
     public kind: TileTypes
   ) {}
 
-  public addItem(item: Item): void {
-    this.items.push(item)
+  public addItem(item: Item, count: number): void {
+    if (!this.items) {
+      this.items = new ItemsBunch()
+    }
+
+    this.items.put(item, count)
   }
 
   public isDoor(): boolean {
@@ -79,7 +84,7 @@ export class Tile {
     if (this.creature) {
       tile.creature = this.creature.clone()
     }
-    this.items.forEach(item => tile.items.push(item.clone()))
+    tile.items = this.items && this.items.clone()
     return tile
   }
 

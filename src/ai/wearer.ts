@@ -4,7 +4,7 @@ import { Item } from '../items/internal'
 import { Modifier } from '../characteristics'
 import { Wearing, allInventorySlots } from '../inventory'
 
-import { flatten } from 'lodash'
+import { flatten, compact } from 'lodash'
 
 export class Wearer extends AI {
   public available(actor: Creature): boolean {
@@ -23,11 +23,11 @@ export class Wearer extends AI {
   }
 
   private whereToWear(actor: Creature, item: Item): Wearing {
-    const matches: Wearing[] = flatten(
+    const matches: Wearing[] = compact(flatten(
       item.usages.map(usage =>
         allInventorySlots.filter(slot => slot.usage === usage)
       )
-    ).map(slot => actor.inventory.matchingEquip(slot))
+    ).map(slot => actor.inventory.matchingEquip(slot)))
 
     if (matches.length === 0) {
       return null

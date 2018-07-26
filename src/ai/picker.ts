@@ -3,7 +3,6 @@ import { Creature, Ability } from '../creature'
 import { Item, ItemId } from '../items'
 import { Point } from '../utils'
 import { AIItemPickedEvent } from './meta_ai'
-import { GroupedItem } from '../engine'
 
 export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId = null
@@ -23,11 +22,11 @@ export class Picker extends FollowTargetAI {
     const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
     this.prevAI.pushEvent(new AIItemPickedEvent(tile.items))
 
-    tile.items.forEach(item => {
-      actor.inventory.putToBag(item)
+    tile.items.bunch.forEach(groupedItem => {
+      actor.inventory.putToBag(groupedItem.item, groupedItem.count)
     })
 
-    tile.items = []
+    tile.items = undefined
 
     this.desiredItemId = null
   }
@@ -39,7 +38,11 @@ export class Picker extends FollowTargetAI {
     let result: boolean = false
 
     this.withinView(actor, ({ x, y }, tile) => {
-      const item = tile.items().find(condition)
+      if (!tile.items()) {
+        return
+      }
+
+      const item = tile.items().bunch.find(groupedItem => condition(groupedItem.item))
 
       if (item && !result) {
         this.desiredItemId = item.id

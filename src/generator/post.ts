@@ -77,7 +77,7 @@ export const addItems = function(
     for (let i = 1; i < level.width - 1; i++) {
       const tile = level.at(i, j)
       if (tile.passibleThrough() && Math.random() < chance) {
-        tile.addItem(itemsPool.pick(null))
+        tile.addItem(itemsPool.pick(null), 1)
       }
     }
   }

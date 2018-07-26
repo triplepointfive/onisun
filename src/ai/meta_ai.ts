@@ -1,6 +1,6 @@
 import { AI } from './internal'
 import { Creature } from '../creature'
-import { Item } from '../items/internal'
+import { ItemsBunch } from '../items/internal'
 
 export enum AIEventType {
   ItemPickedUp,
@@ -10,7 +10,7 @@ export class AIEvent {
   constructor(public type: AIEventType) {}
 }
 export class AIItemPickedEvent extends AIEvent {
-  constructor(public items: Item[]) {
+  constructor(public items: ItemsBunch) {
     super(AIEventType.ItemPickedUp)
   }
 }

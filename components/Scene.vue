@@ -138,9 +138,9 @@ export default Vue.extend({
         }
       }
 
-      if (tile.items.length) {
-        if (tile.items.length === 1) {
-          return displayItem(tile.items[0])
+      if (tile.items) {
+        if (tile.items.bunch.length === 1) {
+          return displayItem(tile.items.bunch[0].item)
         }
 
         const frame = this.step % (this.animationFps * 3 + 4)
@@ -149,7 +149,7 @@ export default Vue.extend({
         } else {
           const itemId = Math.floor(this.step / (this.animationFps * 3 + 4))
 
-          return displayItem(tile.items[itemId % tile.items.length])
+          return displayItem(tile.items.bunch[itemId % tile.items.bunch.length].item)
         }
       }
 
