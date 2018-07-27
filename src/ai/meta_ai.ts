@@ -1,5 +1,5 @@
 import { AI } from './internal'
-import { Creature, Player } from '../creature'
+import { Creature, Player, AttackEvent } from '../creature'
 import { ItemsBunch } from '../items/internal'
 import { Direction } from '../utils'
 import { StairwayDown, StairwayUp } from '../tile';
@@ -29,10 +29,13 @@ export class AIMoveEvent extends AIEvent {
 
   public act(player: Player): void {
     const stage = player.currentLevel,
-      dest = player.pos.add(this.direction)
+      dest = player.pos.add(this.direction),
+      tile = stage.at(dest.x, dest.y)
 
-    if (stage.at(dest.x, dest.y).passibleThrough(player)) {
+    if (tile.passibleThrough(player)) {
       player.move(dest)
+    } else if (tile.creature) {
+      tile.creature.real().on(new AttackEvent(player))
     } else {
       stage.game.logger.ranIntoAnObstacle()
     }
