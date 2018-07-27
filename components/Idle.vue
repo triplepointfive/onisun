@@ -6,7 +6,6 @@
 import Vue from 'vue'
 import { IdleInputKey } from '../src/screen'
 
-
 const
   LEFT_ARROW = 37,
   UP_ARROW = 38,

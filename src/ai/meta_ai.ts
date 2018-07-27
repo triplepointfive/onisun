@@ -26,7 +26,14 @@ export class AIMoveEvent extends AIEvent {
   }
 
   public act(player: Player): void {
-    player.move(player.pos.add(this.direction))
+    const stage = player.currentLevel,
+      dest = player.pos.add(this.direction)
+
+    if (stage.passibleThrough(dest.x, dest.y)) {
+      player.move(dest)
+    } else {
+      stage.game.logger.ranIntoAnObstacle()
+    }
   }
 }
 

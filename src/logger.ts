@@ -67,6 +67,10 @@ export class Logger {
     )
   }
 
+  public ranIntoAnObstacle(): void {
+    this.addMessage(LogLevel.DEBUG, 'You ran into a wall')
+  }
+
   protected debug(message: string): void {
     this.addMessage(LogLevel.DEBUG, message)
   }
