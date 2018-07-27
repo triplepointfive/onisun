@@ -154,8 +154,13 @@ export class Direction extends Point {
     super(x, y)
   }
 
-  public static up(): Direction { return new Direction(0, -1) }
-  public static down(): Direction { return new Direction(0, 1) }
-  public static left(): Direction { return new Direction(-1, 0) }
-  public static right(): Direction { return new Direction(1, 0) }
+  static readonly up = new Direction(0, -1)
+  static readonly down = new Direction(0, 1)
+  static readonly left = new Direction(-1, 0)
+  static readonly right = new Direction(1, 0)
+
+  static readonly upLeft = new Direction(-1, -1)
+  static readonly upRight = new Direction(1, -1)
+  static readonly downLeft = new Direction(-1, 1)
+  static readonly downRight = new Direction(1, 1)
 }

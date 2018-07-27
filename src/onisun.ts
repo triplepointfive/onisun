@@ -347,7 +347,7 @@ export class Onisun extends Game {
     centralize(map)
     map.game = this
 
-    addItems(0.01, map, weapons.merge(itemsPool))
+    addItems(0.3, map, weapons.merge(itemsPool))
 
     return map
   }

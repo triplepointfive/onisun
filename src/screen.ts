@@ -31,6 +31,12 @@ export enum IdleInputKey {
   Left,
   Down,
   Up,
+
+  UpRight,
+  UpLeft,
+  DownRight,
+  DownLeft,
+
   Handle,
 }
 
@@ -44,13 +50,23 @@ export class IdleScreen extends Screen {
 
     switch (key) {
     case IdleInputKey.Right:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.right()))
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.right))
     case IdleInputKey.Left:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.left()))
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.left))
     case IdleInputKey.Down:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.down()))
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.down))
     case IdleInputKey.Up:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.up()))
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.up))
+
+    case IdleInputKey.UpRight:
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.upRight))
+    case IdleInputKey.UpLeft:
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.upLeft))
+    case IdleInputKey.DownRight:
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.downRight))
+    case IdleInputKey.DownLeft:
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.downLeft))
+
     case IdleInputKey.Handle:
       return this.player.ai.pushEvent(new AIHandleEnvEvent())
     }

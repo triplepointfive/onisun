@@ -6,13 +6,6 @@
 import Vue from 'vue'
 import { IdleInputKey } from '../src/screen'
 
-const
-  LEFT_ARROW = 37,
-  UP_ARROW = 38,
-  RIGHT_ARROW = 39,
-  DOWN_ARROW = 40,
-  H_KEY = 72
-
 export default Vue.extend({
   name: 'Idle',
   props: ['screen'],
@@ -25,16 +18,33 @@ export default Vue.extend({
       this.screen.onInput(inputKey)
     },
     onEvent(event) {
-      switch (event.keyCode) {
-      case RIGHT_ARROW:
+      switch (event.key) {
+      case 'l':
+      case 'ArrowRight':
         return this.close(IdleInputKey.Right)
-      case LEFT_ARROW:
+
+      case 'h':
+      case 'ArrowLeft':
         return this.close(IdleInputKey.Left)
-      case UP_ARROW:
+
+      case 'k':
+      case 'ArrowUp':
         return this.close(IdleInputKey.Up)
-      case DOWN_ARROW:
+
+      case 'j':
+      case 'ArrowDown':
         return this.close(IdleInputKey.Down)
-      case H_KEY:
+
+      case 'y':
+        return this.close(IdleInputKey.UpLeft)
+      case 'u':
+        return this.close(IdleInputKey.UpRight)
+      case 'b':
+        return this.close(IdleInputKey.DownLeft)
+      case 'n':
+        return this.close(IdleInputKey.DownRight)
+
+      case 'H':
         return this.close(IdleInputKey.Handle)
       }
     }
