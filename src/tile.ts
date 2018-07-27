@@ -63,6 +63,10 @@ export class Tile {
     return this.kind === TileTypes.Floor
   }
 
+  public isStairway(): boolean {
+    return this.kind === TileTypes.StairwayDown || this.kind === TileTypes.StairwayUp
+  }
+
   public visibleThrough(): boolean {
     return (
       this.isFloor() ||

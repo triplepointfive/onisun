@@ -1,11 +1,13 @@
 import { AI } from './internal'
 import { Creature, Player } from '../creature'
 import { ItemsBunch } from '../items/internal'
-import { Direction } from '../utils';
+import { Direction } from '../utils'
+import { StairwayDown, StairwayUp } from '../tile';
 
 export enum AIEventType {
   ItemPickedUp,
   Move,
+  HandleEnv,
 }
 
 export abstract class AIEvent {
@@ -29,10 +31,26 @@ export class AIMoveEvent extends AIEvent {
     const stage = player.currentLevel,
       dest = player.pos.add(this.direction)
 
-    if (stage.passibleThrough(dest.x, dest.y)) {
+    if (stage.at(dest.x, dest.y).passibleThrough(player)) {
       player.move(dest)
     } else {
       stage.game.logger.ranIntoAnObstacle()
+    }
+  }
+}
+
+export class AIHandleEnvEvent extends AIEvent {
+  constructor() {
+    super(AIEventType.HandleEnv)
+  }
+
+  public act(player: Player): void {
+    const tile = player.currentLevel.at(player.pos.x, player.pos.y)
+
+    if (tile instanceof StairwayDown || tile instanceof StairwayUp) {
+      tile.go(player)
+    } else {
+      player.currentLevel.game.logger.howToHandle()
     }
   }
 }

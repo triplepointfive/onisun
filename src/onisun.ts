@@ -282,6 +282,8 @@ export class Onisun extends Game {
 
     this.currentMap = map1
 
+    rat().addToMap(new Point(1, 3), this.currentMap)
+
     addOnTile(
       this.currentMap,
       tile => tile.isFloor() && tile.passibleThrough(),

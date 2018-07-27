@@ -1,7 +1,7 @@
 import { Game } from './game'
 import { Player } from './creature'
 import { Profession } from './profession'
-import { AIMoveEvent } from './ai/meta_ai'
+import { AIMoveEvent, AIHandleEnvEvent } from './ai/meta_ai'
 import { Direction } from './utils'
 
 export enum ScreenType {
@@ -31,6 +31,7 @@ export enum IdleInputKey {
   Left,
   Down,
   Up,
+  Handle,
 }
 
 export class IdleScreen extends Screen {
@@ -50,6 +51,8 @@ export class IdleScreen extends Screen {
       return this.player.ai.pushEvent(new AIMoveEvent(Direction.down()))
     case IdleInputKey.Up:
       return this.player.ai.pushEvent(new AIMoveEvent(Direction.up()))
+    case IdleInputKey.Handle:
+      return this.player.ai.pushEvent(new AIHandleEnvEvent())
     }
   }
 }

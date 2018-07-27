@@ -10,7 +10,8 @@ const
   LEFT_ARROW = 37,
   UP_ARROW = 38,
   RIGHT_ARROW = 39,
-  DOWN_ARROW = 40
+  DOWN_ARROW = 40,
+  H_KEY = 72
 
 export default Vue.extend({
   name: 'Idle',
@@ -33,6 +34,8 @@ export default Vue.extend({
         return this.close(IdleInputKey.Up)
       case DOWN_ARROW:
         return this.close(IdleInputKey.Down)
+      case H_KEY:
+        return this.close(IdleInputKey.Handle)
       }
     }
   },

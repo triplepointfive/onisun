@@ -71,6 +71,10 @@ export class Logger {
     this.addMessage(LogLevel.DEBUG, 'You ran into a wall')
   }
 
+  public howToHandle(): void {
+    this.addMessage(LogLevel.DEBUG, "Don't know how to handle it")
+  }
+
   protected debug(message: string): void {
     this.addMessage(LogLevel.DEBUG, message)
   }
