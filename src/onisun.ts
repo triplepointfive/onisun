@@ -29,6 +29,7 @@ import {
   Profession,
   GroupedItem,
   MissileSlot,
+  PlayerAI,
 } from './engine'
 import { includes, sample } from 'lodash'
 import { RightHandSlot } from './inventory'
@@ -268,11 +269,11 @@ export class Onisun extends Game {
     let map4 = this.generateMap(generatorOptions)
     let map5 = this.generateMap(generatorOptions)
 
-    addCreatures(0.05, map1, creaturesPool1)
-    addCreatures(0.06, map2, creaturesPool2)
-    addCreatures(0.07, map3, creaturesPool3)
-    addCreatures(0.08, map4, creaturesPool4)
-    addCreatures(0.09, map5, creaturesPool5)
+    // addCreatures(0.05, map1, creaturesPool1)
+    // addCreatures(0.06, map2, creaturesPool2)
+    // addCreatures(0.07, map3, creaturesPool3)
+    // addCreatures(0.08, map4, creaturesPool4)
+    // addCreatures(0.09, map5, creaturesPool5)
 
     connectMaps(map1, map2)
     connectMaps(map2, map3)
@@ -280,7 +281,6 @@ export class Onisun extends Game {
     connectMaps(map4, map5)
 
     this.currentMap = map1
-
 
     addOnTile(
       this.currentMap,
@@ -307,7 +307,8 @@ export class Onisun extends Game {
         radius: 10,
         speed: 100,
       }),
-      new Dispatcher(),
+      new PlayerAI(),
+      // new Dispatcher(),
       playerSpecie
     )
 

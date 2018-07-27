@@ -1,6 +1,8 @@
 import { Game } from './game'
 import { Player } from './creature'
 import { Profession } from './profession'
+import { AIMoveEvent } from './ai/meta_ai'
+import { Direction } from './utils'
 
 export enum ScreenType {
   LevelUp,
@@ -25,7 +27,10 @@ export abstract class Screen {
 }
 
 export enum IdleInputKey {
-  Right
+  Right,
+  Left,
+  Down,
+  Up,
 }
 
 export class IdleScreen extends Screen {
@@ -33,8 +38,19 @@ export class IdleScreen extends Screen {
     super(ScreenType.Idle, game)
   }
 
-  public onInput() {
+  public onInput(key: IdleInputKey) {
     this.game.screen = undefined
+
+    switch (key) {
+    case IdleInputKey.Right:
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.right()))
+    case IdleInputKey.Left:
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.left()))
+    case IdleInputKey.Down:
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.down()))
+    case IdleInputKey.Up:
+      return this.player.ai.pushEvent(new AIMoveEvent(Direction.up()))
+    }
   }
 }
 

@@ -15,7 +15,6 @@ import {
 import { Level } from './level'
 import { includes } from 'lodash'
 import { Item } from './items'
-import { LevelUpScreen, IdleScreen } from './screen'
 import { Profession } from './profession'
 
 export enum Clan {
@@ -329,12 +328,6 @@ export class Player extends Creature {
 
   public act(stage: LevelMap) {
     super.act(stage)
-
-    stage.game.screen = new IdleScreen(stage.game)
-
-    // if (this.levelUps > 0) {
-    //   stage.game.screen = new LevelUpScreen(stage.game)
-    // }
   }
 
   public die(): void {

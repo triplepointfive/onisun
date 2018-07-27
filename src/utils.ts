@@ -148,3 +148,14 @@ export const bresenham = function(
     steps -= 1
   }
 }
+
+export class Direction extends Point {
+  private constructor(x, y) {
+    super(x, y)
+  }
+
+  public static up(): Direction { return new Direction(0, -1) }
+  public static down(): Direction { return new Direction(0, 1) }
+  public static left(): Direction { return new Direction(-1, 0) }
+  public static right(): Direction { return new Direction(1, 0) }
+}

@@ -1,17 +1,32 @@
 import { AI } from './internal'
-import { Creature } from '../creature'
+import { Creature, Player } from '../creature'
 import { ItemsBunch } from '../items/internal'
+import { Direction } from '../utils';
 
 export enum AIEventType {
   ItemPickedUp,
+  Move,
 }
 
-export class AIEvent {
+export abstract class AIEvent {
   constructor(public type: AIEventType) {}
+
+  public act(player: Player): void {}
 }
+
 export class AIItemPickedEvent extends AIEvent {
   constructor(public items: ItemsBunch) {
     super(AIEventType.ItemPickedUp)
+  }
+}
+
+export class AIMoveEvent extends AIEvent {
+  constructor(public direction: Direction) {
+    super(AIEventType.Move)
+  }
+
+  public act(player: Player): void {
+    player.move(player.pos.add(this.direction))
   }
 }
 
