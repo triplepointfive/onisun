@@ -247,7 +247,7 @@ export class Creature extends Phantom {
     return this.stageMemories[levelId]
   }
 
-  public act(stage: LevelMap): void {
+  public act(stage: LevelMap) {
     this.visionMask(stage)
     this.previousPos = this.pos.copy()
     this.ai.act(this, true)
@@ -326,7 +326,7 @@ export class Player extends Creature {
     super(characteristics, ai, specie)
   }
 
-  public act(stage: LevelMap) {
+  public act(stage: LevelMap): void {
     super.act(stage)
   }
 

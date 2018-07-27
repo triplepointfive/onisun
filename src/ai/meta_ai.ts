@@ -75,4 +75,12 @@ export abstract class MetaAI extends AI {
   protected resetEvents(): void {
     this.events = []
   }
+
+  public runEvents(player: Player): void {
+    this.events.forEach(event => {
+      event.act(player)
+    })
+
+    this.resetEvents()
+  }
 }

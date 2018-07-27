@@ -207,8 +207,6 @@ export default Vue.extend({
       this.done = true
       if (!this.pause || this.nextStep) {
         this.nextStep = false
-
-        this.level.turn()
       }
 
       // this.eng.update(this.player.x, this.player.y);
