@@ -2,7 +2,7 @@ import { Point } from './utils'
 import { MetaAI } from './ai'
 import { Fov } from './fov'
 
-import { Characteristics, Corpse, LevelMap, LevelMapId, Memory } from './engine'
+import { Characteristics, Corpse, LevelMap, LevelMapId, Memory, IdleScreen } from './engine'
 import {
   Inventory,
   MissileSlot,
@@ -328,6 +328,20 @@ export class Player extends Creature {
 
   public act(stage: LevelMap) {
     super.act(stage)
+    // TODO: Simplify this? No need to move here
+  }
+
+  public move(dest: Point) {
+    super.move(dest)
+
+    let previousPosLevel = this.previousLevel || this.currentLevel
+    previousPosLevel.at(
+      this.previousPos.x,
+      this.previousPos.y
+    ).creature = undefined
+    this.currentLevel.at(this.pos.x, this.pos.y).creature = this
+
+    this.previousLevel = undefined
   }
 
   public die(): void {

@@ -50,25 +50,25 @@ export class IdleScreen extends Screen {
 
     switch (key) {
     case IdleInputKey.Right:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.right))
+      return new AIMoveEvent(Direction.right).act(this.game.player)
     case IdleInputKey.Left:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.left))
+      return new AIMoveEvent(Direction.left).act(this.game.player)
     case IdleInputKey.Down:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.down))
+      return new AIMoveEvent(Direction.down).act(this.game.player)
     case IdleInputKey.Up:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.up))
+      return new AIMoveEvent(Direction.up).act(this.game.player)
 
     case IdleInputKey.UpRight:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.upRight))
+      return new AIMoveEvent(Direction.upRight).act(this.game.player)
     case IdleInputKey.UpLeft:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.upLeft))
+      return new AIMoveEvent(Direction.upLeft).act(this.game.player)
     case IdleInputKey.DownRight:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.downRight))
+      return new AIMoveEvent(Direction.downRight).act(this.game.player)
     case IdleInputKey.DownLeft:
-      return this.player.ai.pushEvent(new AIMoveEvent(Direction.downLeft))
+      return new AIMoveEvent(Direction.downLeft).act(this.game.player)
 
     case IdleInputKey.Handle:
-      return this.player.ai.pushEvent(new AIHandleEnvEvent())
+      return new AIHandleEnvEvent().act(this.game.player)
     }
   }
 }

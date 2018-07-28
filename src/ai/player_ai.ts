@@ -7,7 +7,7 @@ export class PlayerAI extends MetaAI {
     const game = player.currentLevel.game
 
     this.events.forEach(event => {
-      event.act(player)
+       event.act(player)
     })
 
     this.resetEvents()
