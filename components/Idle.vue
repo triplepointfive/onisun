@@ -46,6 +46,9 @@ export default Vue.extend({
 
       case 'H':
         return this.close(IdleInputKey.Handle)
+
+      case 'i':
+        return this.close(IdleInputKey.Inventory)
       }
     }
   },

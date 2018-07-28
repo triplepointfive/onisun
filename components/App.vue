@@ -65,8 +65,9 @@ import Scene from './Scene.vue'
 
 import LevelUp from './LevelUp.vue'
 import Idle from './Idle.vue'
+import Inventory from './Inventory.vue'
 
-import { LevelMap, ScreenType } from '../src/engine'
+import { LevelMap, ScreenType, Screen } from '../src/engine'
 
 import {
   Onisun,
@@ -87,6 +88,7 @@ export default Vue.extend({
     Scene,
     LevelUp,
     Idle,
+    Inventory,
   },
   computed: {
     screenComponent() {
@@ -95,6 +97,8 @@ export default Vue.extend({
         return LevelUp
       case ScreenType.Idle:
         return Idle
+      case ScreenType.Inventory:
+        return Inventory
       }
     }
   },

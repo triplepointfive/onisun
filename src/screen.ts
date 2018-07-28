@@ -7,6 +7,7 @@ import { Direction } from './utils'
 export enum ScreenType {
   LevelUp,
   Idle,
+  Inventory,
 }
 
 export abstract class Screen {
@@ -38,6 +39,8 @@ export enum IdleInputKey {
   DownLeft,
 
   Handle,
+
+  Inventory,
 }
 
 export class IdleScreen extends Screen {
@@ -46,6 +49,7 @@ export class IdleScreen extends Screen {
   }
 
   public onInput(key: IdleInputKey) {
+    // TODO: Shouldn't be done here, move to every command
     this.game.screen = undefined
 
     switch (key) {
@@ -69,7 +73,29 @@ export class IdleScreen extends Screen {
 
     case IdleInputKey.Handle:
       return new AIHandleEnvEvent().act(this.game.player)
+
+    case IdleInputKey.Inventory:
+      this.game.screen = new InventoryScreen(this.game)
+      return
     }
+  }
+}
+
+export enum InventoryInputKey {
+  Close
+}
+
+export class InventoryScreen extends Screen {
+  constructor(game: Game) {
+    super(ScreenType.Inventory, game)
+  }
+
+  public onInput(key: InventoryInputKey) {
+    switch (key) {
+      case InventoryInputKey.Close:
+        return this.game.screen = new IdleScreen(this.game)
+    }
+
   }
 }
 
