@@ -73,6 +73,7 @@ import {
   Onisun,
   baseConfig,
 } from '../src/onisun'
+import { setInterval, clearInterval } from 'timers';
 
 export default Vue.extend({
   data() {
@@ -80,6 +81,7 @@ export default Vue.extend({
       game: new Onisun(baseConfig),
       ts: Date.now(),
       generatorOptions: baseConfig,
+      loopIntervalId: undefined
     }
   },
   components: {
@@ -107,7 +109,16 @@ export default Vue.extend({
       this.game = new Onisun(
         this.generatorOptions,
       )
+    },
+    loop() {
+      this.game.turn()
     }
+  },
+  created() {
+    this.loopIntervalId = setInterval(this.loop, 100)
+  },
+  beforeDestroy() {
+    clearInterval(this.loopIntervalId)
   }
 })
 </script>
