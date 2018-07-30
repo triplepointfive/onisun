@@ -33,6 +33,7 @@ import {
 } from './engine'
 import { includes, sample } from 'lodash'
 import { RightHandSlot } from './inventory'
+import { AbilitiesPickingScreen } from './screen';
 
 export type GeneratorOptions = {
   minSize: number
@@ -292,6 +293,8 @@ export class Onisun extends Game {
         this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )
+
+    this.screen = new AbilitiesPickingScreen(this)
   }
 
   protected initPlayer(): Player {

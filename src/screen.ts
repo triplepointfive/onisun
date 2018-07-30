@@ -7,6 +7,7 @@ import { Direction } from './utils'
 export enum ScreenType {
   LevelUp,
   Idle,
+  AbilitiesPicking,
   Inventory,
 }
 
@@ -125,5 +126,17 @@ export class LevelUpScreen extends Screen {
 
     // this.onDone()
     this.game.screen = undefined
+  }
+}
+
+class Ability {
+  public name: string
+}
+
+export class AbilitiesPickingScreen extends Screen {
+  public options: Ability[] = []
+
+  constructor(game: Game) {
+    super(ScreenType.AbilitiesPicking, game)
   }
 }
