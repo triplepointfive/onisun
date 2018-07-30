@@ -1,20 +1,8 @@
 <template>
   <div class='level-up text-center'>
-    <div>
-      <div
-        class='option p-2 m-3'
-        v-for='option in screen.options'
-        :key='option.id'
-        @click='picked = option'
-        @dblclick="close(option)"
-        :class="{ 'picked': picked && picked.id === option.id }"
-      >
-        <div>{{ option.name }}</div>
-        <img class='icon' :src='iconPath(option.id)'>
-      </div>
-    </div>
+    <div ref='container'>
 
-    <a @click='close' v-if='picked !== null'>Подтвердить</a>
+    </div>
   </div>
 </template>
 
@@ -31,7 +19,13 @@ export default Vue.extend({
   methods: {
     close(doubleClickOption) {
       this.screen.onInput(doubleClickOption || this.picked)
+    },
+    onEvent(event) {
+
     }
+  },
+  mounted() {
+
   }
 })
 </script>
