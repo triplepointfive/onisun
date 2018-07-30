@@ -14,14 +14,18 @@ export abstract class Game {
   }
 
   public turn() {
-    this.player.ai.runEvents(this.player)
-
     if (this.running || this.screen) {
       return
     }
+
+    this.player.ai.runEvents(this.player)
+
     this.running = true
 
-    this.player.currentLevel.turn()
+    while (!this.player.dead && !this.screen) {
+      this.player.currentLevel.turn()
+    }
+
     this.running = false
   }
 }
