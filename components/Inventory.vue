@@ -23,12 +23,6 @@ export default Vue.extend({
         return this.close(InventoryInputKey.Close)
       }
     }
-  },
-  created() {
-    document.addEventListener('keydown', this.onEvent)
-  },
-  beforeDestroy() {
-    document.removeEventListener('keydown', this.onEvent)
   }
 })
 </script>

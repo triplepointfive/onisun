@@ -51,12 +51,6 @@ export default Vue.extend({
         return this.close(IdleInputKey.Inventory)
       }
     }
-  },
-  created() {
-    document.addEventListener('keydown', this.onEvent)
-  },
-  beforeDestroy() {
-    document.removeEventListener('keydown', this.onEvent)
   }
 })
 </script>

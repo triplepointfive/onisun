@@ -4,7 +4,12 @@
 
     <div v-if='game.player && game.player.dead'>You are dead</div>
 
-    <component v-if='game.screen' :is='screenComponent' :screen='game.screen'/>
+    <component
+      v-if='game.screen'
+      :is='screenComponent'
+      :screen='game.screen'
+      ref="screenComponent"
+      />
 
     <Logger :logger='game.logger' />
     <div class=''>
@@ -112,13 +117,21 @@ export default Vue.extend({
     },
     loop() {
       this.game.turn()
+    },
+    onEvent(event) {
+      const screen = this.$refs.screenComponent
+      if (screen) {
+        screen.onEvent(event)
+      }
     }
   },
   created() {
-    this.loopIntervalId = setInterval(this.loop, 100)
+    this.loopIntervalId = setInterval(this.loop, 10)
+    document.addEventListener('keydown', this.onEvent)
   },
   beforeDestroy() {
     clearInterval(this.loopIntervalId)
+    document.removeEventListener('keydown', this.onEvent)
   }
 })
 </script>
