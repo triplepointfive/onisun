@@ -1,14 +1,37 @@
 <template>
-  <div class='ability-picking text-center'>
+  <div id='skill-tree-container' class='ability-picking text-center'>
     <h3 class='title'>Защита</h3>
 
     <table class='content'>
       <tr v-for='(group, i) in skills' :key='i'>
         <td class='cell' v-for='(skill, j) in group' :key='j'>
-          <div class='skill-cell -ready' v-if='skill' >
-            <img class='icon' :src='iconPath(skill)'>
-            <span class="level">a {{ j }} / {{ i }}</span>
-          </div>
+            <div
+              class='skill-cell -ready'
+              :id="'exPopover1-'+i" variant="primary"
+               v-if='skill'
+            >
+              <img class='icon' :src='iconPath(skill)'>
+              <span class="level">a {{ j }} / {{ i }}</span>
+
+              <b-popover :target="'exPopover1-'+i" triggers="hover" container='skill-tree-container'>
+                <template>
+                  <p class='name'>
+                    Lorem ipsum dolor sit amet
+                  </p>
+                  <small>
+                    <p class='rank'>
+                      Rank 0/2
+                    </p>
+                    <p class='requirements'>
+                      Requires 5 points in adipiscing elit
+                    </p>
+                    <p class='description'>
+                      Mauris in elit sed mauris egestas porta. Cras accumsan commodo augue.
+                    </p>
+                  </small>
+                </template>
+              </b-popover>
+            </div>
         </td>
       </tr>
     </table>
@@ -129,7 +152,42 @@ export default Vue.extend({
 
     .cell {
       padding: 25px;
+    }
+  }
+}
 
+#skill-tree-container {
+  .popover {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    border: 2px solid grey !important;
+    margin: 0 !important;
+
+    .arrow {
+      display: none !important;
+    }
+
+    .popover-body {
+      padding: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+
+    .name {
+      color: white;
+    }
+
+    .rank {
+      color: white;
+    }
+
+    .requirements {
+      color: red;
+    }
+
+    .description {
+      color: gold;
     }
   }
 }

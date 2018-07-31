@@ -11,3 +11,10 @@ export class Profession {
 export abstract class ProfessionPicker {
   public abstract available(player: Player): Profession[]
 }
+
+export abstract class Skill {
+  constructor(
+    public readonly name: string,
+    public readonly depth: number,
+  ) {}
+}

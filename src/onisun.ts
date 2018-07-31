@@ -34,6 +34,7 @@ import {
 import { includes, sample } from 'lodash'
 import { RightHandSlot } from './inventory'
 import { AbilitiesPickingScreen } from './screen';
+import { Skill } from './profession';
 
 export type GeneratorOptions = {
   minSize: number
@@ -234,6 +235,36 @@ export class OnisunProfessionPicker extends ProfessionPicker {
       this.pool.filter(profession => !includes(excluding, profession.id))
     )
   }
+}
+
+export enum OnisunSkillId {
+  Defender,
+}
+
+export class OnisunSkill extends Skill {
+  constructor(
+    public readonly id: OnisunSkillId,
+    name: string,
+    depth: number,
+  ) {
+    super(name, depth)
+  }
+}
+
+export class OnisunDefenderProfession extends Profession {
+  public skills: OnisunSkill[] = []
+
+  constructor(
+    public readonly id: number,
+    public readonly name: string,
+    public level: number = 1
+  ) {
+    super(id, name, level)
+
+    // this.skills.push()
+
+  }
+
 }
 
 export class Onisun extends Game {

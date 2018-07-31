@@ -24,6 +24,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.107",
     "bootstrap": "^4.1.1",
+    "bootstrap-vue": "^2.0.0-rc.11",
     "cytoscape": "^3.2.15",
     "graphlib": "^2.1.5",
     "jquery": "^3.3.1",
