@@ -1,6 +1,8 @@
 <template>
-  <div class='level-up text-center'>
-    <table>
+  <div class='ability-picking text-center'>
+    <h3 class='title'>Защита</h3>
+
+    <table class='content'>
       <tr v-for='(group, i) in skills' :key='i'>
         <td class='cell' v-for='(skill, j) in group' :key='j'>
           <div class='skill-cell -ready' v-if='skill' >
@@ -103,47 +105,33 @@ export default Vue.extend({
 </script>
 
 <style lang='scss'>
-.level-up {
+.ability-picking {
   position: fixed;
-  top: 0;
-  left: 10%;
-  width: 80%;
-  height: 80%;
+  top: 10%;
+  transform: translate(-50%, 0);
+  left: 50%;
+
   border: 1px solid black;
   background: white;
   border-radius: 50px;
   padding: 30px;
   z-index: 3;
 
-
-
   background-color: black;
   border: 2px solid gold;
-}
 
-.option {
-  border: 1px solid black;
-&.picked {
-    border-color: red;
+  .title {
+    color: white;
   }
 
-  .icon {
-    width: 100px;
-    height: 100px;
+  .content {
+    margin: auto;
+
+    .cell {
+      padding: 25px;
+
+    }
   }
-}
-
-.tree {
-  display: grid;
-  grid-template-columns: 50px 50px 50px 50px 50px;
-  grid-template-rows: 50px 50px 50px 50px 50px;
-  grid-row-gap: 50px;
-  grid-column-gap: 20px;
-}
-
-.cell {
-  padding: 25px;
-
 }
 
 .skill-cell {
@@ -196,26 +184,14 @@ export default Vue.extend({
       color: gold;
     }
   }
-}
 
-.arrow {
-  width:120px;
+  &.-selected {
+    border: 2px solid white;
 
-  .line {
-      margin-top:14px;
-      width:90px;
-      background:blue;
-      height:10px;
-      float:left;
-  }
-
-  .point {
-      width: 0;
-      height: 0;
-      border-top: 20px solid transparent;
-      border-bottom: 20px solid transparent;
-      border-left: 30px solid blue;
-      float:right;
+    .level {
+      border: 2px solid white;
+      color: white;
+    }
   }
 }
 </style>
