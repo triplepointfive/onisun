@@ -173,6 +173,7 @@ export default Vue.extend({
   .tabs-list {
     .nav-link {
       background-color: black;
+      border-bottom: 0;
       color: grey;
 
       &.active {
