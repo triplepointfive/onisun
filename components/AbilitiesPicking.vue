@@ -1,5 +1,5 @@
 <template>
-  <div id='skill-tree-container' class='ability-picking text-center'>
+  <div id='talents-tree-container' class='ability-picking text-center'>
     <b-tabs card v-model='professionIndex' class='tabs-list'>
       <b-tab
         v-for='profession in screen.player.professions'
@@ -11,33 +11,33 @@
     </b-tabs>
 
     <table class='content'>
-      <tr v-for='(group, i) in groupedSkills' :key='i'>
-        <td class='cell' v-for='(skill, j) in group' :key='j'>
+      <tr v-for='(group, i) in groupedTalents' :key='i'>
+        <td class='cell' v-for='(talent, j) in group' :key='j'>
             <div
-              class='skill-cell'
-              :class='skillStatus(skill)'
+              class='talent-cell'
+              :class='talentStatus(talent)'
               :id="j + 'exPopover1-'+i" variant="primary"
-              @click='pickSkill(skill)'
-              @dblclick="close(skill)"
-               v-if='skill'
+              @click='pickTalent(talent)'
+              @dblclick="close(talent)"
+               v-if='talent'
             >
-              <img class='icon' :src="'assets/skills/' + iconPath(skill.id)">
-              <span class="level">{{ skillTip(skill) }}</span>
+              <img class='icon' :src="'assets/talents/' + iconPath(talent.id)">
+              <span class="level">{{ talentTip(talent) }}</span>
 
-              <b-popover :target="j + 'exPopover1-'+i" triggers="hover" container='skill-tree-container'>
+              <b-popover :target="j + 'exPopover1-'+i" triggers="hover" container='talent-tree-container'>
                 <template>
                   <p class='name'>
-                    {{ skill.name }}
+                    {{ talent.name }}
                   </p>
                   <small>
                     <p class='rank'>
-                      Уровень {{ skill.rank }}/{{ skill.maxRank }}
+                      Уровень {{ talent.rank }}/{{ talent.maxRank }}
                     </p>
-                    <p class='requirements' v-if="skillStatus(skill) === '-unavailable'">
-                      Требуется {{ skill.depth * profession.depthCost }} очков в {{ profession.name }}
+                    <p class='requirements' v-if="talentStatus(talent) === '-unavailable'">
+                      Требуется {{ talent.depth * profession.depthCost }} очков в {{ profession.name }}
                     </p>
                     <p class='description'>
-                      {{ skill.description }}
+                      {{ talent.description }}
                     </p>
                   </small>
                 </template>
@@ -53,7 +53,7 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import { OnisunDefenderProfession, OnisunSkillId } from 'src/onisun'
+import { OnisunDefenderProfession, OnisunTalentId } from 'src/onisun'
 
 export default Vue.extend({
   props: ['screen'],
@@ -67,13 +67,13 @@ export default Vue.extend({
     profession() {
       return this.screen.player.professions[this.professionIndex]
     },
-    groupedSkills() {
+    groupedTalents() {
       let groups = new Array(5)
       for (let i = 0; i < groups.length; i++) {
         groups[i] = []
       }
 
-      this.profession.skills.forEach(skill => groups[skill.depth].push(skill))
+      this.profession.talents.forEach(talent => groups[talent.depth].push(talent))
 
       return groups
     }
@@ -81,7 +81,7 @@ export default Vue.extend({
   methods: {
     close(doubleClickOption) {
       if (doubleClickOption) {
-        switch (this.skillStatus(doubleClickOption)) {
+        switch (this.talentStatus(doubleClickOption)) {
           case '-completed':
           case '-unavailable':
             return
@@ -91,46 +91,46 @@ export default Vue.extend({
       this.screen.onInput(this.profession.id, (doubleClickOption && doubleClickOption.id) || this.pickedId)
       this.pickedId = null
     },
-    pickSkill(skill) {
-      if (this.skillStatus(skill) === '-available') {
-        this.pickedId = skill.id
+    pickTalent(talent) {
+      if (this.talentStatus(talent) === '-available') {
+        this.pickedId = talent.id
       }
     },
     onEvent(event) {
 
     },
-    skillTip(skill) {
-      let tip = `${skill.rank}/${skill.maxRank}`
-      if (skill.rank >= skill.maxRank) {
+    talentTip(talent) {
+      let tip = `${talent.rank}/${talent.maxRank}`
+      if (talent.rank >= talent.maxRank) {
         return tip
       } else {
         return `a ${tip}`
       }
     },
-    skillStatus(skill) {
-      if (this.pickedId === skill.id) {
+    talentStatus(talent) {
+      if (this.pickedId === talent.id) {
         return '-selected'
-      } else if (skill.rank === skill.maxRank) {
+      } else if (talent.rank === talent.maxRank) {
         return '-completed'
-      } else if (skill.depth * this.profession.depthCost > this.profession.points) {
+      } else if (talent.depth * this.profession.depthCost > this.profession.points) {
         return '-unavailable'
       } else {
         return '-available'
       }
     },
-    iconPath(skillId) {
-      switch(skillId) {
-        case OnisunSkillId.AttackerTwoHandedWeapons:
+    iconPath(talentId) {
+      switch(talentId) {
+        case OnisunTalentId.AttackerTwoHandedWeapons:
           return 'AttackerTwoHandedWeapons.svg'
-        case OnisunSkillId.AttackerHeavyWeapons:
+        case OnisunTalentId.AttackerHeavyWeapons:
           return 'AttackerHeavyWeapons.svg'
-        case OnisunSkillId.AttackerLightWeapons:
+        case OnisunTalentId.AttackerLightWeapons:
           return 'AttackerLightWeapons.svg'
-        case OnisunSkillId.AttackerTwoWeapons:
+        case OnisunTalentId.AttackerTwoWeapons:
           return 'AttackerTwoWeapons.svg'
-        case OnisunSkillId.AttackerDoubleTwoHandedWeapons:
+        case OnisunTalentId.AttackerDoubleTwoHandedWeapons:
           return 'AttackerDoubleTwoHandedWeapons.svg'
-        case OnisunSkillId.AttackerStrongGrip:
+        case OnisunTalentId.AttackerStrongGrip:
           return 'AttackerStrongGrip.svg'
       }
     }
@@ -169,7 +169,7 @@ export default Vue.extend({
   }
 }
 
-#skill-tree-container {
+#talents-tree-container {
   .tabs-list {
     .nav-link {
       background-color: black;
@@ -218,7 +218,7 @@ export default Vue.extend({
   }
 }
 
-.skill-cell {
+.talent-cell {
   height: 50px;
   width: 50px;
 

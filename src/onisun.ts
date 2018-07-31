@@ -30,11 +30,11 @@ import {
   GroupedItem,
   MissileSlot,
   PlayerAI,
+  Talent,
+  AbilitiesPickingScreen,
+   RightHandSlot,
 } from './engine'
 import { includes, sample } from 'lodash'
-import { RightHandSlot } from './inventory'
-import { AbilitiesPickingScreen } from './screen';
-import { Skill } from './profession';
 
 export type GeneratorOptions = {
   minSize: number
@@ -237,7 +237,7 @@ export class OnisunProfessionPicker extends ProfessionPicker {
   }
 }
 
-export enum OnisunSkillId {
+export enum OnisunTalentId {
   AttackerTwoHandedWeapons,
   AttackerHeavyWeapons,
   AttackerLightWeapons,
@@ -246,9 +246,9 @@ export enum OnisunSkillId {
   AttackerStrongGrip,
 }
 
-export class OnisunSkill extends Skill {
+export class OnisunTalent extends Talent {
   constructor(
-    public readonly id: OnisunSkillId,
+    public readonly id: OnisunTalentId,
     name: string,
     depth: number,
     rank: number,
@@ -269,20 +269,20 @@ export class OnisunDefenderProfession extends Profession {
   ) {
     super(id, name, level)
 
-    // TODO: Validate all skill's ids are uniq
+    // TODO: Validate all Talent's ids are uniq
 
-    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerTwoHandedWeapons, 'Двуручные оружия', 0, 0, 3))
-    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerLightWeapons, 'Легкие оружия', 0, 0, 3))
-    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerHeavyWeapons, 'Тяжелые оружия', 0, 0, 3))
+    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerTwoHandedWeapons, 'Двуручные оружия', 0, 0, 3))
+    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerLightWeapons, 'Легкие оружия', 0, 0, 3))
+    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerHeavyWeapons, 'Тяжелые оружия', 0, 0, 3))
 
-    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerTwoWeapons, 'Два оружия', 1, 0, 1, 'Позволяет брать оружие в каждую руку'))
-    // this.skills.push(new OnisunSkill(OnisunSkillId.Defender, 'Быстрые удары', 1, 0, 3))
-    // this.skills.push(new OnisunSkill(OnisunSkillId.Defender, 'Мощный удар', 1, 0, 4))
-    // this.skills.push(new OnisunSkill(OnisunSkillId.Defender, 'Выбивание оружия', 1, 0, 5))
+    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerTwoWeapons, 'Два оружия', 1, 0, 1, 'Позволяет брать оружие в каждую руку'))
+    // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, 'Быстрые удары', 1, 0, 3))
+    // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, 'Мощный удар', 1, 0, 4))
+    // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, 'Выбивание оружия', 1, 0, 5))
 
-    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerDoubleTwoHandedWeapons, 'Два двуручных оружия', 2, 0, 2))
-    // this.skills.push(new OnisunSkill(OnisunSkillId.Defender, '- серия', 2, 0, 2))
-    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerStrongGrip, 'Крепкий хват', 2, 0, 2, 'Оружие не выбивается из рук'))
+    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerDoubleTwoHandedWeapons, 'Два двуручных оружия', 2, 0, 2))
+    // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, '- серия', 2, 0, 2))
+    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerStrongGrip, 'Крепкий хват', 2, 0, 2, 'Оружие не выбивается из рук'))
   }
 }
 
