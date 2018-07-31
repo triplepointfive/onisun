@@ -57,22 +57,6 @@
     </dt>
 
     <dd class='col-sm-4'>
-      Надето
-    </dd>
-    <dt class='col-sm-8'>
-      <table>
-        <tr v-for='wearing in creature.inventory.wears()' :key='wearing.bodyPart.id'>
-          <td>
-            {{ displayBodyPart(wearing.bodyPart) }}
-          </td>
-          <td v-if='wearing.equipment'>
-            {{ displayItem(wearing.equipment.item) }} {{ wearing.equipment.count }}
-          </td>
-        </tr>
-      </table>
-    </dt>
-
-    <dd class='col-sm-4'>
       В сумке
     </dd>
     <dt class='col-sm-8'>
@@ -100,15 +84,6 @@
 import Vue from 'vue'
 
 import {
-  displayItem,
-} from './scene_tiles'
-
-import {
-  LeftHandSlot,
-  RightHandSlot,
-  BodySlot,
-  MissileSlot,
-
   Patrol,
   Explorer,
   Waiter,
@@ -163,11 +138,6 @@ export default Vue.extend({
         return 'Thrower'
       }
     },
-    displayItem(item) {
-      if (item) {
-        return `${displayItem(item).getChar()} ${item.name}`
-      }
-    },
     displayAttribute(attribute) {
       if (attribute.currentValue() != attribute.maximum()) {
         return `${attribute.currentValue()} [${attribute.maximum()}]`
@@ -181,34 +151,6 @@ export default Vue.extend({
         return `${attribute.currentValue()} = [${attribute.maximum()}] ${mods}`
       } else {
         return attribute.currentValue()
-      }
-    },
-    displayBodyPart(bodyPart) {
-      switch (bodyPart.id) {
-        case LeftHandSlot.id:
-          return 'Левая рука'
-        case RightHandSlot.id:
-          return 'Правая рука'
-        // case BodyPart.Legs:
-        //   return '足'
-        // case BodyPart.Finger:
-        //   return '指'
-        // case BodyPart.Head:
-        //   return '頭'
-        // case BodyPart.Eye:
-        //   return '目'
-        // case BodyPart.Neck:
-        //   return '首'
-        // case BodyPart.Back:
-        //   return '背'
-        case BodySlot.id:
-          return 'Корпус'
-        // case BodyPart.MissileWeapon:
-        //   return 'MissileWeapon'
-        case MissileSlot.id:
-          return 'Снаряды'
-        default:
-          throw `Unknow body part ${bodyPart}`
       }
     }
   }

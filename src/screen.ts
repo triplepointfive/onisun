@@ -38,6 +38,7 @@ export enum IdleInputKey {
   Handle,
 
   Inventory,
+  PickUp,
 }
 
 export class IdleScreen extends Screen {
@@ -71,6 +72,10 @@ export class IdleScreen extends Screen {
     case IdleInputKey.Handle:
       return new AIHandleEnvEvent().act(this.game.player)
 
+    case IdleInputKey.PickUp:
+      this.game.screen = new PickUpScreen(this.game)
+      return
+
     case IdleInputKey.Inventory:
       this.game.screen = new InventoryScreen(this.game)
       return
@@ -83,8 +88,11 @@ export enum InventoryInputKey {
 }
 
 export class InventoryScreen extends Screen {
+  public positions: string[]
+
   constructor(game: Game) {
     super(ScreenType.Inventory, game)
+    this.initPositions()
   }
 
   public onInput(key: InventoryInputKey) {
@@ -92,7 +100,22 @@ export class InventoryScreen extends Screen {
       case InventoryInputKey.Close:
         return this.game.screen = new IdleScreen(this.game)
     }
+  }
 
+  protected initPositions(): void {
+
+  }
+}
+
+export class PickUpScreen extends InventoryScreen {
+  protected initPositions(): void {
+    const items = this.player.currentLevel.at(this.player.pos.x, this.player.pos.y).items
+
+    if (items) {
+      this.positions = items.bunch.map(itemGroup => itemGroup.item.name)
+    } else {
+      this.positions = ['No items']
+    }
   }
 }
 

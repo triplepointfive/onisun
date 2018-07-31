@@ -49,6 +49,8 @@ export default Vue.extend({
 
       case 'i':
         return this.close(IdleInputKey.Inventory)
+      case ',':
+        return this.close(IdleInputKey.PickUp)
       }
     }
   }
