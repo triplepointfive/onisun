@@ -1,32 +1,35 @@
 <template>
   <div id='skill-tree-container' class='ability-picking text-center'>
-    <h3 class='title'>Защита</h3>
+    <h5 class='title'>{{ profession.name }}</h5>
 
     <table class='content'>
-      <tr v-for='(group, i) in skills' :key='i'>
+      <tr v-for='(group, i) in groupedSkills' :key='i'>
         <td class='cell' v-for='(skill, j) in group' :key='j'>
             <div
-              class='skill-cell -ready'
-              :id="'exPopover1-'+i" variant="primary"
+              class='skill-cell'
+              :class='skillStatus(skill)'
+              :id="j + 'exPopover1-'+i" variant="primary"
+              @click='pickSkill(skill)'
+              @dblclick="close(skill)"
                v-if='skill'
             >
-              <img class='icon' :src='iconPath(skill)'>
-              <span class="level">a {{ j }} / {{ i }}</span>
+              <img class='icon' :src="'assets/skills/' + iconPath(skill.id)">
+              <span class="level">{{ skillTip(skill) }}</span>
 
-              <b-popover :target="'exPopover1-'+i" triggers="hover" container='skill-tree-container'>
+              <b-popover :target="j + 'exPopover1-'+i" triggers="hover" container='skill-tree-container'>
                 <template>
                   <p class='name'>
-                    Lorem ipsum dolor sit amet
+                    {{ skill.name }}
                   </p>
                   <small>
                     <p class='rank'>
-                      Rank 0/2
+                      Уровень {{ skill.rank }}/{{ skill.maxRank }}
                     </p>
-                    <p class='requirements'>
-                      Requires 5 points in adipiscing elit
+                    <p class='requirements' v-if="skillStatus(skill) === '-unavailable'">
+                      Требуется {{ skill.depth * profession.depthCost }} очков в {{ profession.name }}
                     </p>
                     <p class='description'>
-                      Mauris in elit sed mauris egestas porta. Cras accumsan commodo augue.
+                      {{ skill.description }}
                     </p>
                   </small>
                 </template>
@@ -35,91 +38,86 @@
         </td>
       </tr>
     </table>
+
+    <b-btn variant='default' v-if='pickedId !== null' @click='close(pickedId)'>Подтвердить</b-btn>
   </div>
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
+import { OnisunDefenderProfession, OnisunSkillId } from 'src/onisun'
 
 export default Vue.extend({
   props: ['screen'],
   data() {
     return {
-      picked: null
+      pickedId: null,
+      profession: this.screen.player.professions[0],
     }
   },
   computed: {
-    skills() {
-      return [[
+    groupedSkills() {
+      let groups = new Array(5)
+      for (let i = 0; i < groups.length; i++) {
+        groups[i] = []
+      }
 
-        undefined,
-        3,
-        5,
-        ], [
-        undefined,
-        6,
-      ], [
+      this.profession.skills.forEach(skill => groups[skill.depth].push(skill))
 
-        1,
-        2,
-        4,
-        ], [
-        7,
-        undefined,
-        ], [
-
-        8,
-        undefined,
-        ], [
-        undefined,
-        9,
-        10,
-        ]
-      ]
+      return groups
     }
   },
   methods: {
     close(doubleClickOption) {
-      this.screen.onInput(doubleClickOption || this.picked)
+      if (doubleClickOption && this.skillStatus(doubleClickOption) !== '-selected') {
+        return
+      }
+
+      this.screen.onInput(this.profession.id, (doubleClickOption && doubleClickOption.id) || this.pickedId)
+      this.pickedId = null
+    },
+    pickSkill(skill) {
+      if (this.skillStatus(skill) === '-available') {
+        this.pickedId = skill.id
+      }
     },
     onEvent(event) {
 
     },
-    iconPath(professionId: number) {
-      return 'assets/professions/' + [
-        'acrobatic.svg',
-        'button-finger.svg',
-        'disintegrate.svg',
-        'flying-fox.svg',
-        'amputation.svg',
-        'catch.svg',
-        'divert.svg',
-        'fruiting.svg',
-        'annexation.svg',
-        'conversation.svg',
-        'dodging.svg',
-        'grab.svg',
-        'arrest.svg',
-        'convince.svg',
-        'drinking.svg',
-        'journey.svg',
-        'back-forth.svg',
-        'coronation.svg',
-        'drop-weapon.svg',
-        'juggler.svg',
-        'backstab.svg',
-        'crafting.svg',
-        'drowning.svg',
-        'jump-across.svg',
-        'boot-stomp.svg',
-        'crush.svg',
-        'eating.svg',
-        'kindle.svg',
-        'bowman.svg',
-        'discussion.svg',
-        'expander.svg',
-        'kneeling.svg',
-      ][professionId]
+    skillTip(skill) {
+      let tip = `${skill.rank}/${skill.maxRank}`
+      if (skill.rank >= skill.maxRank) {
+        return tip
+      } else {
+        return `a ${tip}`
+      }
+    },
+    skillStatus(skill) {
+      if (this.pickedId === skill.id) {
+        return '-selected'
+      } else if (skill.rank === skill.maxRank) {
+        return '-completed'
+      } else if (skill.depth * this.profession.depthCost > this.profession.points) {
+        return '-unavailable'
+      } else {
+        return '-available'
+      }
+    },
+    iconPath(skillId) {
+      switch(skillId) {
+        case OnisunSkillId.AttackerTwoHandedWeapons:
+          return 'AttackerTwoHandedWeapons.svg'
+        case OnisunSkillId.AttackerHeavyWeapons:
+          return 'AttackerHeavyWeapons.svg'
+        case OnisunSkillId.AttackerLightWeapons:
+          return 'AttackerLightWeapons.svg'
+        case OnisunSkillId.AttackerTwoWeapons:
+          return 'AttackerTwoWeapons.svg'
+        case OnisunSkillId.AttackerDoubleTwoHandedWeapons:
+          return 'AttackerDoubleTwoHandedWeapons.svg'
+        case OnisunSkillId.AttackerStrongGrip:
+          return 'AttackerStrongGrip.svg'
+      }
     }
   },
   mounted() {
@@ -158,7 +156,7 @@ export default Vue.extend({
 
 #skill-tree-container {
   .popover {
-    background-color: rgba(0, 0, 0, 0.5) !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
     border: 2px solid grey !important;
     margin: 0 !important;
 
@@ -225,7 +223,7 @@ export default Vue.extend({
     }
   }
 
-  &.-ready {
+  &.-available {
     border: 2px solid greenyellow;
 
     .level {

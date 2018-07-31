@@ -238,7 +238,12 @@ export class OnisunProfessionPicker extends ProfessionPicker {
 }
 
 export enum OnisunSkillId {
-  Defender,
+  AttackerTwoHandedWeapons,
+  AttackerHeavyWeapons,
+  AttackerLightWeapons,
+  AttackerTwoWeapons,
+  AttackerDoubleTwoHandedWeapons,
+  AttackerStrongGrip,
 }
 
 export class OnisunSkill extends Skill {
@@ -246,13 +251,16 @@ export class OnisunSkill extends Skill {
     public readonly id: OnisunSkillId,
     name: string,
     depth: number,
+    rank: number,
+    maxRank: number,
+    description: string = '',
   ) {
-    super(name, depth)
+    super(name, depth, rank, maxRank, description)
   }
 }
 
 export class OnisunDefenderProfession extends Profession {
-  public skills: OnisunSkill[] = []
+  public readonly depthCost: number = 3
 
   constructor(
     public readonly id: number,
@@ -261,10 +269,21 @@ export class OnisunDefenderProfession extends Profession {
   ) {
     super(id, name, level)
 
-    // this.skills.push()
+    // TODO: Validate all skill's ids are uniq
 
+    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerTwoHandedWeapons, 'Двуручные оружия', 0, 0, 3))
+    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerLightWeapons, 'Легкие оружия', 0, 0, 3))
+    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerHeavyWeapons, 'Тяжелые оружия', 0, 0, 3))
+
+    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerTwoWeapons, 'Два оружия', 1, 0, 1, 'Позволяет брать оружие в каждую руку'))
+    // this.skills.push(new OnisunSkill(OnisunSkillId.Defender, 'Быстрые удары', 1, 0, 3))
+    // this.skills.push(new OnisunSkill(OnisunSkillId.Defender, 'Мощный удар', 1, 0, 4))
+    // this.skills.push(new OnisunSkill(OnisunSkillId.Defender, 'Выбивание оружия', 1, 0, 5))
+
+    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerDoubleTwoHandedWeapons, 'Два двуручных оружия', 2, 0, 2))
+    // this.skills.push(new OnisunSkill(OnisunSkillId.Defender, '- серия', 2, 0, 2))
+    this.skills.push(new OnisunSkill(OnisunSkillId.AttackerStrongGrip, 'Крепкий хват', 2, 0, 2, 'Оружие не выбивается из рук'))
   }
-
 }
 
 export class Onisun extends Game {
@@ -294,6 +313,10 @@ export class Onisun extends Game {
     super(new OnisunProfessionPicker(pool, 3, 6))
 
     this.player = this.initPlayer()
+
+    this.player.professions.push(
+      new OnisunDefenderProfession(1, 'Оружейник')
+    )
 
     let map1 = this.generateMap(generatorOptions)
     // let map2 = this.generateMap(generatorOptions)

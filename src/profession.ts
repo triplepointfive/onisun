@@ -1,10 +1,13 @@
 import { Player } from './creature'
 
 export class Profession {
+  public skills: Skill[] = []
+
   constructor(
     public readonly id: number,
     public readonly name: string,
-    public level: number = 1
+    public level: number = 1,
+    public points: number = 0,
   ) {}
 }
 
@@ -16,5 +19,8 @@ export abstract class Skill {
   constructor(
     public readonly name: string,
     public readonly depth: number,
+    public rank: number,
+    public readonly maxRank: number,
+    public readonly description: string,
   ) {}
 }
