@@ -24,7 +24,7 @@
               <img class='icon' :src="'assets/talents/' + iconPath(talent.id)">
               <span class="level">{{ talentTip(talent) }}</span>
 
-              <b-popover :target="j + 'exPopover1-'+i" triggers="hover" container='talent-tree-container'>
+              <b-popover :target="j + 'exPopover1-'+i" triggers="hover" container='talents-tree-container'>
                 <template>
                   <p class='name'>
                     {{ talent.name }}
@@ -53,7 +53,7 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import { OnisunDefenderProfession, OnisunTalentId } from 'src/onisun'
+import { OnisunTalentId } from 'src/onisun'
 
 export default Vue.extend({
   props: ['screen'],

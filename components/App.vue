@@ -71,7 +71,7 @@ import Scene from './Scene.vue'
 import LevelUp from './LevelUp.vue'
 import Idle from './Idle.vue'
 import Inventory from './Inventory.vue'
-import AbilitiesPicking from './AbilitiesPicking.vue'
+import TalentsTreeScreen from './TalentsTreeScreen.vue'
 
 import { LevelMap, ScreenType, Screen } from '../src/engine'
 
@@ -94,15 +94,12 @@ export default Vue.extend({
     Cell,
     Logger,
     Scene,
-    LevelUp,
-    Idle,
-    Inventory,
   },
   computed: {
     screenComponent() {
       switch (this.game.screen && this.game.screen.type) {
       case ScreenType.AbilitiesPicking:
-        return AbilitiesPicking
+        return TalentsTreeScreen
       case ScreenType.LevelUp:
         return LevelUp
       case ScreenType.Idle:
