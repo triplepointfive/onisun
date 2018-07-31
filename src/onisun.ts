@@ -317,6 +317,18 @@ export class Onisun extends Game {
     this.player.professions.push(
       new OnisunDefenderProfession(1, 'Оружейник')
     )
+    this.player.professions.push(
+      new OnisunDefenderProfession(2, 'Воин')
+    )
+    this.player.professions.push(
+      new OnisunDefenderProfession(3, 'Маг')
+    )
+    this.player.professions.push(
+      new OnisunDefenderProfession(4, ' Повар')
+    )
+    this.player.professions.push(
+      new OnisunDefenderProfession(5, 'Колдун')
+    )
 
     let map1 = this.generateMap(generatorOptions)
     // let map2 = this.generateMap(generatorOptions)

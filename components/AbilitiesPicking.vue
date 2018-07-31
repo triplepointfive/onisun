@@ -1,6 +1,14 @@
 <template>
   <div id='skill-tree-container' class='ability-picking text-center'>
-    <h5 class='title'>{{ profession.name }}</h5>
+    <b-tabs card v-model='professionIndex' class='tabs-list'>
+      <b-tab
+        v-for='profession in screen.player.professions'
+        :title='profession.name'
+        :key='profession.id'
+        no-body
+      >
+      </b-tab>
+    </b-tabs>
 
     <table class='content'>
       <tr v-for='(group, i) in groupedSkills' :key='i'>
@@ -39,7 +47,7 @@
       </tr>
     </table>
 
-    <b-btn variant='default' v-if='pickedId !== null' @click='close(pickedId)'>Подтвердить</b-btn>
+    <b-btn variant='default' v-if='pickedId !== null' @click='close()'>Подтвердить</b-btn>
   </div>
 </template>
 
@@ -52,10 +60,13 @@ export default Vue.extend({
   data() {
     return {
       pickedId: null,
-      profession: this.screen.player.professions[0],
+      professionIndex: 0
     }
   },
   computed: {
+    profession() {
+      return this.screen.player.professions[this.professionIndex]
+    },
     groupedSkills() {
       let groups = new Array(5)
       for (let i = 0; i < groups.length; i++) {
@@ -159,6 +170,18 @@ export default Vue.extend({
 }
 
 #skill-tree-container {
+  .tabs-list {
+    .nav-link {
+      background-color: black;
+      color: grey;
+
+      &.active {
+        color: greenyellow;
+      }
+    }
+
+  }
+
   .popover {
     background-color: rgba(0, 0, 0, 0.9) !important;
     border: 2px solid grey !important;
