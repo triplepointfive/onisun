@@ -69,8 +69,12 @@ export default Vue.extend({
   },
   methods: {
     close(doubleClickOption) {
-      if (doubleClickOption && this.skillStatus(doubleClickOption) !== '-selected') {
-        return
+      if (doubleClickOption) {
+        switch (this.skillStatus(doubleClickOption)) {
+          case '-completed':
+          case '-unavailable':
+            return
+        }
       }
 
       this.screen.onInput(this.profession.id, (doubleClickOption && doubleClickOption.id) || this.pickedId)
