@@ -5,7 +5,8 @@ const options: Options = {
   publicPath: "/onisun/",
   plugins: [
     require("@poi/plugin-typescript")()
-  ]
+  ],
+  staticFolder: 'static'
 };
 
 export default options;
