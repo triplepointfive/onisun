@@ -12,8 +12,7 @@ import {
   Thrower,
 } from '../ai'
 import { Creature } from '../creature'
-import { MetaAI, AIEventType } from './meta_ai'
-import { Wearer } from './wearer'
+import { MetaAI } from './meta_ai'
 
 export class Dispatcher extends MetaAI {
   private escaper: Escaper
@@ -57,12 +56,7 @@ export class Dispatcher extends MetaAI {
       actor.characteristics.regenerate()
     }
 
-    this.events.forEach(event => {
-      switch (event.type) {
-        case AIEventType.ItemPickedUp:
-          new Wearer(this).act(actor)
-      }
-    })
+    this.runEvents(actor)
 
     if (this.feelsGood(actor)) {
       if (this.attacker.available(actor)) {

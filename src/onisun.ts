@@ -331,7 +331,7 @@ export class Onisun extends Game {
     )
 
     let map1 = this.generateMap(generatorOptions)
-    // let map2 = this.generateMap(generatorOptions)
+    let map2 = this.generateMap(generatorOptions)
     // let map3 = this.generateMap(generatorOptions)
     // let map4 = this.generateMap(generatorOptions)
     // let map5 = this.generateMap(generatorOptions)
@@ -342,7 +342,7 @@ export class Onisun extends Game {
     // addCreatures(0.08, map4, creaturesPool4)
     // addCreatures(0.09, map5, creaturesPool5)
 
-    // connectMaps(map1, map2)
+    connectMaps(map1, map2)
     // connectMaps(map2, map3)
     // connectMaps(map3, map4)
     // connectMaps(map4, map5)

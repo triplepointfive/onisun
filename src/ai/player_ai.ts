@@ -1,5 +1,5 @@
-import { MetaAI, AIEventType } from './meta_ai';
-import { Player } from '../creature';
+import { MetaAI } from './meta_ai'
+import { Player } from '../creature'
 import { LevelUpScreen, IdleScreen } from '../screen'
 
 export class PlayerAI extends MetaAI {
