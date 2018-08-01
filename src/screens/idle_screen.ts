@@ -4,7 +4,7 @@ import {
   AIMoveEvent,
   Direction,
   AIHandleEnvEvent,
-  AIPickUpItems,
+  AIPickUpItemsDialog,
 } from '../engine'
 import { InventoryScreen } from './inventory_screen'
 
@@ -57,7 +57,7 @@ export class IdleScreen extends Screen {
         return new AIHandleEnvEvent(this.game).act()
 
       case IdleInputKey.PickUp:
-        return new AIPickUpItems(this.game).act()
+        return new AIPickUpItemsDialog(this.game).act()
 
       case IdleInputKey.Inventory:
         this.game.screen = new InventoryScreen(this.game)

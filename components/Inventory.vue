@@ -15,7 +15,7 @@
           &mdash;
         </td>
         <td class='name'>
-          {{ position.item.name }}
+          {{ position.item.name }} ({{ position.count }})
         </td>
         <td class='weight'>
           &#91;{{ position.item.weight }}g&#93;
@@ -40,8 +40,6 @@ import {
   displayItem,
 } from './scene_tiles'
 
-import { remove } from 'lodash'
-
 const LETTER_OFFSET = 97
 
 export default Vue.extend({
@@ -60,14 +58,14 @@ export default Vue.extend({
     }
   },
   methods: {
-    close(inputKey) {
-      this.screen.onInput(inputKey)
-    },
     onEvent(event) {
       switch (event.key) {
       case ' ':
       case 'Escape':
-        return this.close(InventoryInputKey.Close)
+        return this.screen.close()
+      case 'Enter':
+      case ',':
+        return this.screen.pickUpItems(this.selected.map(index => this.screen.positions[index]))
       default:
         return this.selectAt(event.key.charCodeAt(0) - LETTER_OFFSET)
       }
@@ -75,8 +73,7 @@ export default Vue.extend({
     selectAt(i: number) {
       if (i >= 0 && i < Math.min(this.perPage, this.screen.positions.length)) {
         if (this.selected.indexOf(i) >= 0) {
-          remove(this.selected, x => x === i)
-          this.$set(this.selected, this.selected)
+          this.selected.splice(this.selected.indexOf(i), 1)
         } else {
           this.selected.push(i)
         }

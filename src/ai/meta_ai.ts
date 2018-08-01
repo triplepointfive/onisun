@@ -1,13 +1,14 @@
 import { AI } from './internal'
 import { Creature, Player, AttackEvent } from '../creature'
-import { ItemsBunch, Item } from '../items/internal'
+import { ItemsBunch, Item, GroupedItem } from '../items/internal'
 import { Direction } from '../utils'
-import { StairwayDown, StairwayUp } from '../tile'
+import { StairwayDown, StairwayUp, Tile } from '../tile'
 import { PickUpScreen } from '../screen'
 import { Logger } from '../logger'
 import { Game, Wearing, allInventorySlots, Modifier } from '../engine'
 
 import { compact, flatten } from 'lodash'
+import { IdleScreen } from '../screens/idle_screen';
 
 export abstract class AIEvent {
   protected logger: Logger
@@ -19,6 +20,13 @@ export abstract class AIEvent {
   }
 
   public abstract act(): void
+
+  protected tile(): Tile {
+    return this.player.currentLevel.at(
+      this.player.pos.x,
+      this.player.pos.y
+    )
+  }
 }
 
 export class AIItemPickedEvent extends AIEvent {
@@ -107,10 +115,7 @@ export class AIMoveEvent extends AIEvent {
 
 export class AIHandleEnvEvent extends AIEvent {
   public act(): void {
-    const tile = this.player.currentLevel.at(
-      this.player.pos.x,
-      this.player.pos.y
-    )
+    const tile = this.tile()
 
     if (tile instanceof StairwayDown || tile instanceof StairwayUp) {
       tile.go(this.player)
@@ -120,30 +125,45 @@ export class AIHandleEnvEvent extends AIEvent {
   }
 }
 
-export class AIPickUpItems extends AIEvent {
+export class AIPickUpItemsDialog extends AIEvent {
   public act(): void {
-    const items = this.player.currentLevel.at(
-        this.player.pos.x,
-        this.player.pos.y
-      ).items,
+    const items = this.tile().items,
       game = this.player.currentLevel.game
 
     switch ((items && items.bunch.length) || 0) {
       case 0:
         game.logger.noItemsToPickUp()
-        game.screen = undefined
+        game.screen = new IdleScreen(this.game)
         return
       case 1:
-        const { item, count } = items.bunch[0]
-        this.player.inventory.putToBag(item, count)
-        game.logger.pickedUpItem(item, count)
-        items.remove(item, count)
-        game.screen = undefined
+        new AIPickUpItems(items.bunch, this.game).act()
         return
       default:
         game.screen = new PickUpScreen(game)
         return
     }
+  }
+}
+
+export class AIPickUpItems extends AIEvent {
+  constructor(private items: GroupedItem[], game: Game) {
+    super(game)
+  }
+
+  public act(): void {
+    if (!this.items.length) {
+      this.game.screen = new IdleScreen(this.game)
+    }
+
+    let tileItems = this.tile().items
+
+    this.items.forEach(({ item, count }) => {
+      this.player.inventory.putToBag(item, count)
+      this.game.logger.pickedUpItem(item, count)
+      tileItems.remove(item, count)
+    })
+
+    this.game.screen = undefined
   }
 }
 

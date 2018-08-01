@@ -1,6 +1,7 @@
 import { Screen, ScreenType } from './internal'
-import { Game, Item } from 'src/engine'
+import { Game, Item, AIPickUpItems } from '../engine'
 import { IdleScreen } from './idle_screen'
+import { GroupedItem } from '../items/internal'
 
 export enum InventoryInputKey {
   Close,
@@ -8,12 +9,11 @@ export enum InventoryInputKey {
 }
 
 interface PickUpScreenPosition {
-  item: Item
+  item: Item,
+  count: number,
 }
 
 export class InventoryScreen extends Screen {
-  public positions: PickUpScreenPosition[]
-
   constructor(game: Game) {
     super(ScreenType.Inventory, game)
     this.initPositions()
@@ -29,22 +29,30 @@ export class InventoryScreen extends Screen {
   protected initPositions(): void {}
 }
 
-export class PickUpScreen extends InventoryScreen {
+export class PickUpScreen extends Screen {
+  public positions: PickUpScreenPosition[]
+
+  constructor(game: Game) {
+    super(ScreenType.Inventory, game)
+    this.initPositions()
+  }
+
   protected initPositions(): void {
     const items = this.player.currentLevel.at(
       this.player.pos.x,
       this.player.pos.y
     ).items
     this.positions = items.bunch.map(itemGroup => {
-      return { item: itemGroup.item }
+      return { item: itemGroup.item, count: itemGroup.count }
     })
   }
 
-  public onInput(key: InventoryInputKey, itemIndex: number = 0) {
-    switch (key) {
-      case InventoryInputKey.Close:
-        return (this.game.screen = new IdleScreen(this.game))
-      case InventoryInputKey.ItemIndex:
-    }
+  public pickUpItems(items: GroupedItem[]): void {
+    // TODO: Validate items are part of positions
+    new AIPickUpItems(items, this.game).act()
+  }
+
+  public close(): void {
+    this.game.screen = new IdleScreen(this.game)
   }
 }
