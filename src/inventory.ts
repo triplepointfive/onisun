@@ -109,8 +109,7 @@ export class Inventory {
 
   public equip(actor: Creature, slot: InventorySlot, item: Item) {
     let wearing = this.matchingEquip(slot),
-        groupItem = this.bag.find(item)
-
+      groupItem = this.bag.find(item)
 
     if (wearing && groupItem) {
       if (wearing.equipment) {

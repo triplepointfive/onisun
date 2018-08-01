@@ -1,6 +1,6 @@
 import { AI } from './internal'
 
-import { Point, rand, succ } from '../utils'
+import { Point, succ } from '../utils'
 import { Creature } from '../creature'
 
 import * as graphlib from 'graphlib'

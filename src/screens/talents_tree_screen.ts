@@ -7,7 +7,9 @@ export class AbilitiesPickingScreen extends Screen {
   }
 
   public onInput(professionId: number, talentId: number) {
-    const profession = this.player.professions.find(profession => profession.id === professionId)
+    const profession = this.player.professions.find(
+      profession => profession.id === professionId
+    )
     profession.talents.find(talent => talent.id === talentId).rank += 1
     profession.points += 1
     this.game.screen = undefined

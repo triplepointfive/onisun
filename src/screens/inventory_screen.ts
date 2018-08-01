@@ -22,26 +22,29 @@ export class InventoryScreen extends Screen {
   public onInput(key: InventoryInputKey) {
     switch (key) {
       case InventoryInputKey.Close:
-        return this.game.screen = new IdleScreen(this.game)
+        return (this.game.screen = new IdleScreen(this.game))
     }
   }
 
-  protected initPositions(): void {
-
-  }
+  protected initPositions(): void {}
 }
 
 export class PickUpScreen extends InventoryScreen {
   protected initPositions(): void {
-    const items = this.player.currentLevel.at(this.player.pos.x, this.player.pos.y).items
-    this.positions = items.bunch.map(itemGroup => { return { item: itemGroup.item } })
+    const items = this.player.currentLevel.at(
+      this.player.pos.x,
+      this.player.pos.y
+    ).items
+    this.positions = items.bunch.map(itemGroup => {
+      return { item: itemGroup.item }
+    })
   }
 
   public onInput(key: InventoryInputKey, itemIndex: number = 0) {
     switch (key) {
-    case InventoryInputKey.Close:
-      return this.game.screen = new IdleScreen(this.game)
-    case InventoryInputKey.ItemIndex:
+      case InventoryInputKey.Close:
+        return (this.game.screen = new IdleScreen(this.game))
+      case InventoryInputKey.ItemIndex:
     }
   }
 }

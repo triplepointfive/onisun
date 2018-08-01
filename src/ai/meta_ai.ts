@@ -2,10 +2,10 @@ import { AI } from './internal'
 import { Creature, Player, AttackEvent } from '../creature'
 import { ItemsBunch, Item } from '../items/internal'
 import { Direction } from '../utils'
-import { StairwayDown, StairwayUp } from '../tile';
-import { PickUpScreen } from 'src/screen';
-import { Logger } from '../logger';
-import { Game, Wearing, allInventorySlots, Modifier } from 'src/engine';
+import { StairwayDown, StairwayUp } from '../tile'
+import { PickUpScreen } from '../screen'
+import { Logger } from '../logger'
+import { Game, Wearing, allInventorySlots, Modifier } from '../engine'
 
 import { compact, flatten } from 'lodash'
 
@@ -38,11 +38,13 @@ export class AIItemPickedEvent extends AIEvent {
   }
 
   private whereToWear(item: Item): Wearing {
-    const matches: Wearing[] = compact(flatten(
-      item.usages.map(usage =>
-        allInventorySlots.filter(slot => slot.usage === usage)
-      )
-    ).map(slot => this.player.inventory.matchingEquip(slot)))
+    const matches: Wearing[] = compact(
+      flatten(
+        item.usages.map(usage =>
+          allInventorySlots.filter(slot => slot.usage === usage)
+        )
+      ).map(slot => this.player.inventory.matchingEquip(slot))
+    )
 
     if (matches.length === 0) {
       return null
@@ -105,7 +107,10 @@ export class AIMoveEvent extends AIEvent {
 
 export class AIHandleEnvEvent extends AIEvent {
   public act(): void {
-    const tile = this.player.currentLevel.at(this.player.pos.x, this.player.pos.y)
+    const tile = this.player.currentLevel.at(
+      this.player.pos.x,
+      this.player.pos.y
+    )
 
     if (tile instanceof StairwayDown || tile instanceof StairwayUp) {
       tile.go(this.player)
@@ -117,24 +122,27 @@ export class AIHandleEnvEvent extends AIEvent {
 
 export class AIPickUpItems extends AIEvent {
   public act(): void {
-    const items = this.player.currentLevel.at(this.player.pos.x, this.player.pos.y).items,
+    const items = this.player.currentLevel.at(
+        this.player.pos.x,
+        this.player.pos.y
+      ).items,
       game = this.player.currentLevel.game
 
     switch ((items && items.bunch.length) || 0) {
-    case 0:
-      game.logger.noItemsToPickUp()
-      game.screen = undefined
-      return
-    case 1:
-      const { item, count } = items.bunch[0]
-      this.player.inventory.putToBag(item, count)
-      game.logger.pickedUpItem(item, count)
-      items.remove(item, count)
-      game.screen = undefined
-      return
-    default:
-      game.screen = new PickUpScreen(game)
-      return
+      case 0:
+        game.logger.noItemsToPickUp()
+        game.screen = undefined
+        return
+      case 1:
+        const { item, count } = items.bunch[0]
+        this.player.inventory.putToBag(item, count)
+        game.logger.pickedUpItem(item, count)
+        items.remove(item, count)
+        game.screen = undefined
+        return
+      default:
+        game.screen = new PickUpScreen(game)
+        return
     }
   }
 }

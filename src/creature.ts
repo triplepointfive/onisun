@@ -2,7 +2,14 @@ import { Point } from './utils'
 import { MetaAI } from './ai'
 import { Fov } from './fov'
 
-import { Characteristics, Corpse, LevelMap, LevelMapId, Memory, IdleScreen } from './engine'
+import {
+  Characteristics,
+  Corpse,
+  LevelMap,
+  LevelMapId,
+  Memory,
+  IdleScreen,
+} from './engine'
 import {
   Inventory,
   MissileSlot,

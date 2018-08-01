@@ -14,10 +14,7 @@ export enum ScreenType {
 export abstract class Screen {
   public player: Player
 
-  constructor(
-    public readonly type: ScreenType,
-    protected game: Game,
-  ) {
+  constructor(public readonly type: ScreenType, protected game: Game) {
     this.player = this.game.player
   }
 

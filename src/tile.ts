@@ -2,7 +2,7 @@ import { Phantom, Creature } from './creature'
 import { Item } from './items'
 import { Point } from './utils'
 import { LevelMap } from './map'
-import { ItemsBunch } from './items/internal';
+import { ItemsBunch } from './items/internal'
 
 export enum TileTypes {
   Wall,
@@ -64,7 +64,9 @@ export class Tile {
   }
 
   public isStairway(): boolean {
-    return this.kind === TileTypes.StairwayDown || this.kind === TileTypes.StairwayUp
+    return (
+      this.kind === TileTypes.StairwayDown || this.kind === TileTypes.StairwayUp
+    )
   }
 
   public visibleThrough(): boolean {

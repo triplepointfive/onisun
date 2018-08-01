@@ -7,7 +7,7 @@ export class Profession {
     public readonly id: number,
     public readonly name: string,
     public level: number = 1,
-    public points: number = 0,
+    public points: number = 0
   ) {}
 }
 
@@ -21,6 +21,6 @@ export abstract class Talent {
     public readonly depth: number,
     public rank: number,
     public readonly maxRank: number,
-    public readonly description: string,
+    public readonly description: string
   ) {}
 }

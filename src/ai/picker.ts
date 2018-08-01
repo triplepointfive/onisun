@@ -20,7 +20,9 @@ export class Picker extends FollowTargetAI {
 
   protected onReach(actor: Creature): void {
     const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
-    this.prevAI.pushEvent(new AIItemPickedEvent(tile.items, actor.currentLevel.game))
+    this.prevAI.pushEvent(
+      new AIItemPickedEvent(tile.items, actor.currentLevel.game)
+    )
 
     tile.items.bunch.forEach(groupedItem => {
       actor.inventory.putToBag(groupedItem.item, groupedItem.count)
@@ -42,7 +44,9 @@ export class Picker extends FollowTargetAI {
         return
       }
 
-      const item = tile.items().bunch.find(groupedItem => condition(groupedItem.item))
+      const item = tile
+        .items()
+        .bunch.find(groupedItem => condition(groupedItem.item))
 
       if (item && !result) {
         this.desiredItemId = item.id
