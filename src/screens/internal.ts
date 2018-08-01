@@ -1,14 +1,13 @@
 import { Game } from 'src/game'
 import { Player } from 'src/creature'
 import { Profession } from 'src/profession'
-import { AIMoveEvent, AIHandleEnvEvent } from 'src/ai/meta_ai'
-import { Direction } from 'src/utils'
 
 export enum ScreenType {
   LevelUp,
   Idle,
   AbilitiesPicking,
   Inventory,
+  ItemsListing,
 }
 
 export abstract class Screen {
@@ -45,7 +44,6 @@ export class LevelUpScreen extends Screen {
       this.player.professions.push(pickedProfession)
     }
 
-    // this.onDone()
     this.game.screen = undefined
   }
 }

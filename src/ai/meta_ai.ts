@@ -167,6 +167,28 @@ export class AIPickUpItems extends AIEvent {
   }
 }
 
+export class AIDropItems extends AIEvent {
+  constructor(private items: GroupedItem[], game: Game) {
+    super(game)
+  }
+
+  public act(): void {
+    if (!this.items.length) {
+      this.game.screen = new IdleScreen(this.game)
+    }
+
+    let tile = this.tile()
+
+    this.items.forEach(({ item, count }) => {
+      this.player.inventory.removeFromBag(item, count)
+      this.game.logger.droppedItem(item, count)
+      tile.addItem(item, count)
+    })
+
+    this.game.screen = undefined
+  }
+}
+
 export abstract class MetaAI extends AI {
   constructor(public aiToRun: AI = null) {
     super()

@@ -70,7 +70,7 @@ import Scene from './Scene.vue'
 
 import LevelUp from './LevelUp.vue'
 import Idle from './Idle.vue'
-import Inventory from './Inventory.vue'
+import ItemsListingScreen from './ItemsListingScreen.vue'
 import TalentsTreeScreen from './TalentsTreeScreen.vue'
 
 import { LevelMap, ScreenType, Screen } from '../src/engine'
@@ -104,8 +104,8 @@ export default Vue.extend({
         return LevelUp
       case ScreenType.Idle:
         return Idle
-      case ScreenType.Inventory:
-        return Inventory
+      case ScreenType.ItemsListing:
+        return ItemsListingScreen
       }
     }
   },

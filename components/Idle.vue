@@ -7,12 +7,8 @@ import Vue from 'vue'
 import { IdleInputKey } from '../src/screen'
 
 export default Vue.extend({
-  name: 'Idle',
+  name: 'IdleScreen',
   props: ['screen'],
-  data() {
-    return {
-    }
-  },
   methods: {
     close(inputKey) {
       this.screen.onInput(inputKey)
@@ -51,6 +47,8 @@ export default Vue.extend({
         return this.close(IdleInputKey.Inventory)
       case ',':
         return this.close(IdleInputKey.PickUp)
+      case 'd':
+        return this.close(IdleInputKey.Drop)
       }
     }
   }

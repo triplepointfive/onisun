@@ -87,6 +87,14 @@ export class Logger {
     }
   }
 
+  public droppedItem(item: Item, count: number): void {
+    if (count === 1) {
+      this.addMessage(LogLevel.INFO, `You dropped a ${item.name}`)
+    } else {
+      this.addMessage(LogLevel.INFO, `You dropped ${count} ${item.name}`)
+    }
+  }
+
   protected debug(message: string): void {
     this.addMessage(LogLevel.DEBUG, message)
   }
