@@ -27,13 +27,7 @@ export class InventoryScreen extends Screen {
 }
 
 export class PickUpScreen extends InventoryScreen {
-  protected initPositions(): void {
-    const items = this.player.currentLevel.at(this.player.pos.x, this.player.pos.y).items
-
-    if (items) {
-      this.positions = items.bunch.map(itemGroup => itemGroup.item.name)
-    } else {
-      this.positions = ['No items']
-    }
-  }
+  // protected initPositions(): void {
+    // this.positions = items.bunch.map(itemGroup => itemGroup.item.name)
+  // }
 }

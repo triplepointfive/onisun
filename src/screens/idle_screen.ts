@@ -1,6 +1,6 @@
 import { Screen, ScreenType } from './internal'
-import { Game, AIMoveEvent, Direction, AIHandleEnvEvent } from 'src/engine'
-import { InventoryScreen, PickUpScreen } from './inventory_screen';
+import { Game, AIMoveEvent, Direction, AIHandleEnvEvent, AIPickUpItems } from 'src/engine'
+import { InventoryScreen } from './inventory_screen'
 
 export enum IdleInputKey {
   Right,
@@ -51,8 +51,7 @@ export class IdleScreen extends Screen {
       return new AIHandleEnvEvent().act(this.game.player)
 
     case IdleInputKey.PickUp:
-      this.game.screen = new PickUpScreen(this.game)
-      return
+      return new AIPickUpItems().act(this.game.player)
 
     case IdleInputKey.Inventory:
       this.game.screen = new InventoryScreen(this.game)

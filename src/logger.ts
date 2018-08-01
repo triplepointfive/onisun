@@ -75,6 +75,18 @@ export class Logger {
     this.addMessage(LogLevel.DEBUG, "Don't know how to handle it")
   }
 
+  public noItemsToPickUp(): void {
+    this.addMessage(LogLevel.DEBUG, "You don't see anything to pick up")
+  }
+
+  public pickedUpItem(item: Item, count: number): void {
+    if (count === 1) {
+      this.addMessage(LogLevel.INFO, `You picked up ${item.name}`)
+    } else {
+      this.addMessage(LogLevel.INFO, `You picked up ${count} ${item.name}`)
+    }
+  }
+
   protected debug(message: string): void {
     this.addMessage(LogLevel.DEBUG, message)
   }

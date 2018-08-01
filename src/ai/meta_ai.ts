@@ -3,11 +3,13 @@ import { Creature, Player, AttackEvent } from '../creature'
 import { ItemsBunch } from '../items/internal'
 import { Direction } from '../utils'
 import { StairwayDown, StairwayUp } from '../tile';
+import { PickUpScreen } from 'src/screen';
 
 export enum AIEventType {
   ItemPickedUp,
   Move,
   HandleEnv,
+  PickUpItems,
 }
 
 export abstract class AIEvent {
@@ -54,6 +56,34 @@ export class AIHandleEnvEvent extends AIEvent {
       tile.go(player)
     } else {
       player.currentLevel.game.logger.howToHandle()
+    }
+  }
+}
+
+export class AIPickUpItems extends AIEvent {
+  constructor() {
+    super(AIEventType.PickUpItems)
+  }
+
+  public act(player: Player): void {
+    const items = player.currentLevel.at(player.pos.x, player.pos.y).items,
+      game = player.currentLevel.game
+
+    switch ((items && items.bunch.length) || 0) {
+    case 0:
+      game.logger.noItemsToPickUp()
+      game.screen = undefined
+      return
+    case 1:
+      const { item, count } = items.bunch[0]
+      player.inventory.putToBag(item, count)
+      game.logger.pickedUpItem(item, count)
+      items.remove(item, count)
+      game.screen = undefined
+      return
+    default:
+      game.screen = new PickUpScreen(game)
+      return
     }
   }
 }

@@ -7,31 +7,18 @@
 
       <div class='col pl-0'>
         <div class='fps mb-2 '>FPS {{ fps }}</div>
-        <div>MAP {{ level.id }}</div>
-
-        <input type='checkbox' v-model='wholeMap'>
+        <div>
+          MAP {{ level.id }}
+          <input type='checkbox' v-model='wholeMap'>
+        </div>
 
         <Stats :creature='player'/>
 
-        <div class='form-group row'>
-          <div class='col-sm-2'>Map</div>
-          <div class='col-sm-10'>
-            <div class='form-group'>
-              <input class='form-control' id='interval' v-model='interval' type='number'/>
-              <label class='form-check-label' for='interval'>
-                Tick interval
-              </label>
-            </div>
-
-            <button class='btn btn-secondary' @click='nextStep = true'>
-              Next step
-            </button>
-
-            <button class='btn btn-secondary' @click="pause = !pause">
-              {{ pause ? 'Start' : 'Pause' }}
-            </button>
-          </div>
-        </div>
+        <ul>
+          <li v-for='group in tileItems' :key='group.item.name'>
+            {{ group.count }}: {{ group.item.name }}
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -98,9 +85,7 @@ export default Vue.extend({
       fps: 0,
       counter: 0,
       interval: 100,
-      nextStep: false,
       step: 0,
-      pause: false,
     }
   },
   components: {
@@ -139,17 +124,20 @@ export default Vue.extend({
       }
 
       if (tile.items) {
-        if (tile.items.bunch.length === 1) {
+        switch (tile.items.bunch.length) {
+        case 0:
+          break;
+        case 1:
           return displayItem(tile.items.bunch[0].item)
-        }
+        default:
+          const frame = this.step % (this.animationFps * 3 + 4)
+          if (frame < nextItemAnimation.length) {
+            return nextItemAnimation[frame]
+          } else {
+            const itemId = Math.floor(this.step / (this.animationFps * 3 + 4))
 
-        const frame = this.step % (this.animationFps * 3 + 4)
-        if (frame < nextItemAnimation.length) {
-          return nextItemAnimation[frame]
-        } else {
-          const itemId = Math.floor(this.step / (this.animationFps * 3 + 4))
-
-          return displayItem(tile.items.bunch[itemId % tile.items.bunch.length].item)
+            return displayItem(tile.items.bunch[itemId % tile.items.bunch.length].item)
+          }
         }
       }
 
@@ -196,7 +184,6 @@ export default Vue.extend({
       this.drawInterval = setInterval(() => { this.drawScene() }, this.interval)
     },
     drawScene() {
-      if (this.done) { return }
       const ts = Date.now()
       if (this.ts + 1000 < ts) {
         this.fps = this.counter
@@ -204,16 +191,10 @@ export default Vue.extend({
         this.ts = ts
       }
 
-      this.done = true
-      if (!this.pause || this.nextStep) {
-        this.nextStep = false
-      }
-
       // this.eng.update(this.player.x, this.player.y);
       this.eng.update(this.term.cx, this.term.cy);
       this.term.render();
 
-      this.done = false
       this.counter += 1
       this.step += 1
     },
@@ -236,6 +217,10 @@ export default Vue.extend({
     },
     animationFps() {
       return 1000 / this.interval
+    },
+    tileItems() {
+      let items = this.stage.at(this.player.pos.x, this.player.pos.y).items()
+      return items && items.bunch
     }
   },
   mounted() {

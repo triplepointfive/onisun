@@ -350,7 +350,7 @@ export class Onisun extends Game {
     this.currentMap = map1
 
     // rat().addToMap(new Point(1, 3), this.currentMap)
-    rat().addToMap(new Point(1, 4), this.currentMap)
+    // rat().addToMap(new Point(1, 4), this.currentMap)
 
     addOnTile(
       this.currentMap,
@@ -359,8 +359,6 @@ export class Onisun extends Game {
         this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )
-
-    this.screen = new AbilitiesPickingScreen(this)
   }
 
   protected initPlayer(): Player {
@@ -417,7 +415,8 @@ export class Onisun extends Game {
     centralize(map)
     map.game = this
 
-    addItems(0.01, map, weapons.merge(itemsPool))
+    addItems(0.5, map, weapons.merge(itemsPool))
+    addItems(0.5, map, weapons.merge(itemsPool))
 
     return map
   }
