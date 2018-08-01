@@ -1,5 +1,5 @@
 import { Screen, ScreenType } from './internal'
-import { Game } from 'src/engine'
+import { Game, Item } from 'src/engine'
 import { IdleScreen } from './idle_screen'
 
 export enum InventoryInputKey {
@@ -7,8 +7,12 @@ export enum InventoryInputKey {
   ItemIndex,
 }
 
+interface PickUpScreenPosition {
+  item: Item
+}
+
 export class InventoryScreen extends Screen {
-  public positions: string[]
+  public positions: PickUpScreenPosition[]
 
   constructor(game: Game) {
     super(ScreenType.Inventory, game)
@@ -30,7 +34,7 @@ export class InventoryScreen extends Screen {
 export class PickUpScreen extends InventoryScreen {
   protected initPositions(): void {
     const items = this.player.currentLevel.at(this.player.pos.x, this.player.pos.y).items
-    this.positions = items.bunch.map(itemGroup => itemGroup.item.name)
+    this.positions = items.bunch.map(itemGroup => { return { item: itemGroup.item } })
   }
 
   public onInput(key: InventoryInputKey, itemIndex: number = 0) {

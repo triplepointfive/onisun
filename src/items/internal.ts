@@ -23,6 +23,7 @@ export class Item {
   public static getId(): ItemId {
     return this.lastId++
   }
+  public weight: number = 100
 
   constructor(
     public group: ItemGroup,

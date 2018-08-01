@@ -1,25 +1,24 @@
 <template>
   <div>
-    <h3>Инвентарь</h3>
-
-    <table v-if='false'>
-      <tr v-for='wearing in player.inventory.wears()' :key='wearing.bodyPart.id'>
-        <td>
-          {{ displayBodyPart(wearing.bodyPart) }}
+    <h3>Что поднять?</h3>
+    <table class='positions-list'>
+      <tr v-for='(position, index) in screen.positions' :key='index' :class='positionStatus(position)'>
+        <td class='selected'>
+          <div class='sign' v-if='positionSelected(index)'>
+            &#43;
+          </div>
         </td>
-        <td v-if='wearing.equipment'>
-          {{ displayItem(wearing.equipment.item) }} {{ wearing.equipment.count }}
+        <td class='letter'>
+          {{ indexLetter(index) }}
         </td>
-      </tr>
-    </table>
-
-    <table>
-      <tr v-for='(position, index) in screen.positions' :key='index'>
-        <td>
-          <strong>{{ indexLetter(index) }}</strong>
+        <td class='separator'>
+          &mdash;
         </td>
-        <td>
-          {{ position }}
+        <td class='name'>
+          {{ position.item.name }}
+        </td>
+        <td class='weight'>
+          &#91;{{ position.item.weight }}g&#93;
         </td>
       </tr>
     </table>
@@ -41,12 +40,18 @@ import {
   displayItem,
 } from './scene_tiles'
 
+import { remove } from 'lodash'
+
+const LETTER_OFFSET = 97
+
 export default Vue.extend({
   name: 'Inventory',
   props: ['screen'],
   data() {
     return {
       page: 0,
+      perPage: 20,
+      selected: [],
     }
   },
   computed: {
@@ -60,12 +65,35 @@ export default Vue.extend({
     },
     onEvent(event) {
       switch (event.key) {
+      case ' ':
       case 'Escape':
         return this.close(InventoryInputKey.Close)
+      default:
+        return this.selectAt(event.key.charCodeAt(0) - LETTER_OFFSET)
+      }
+    },
+    selectAt(i: number) {
+      if (i >= 0 && i < Math.min(this.perPage, this.screen.positions.length)) {
+        if (this.selected.indexOf(i) >= 0) {
+          remove(this.selected, x => x === i)
+          this.$set(this.selected, this.selected)
+        } else {
+          this.selected.push(i)
+        }
       }
     },
     indexLetter(i: number): string {
-      return String.fromCharCode(97 + i)
+      return String.fromCharCode(LETTER_OFFSET + i)
+    },
+    positionSelected(index) {
+      return this.selected.indexOf(index) >= 0
+    },
+    positionStatus(position) {
+      if (!position.item) {
+        return ''
+      } else {
+        return 'text-success'
+      }
     },
     displayBodyPart(bodyPart) {
       switch (bodyPart.id) {
@@ -104,3 +132,47 @@ export default Vue.extend({
 })
 </script>
 
+<style lang="scss">
+.positions-list {
+  width: 100%;
+  table-layout: fixed;
+
+  td {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  .selected {
+    padding-right: 1rem;
+    width: 3rem;
+
+    > .sign {
+      position: absolute;
+    }
+
+    &::after {
+      content: " ";
+      white-space: pre;
+    }
+  }
+
+  .letter {
+    text-transform: uppercase;
+  }
+
+  .separator {
+    padding-left: 1rem;
+  }
+
+  .name {
+    padding-left: 2rem;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .weight {
+    padding-left: 1rem;
+    text-align: right;
+  }
+}
+</style>
