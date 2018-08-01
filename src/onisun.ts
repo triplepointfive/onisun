@@ -32,7 +32,7 @@ import {
   PlayerAI,
   Talent,
   AbilitiesPickingScreen,
-   RightHandSlot,
+  RightHandSlot,
 } from './engine'
 import { includes, sample } from 'lodash'
 
@@ -253,7 +253,7 @@ export class OnisunTalent extends Talent {
     depth: number,
     rank: number,
     maxRank: number,
-    description: string = '',
+    description: string = ''
   ) {
     super(name, depth, rank, maxRank, description)
   }
@@ -271,25 +271,74 @@ export class OnisunDefenderProfession extends Profession {
 
     // TODO: Validate all Talent's ids are uniq
 
-    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerTwoHandedWeapons, 'Двуручные оружия', 0, 0, 3))
-    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerLightWeapons, 'Легкие оружия', 0, 0, 3))
-    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerHeavyWeapons, 'Тяжелые оружия', 0, 0, 3))
+    this.talents.push(
+      new OnisunTalent(
+        OnisunTalentId.AttackerTwoHandedWeapons,
+        'Двуручные оружия',
+        0,
+        0,
+        3
+      )
+    )
+    this.talents.push(
+      new OnisunTalent(
+        OnisunTalentId.AttackerLightWeapons,
+        'Легкие оружия',
+        0,
+        0,
+        3
+      )
+    )
+    this.talents.push(
+      new OnisunTalent(
+        OnisunTalentId.AttackerHeavyWeapons,
+        'Тяжелые оружия',
+        0,
+        0,
+        3
+      )
+    )
 
-    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerTwoWeapons, 'Два оружия', 1, 0, 1, 'Позволяет брать оружие в каждую руку'))
+    this.talents.push(
+      new OnisunTalent(
+        OnisunTalentId.AttackerTwoWeapons,
+        'Два оружия',
+        1,
+        0,
+        1,
+        'Позволяет брать оружие в каждую руку'
+      )
+    )
     // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, 'Быстрые удары', 1, 0, 3))
     // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, 'Мощный удар', 1, 0, 4))
     // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, 'Выбивание оружия', 1, 0, 5))
 
-    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerDoubleTwoHandedWeapons, 'Два двуручных оружия', 2, 0, 2))
+    this.talents.push(
+      new OnisunTalent(
+        OnisunTalentId.AttackerDoubleTwoHandedWeapons,
+        'Два двуручных оружия',
+        2,
+        0,
+        2
+      )
+    )
     // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, '- серия', 2, 0, 2))
-    this.talents.push(new OnisunTalent(OnisunTalentId.AttackerStrongGrip, 'Крепкий хват', 2, 0, 2, 'Оружие не выбивается из рук'))
+    this.talents.push(
+      new OnisunTalent(
+        OnisunTalentId.AttackerStrongGrip,
+        'Крепкий хват',
+        2,
+        0,
+        2,
+        'Оружие не выбивается из рук'
+      )
+    )
   }
 }
 
 export class Onisun extends Game {
   constructor(generatorOptions: GeneratorOptions) {
     let pool: Profession[] = []
-
     ;[
       'ботаник',
       'библиотекарь',
@@ -314,21 +363,11 @@ export class Onisun extends Game {
 
     this.player = this.initPlayer()
 
-    this.player.professions.push(
-      new OnisunDefenderProfession(1, 'Оружейник')
-    )
-    this.player.professions.push(
-      new OnisunDefenderProfession(2, 'Воин')
-    )
-    this.player.professions.push(
-      new OnisunDefenderProfession(3, 'Маг')
-    )
-    this.player.professions.push(
-      new OnisunDefenderProfession(4, ' Повар')
-    )
-    this.player.professions.push(
-      new OnisunDefenderProfession(5, 'Колдун')
-    )
+    this.player.professions.push(new OnisunDefenderProfession(1, 'Оружейник'))
+    this.player.professions.push(new OnisunDefenderProfession(2, 'Воин'))
+    this.player.professions.push(new OnisunDefenderProfession(3, 'Маг'))
+    this.player.professions.push(new OnisunDefenderProfession(4, ' Повар'))
+    this.player.professions.push(new OnisunDefenderProfession(5, 'Колдун'))
 
     let map1 = this.generateMap(generatorOptions)
     let map2 = this.generateMap(generatorOptions)
@@ -415,8 +454,7 @@ export class Onisun extends Game {
     centralize(map)
     map.game = this
 
-    addItems(0.5, map, weapons.merge(itemsPool))
-    addItems(0.5, map, weapons.merge(itemsPool))
+    addItems(0.05, map, weapons.merge(itemsPool))
 
     return map
   }
