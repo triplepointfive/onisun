@@ -8,7 +8,7 @@ import { Logger } from '../logger'
 import { Game, Wearing, allInventorySlots, Modifier } from '../engine'
 
 import { compact, flatten } from 'lodash'
-import { IdleScreen } from '../screens/idle_screen';
+import { IdleScreen } from '../screens/idle_screen'
 
 export abstract class AIEvent {
   protected logger: Logger
@@ -22,10 +22,7 @@ export abstract class AIEvent {
   public abstract act(): void
 
   protected tile(): Tile {
-    return this.player.currentLevel.at(
-      this.player.pos.x,
-      this.player.pos.y
-    )
+    return this.player.currentLevel.at(this.player.pos.x, this.player.pos.y)
   }
 }
 
@@ -186,6 +183,18 @@ export class AIDropItems extends AIEvent {
     })
 
     this.game.screen = undefined
+  }
+}
+
+export class AITakeOffItem extends AIEvent {
+  constructor(private wearing: Wearing, game: Game) {
+    super(game)
+  }
+
+  public act(): void {
+    const item = this.wearing.equipment.item
+    this.player.inventory.takeOff(this.player, this.wearing.bodyPart)
+    this.logger.takeOff(item)
   }
 }
 

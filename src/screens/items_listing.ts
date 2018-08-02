@@ -4,8 +4,8 @@ import { IdleScreen } from './idle_screen'
 import { GroupedItem } from '../items/internal'
 
 interface ItemsListingPosition {
-  item: Item,
-  count: number,
+  item: Item
+  count: number
 }
 
 abstract class ItemsListingScreen extends Screen {

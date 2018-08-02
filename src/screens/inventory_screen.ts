@@ -1,5 +1,5 @@
 import { Screen, ScreenType } from './internal'
-import { Game, Wearing } from '../engine'
+import { Game, Wearing, AITakeOffItem } from '../engine'
 import { IdleScreen } from './idle_screen'
 
 export class InventoryScreen extends Screen {
@@ -8,6 +8,11 @@ export class InventoryScreen extends Screen {
   constructor(game: Game) {
     super(ScreenType.Inventory, game)
     this.positions = this.player.inventory.wears()
+  }
+
+  public takeOff(wearing: Wearing) {
+    new AITakeOffItem(wearing, this.game).act()
+    this.game.screen = null
   }
 
   public close() {

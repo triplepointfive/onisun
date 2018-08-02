@@ -28,10 +28,6 @@
 <script lang='ts'>
 import Vue from 'vue'
 
-import {
-  displayItem,
-} from './scene_tiles'
-
 const LETTER_OFFSET = 97
 
 export default Vue.extend({
@@ -82,11 +78,6 @@ export default Vue.extend({
         return ''
       } else {
         return 'text-success'
-      }
-    },
-    displayItem(item) {
-      if (item) {
-        return `${displayItem(item).getChar()} ${item.name}`
       }
     }
   }

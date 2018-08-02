@@ -51,7 +51,6 @@ export default Vue.extend({
     return {
       page: 0,
       perPage: 20,
-      selected: [],
     }
   },
   computed: {
@@ -74,10 +73,8 @@ export default Vue.extend({
     },
     selectAt(i: number) {
       if (i >= 0 && i < Math.min(this.perPage, this.screen.positions.length)) {
-        if (this.selected.indexOf(i) >= 0) {
-          this.selected.splice(this.selected.indexOf(i), 1)
-        } else {
-          this.selected.push(i)
+        if (this.screen.positions[i].equipment) {
+          this.screen.takeOff(this.screen.positions[i])
         }
       }
     },
