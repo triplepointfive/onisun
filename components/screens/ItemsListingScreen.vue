@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <h3>Что поднять?</h3>
-    <table class='positions-list'>
+  <div class='screen-modal'>
+    <span class='title'>{{ screen.title }}</span>
+
+    <table class='container positions-list'>
       <tr v-for='(position, index) in screen.positions' :key='index' :class='positionStatus(position)'>
         <td class='selected'>
           <div class='sign' v-if='positionSelected(index)'>
@@ -48,11 +49,10 @@ export default Vue.extend({
   methods: {
     onEvent(event) {
       switch (event.key) {
-      case ' ':
       case 'Escape':
         return this.screen.close()
       case 'Enter':
-      case ',':
+      case ' ':
         return this.screen.pickUpItems(this.selected.map(index => this.screen.positions[index]))
       default:
         return this.selectAt(event.key.charCodeAt(0) - LETTER_OFFSET)
@@ -86,7 +86,6 @@ export default Vue.extend({
 
 <style lang="scss">
 .positions-list {
-  width: 100%;
   table-layout: fixed;
 
   td {
@@ -123,7 +122,7 @@ export default Vue.extend({
   }
 
   .weight {
-    padding-left: 1rem;
+    width: 5%;
     text-align: right;
   }
 }

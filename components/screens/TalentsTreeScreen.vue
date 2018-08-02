@@ -148,13 +148,9 @@ export default Vue.extend({
   left: 50%;
 
   border: 1px solid black;
-  background: white;
   border-radius: 50px;
   padding: 30px;
   z-index: 3;
-
-  background-color: black;
-  border: 2px solid gold;
 
   .title {
     color: white;

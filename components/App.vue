@@ -68,11 +68,11 @@ import Cell from './Cell.vue'
 import Logger from './Logger.vue'
 import Scene from './Scene.vue'
 
-import LevelUp from './LevelUp.vue'
-import Idle from './Idle.vue'
-import ItemsListingScreen from './ItemsListingScreen.vue'
-import TalentsTreeScreen from './TalentsTreeScreen.vue'
-import InventoryScreen from './InventoryScreen.vue'
+import Idle from './screens/IdleScreen.vue'
+import LevelUp from './screens/LevelUpScreen.vue'
+import ItemsListingScreen from './screens/ItemsListingScreen.vue'
+import TalentsTreeScreen from './screens/TalentsTreeScreen.vue'
+import InventoryScreen from './screens/InventoryScreen.vue'
 
 import { LevelMap, ScreenType, Screen } from '../src/engine'
 

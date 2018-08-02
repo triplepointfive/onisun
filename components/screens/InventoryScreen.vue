@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <p class='title'>Инвентарь</p>
+  <div class='screen-modal'>
+    <span class='title'>Инвентарь</span>
 
-    <table class='inventory-list'>
+    <table class='content inventory-list'>
       <tr v-for='(position, index) in screen.positions' :key='index'>
         <td class='slot'>
           <span class='letter'>
@@ -36,11 +36,11 @@ import {
   RightHandSlot,
   BodySlot,
   MissileSlot,
-} from '../src/engine'
+} from '../../src/engine'
 
 import {
   displayItem,
-} from './scene_tiles'
+} from './../scene_tiles'
 
 const LETTER_OFFSET = 97
 
@@ -141,15 +141,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-.title {
-  text-align: center;
-}
-
 .inventory-list {
-  width: 100%;
   table-layout: fixed;
   white-space: nowrap;
-  background: black;
 
   .slot {
     overflow: hidden;

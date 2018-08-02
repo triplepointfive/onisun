@@ -10,6 +10,7 @@ interface ItemsListingPosition {
 
 abstract class ItemsListingScreen extends Screen {
   public positions: ItemsListingPosition[]
+  public title: string
 
   constructor(game: Game) {
     super(ScreenType.ItemsListing, game)
@@ -24,6 +25,8 @@ abstract class ItemsListingScreen extends Screen {
 }
 
 export class PickUpScreen extends ItemsListingScreen {
+  public title: string = 'What to pick up?'
+
   protected initPositions(): void {
     const items = this.player.currentLevel.at(
       this.player.pos.x,
@@ -41,6 +44,8 @@ export class PickUpScreen extends ItemsListingScreen {
 }
 
 export class DropItemsScreen extends ItemsListingScreen {
+  public title: string = 'What to drop?'
+
   protected initPositions(): void {
     this.positions = this.player.inventory.cares()
   }
