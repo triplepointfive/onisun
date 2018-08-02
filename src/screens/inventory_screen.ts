@@ -1,17 +1,36 @@
 import { Screen, ScreenType } from './internal'
-import { Game, Wearing, AITakeOffItem } from '../engine'
+import { Game, AITakeOffItem, Item, InventorySlot, GroupedItem } from '../engine'
 import { IdleScreen } from './idle_screen'
 
+import { includes } from 'lodash'
+
+interface InventoryPosition {
+  inventorySlot: InventorySlot
+  item: Item
+  count: number
+  availableItems: GroupedItem[],
+}
+
 export class InventoryScreen extends Screen {
-  public positions: Wearing[] = []
+  public positions: InventoryPosition[] = []
 
   constructor(game: Game) {
     super(ScreenType.Inventory, game)
-    this.positions = this.player.inventory.wears()
+
+    const cares = this.player.inventory.cares()
+
+    this.positions = this.player.inventory.wears().map(({ inventorySlot, equipment }) => {
+      return {
+        inventorySlot: inventorySlot,
+        item: equipment && equipment.item,
+        count: equipment && equipment.count,
+        availableItems: cares.filter(groupedItem => includes(groupedItem.item.usages, inventorySlot.usage)),
+      }
+    })
   }
 
-  public takeOff(wearing: Wearing) {
-    new AITakeOffItem(wearing, this.game).act()
+  public takeOff(position: InventoryPosition) {
+    new AITakeOffItem(position.inventorySlot, this.game).act()
     this.game.screen = null
   }
 

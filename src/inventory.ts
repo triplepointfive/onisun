@@ -51,7 +51,7 @@ export const allInventorySlots = [
 // MissileWeapon,
 
 export type Wearing = {
-  bodyPart: InventorySlot
+  inventorySlot: InventorySlot
   equipment?: GroupedItem
 }
 
@@ -60,8 +60,8 @@ export class Inventory {
   private bag: ItemsBunch = new ItemsBunch()
 
   constructor(parts: InventorySlot[]) {
-    this.wearings = parts.map(bodyPart => {
-      return { bodyPart: bodyPart }
+    this.wearings = parts.map(inventorySlot => {
+      return { inventorySlot: inventorySlot }
     })
   }
 
@@ -99,12 +99,12 @@ export class Inventory {
 
   public canWear(item: Item) {
     return this.wearings.some(wearing =>
-      includes(item.usages, wearing.bodyPart.usage)
+      includes(item.usages, wearing.inventorySlot.usage)
     )
   }
 
   public matchingEquip(slot: InventorySlot): Wearing {
-    return this.wearings.find(wearSlot => wearSlot.bodyPart.id === slot.id)
+    return this.wearings.find(wearSlot => wearSlot.inventorySlot.id === slot.id)
   }
 
   public equip(actor: Creature, slot: InventorySlot, item: Item) {
@@ -130,7 +130,7 @@ export class Inventory {
   }
 
   public takeOff(actor: Creature, slot: InventorySlot): void {
-    const wearing = this.wearings.find(wearing => wearing.bodyPart === slot)
+    const wearing = this.wearings.find(wearing => wearing.inventorySlot === slot)
 
     if (wearing && wearing.equipment) {
       this.putToBag(wearing.equipment.item, wearing.equipment.count)

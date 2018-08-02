@@ -401,9 +401,6 @@ export class Onisun extends Game {
   }
 
   protected initPlayer(): Player {
-    const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
-    const rock = new Missile('Rock', new Modifier({}))
-
     const playerSpecie = new Specie('Player', Clan.Player, allAbilities)
 
     let player = new Player(
@@ -421,10 +418,14 @@ export class Onisun extends Game {
       playerSpecie
     )
 
+    const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
+    const katana = new OneHandWeapon('Katana', new Modifier({ attack: 10 }))
+    const rock = new Missile('Rock', new Modifier({}))
     player.inventory.putToBag(dagger, 2)
+    player.inventory.putToBag(katana, 1)
     player.inventory.putToBag(rock, 30)
-    player.putOn(RightHandSlot, dagger)
-    player.putOn(MissileSlot, rock)
+    // player.putOn(RightHandSlot, dagger)
+    // player.putOn(MissileSlot, rock)
 
     return player
   }

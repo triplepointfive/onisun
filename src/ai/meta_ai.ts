@@ -9,6 +9,7 @@ import { Game, Wearing, allInventorySlots, Modifier } from '../engine'
 
 import { compact, flatten } from 'lodash'
 import { IdleScreen } from '../screens/idle_screen'
+import { InventorySlot } from '../inventory'
 
 export abstract class AIEvent {
   protected logger: Logger
@@ -37,7 +38,7 @@ export class AIItemPickedEvent extends AIEvent {
 
       if (wearing) {
         // TODO: Use matching slot
-        this.player.putOn(wearing.bodyPart, item.item)
+        this.player.putOn(wearing.inventorySlot, item.item)
       }
     })
   }
@@ -187,14 +188,15 @@ export class AIDropItems extends AIEvent {
 }
 
 export class AITakeOffItem extends AIEvent {
-  constructor(private wearing: Wearing, game: Game) {
+  constructor(private slot: InventorySlot, game: Game) {
     super(game)
   }
 
   public act(): void {
-    const item = this.wearing.equipment.item
-    this.player.inventory.takeOff(this.player, this.wearing.bodyPart)
-    this.logger.takeOff(item)
+    // TODO: assert slot is not empty
+    const groupedItem = this.player.inventory.inSlot(this.slot)
+    this.player.inventory.takeOff(this.player, this.slot)
+    this.logger.takeOff(groupedItem.item)
   }
 }
 

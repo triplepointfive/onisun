@@ -3,16 +3,16 @@
     <span class='title'>Инвентарь</span>
 
     <table class='content inventory-list'>
-      <tr v-for='(position, index) in screen.positions' :key='index'>
+      <tr v-for='(position, index) in screen.positions' :key='index' :class='availableStatus(position)'>
         <td class='slot'>
           <span class='letter'>
             {{ indexLetter(index) }}
           </span>
-          <span class='separator'>
+          <span class='dash'>
             &#8212;
           </span>
           <span class='part'>
-            {{ displayBodyPart(position.bodyPart) }}
+            {{ displayBodyPart(position.inventorySlot) }}
           </span>
           <span class='separator float-right'>
               &#58;
@@ -73,8 +73,11 @@ export default Vue.extend({
     },
     selectAt(i: number) {
       if (i >= 0 && i < Math.min(this.perPage, this.screen.positions.length)) {
-        if (this.screen.positions[i].equipment) {
-          this.screen.takeOff(this.screen.positions[i])
+        const position = this.screen.positions[i]
+        if (position.item) {
+          this.screen.takeOff(position)
+        } else if (position.availableItems.length) {
+          console.log(position)
         }
       }
     },
@@ -125,16 +128,22 @@ export default Vue.extend({
       }
     },
     itemName(position) {
-      if (position.equipment) {
-        return position.equipment.item.name
+      if (position.item) {
+        return `${position.item.name} (${position.count})`
       } else {
         return '-'
       }
     },
     itemWeight(position) {
-      if (position.equipment) {
-        return `[${position.equipment.item.weight}g]`
+      if (position.item) {
+        return `[${position.item.weight}g]`
       }
+    },
+    available(position) {
+      return position.item || position.availableItems.length
+    },
+    availableStatus(position) {
+      return this.available(position) ? '-available' : '-unavailable'
     }
   }
 })
@@ -145,17 +154,36 @@ export default Vue.extend({
   table-layout: fixed;
   white-space: nowrap;
 
+  .-unavailable {
+    color: grey !important;
+
+    .slot {
+      .letter, .dash {
+        visibility: hidden;
+      }
+    }
+  }
+
+  .-available {
+    .slot {
+      color: orange;
+
+      .letter {
+        color: yellow;
+      }
+    }
+
+    .name {
+      color: white;
+    }
+  }
+
   .slot {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 
     width: 15%;
-    color: orange;
-
-    .letter {
-      color: yellow;
-    }
   }
 
   .name {
@@ -164,7 +192,6 @@ export default Vue.extend({
     text-overflow: ellipsis;
 
     width: 70%;
-    color: white;
   }
 
   .weight {
