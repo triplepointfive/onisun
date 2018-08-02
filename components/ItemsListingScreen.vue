@@ -27,14 +27,6 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import {
-  LeftHandSlot,
-  RightHandSlot,
-  BodySlot,
-  MissileSlot,
-
-  InventoryInputKey,
-} from '../src/engine'
 
 import {
   displayItem,
@@ -90,34 +82,6 @@ export default Vue.extend({
         return ''
       } else {
         return 'text-success'
-      }
-    },
-    displayBodyPart(bodyPart) {
-      switch (bodyPart.id) {
-        case LeftHandSlot.id:
-          return 'Левая рука'
-        case RightHandSlot.id:
-          return 'Правая рука'
-        // case BodyPart.Legs:
-        //   return '足'
-        // case BodyPart.Finger:
-        //   return '指'
-        // case BodyPart.Head:
-        //   return '頭'
-        // case BodyPart.Eye:
-        //   return '目'
-        // case BodyPart.Neck:
-        //   return '首'
-        // case BodyPart.Back:
-        //   return '背'
-        case BodySlot.id:
-          return 'Корпус'
-        // case BodyPart.MissileWeapon:
-        //   return 'MissileWeapon'
-        case MissileSlot.id:
-          return 'Снаряды'
-        default:
-          throw `Unknow body part ${bodyPart}`
       }
     },
     displayItem(item) {
