@@ -77,7 +77,7 @@ export default Vue.extend({
         if (position.item) {
           this.screen.takeOff(position)
         } else if (position.availableItems.length) {
-          console.log(position)
+          this.screen.putOn(position)
         }
       }
     },

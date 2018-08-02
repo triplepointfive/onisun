@@ -2,6 +2,8 @@ import { Screen, ScreenType } from './internal'
 import { Game, Item, AIPickUpItems, AIDropItems } from '../engine'
 import { IdleScreen } from './idle_screen'
 import { GroupedItem } from '../items/internal'
+import { InventoryScreen } from './inventory_screen';
+import { InventorySlot } from '../inventory';
 
 interface ItemsListingPosition {
   item: Item
@@ -53,5 +55,29 @@ export class DropItemsScreen extends ItemsListingScreen {
   public pickUpItems(items: GroupedItem[]): void {
     // TODO: Validate items are part of positions
     new AIDropItems(items, this.game).act()
+  }
+}
+
+export class PutOnItemsScreen extends ItemsListingScreen {
+  public title: string = 'What to put on?'
+
+  constructor(
+    protected inventorySlot: InventorySlot,
+    public positions: ItemsListingPosition[],
+    game: Game
+  ) {
+    super(game)
+  }
+
+  protected initPositions(): void {}
+
+  public pickUpItems(items: GroupedItem[]): void {
+    // TODO: Validate items are part of positions
+    // new AIDropItems(items, this.game).act()
+    console.log(items)
+  }
+
+  public close(): void {
+    this.game.screen = new InventoryScreen(this.game)
   }
 }

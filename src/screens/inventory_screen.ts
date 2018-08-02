@@ -1,5 +1,5 @@
 import { Screen, ScreenType } from './internal'
-import { Game, AITakeOffItem, Item, InventorySlot, GroupedItem } from '../engine'
+import { Game, AITakeOffItem, Item, InventorySlot, GroupedItem, PutOnItemsScreen } from '../engine'
 import { IdleScreen } from './idle_screen'
 
 import { includes } from 'lodash'
@@ -32,6 +32,10 @@ export class InventoryScreen extends Screen {
   public takeOff(position: InventoryPosition) {
     new AITakeOffItem(position.inventorySlot, this.game).act()
     this.game.screen = null
+  }
+
+  public putOn(position: InventoryPosition) {
+    this.game.screen = new PutOnItemsScreen(position.inventorySlot, position.availableItems, this.game)
   }
 
   public close() {
