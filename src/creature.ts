@@ -201,10 +201,6 @@ export class Creature extends Phantom {
     ])
   }
 
-  public putOn(slot: InventorySlot, item: Item) {
-    this.inventory.equip(this, slot, item)
-  }
-
   public addToMap(pos: Point, level: LevelMap) {
     this.pos = pos
     this.previousLevel = this.currentLevel

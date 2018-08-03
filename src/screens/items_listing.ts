@@ -1,5 +1,5 @@
 import { Screen, ScreenType } from './internal'
-import { Game, Item, AIPickUpItems, AIDropItems } from '../engine'
+import { Game, Item, AIPickUpItems, AIDropItems, AIPutOnItem } from '../engine'
 import { IdleScreen } from './idle_screen'
 import { GroupedItem } from '../items/internal'
 import { InventoryScreen } from './inventory_screen';
@@ -60,6 +60,7 @@ export class DropItemsScreen extends ItemsListingScreen {
 
 export class PutOnItemsScreen extends ItemsListingScreen {
   public title: string = 'What to put on?'
+  public singleItemMode: boolean = true
 
   constructor(
     protected inventorySlot: InventorySlot,
@@ -71,10 +72,15 @@ export class PutOnItemsScreen extends ItemsListingScreen {
 
   protected initPositions(): void {}
 
-  public pickUpItems(items: GroupedItem[]): void {
+  public pickUpItems(items: ItemsListingPosition[]): void {
     // TODO: Validate items are part of positions
     // new AIDropItems(items, this.game).act()
     console.log(items)
+  }
+
+  public withItem(itemGroup: ItemsListingPosition): void {
+    new AIPutOnItem(this.inventorySlot, itemGroup.item, this.game).act()
+    this.game.screen = undefined
   }
 
   public close(): void {

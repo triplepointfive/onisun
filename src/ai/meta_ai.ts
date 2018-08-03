@@ -200,6 +200,16 @@ export class AITakeOffItem extends AIEvent {
   }
 }
 
+export class AIPutOnItem extends AIEvent {
+  constructor(private slot: InventorySlot, private item: Item, game: Game) {
+    super(game)
+  }
+
+  public act(): void {
+    this.player.inventory.equip(this.player, this.slot, this.item)
+  }
+}
+
 export abstract class MetaAI extends AI {
   constructor(public aiToRun: AI = null) {
     super()

@@ -60,7 +60,9 @@ export default Vue.extend({
     },
     selectAt(i: number) {
       if (i >= 0 && i < Math.min(this.perPage, this.screen.positions.length)) {
-        if (this.selected.indexOf(i) >= 0) {
+        if (this.screen.singleItemMode) {
+          this.screen.withItem(this.screen.positions[i])
+        } else if (this.selected.indexOf(i) >= 0) {
           this.selected.splice(this.selected.indexOf(i), 1)
         } else {
           this.selected.push(i)

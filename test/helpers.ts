@@ -79,7 +79,7 @@ const wrapAI = function(ai: AI): MetaAI {
 const fakeSpecie = new Specie('Test specie', Clan.FreeForAll, allAbilities)
 
 export const generateCreatureWithAI = function(ai: AI): Creature {
-  return new Creature(generateCharacteristics(), wrapAI(ai), fakeSpecie)
+  return new TestCreature(generateCharacteristics(), wrapAI(ai), fakeSpecie)
 }
 
 export const generateCharacteristics = function(): Characteristics {
@@ -158,4 +158,10 @@ let professionId = 0
 export const generateProfession = function(level: number = 1): Profession {
   const name = times(4, () => random(35).toString(36)).join('')
   return new Profession(professionId++, name, level)
+}
+
+export class TestCreature extends Creature {
+  public putOn(slot, item) {
+    this.inventory.equip(this, slot, item)
+  }
 }
