@@ -1,4 +1,4 @@
-import { succ } from '../src/utils'
+import { succ } from '../src/engine'
 
 it('succ', () => {
   expect(succ('a')).toBe('b')

@@ -4,7 +4,7 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import { IdleInputKey } from '../../src/screen'
+import { IdleInputKey } from '../../src/engine'
 
 export default Vue.extend({
   name: 'IdleScreen',

@@ -16,9 +16,10 @@ import {
   Profession,
   Player,
   Level,
+  drawn,
+  Game,
 } from '../src/engine'
-import drawn from '../src/generator/drawn'
-import { Game } from '../src/game'
+
 import { times, random } from 'lodash'
 
 export const generateString = function(length: number = 7): string {

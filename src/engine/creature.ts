@@ -8,15 +8,13 @@ import {
   LevelMap,
   LevelMapId,
   Memory,
-  IdleScreen,
-} from './engine'
+} from './../engine'
 import {
   Inventory,
   MissileSlot,
   BodySlot,
   RightHandSlot,
   LeftHandSlot,
-  InventorySlot,
 } from './inventory'
 
 import { Level } from './level'

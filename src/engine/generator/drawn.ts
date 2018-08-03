@@ -1,5 +1,5 @@
 import { twoDimArray } from '../utils'
-import { LevelMap, Tile } from '../engine'
+import { LevelMap, Tile } from '../../engine'
 
 export default function(drawMap: string[]): LevelMap {
   return new LevelMap(

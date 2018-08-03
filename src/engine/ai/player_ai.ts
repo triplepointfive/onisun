@@ -1,6 +1,6 @@
 import { MetaAI } from './meta_ai'
 import { Player } from '../creature'
-import { LevelUpScreen, IdleScreen } from '../screen'
+import { IdleScreen } from '../../engine'
 
 export class PlayerAI extends MetaAI {
   public act(player: Player): void {

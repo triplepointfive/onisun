@@ -1,9 +1,15 @@
 import { Screen, ScreenType } from './internal'
-import { Game, Item, AIPickUpItems, AIDropItems, AIPutOnItem } from '../engine'
+import {
+  Game,
+  Item,
+  AIPickUpItems,
+  AIDropItems,
+  AIPutOnItem,
+} from '../../engine'
 import { IdleScreen } from './idle_screen'
 import { GroupedItem } from '../items/internal'
-import { InventoryScreen } from './inventory_screen';
-import { InventorySlot } from '../inventory';
+import { InventoryScreen } from './inventory_screen'
+import { InventorySlot } from '../inventory'
 
 interface ItemsListingPosition {
   item: Item

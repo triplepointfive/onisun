@@ -1,4 +1,4 @@
-import { Inventory, RightHandSlot, BodySlot } from '../src/inventory'
+import { Inventory, RightHandSlot, BodySlot } from '../src/engine'
 import {
   generateOneHandedWeapon,
   generateCreature,

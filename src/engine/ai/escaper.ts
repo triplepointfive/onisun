@@ -2,7 +2,7 @@ import { FollowTargetAI } from './internal'
 import { Phantom, Creature } from '../creature'
 
 import { sumBy } from 'lodash'
-import { Point } from '../engine'
+import { Point } from '../../engine'
 
 const STEP_DISTANCE = 2
 

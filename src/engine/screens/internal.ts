@@ -1,6 +1,6 @@
-import { Game } from 'src/game'
-import { Player } from 'src/creature'
-import { Profession } from 'src/profession'
+import { Game } from '../game'
+import { Player } from '../creature'
+import { Profession } from '../profession'
 
 export enum ScreenType {
   LevelUp,

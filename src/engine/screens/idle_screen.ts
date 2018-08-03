@@ -6,7 +6,7 @@ import {
   AIHandleEnvEvent,
   AIPickUpItemsDialog,
   DropItemsScreen,
-} from '../engine'
+} from '../../engine'
 import { InventoryScreen } from './inventory_screen'
 
 export enum IdleInputKey {

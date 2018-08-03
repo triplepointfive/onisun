@@ -130,7 +130,9 @@ export class Inventory {
   }
 
   public takeOff(actor: Creature, slot: InventorySlot): void {
-    const wearing = this.wearings.find(wearing => wearing.inventorySlot === slot)
+    const wearing = this.wearings.find(
+      wearing => wearing.inventorySlot === slot
+    )
 
     if (wearing && wearing.equipment) {
       this.putToBag(wearing.equipment.item, wearing.equipment.count)

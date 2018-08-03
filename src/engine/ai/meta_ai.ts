@@ -3,9 +3,14 @@ import { Creature, Player, AttackEvent } from '../creature'
 import { ItemsBunch, Item, GroupedItem } from '../items/internal'
 import { Direction } from '../utils'
 import { StairwayDown, StairwayUp, Tile } from '../tile'
-import { PickUpScreen } from '../screen'
 import { Logger } from '../logger'
-import { Game, Wearing, allInventorySlots, Modifier } from '../engine'
+import {
+  Game,
+  Wearing,
+  allInventorySlots,
+  Modifier,
+  PickUpScreen,
+} from '../../engine'
 
 import { compact, flatten } from 'lodash'
 import { IdleScreen } from '../screens/idle_screen'
@@ -38,7 +43,7 @@ export class AIItemPickedEvent extends AIEvent {
 
       if (wearing) {
         // TODO: Use matching slot
-        this.player.putOn(wearing.inventorySlot, item.item)
+        new AIPutOnItem(wearing.inventorySlot, item.item, this.game).act()
       }
     })
   }
@@ -207,6 +212,7 @@ export class AIPutOnItem extends AIEvent {
 
   public act(): void {
     this.player.inventory.equip(this.player, this.slot, this.item)
+    this.logger.putOn(this.item)
   }
 }
 
