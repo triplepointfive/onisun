@@ -32,7 +32,10 @@ export default Vue.extend({
   },
   methods: {
     close(doubleClickOption) {
-      this.screen.onInput(doubleClickOption || this.picked)
+      const option = doubleClickOption || this.picked
+      if (option) {
+        this.screen.onInput(option)
+      }
     },
     onEvent(event) {
       switch(event.key) {

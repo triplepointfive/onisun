@@ -107,7 +107,7 @@ export const generatePlayer = function(): Player {
   )
 }
 
-class TestGame extends Game {}
+export class TestGame extends Game {}
 
 export const generateLevelMap = function(): LevelMap {
   let map = drawn([
