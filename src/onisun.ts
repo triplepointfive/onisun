@@ -371,8 +371,8 @@ export class Onisun extends Game {
     // let map4 = this.generateMap(generatorOptions)
     // let map5 = this.generateMap(generatorOptions)
 
-    // addCreatures(0.05, map1, creaturesPool1)
-    // addCreatures(0.06, map2, creaturesPool2)
+    addCreatures(0.05, map1, creaturesPool1)
+    addCreatures(0.06, map2, creaturesPool2)
     // addCreatures(0.07, map3, creaturesPool3)
     // addCreatures(0.08, map4, creaturesPool4)
     // addCreatures(0.09, map5, creaturesPool5)
@@ -384,8 +384,8 @@ export class Onisun extends Game {
 
     this.currentMap = map1
 
-    rat().addToMap(new Point(1, 3), this.currentMap)
-    rat().addToMap(new Point(1, 4), this.currentMap)
+    // rat().addToMap(new Point(1, 3), this.currentMap)
+    // rat().addToMap(new Point(1, 4), this.currentMap)
 
     addOnTile(
       this.currentMap,
@@ -435,15 +435,15 @@ export class Onisun extends Game {
       options.roomsCount
     )
 
-    map = drawn([
-      'WWWWWWWWWWW',
-      'WRRRRRRRRRW',
-      'WRRRRRRRRRW',
-      'WRRRRRRRRRW',
-      'WRRRRRRRRRW',
-      'WRRRRRRRRRW',
-      'WWWWWWWWWWW',
-    ])
+    // map = drawn([
+    //   'WWWWWWWWWWW',
+    //   'WRRRRRRRRRW',
+    //   'WRRRRRRRRRW',
+    //   'WRRRRRRRRRW',
+    //   'WRRRRRRRRRW',
+    //   'WRRRRRRRRRW',
+    //   'WWWWWWWWWWW',
+    // ])
 
     if (options.addDoors) {
       addDoors(map)

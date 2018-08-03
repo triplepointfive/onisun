@@ -1,6 +1,7 @@
 import { Game } from '../game'
 import { ScreenType, Screen } from './internal'
 import { Profession } from '../profession'
+import { TalentsTreeScreen } from './talents_tree_screen'
 
 export class ProfessionPickingScreen extends Screen {
   public options: Profession[]
@@ -23,13 +24,6 @@ export class ProfessionPickingScreen extends Screen {
       this.player.professions.push(pickedProfession)
     }
 
-    this.player.levelUps -= 1
-    this.player.characteristics.levelUp(this.player.specie)
-
-    if (this.player.levelUps > 0) {
-      this.game.screen = new ProfessionPickingScreen(this.game)
-    } else {
-      this.game.screen = undefined
-    }
+    this.game.screen = new TalentsTreeScreen(this.game)
   }
 }

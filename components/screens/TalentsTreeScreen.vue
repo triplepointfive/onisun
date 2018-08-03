@@ -1,5 +1,5 @@
 <template>
-  <div id='talents-tree-container' class='ability-picking text-center'>
+  <div id='talents-tree-container' class='screen-modal text-center'>
     <b-tabs card v-model='professionIndex' class='tabs-list'>
       <b-tab
         v-for='profession in screen.player.professions'

@@ -20,7 +20,9 @@ import {
 import { Level } from './level'
 import { includes } from 'lodash'
 import { Item } from './items'
-import { Profession } from './profession'
+import { Profession, ProfessionPicker } from './profession'
+import { ProfessionPickingScreen } from './screens/profession_picking_screen';
+import { TalentsTreeScreen } from './screens/talents_tree_screen';
 
 export enum Clan {
   Player,
@@ -158,7 +160,12 @@ export class AddExperienceEvent extends Event {
 
   public affect(subject: Creature): Reaction {
     if (subject instanceof Player) {
+      const game = subject.currentLevel.game
+
       subject.levelUps += subject.level.add(1)
+
+      console.log('game.screen', subject.level.current - subject.levelUps + 1)
+      game.screen = (subject.level.current - subject.levelUps + 1) % 3 === 0 ? new ProfessionPickingScreen(game) : new TalentsTreeScreen(game)
     }
 
     return Reaction.NOTHING
