@@ -56,7 +56,7 @@ export class Dispatcher extends MetaAI {
       actor.characteristics.regenerate()
     }
 
-    this.runEvents(actor)
+    this.runEvents()
 
     if (this.feelsGood(actor)) {
       if (this.attacker.available(actor)) {

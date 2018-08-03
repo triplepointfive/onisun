@@ -234,7 +234,7 @@ export abstract class MetaAI extends AI {
     this.events = []
   }
 
-  public runEvents(player: Player): void {
+  public runEvents(): void {
     this.events.forEach(event => {
       event.act()
     })

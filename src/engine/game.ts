@@ -17,7 +17,7 @@ export abstract class Game {
       return
     }
 
-    this.player.ai.runEvents(this.player)
+    this.player.ai.runEvents()
 
     this.running = true
 

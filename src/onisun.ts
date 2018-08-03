@@ -244,14 +244,14 @@ export enum OnisunTalentId {
 
 export class OnisunTalent extends Talent {
   constructor(
-    public readonly id: OnisunTalentId,
+    id: number,
     name: string,
     depth: number,
     rank: number,
     maxRank: number,
     description: string = ''
   ) {
-    super(name, depth, rank, maxRank, description)
+    super(id, name, depth, rank, maxRank, description)
   }
 }
 

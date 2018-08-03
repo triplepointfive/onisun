@@ -17,6 +17,7 @@ export abstract class ProfessionPicker {
 
 export abstract class Talent {
   constructor(
+    public readonly id: number,
     public readonly name: string,
     public readonly depth: number,
     public rank: number,
