@@ -8,7 +8,7 @@ import {
   LevelMap,
   LevelMapId,
   Memory,
-} from './../engine'
+} from '../engine'
 import {
   Inventory,
   MissileSlot,

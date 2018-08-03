@@ -31,8 +31,6 @@ import {
   MissileSlot,
   PlayerAI,
   Talent,
-  AbilitiesPickingScreen,
-  RightHandSlot,
 } from './engine'
 import { includes, sample } from 'lodash'
 
@@ -213,9 +211,7 @@ export class OnisunProfessionPicker extends ProfessionPicker {
   ): Profession {
     return sample(
       player.professions.filter(
-        profession =>
-          player.professions.length < this.maxTaken &&
-          !includes(excludeProfessions, profession.id)
+        profession => !includes(excludeProfessions, profession.id)
       )
     )
   }
@@ -388,8 +384,8 @@ export class Onisun extends Game {
 
     this.currentMap = map1
 
-    // rat().addToMap(new Point(1, 3), this.currentMap)
-    // rat().addToMap(new Point(1, 4), this.currentMap)
+    rat().addToMap(new Point(1, 3), this.currentMap)
+    rat().addToMap(new Point(1, 4), this.currentMap)
 
     addOnTile(
       this.currentMap,

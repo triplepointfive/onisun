@@ -1,5 +1,5 @@
 import { Tile } from './tile'
-import { Creature, Phantom, twoDimArray } from './../engine'
+import { Creature, Phantom, twoDimArray } from '../engine'
 import { ItemsBunch } from './items/internal'
 import { Mapped } from './utils'
 

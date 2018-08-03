@@ -1,7 +1,7 @@
 import { Screen, ScreenType } from './internal'
-import { Game } from 'src/engine'
+import { Game } from '../../engine'
 
-export class AbilitiesPickingScreen extends Screen {
+export class TalentsTreeScreen extends Screen {
   constructor(game: Game) {
     super(ScreenType.AbilitiesPicking, game)
   }

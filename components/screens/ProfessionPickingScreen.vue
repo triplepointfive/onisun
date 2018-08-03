@@ -1,6 +1,7 @@
 <template>
-  <div class='level-up text-center'>
-    <div>
+  <div class='screen-modal text-center'>
+    <div class='title'>{{ screen.title }}</div>
+    <div class='content'>
       <div
         class='option p-2 m-3'
         v-for='option in screen.options'
@@ -9,12 +10,13 @@
         @dblclick="close(option)"
         :class="{ 'picked': picked && picked.id === option.id }"
       >
-        <div>{{ option.name }}</div>
         <img class='icon' :src='iconPath(option.id)'>
+        <div class='name'>{{ option.name }}</div>
       </div>
     </div>
-
-    <a @click='close' v-if='picked !== null'>Подтвердить</a>
+    <div class='bottom'>
+      <b-btn @click='close' v-if='picked !== null' variant='success'>Подтвердить</b-btn>
+    </div>
   </div>
 </template>
 
@@ -31,6 +33,21 @@ export default Vue.extend({
   methods: {
     close(doubleClickOption) {
       this.screen.onInput(doubleClickOption || this.picked)
+    },
+    onEvent(event) {
+      switch(event.key) {
+      case 'a':
+        this.picked = this.screen.options[0]
+        break
+      case 'b':
+        this.picked = this.screen.options[1]
+        break
+      case ' ':
+      case 'Enter':
+        this.close()
+      default:
+        return
+      }
     },
     iconPath(professionId: number) {
       return 'assets/professions/' + [
@@ -73,22 +90,17 @@ export default Vue.extend({
 </script>
 
 <style lang='scss'>
-.level-up {
-  position: fixed;
-  top: 10%;
-  left: 30%;
-  width: 40%;
-  height: 40%;
-  border: 1px solid black;
-  background: white;
-  border-radius: 50px;
-  padding: 30px;
-}
 .option {
-  border: 1px solid black;
+  border: 1px solid white;
+  display: inline-block;
+  border-radius: 1rem;
 
   &.picked {
-    border-color: red;
+    border-color: gold;
+  }
+
+  .name {
+    color: white;
   }
 
   .icon {

@@ -1,6 +1,6 @@
 import { MetaAI } from './meta_ai'
 import { Player } from '../creature'
-import { IdleScreen } from '../../engine'
+import { IdleScreen, ProfessionPickingScreen } from '../../engine'
 
 export class PlayerAI extends MetaAI {
   public act(player: Player): void {
@@ -8,8 +8,9 @@ export class PlayerAI extends MetaAI {
 
     // this.runEvents(player)
     game.screen = new IdleScreen(game)
-    // if (this.levelUps > 0) {
-    //   stage.game.screen = new LevelUpScreen(stage.game)
-    // }
+
+    if (player.levelUps > 0) {
+      player.currentLevel.game.screen = new ProfessionPickingScreen(game)
+    }
   }
 }

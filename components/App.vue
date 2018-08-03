@@ -69,7 +69,7 @@ import Logger from './Logger.vue'
 import Scene from './Scene.vue'
 
 import Idle from './screens/IdleScreen.vue'
-import LevelUp from './screens/LevelUpScreen.vue'
+import ProfessionPickingScreen from './screens/ProfessionPickingScreen.vue'
 import ItemsListingScreen from './screens/ItemsListingScreen.vue'
 import TalentsTreeScreen from './screens/TalentsTreeScreen.vue'
 import InventoryScreen from './screens/InventoryScreen.vue'
@@ -101,8 +101,8 @@ export default Vue.extend({
       switch (this.game.screen && this.game.screen.type) {
       case ScreenType.AbilitiesPicking:
         return TalentsTreeScreen
-      case ScreenType.LevelUp:
-        return LevelUp
+      case ScreenType.ProfessionPicking:
+        return ProfessionPickingScreen
       case ScreenType.Idle:
         return Idle
       case ScreenType.ItemsListing:
