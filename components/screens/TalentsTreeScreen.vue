@@ -118,6 +118,11 @@ export default Vue.extend({
             this.picked = talent
           }
         }))
+
+        const index = parseInt(event.key)
+        if (index >= 1 && index <= this.screen.options.length) {
+          this.professionIndex = index - 1
+        }
       }
     },
     talentTip(talent) {

@@ -5,12 +5,9 @@ export abstract class Game {
   public logger: Logger = new Logger()
   public currentMap: LevelMap
   public player: Player
-  public screen: Screen
+  public screen: Screen = null
   public running: boolean = false
-
-  constructor(public professionPicker: ProfessionPicker) {
-    this.screen = null
-  }
+  public professionPicker: ProfessionPicker
 
   public turn() {
     if (this.running || this.screen) {

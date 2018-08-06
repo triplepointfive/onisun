@@ -1,8 +1,7 @@
-import { Profession, ProfessionPicker, Player } from '../src/engine'
-import { OnisunProfessionPicker } from '../src/onisun'
+import { ProfessionPicker, Player } from '../src/engine'
 import { generateProfession, generatePlayer } from './helpers'
 
-describe('OnisunProfessionPicker', () => {
+describe('ProfessionPicker', () => {
   let profession1,
     profession2,
     profession3,
@@ -22,7 +21,7 @@ describe('OnisunProfessionPicker', () => {
 
   describe('when level up available', () => {
     beforeEach(() => {
-      picker = new OnisunProfessionPicker(pool, 2, 3)
+      picker = new ProfessionPicker(pool, 2, 3)
     })
 
     it('picks random ones when multiple options available', () => {
@@ -39,7 +38,7 @@ describe('OnisunProfessionPicker', () => {
 
   describe('without level up', () => {
     beforeEach(() => {
-      picker = new OnisunProfessionPicker(pool, 1, 2)
+      picker = new ProfessionPicker(pool, 1, 2)
     })
 
     it('picks random ones when multiple options available', () => {

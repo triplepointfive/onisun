@@ -32,9 +32,12 @@ import {
   PlayerAI,
   Talent,
 } from './engine'
-import { includes, sample } from 'lodash'
 import { TalentStatus } from './engine/profession';
 import { TalentsTreeScreen } from './engine/screens/talents_tree_screen';
+
+import { OnisunProfessionPicker } from './onisun/professions'
+import { ProfessionPickingScreen } from './engine/screens/profession_picking_screen';
+export * from './onisun/professions'
 
 export type GeneratorOptions = {
   minSize: number
@@ -167,203 +170,14 @@ const creaturesPool3 = new Pool<null, Creature>([
 const creaturesPool4 = new Pool<null, Creature>([[2, undead], [2, robot]])
 const creaturesPool5 = new Pool<null, Creature>([[2, robot], [1, dragon]])
 
-export class OnisunProfessionPicker extends ProfessionPicker {
-  constructor(
-    private pool: Profession[],
-    private maxLevel: number,
-    private maxTaken: number
-  ) {
-    super()
-  }
-
-  public available(player: Player): Profession[] {
-    let professions: Profession[] = []
-
-    if (this.canUpdate(player)) {
-      professions.push(this.updatableProfession(player))
-    } else if (this.canTakeNewProfession(player)) {
-      professions.push(this.newFromPool(player))
-    }
-
-    if (this.canTakeNewProfession(player)) {
-      professions.push(
-        this.newFromPool(player, professions.map(profession => profession.id))
-      )
-    } else if (this.canUpdate(player)) {
-      professions.push(
-        this.updatableProfession(
-          player,
-          professions.map(profession => profession.id)
-        )
-      )
-    }
-
-    return professions
-  }
-
-  protected canUpdate(player: Player): boolean {
-    return player.professions.some(
-      profession => profession.level < this.maxLevel
-    )
-  }
-
-  protected updatableProfession(
-    player: Player,
-    excludeProfessions: number[] = []
-  ): Profession {
-    return sample(
-      player.professions.filter(
-        profession => !includes(excludeProfessions, profession.id)
-      )
-    )
-  }
-
-  protected canTakeNewProfession(player: Player): boolean {
-    return player.professions.length < this.maxTaken
-  }
-
-  protected newFromPool(
-    player: Player,
-    excludeProfessions: number[] = []
-  ): Profession {
-    const excluding = excludeProfessions.concat(
-      player.professions.map(profession => profession.id)
-    )
-    return sample(
-      this.pool.filter(profession => !includes(excluding, profession.id))
-    )
-  }
-}
-
-export enum OnisunTalentId {
-  AttackerTwoHandedWeapons,
-  AttackerHeavyWeapons,
-  AttackerLightWeapons,
-  AttackerTwoWeapons,
-  AttackerDoubleTwoHandedWeapons,
-  AttackerStrongGrip,
-}
-
-export class OnisunTalent extends Talent {
-  constructor(
-    id: number,
-    name: string,
-    depth: number,
-    rank: number,
-    maxRank: number,
-    description: string = ''
-  ) {
-    super(id, name, depth, rank, maxRank, description)
-  }
-}
-
-export class OnisunDefenderProfession extends Profession {
-  constructor(
-    public readonly id: number,
-    public readonly name: string,
-    public level: number = 1
-  ) {
-    super(id, name, level)
-
-    // TODO: Validate all Talent's ids are uniq
-
-    this.talents.push(
-      new OnisunTalent(
-        OnisunTalentId.AttackerTwoHandedWeapons,
-        'Двуручные оружия',
-        0,
-        0,
-        3
-      )
-    )
-    this.talents.push(
-      new OnisunTalent(
-        OnisunTalentId.AttackerLightWeapons,
-        'Легкие оружия',
-        0,
-        0,
-        3
-      )
-    )
-    this.talents.push(
-      new OnisunTalent(
-        OnisunTalentId.AttackerHeavyWeapons,
-        'Тяжелые оружия',
-        0,
-        0,
-        3
-      )
-    )
-
-    this.talents.push(
-      new OnisunTalent(
-        OnisunTalentId.AttackerTwoWeapons,
-        'Два оружия',
-        1,
-        0,
-        1,
-        'Позволяет брать оружие в каждую руку'
-      )
-    )
-    // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, 'Быстрые удары', 1, 0, 3))
-    // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, 'Мощный удар', 1, 0, 4))
-    // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, 'Выбивание оружия', 1, 0, 5))
-
-    this.talents.push(
-      new OnisunTalent(
-        OnisunTalentId.AttackerDoubleTwoHandedWeapons,
-        'Два двуручных оружия',
-        2,
-        0,
-        2
-      )
-    )
-    // this.talents.push(new OnisunTalent(OnisunTalentId.Defender, '- серия', 2, 0, 2))
-    this.talents.push(
-      new OnisunTalent(
-        OnisunTalentId.AttackerStrongGrip,
-        'Крепкий хват',
-        2,
-        0,
-        2,
-        'Оружие не выбивается из рук'
-      )
-    )
-  }
-}
-
 export class Onisun extends Game {
+  public professionPicker: OnisunProfessionPicker
+
   constructor(generatorOptions: GeneratorOptions) {
-    let pool: Profession[] = []
-    ;[
-      'ботаник',
-      'библиотекарь',
-      'архитектор',
-
-      'ученый',
-      'флорист',
-      'художник',
-
-      'судья',
-      'солдат',
-      'спасатель',
-
-      'программист',
-      'портной',
-      'повар',
-    ].forEach((name, i) => {
-      pool.push(new Profession(i, name, 1))
-    })
-
-    super(new OnisunProfessionPicker(pool, 3, 6))
-
+    super()
     this.player = this.initPlayer()
-
-    this.player.professions.push(new OnisunDefenderProfession(1, 'Оружейник'))
-    this.player.professions.push(new OnisunDefenderProfession(2, 'Воин'))
-    this.player.professions.push(new OnisunDefenderProfession(3, 'Маг'))
-    this.player.professions.push(new OnisunDefenderProfession(4, ' Повар'))
-    this.player.professions.push(new OnisunDefenderProfession(5, 'Колдун'))
+    this.professionPicker = new OnisunProfessionPicker(this.player)
+    this.player.professions.push(this.professionPicker.attacker)
 
     let map1 = this.generateMap(generatorOptions)
     let map2 = this.generateMap(generatorOptions)
@@ -394,8 +208,6 @@ export class Onisun extends Game {
         this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )
-
-    this.screen = new TalentsTreeScreen(this)
   }
 
   protected initPlayer(): Player {
