@@ -1,6 +1,7 @@
 import { Player } from './creature'
 
 import { includes, sample, compact } from 'lodash'
+import { Game } from './game'
 
 export class Profession {
   public talents: Talent[] = []
@@ -98,4 +99,6 @@ export abstract class Talent {
     public readonly maxRank: number,
     public readonly description: string
   ) {}
+
+  public abstract onObtain(game: Game): void
 }
