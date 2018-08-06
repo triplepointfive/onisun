@@ -99,7 +99,9 @@ export class DrinkScreen extends ItemsListingScreen {
   public singleItemMode: boolean = true
 
   protected initPositions(): void {
-    this.positions = this.player.inventory.cares().filter(itemGroup => itemGroup.item.group === ItemGroup.Potion)
+    this.positions = this.player.inventory
+      .cares()
+      .filter(itemGroup => itemGroup.item.group === ItemGroup.Potion)
   }
 
   public pickUpItems(items: ItemsListingPosition[]): void {

@@ -32,12 +32,12 @@ import {
   PlayerAI,
   Talent,
 } from './engine'
-import { TalentStatus } from './engine/profession';
-import { TalentsTreeScreen } from './engine/screens/talents_tree_screen';
+import { TalentStatus } from './engine/profession'
+import { TalentsTreeScreen } from './engine/screens/talents_tree_screen'
 
 import { OnisunProfessionPicker } from './onisun/professions'
-import { ProfessionPickingScreen } from './engine/screens/profession_picking_screen';
-import { HealPotion } from './onisun/potions';
+import { ProfessionPickingScreen } from './engine/screens/profession_picking_screen'
+import { HealPotion } from './onisun/potions'
 export * from './onisun/professions'
 
 export type GeneratorOptions = {

@@ -2,7 +2,7 @@ import { Specie, Creature } from '../creature'
 import { Modifier } from '../characteristics'
 
 import { remove } from 'lodash'
-import { Game } from '../game';
+import { Game } from '../game'
 
 export enum Usage {
   WeaponOneHand,

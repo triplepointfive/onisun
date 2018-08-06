@@ -4,8 +4,8 @@ import { generateGame, TestGame, generatePlayer } from '../../helpers'
 
 describe('puts on and takes off', () => {
   let game: TestGame = generateGame(),
-      player: Player,
-      screen: InventoryScreen
+    player: Player,
+    screen: InventoryScreen
 
   beforeEach(() => {
     game.player = player = generatePlayer()

@@ -1,4 +1,4 @@
-import { ProfessionPicker, Profession, Player, Talent } from '../engine';
+import { ProfessionPicker, Profession, Player, Talent } from '../engine'
 
 export class OnisunTalent extends Talent {
   constructor(
@@ -107,15 +107,8 @@ export class OnisunProfessionPicker extends ProfessionPicker {
   constructor(
     player: Player,
     public attacker = new OnisunAttackerProfession(),
-    public defender = new OnisunDefenderProfession(),
+    public defender = new OnisunDefenderProfession()
   ) {
-    super(
-      [
-        attacker,
-        defender,
-      ],
-      3,
-      6,
-    )
+    super([attacker, defender], 3, 6)
   }
 }

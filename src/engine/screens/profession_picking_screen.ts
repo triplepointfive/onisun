@@ -11,7 +11,9 @@ export class ProfessionPickingScreen extends Screen {
     super(ScreenType.ProfessionPicking, game)
     this.options = this.game.professionPicker.available(this.player)
 
-    this.title = `Gained ${this.player.level.current - this.player.levelUps + 1} level`
+    this.title = `Gained ${this.player.level.current -
+      this.player.levelUps +
+      1} level`
   }
 
   public onInput(pickedProfession: Profession) {

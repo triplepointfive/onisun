@@ -19,8 +19,7 @@ export class ProfessionPicker {
     private pool: Profession[],
     private maxLevel: number,
     private maxTaken: number
-  ) {
-  }
+  ) {}
 
   public available(player: Player): Profession[] {
     let professions: Profession[] = []
@@ -65,7 +64,10 @@ export class ProfessionPicker {
   }
 
   protected canTakeNewProfession(player: Player): boolean {
-    return player.professions.length < this.maxTaken && this.pool.length > player.professions.length
+    return (
+      player.professions.length < this.maxTaken &&
+      this.pool.length > player.professions.length
+    )
   }
 
   protected newFromPool(

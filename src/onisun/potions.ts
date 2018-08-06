@@ -1,5 +1,5 @@
-import { Potion } from '../engine/items';
-import { Game } from '../engine';
+import { Potion } from '../engine/items'
+import { Game } from '../engine'
 
 export class HealPotion extends Potion {
   constructor() {

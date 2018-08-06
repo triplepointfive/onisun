@@ -1,6 +1,6 @@
 import { Screen, ScreenType } from './internal'
 import { Game, ProfessionPickingScreen } from '../../engine'
-import { Profession, Talent, TalentStatus } from '../profession';
+import { Profession, Talent, TalentStatus } from '../profession'
 
 interface TalentWithStatus extends Talent {
   status: TalentStatus
@@ -21,8 +21,10 @@ export class TalentsTreeScreen extends Screen {
       return {
         profession,
         talents: profession.talents.map(talent => {
-          return Object.assign({}, talent, { status: this.status(talent, profession) })
-        })
+          return Object.assign({}, talent, {
+            status: this.status(talent, profession),
+          })
+        }),
       }
     })
   }
@@ -38,7 +40,10 @@ export class TalentsTreeScreen extends Screen {
     this.player.characteristics.levelUp(this.player.specie)
 
     if (this.player.levelUps > 0) {
-      this.game.screen = (this.player.level.current - this.player.levelUps + 1) % 3 === 0 ? new ProfessionPickingScreen(this.game) : new TalentsTreeScreen(this.game)
+      this.game.screen =
+        (this.player.level.current - this.player.levelUps + 1) % 3 === 0
+          ? new ProfessionPickingScreen(this.game)
+          : new TalentsTreeScreen(this.game)
     } else {
       this.game.screen = undefined
     }

@@ -1,11 +1,16 @@
-import { IdleScreen, IdleInputKey, Player, InventoryScreen } from '../../../src/engine'
+import {
+  IdleScreen,
+  IdleInputKey,
+  Player,
+  InventoryScreen,
+} from '../../../src/engine'
 
 import { generateGame, TestGame, generatePlayer } from '../../helpers'
 
 describe('puts on and takes off', () => {
   let game: TestGame = generateGame(),
-      player: Player,
-      screen: IdleScreen
+    player: Player,
+    screen: IdleScreen
 
   beforeEach(() => {
     game.player = player = generatePlayer()

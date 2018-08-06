@@ -21,8 +21,8 @@ import { Level } from './level'
 import { includes } from 'lodash'
 import { Item } from './items'
 import { Profession } from './profession'
-import { ProfessionPickingScreen } from './screens/profession_picking_screen';
-import { TalentsTreeScreen } from './screens/talents_tree_screen';
+import { ProfessionPickingScreen } from './screens/profession_picking_screen'
+import { TalentsTreeScreen } from './screens/talents_tree_screen'
 
 export enum Clan {
   Player,
@@ -165,7 +165,10 @@ export class AddExperienceEvent extends Event {
       subject.levelUps += subject.level.add(1)
 
       if (subject.levelUps > 0) {
-        game.screen = (subject.level.current - subject.levelUps + 1) % 3 === 0 ? new ProfessionPickingScreen(game) : new TalentsTreeScreen(game)
+        game.screen =
+          (subject.level.current - subject.levelUps + 1) % 3 === 0
+            ? new ProfessionPickingScreen(game)
+            : new TalentsTreeScreen(game)
       }
     }
 
