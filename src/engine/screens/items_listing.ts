@@ -112,8 +112,21 @@ export class DrinkScreen extends ItemsListingScreen {
     new AIDrinkItem(itemGroup.item, this.game).act()
     this.game.screen = undefined
   }
+}
 
-  public close(): void {
-    this.game.screen = new InventoryScreen(this.game)
+export class BagScreen extends ItemsListingScreen {
+  public title: string = 'Сумка'
+  public singleItemMode: boolean = true
+
+  protected initPositions(): void {
+    this.positions = this.player.inventory.cares()
+  }
+
+  public pickUpItems(items: ItemsListingPosition[]): void {
+    // TODO: Remove this method or ensure it's not being called
+  }
+
+  public withItem(itemGroup: { item: Potion }): void {
+    this.game.screen = undefined
   }
 }

@@ -45,6 +45,8 @@ export default Vue.extend({
 
       case 'i':
         return this.close(IdleInputKey.Inventory)
+      case 'I':
+        return this.close(IdleInputKey.Bag)
       case ',':
         return this.close(IdleInputKey.PickUp)
       case 'd':
