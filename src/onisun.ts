@@ -37,6 +37,7 @@ import { TalentsTreeScreen } from './engine/screens/talents_tree_screen';
 
 import { OnisunProfessionPicker } from './onisun/professions'
 import { ProfessionPickingScreen } from './engine/screens/profession_picking_screen';
+import { HealPotion } from './onisun/potions';
 export * from './onisun/professions'
 
 export type GeneratorOptions = {
@@ -66,6 +67,7 @@ const itemsPool = new Pool<null, Item>([
   [1, () => new BodyArmor('Кольчуга', new Modifier({ defense: 10 }))],
   [5, () => new BodyArmor('Латы', new Modifier({ defense: 5 }))],
   [10, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
+  [100, () => new HealPotion()],
 ])
 
 const newCreature = (characteristics: Characteristics, name: string) => {

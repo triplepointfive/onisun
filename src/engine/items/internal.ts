@@ -2,6 +2,7 @@ import { Specie, Creature } from '../creature'
 import { Modifier } from '../characteristics'
 
 import { remove } from 'lodash'
+import { Game } from '../game';
 
 export enum Usage {
   WeaponOneHand,
@@ -14,6 +15,7 @@ export enum ItemGroup {
   OneHandWeapon,
   Consumable,
   Missile,
+  Potion,
 }
 
 export type ItemId = number
@@ -108,6 +110,14 @@ export class Corpse extends Item {
   constructor(public readonly specie: Specie) {
     super(ItemGroup.Consumable, `${specie.name}'s corpse`)
   }
+}
+
+export abstract class Potion extends Item {
+  constructor(public name: string) {
+    super(ItemGroup.Potion, name)
+  }
+
+  abstract onDrink(game: Game): void
 }
 
 export class Missile extends Item {

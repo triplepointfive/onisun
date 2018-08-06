@@ -49,6 +49,8 @@ export default Vue.extend({
         return this.close(IdleInputKey.PickUp)
       case 'd':
         return this.close(IdleInputKey.Drop)
+      case 'D':
+        return this.close(IdleInputKey.Drink)
       }
     }
   }

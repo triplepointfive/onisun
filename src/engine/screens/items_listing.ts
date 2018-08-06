@@ -5,9 +5,10 @@ import {
   AIPickUpItems,
   AIDropItems,
   AIPutOnItem,
+  AIDrinkItem,
 } from '../../engine'
 import { IdleScreen } from './idle_screen'
-import { GroupedItem } from '../items/internal'
+import { GroupedItem, ItemGroup, Potion } from '../items/internal'
 import { InventoryScreen } from './inventory_screen'
 import { InventorySlot } from '../inventory'
 
@@ -85,6 +86,28 @@ export class PutOnItemsScreen extends ItemsListingScreen {
 
   public withItem(itemGroup: ItemsListingPosition): void {
     new AIPutOnItem(this.inventorySlot, itemGroup.item, this.game).act()
+    this.game.screen = undefined
+  }
+
+  public close(): void {
+    this.game.screen = new InventoryScreen(this.game)
+  }
+}
+
+export class DrinkScreen extends ItemsListingScreen {
+  public title: string = 'Что выпить?'
+  public singleItemMode: boolean = true
+
+  protected initPositions(): void {
+    this.positions = this.player.inventory.cares().filter(itemGroup => itemGroup.item.group === ItemGroup.Potion)
+  }
+
+  public pickUpItems(items: ItemsListingPosition[]): void {
+    // TODO: Remove this method or ensure it's not being called
+  }
+
+  public withItem(itemGroup: { item: Potion }): void {
+    new AIDrinkItem(itemGroup.item, this.game).act()
     this.game.screen = undefined
   }
 

@@ -1,6 +1,6 @@
 import { AI } from './internal'
 import { Creature, Player, AttackEvent } from '../creature'
-import { ItemsBunch, Item, GroupedItem } from '../items/internal'
+import { ItemsBunch, Item, GroupedItem, Potion } from '../items/internal'
 import { Direction } from '../utils'
 import { StairwayDown, StairwayUp, Tile } from '../tile'
 import { Logger } from '../logger'
@@ -213,6 +213,18 @@ export class AIPutOnItem extends AIEvent {
   public act(): void {
     this.player.inventory.equip(this.player, this.slot, this.item)
     this.logger.putOn(this.item)
+  }
+}
+
+export class AIDrinkItem extends AIEvent {
+  constructor(private potion: Potion, game: Game) {
+    super(game)
+  }
+
+  public act(): void {
+    this.player.inventory.removeFromBag(this.potion, 1)
+    this.potion.onDrink(this.game)
+    this.logger.drink(this.potion)
   }
 }
 

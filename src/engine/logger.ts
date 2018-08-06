@@ -1,7 +1,7 @@
 import * as moment from 'moment'
 import { Creature } from './creature'
 import { Moment } from 'moment'
-import { Item } from './items/internal'
+import { Item, Potion } from './items/internal'
 
 export enum LogLevel {
   DEBUG,
@@ -85,6 +85,10 @@ export class Logger {
 
   public putOn(item: Item): void {
     this.addMessage(LogLevel.DEBUG, `You put on ${item.name}`)
+  }
+
+  public drink(item: Potion): void {
+    this.addMessage(LogLevel.INFO, `You drunk ${item.name}`)
   }
 
   public pickedUpItem(item: Item, count: number): void {
