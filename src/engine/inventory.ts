@@ -2,35 +2,35 @@ import { Item, GroupedItem, ItemsBunch } from './items'
 
 import { Usage } from './items/internal'
 
-import { includes } from 'lodash'
+import { intersection } from 'lodash'
 import { Creature } from './creature'
 
 export interface InventorySlot {
   id: number // TODO: OMG do something with it
   // What kind of items can be put in slot
-  usage: Usage
+  usages: Usage[]
   // Has to put only a single item or can put a bunch of them
   useSingleItem: boolean
 }
 
 export const RightHandSlot: InventorySlot = {
   id: 1,
-  usage: Usage.WeaponOneHand,
+  usages: [Usage.WeaponOneHand],
   useSingleItem: true,
 }
 export const LeftHandSlot: InventorySlot = {
   id: 2,
-  usage: Usage.WeaponOneHand,
+  usages: [Usage.WeaponOneHand],
   useSingleItem: true,
 }
 export const BodySlot: InventorySlot = {
   id: 3,
-  usage: Usage.WearsOnBody,
+  usages: [Usage.WearsOnBody],
   useSingleItem: true,
 }
 export const MissileSlot: InventorySlot = {
   id: 4,
-  usage: Usage.Throw,
+  usages: [Usage.Throw],
   useSingleItem: false,
 }
 
@@ -99,7 +99,7 @@ export class Inventory {
 
   public canWear(item: Item) {
     return this.wearings.some(wearing =>
-      includes(item.usages, wearing.inventorySlot.usage)
+      intersection(item.usages, wearing.inventorySlot.usages).length > 0
     )
   }
 

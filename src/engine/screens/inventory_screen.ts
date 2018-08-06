@@ -9,7 +9,7 @@ import {
 } from '../../engine'
 import { IdleScreen } from './idle_screen'
 
-import { includes } from 'lodash'
+import { intersection } from 'lodash'
 
 interface InventoryPosition {
   inventorySlot: InventorySlot
@@ -34,7 +34,7 @@ export class InventoryScreen extends Screen {
           item: equipment && equipment.item,
           count: equipment && equipment.count,
           availableItems: cares.filter(groupedItem =>
-            includes(groupedItem.item.usages, inventorySlot.usage)
+            intersection(groupedItem.item.usages, inventorySlot.usages).length > 0
           ),
         }
       })

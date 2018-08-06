@@ -12,7 +12,7 @@ import {
   PickUpScreen,
 } from '../../engine'
 
-import { compact, flatten } from 'lodash'
+import { compact, flatten, includes } from 'lodash'
 import { IdleScreen } from '../screens/idle_screen'
 import { InventorySlot } from '../inventory'
 
@@ -52,7 +52,7 @@ export class AIItemPickedEvent extends AIEvent {
     const matches: Wearing[] = compact(
       flatten(
         item.usages.map(usage =>
-          allInventorySlots.filter(slot => slot.usage === usage)
+          allInventorySlots.filter(slot => includes(slot.usages, usage))
         )
       ).map(slot => this.player.inventory.matchingEquip(slot))
     )
