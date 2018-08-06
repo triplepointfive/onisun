@@ -81,7 +81,6 @@ export class PutOnItemsScreen extends ItemsListingScreen {
   public pickUpItems(items: ItemsListingPosition[]): void {
     // TODO: Validate items are part of positions
     // new AIDropItems(items, this.game).act()
-    console.log(items)
   }
 
   public withItem(itemGroup: ItemsListingPosition): void {

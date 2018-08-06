@@ -33,6 +33,8 @@ import {
   Talent,
 } from './engine'
 import { includes, sample } from 'lodash'
+import { TalentStatus } from './engine/profession';
+import { TalentsTreeScreen } from './engine/screens/talents_tree_screen';
 
 export type GeneratorOptions = {
   minSize: number
@@ -256,8 +258,6 @@ export class OnisunTalent extends Talent {
 }
 
 export class OnisunDefenderProfession extends Profession {
-  public readonly depthCost: number = 3
-
   constructor(
     public readonly id: number,
     public readonly name: string,
@@ -394,6 +394,8 @@ export class Onisun extends Game {
         this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )
+
+    this.screen = new TalentsTreeScreen(this)
   }
 
   protected initPlayer(): Player {

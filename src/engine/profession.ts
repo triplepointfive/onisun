@@ -2,6 +2,7 @@ import { Player } from './creature'
 
 export class Profession {
   public talents: Talent[] = []
+  public readonly depthCost: number = 3
 
   constructor(
     public readonly id: number,
@@ -13,6 +14,12 @@ export class Profession {
 
 export abstract class ProfessionPicker {
   public abstract available(player: Player): Profession[]
+}
+
+export enum TalentStatus {
+  Available,
+  Completed,
+  Unavailable,
 }
 
 export abstract class Talent {

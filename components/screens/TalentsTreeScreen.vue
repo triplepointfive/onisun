@@ -16,19 +16,16 @@
             <div
               class='talent-cell'
               :class='talentStatus(talent)'
-              :id="j + 'exPopover1-'+i" variant="primary"
+              :id="j + 'talentTree-'+i" variant="primary"
               @click='pickTalent(talent)'
               @dblclick="close(talent)"
-               v-if='talent'
             >
               <img class='icon' :src="'assets/talents/' + iconPath(talent.id)">
               <span class="level">{{ talentTip(talent) }}</span>
 
-              <b-popover :target="j + 'exPopover1-'+i" triggers="hover" container='talents-tree-container'>
+              <b-popover :target="j + 'talentTree-'+i" triggers="hover" container='talents-tree-container'>
                 <template>
-                  <p class='name'>
-                    {{ talent.name }}
-                  </p>
+                  <p class='name'>{{ talent.name }}</p>
                   <small>
                     <p class='rank'>
                       Уровень {{ talent.rank }}/{{ talent.maxRank }}
@@ -47,25 +44,31 @@
       </tr>
     </table>
 
-    <b-btn variant='default' v-if='pickedId !== null' @click='close()'>Подтвердить</b-btn>
+    <b-btn variant='default' v-if='picked !== null' @click='close()'>Подтвердить</b-btn>
   </div>
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
 import { OnisunTalentId } from 'src/onisun'
+import { TalentStatus } from 'src/engine';
+
+const LETTER_OFFSET = 97
 
 export default Vue.extend({
   props: ['screen'],
   data() {
     return {
-      pickedId: null,
+      picked: null,
       professionIndex: 0
     }
   },
   computed: {
+    option() {
+      return this.screen.options[this.professionIndex]
+    },
     profession() {
-      return this.screen.player.professions[this.professionIndex]
+      return this.option.profession
     },
     groupedTalents() {
       let groups = new Array(5)
@@ -73,49 +76,69 @@ export default Vue.extend({
         groups[i] = []
       }
 
-      this.profession.talents.forEach(talent => groups[talent.depth].push(talent))
+      let availableIndex = 0
+
+      this.option.talents.forEach(talent => {
+        if (talent.status === TalentStatus.Available) {
+          Object.assign(talent, {
+            letter: String.fromCharCode(LETTER_OFFSET + availableIndex++)
+          })
+        }
+
+        groups[talent.depth].push(talent)
+      })
 
       return groups
     }
   },
   methods: {
     close(doubleClickOption) {
-      if (doubleClickOption) {
-        switch (this.talentStatus(doubleClickOption)) {
-          case '-completed':
-          case '-unavailable':
-            return
-        }
+      const talent = doubleClickOption || this.picked
+
+      if (!talent || talent.status !== TalentStatus.Available) {
+        return
       }
 
-      this.screen.onInput(this.profession.id, (doubleClickOption && doubleClickOption.id) || this.pickedId)
-      this.pickedId = null
+      this.screen.onInput(this.profession.id, talent.id)
+      this.picked = null
     },
     pickTalent(talent) {
-      if (this.talentStatus(talent) === '-available') {
-        this.pickedId = talent.id
+      if (talent.status === TalentStatus.Available) {
+        this.picked = talent
       }
     },
     onEvent(event) {
-
+      switch(event.key) {
+      case ' ':
+      case 'Enter':
+        this.close()
+      default:
+        this.groupedTalents.forEach(group => group.forEach(talent => {
+          if (talent.letter === event.key) {
+            this.picked = talent
+          }
+        }))
+      }
     },
     talentTip(talent) {
       let tip = `${talent.rank}/${talent.maxRank}`
       if (talent.rank >= talent.maxRank) {
         return tip
       } else {
-        return `a ${tip}`
+        return `${talent.letter} ${tip}`
       }
     },
     talentStatus(talent) {
-      if (this.pickedId === talent.id) {
+      if (this.picked && this.picked.id === talent.id) {
         return '-selected'
-      } else if (talent.rank === talent.maxRank) {
-        return '-completed'
-      } else if (talent.depth * this.profession.depthCost > this.profession.points) {
-        return '-unavailable'
-      } else {
+      }
+      switch(talent.status) {
+      case TalentStatus.Available:
         return '-available'
+      case TalentStatus.Unavailable:
+        return '-unavailable'
+      case TalentStatus.Completed:
+        return '-completed'
       }
     },
     iconPath(talentId) {
@@ -135,7 +158,10 @@ export default Vue.extend({
       }
     }
   },
-  mounted() {
+  watch: {
+    professionIndex() {
+      this.picked =  null
+    }
   }
 })
 </script>

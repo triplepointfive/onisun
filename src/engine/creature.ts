@@ -164,7 +164,6 @@ export class AddExperienceEvent extends Event {
 
       subject.levelUps += subject.level.add(1)
 
-      console.log('game.screen', subject.level.current - subject.levelUps + 1)
       game.screen = (subject.level.current - subject.levelUps + 1) % 3 === 0 ? new ProfessionPickingScreen(game) : new TalentsTreeScreen(game)
     }
 
