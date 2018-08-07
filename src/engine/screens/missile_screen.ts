@@ -1,6 +1,6 @@
 import { Screen, ScreenType } from './internal'
 import { Game } from '../game'
-import { Point, bresenham, bresenhamInclusion } from '../utils'
+import { Point, bresenham, bresenhamInclusion, Direction } from '../utils'
 import { Memory } from '../memory';
 import { IdleScreen } from './idle_screen';
 import { AIMissileAttack } from '../../engine';
@@ -17,7 +17,6 @@ export class MissileScreen extends Screen {
     this.findEnemies()
     this.memory = this.player.stageMemory()
     this.resetTargetId()
-    this.drawPath()
   }
 
   public nextTarget(): void {
@@ -46,6 +45,17 @@ export class MissileScreen extends Screen {
     }
 
     this.updateTarget(this.enemies[this.targetEnemyIndex])
+  }
+
+  public moveTarget(direction: Direction): void {
+    const stage = this.player.currentLevel,
+      dest = this.targetPos.add(direction),
+      tile = stage.at(dest.x, dest.y)
+
+    if (tile.visibleThrough()) {
+      this.updateTarget(dest)
+      this.targetEnemyIndex = undefined
+    }
   }
 
   public attack(): void {

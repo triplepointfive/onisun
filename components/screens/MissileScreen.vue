@@ -4,7 +4,7 @@
 
 <script lang='ts'>
 import Vue from 'vue'
-import { IdleInputKey } from '../../src/engine'
+import { IdleInputKey, Direction } from '../../src/engine'
 
 export default Vue.extend({
   name: 'MissileScreen',
@@ -15,6 +15,27 @@ export default Vue.extend({
     },
     onEvent(event) {
       switch (event.key) {
+      case 'l':
+      case 'ArrowRight':
+        return this.screen.moveTarget(Direction.right)
+      case 'h':
+      case 'ArrowLeft':
+        return this.screen.moveTarget(Direction.left)
+      case 'k':
+      case 'ArrowUp':
+        return this.screen.moveTarget(Direction.up)
+      case 'j':
+      case 'ArrowDown':
+        return this.screen.moveTarget(Direction.down)
+      case 'y':
+        return this.screen.moveTarget(Direction.upLeft)
+      case 'u':
+        return this.screen.moveTarget(Direction.upRight)
+      case 'b':
+        return this.screen.moveTarget(Direction.downLeft)
+      case 'n':
+        return this.screen.moveTarget(Direction.downRight)
+
       case '>':
         this.screen.nextTarget()
         break

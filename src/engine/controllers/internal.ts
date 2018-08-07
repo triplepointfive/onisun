@@ -175,7 +175,7 @@ export class AIMissileAttack extends Controller {
 
     const tile = this.player.currentLevel.at(this.targetPos.x, this.targetPos.y)
     // TODO: Remove real link
-    let victim: Creature = tile.creature.real()
+    let victim: Creature = tile.creature && tile.creature.real()
     const effect = new ItemFlightEffect(missile, path, () => {
       if (victim) {
         victim.on(new ThrowEvent(this.player, missile))
