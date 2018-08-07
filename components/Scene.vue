@@ -94,33 +94,24 @@ export default Vue.extend({
   methods: {
     getTile(x, y) {
       const effect = this.stage.at(x, y).effect
-      if (effect) {
-        return new DisplayTile(effect, 200, 200, 0)
-      }
-
       const tile = this.wholeMap ? this.stage.at(x, y) : this.stage.at(x, y).tile
 
       if (!tile) {
         return NULLTILE
       }
 
-      if (tile.creature) {
-        if (tile.creature.name() == 'Rat') {
-          return RAT
+      if (effect) {
+        if (tile.creature) {
+          let displayTile = this.creatureTile(tile.creature).clone()
+          displayTile.setBackground(200, 0, 0)
+          return displayTile
+        } else {
+          return new DisplayTile(effect, 200, 200, 0)
         }
+      }
 
-        switch (tile.creature.id % 5) {
-          case 0:
-            return HUMAN5
-          case 1:
-            return HUMAN4
-          case 2:
-            return HUMAN3
-          case 3:
-            return HUMAN2
-          case 4:
-            return HUMAN
-        }
+      if (tile.creature) {
+        return this.creatureTile(tile.creature)
       }
 
       if (tile.items) {
@@ -154,6 +145,24 @@ export default Vue.extend({
         return STAIRWAY_DOWN
       default:
         return NULLTILE
+      }
+    },
+    creatureTile(creature) {
+      if (creature.name() == 'Rat') {
+        return RAT
+      }
+
+      switch (creature.id % 5) {
+        case 0:
+          return HUMAN5
+        case 1:
+          return HUMAN4
+        case 2:
+          return HUMAN3
+        case 3:
+          return HUMAN2
+        case 4:
+          return HUMAN
       }
     },
     initViewport() {

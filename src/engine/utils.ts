@@ -149,6 +149,15 @@ export const bresenham = function(
   }
 }
 
+export const bresenhamInclusion = function(
+  p0: Point,
+  p1: Point,
+  on: (x, y) => void
+): void {
+  bresenham(p0, p1, on)
+  on(p1.x, p1.y)
+}
+
 export class Direction extends Point {
   private constructor(x, y) {
     super(x, y)

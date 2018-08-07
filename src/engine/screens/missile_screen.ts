@@ -1,6 +1,6 @@
 import { Screen, ScreenType } from './internal'
 import { Game } from '../game'
-import { Point, bresenham } from '../utils'
+import { Point, bresenham, bresenhamInclusion } from '../utils'
 import { Memory } from '../memory';
 import { IdleScreen } from './idle_screen';
 
@@ -14,7 +14,6 @@ export class MissileScreen extends Screen {
     super(ScreenType.Missile, game)
 
     this.findEnemies()
-    console.log(this.enemies)
     this.memory = this.player.stageMemory()
     this.resetTargetId()
     this.drawPath()
@@ -68,13 +67,13 @@ export class MissileScreen extends Screen {
       return
     }
 
-    bresenham(this.player.pos, this.targetPos, (x, y) => {
+    bresenhamInclusion(this.player.pos, this.targetPos, (x, y) => {
       this.memory.at(x, y).effect = undefined
     })
   }
 
   private drawPath(): void {
-    bresenham(this.player.pos, this.targetPos, (x, y) => {
+    bresenhamInclusion(this.player.pos, this.targetPos, (x, y) => {
       this.memory.at(x, y).effect = 'x'
     })
   }
