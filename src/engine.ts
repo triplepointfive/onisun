@@ -19,6 +19,8 @@ export * from './engine/generator/post'
 export { default as drawn } from './engine/generator/drawn'
 export { default as dungeon } from './engine/generator/dungeon'
 
+export * from './engine/controllers/internal'
+
 export * from './engine/screens/internal'
 export * from './engine/screens/idle_screen'
 export * from './engine/screens/inventory_screen'

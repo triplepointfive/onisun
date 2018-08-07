@@ -38,6 +38,7 @@ import { TalentsTreeScreen } from './engine/screens/talents_tree_screen'
 import { OnisunProfessionPicker } from './onisun/professions'
 import { ProfessionPickingScreen } from './engine/screens/profession_picking_screen'
 import { HealPotion } from './onisun/potions'
+import { MissileScreen } from './engine/screens/missile_screen';
 export * from './onisun/professions'
 export * from './onisun/talents'
 
@@ -214,6 +215,8 @@ export class Onisun extends Game {
         this.player.addToMap(new Point(1, 3), this.currentMap)
       }
     )
+
+    this.screen = new MissileScreen(this)
   }
 
   protected initPlayer(): Player {

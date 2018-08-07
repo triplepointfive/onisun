@@ -212,6 +212,7 @@ export class Creature extends Phantom {
 
   public addToMap(pos: Point, level: LevelMap) {
     this.pos = pos
+    this.previousPos = this.pos.copy()
     this.previousLevel = this.currentLevel
     this.currentLevel = level
     level.addCreature(this)

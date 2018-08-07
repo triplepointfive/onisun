@@ -104,10 +104,10 @@ export abstract class Mapped<T> {
     )
   }
 
-  public each(on: (T) => any): void {
-    this.map.forEach(column => {
-      column.forEach(tile => {
-        on(tile)
+  public each(on: (tile: T, x: number, y: number) => any): void {
+    this.map.forEach((column, x) => {
+      column.forEach((tile, y) => {
+        on(tile, x, y)
       })
     })
   }

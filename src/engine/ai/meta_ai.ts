@@ -1,21 +1,17 @@
 import { AI } from './internal'
-import { Creature, Player, AttackEvent } from '../creature'
-import { ItemsBunch, Item, GroupedItem, Potion } from '../items/internal'
-import { Direction } from '../utils'
-import { StairwayDown, StairwayUp, Tile } from '../tile'
+import { Creature, Player } from '../creature'
+import { ItemsBunch, Item } from '../items/internal'
+import { Tile } from '../tile'
 import { Logger } from '../logger'
 import {
   Game,
   Wearing,
   allInventorySlots,
   Modifier,
-  PickUpScreen,
+  AIPutOnItem,
 } from '../../engine'
 
 import { compact, flatten, includes } from 'lodash'
-import { IdleScreen } from '../screens/idle_screen'
-import { InventorySlot } from '../inventory'
-import { MissileScreen } from '../screens/missile_screen';
 
 export abstract class AIEvent {
   protected logger: Logger
@@ -94,144 +90,6 @@ export class AIItemPickedEvent extends AIEvent {
     )
 
     return wearing
-  }
-}
-
-export class AIMoveEvent extends AIEvent {
-  constructor(public direction: Direction, game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    const stage = this.player.currentLevel,
-      dest = this.player.pos.add(this.direction),
-      tile = stage.at(dest.x, dest.y)
-
-    if (tile.passibleThrough(this.player)) {
-      this.player.move(dest)
-    } else if (tile.creature) {
-      tile.creature.real().on(new AttackEvent(this.player))
-    } else {
-      this.game.logger.ranIntoAnObstacle()
-    }
-  }
-}
-
-export class AIHandleEnvEvent extends AIEvent {
-  public act(): void {
-    const tile = this.tile()
-
-    if (tile instanceof StairwayDown || tile instanceof StairwayUp) {
-      tile.go(this.player)
-    } else {
-      this.player.currentLevel.game.logger.howToHandle()
-    }
-  }
-}
-
-export class AIPickUpItemsDialog extends AIEvent {
-  public act(): void {
-    const items = this.tile().items,
-      game = this.player.currentLevel.game
-
-    switch ((items && items.bunch.length) || 0) {
-      case 0:
-        game.logger.noItemsToPickUp()
-        game.screen = new IdleScreen(this.game)
-        return
-      case 1:
-        new AIPickUpItems(items.bunch, this.game).act()
-        return
-      default:
-        game.screen = new PickUpScreen(game)
-        return
-    }
-  }
-}
-
-export class AIPickUpItems extends AIEvent {
-  constructor(private items: GroupedItem[], game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    if (!this.items.length) {
-      this.game.screen = new IdleScreen(this.game)
-    }
-
-    let tileItems = this.tile().items
-
-    this.items.forEach(({ item, count }) => {
-      this.player.inventory.putToBag(item, count)
-      this.game.logger.pickedUpItem(item, count)
-      tileItems.remove(item, count)
-    })
-
-    this.game.screen = undefined
-  }
-}
-
-export class AIDropItems extends AIEvent {
-  constructor(private items: GroupedItem[], game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    if (!this.items.length) {
-      this.game.screen = new IdleScreen(this.game)
-    }
-
-    let tile = this.tile()
-
-    this.items.forEach(({ item, count }) => {
-      this.player.inventory.removeFromBag(item, count)
-      this.game.logger.droppedItem(item, count)
-      tile.addItem(item, count)
-    })
-
-    this.game.screen = undefined
-  }
-}
-
-export class AITakeOffItem extends AIEvent {
-  constructor(private slot: InventorySlot, game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    // TODO: assert slot is not empty
-    const groupedItem = this.player.inventory.inSlot(this.slot)
-    this.player.inventory.takeOff(this.player, this.slot)
-    this.logger.takeOff(groupedItem.item)
-  }
-}
-
-export class AIPutOnItem extends AIEvent {
-  constructor(private slot: InventorySlot, private item: Item, game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    this.player.inventory.equip(this.player, this.slot, this.item)
-    this.logger.putOn(this.item)
-  }
-}
-
-export class AIDrinkItem extends AIEvent {
-  constructor(private potion: Potion, game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    this.player.inventory.removeFromBag(this.potion, 1)
-    this.potion.onDrink(this.game)
-    this.logger.drink(this.potion)
-  }
-}
-
-export class AIMissileDialog extends AIEvent {
-  public act(): void {
-    this.game.screen = new MissileScreen(this.game)
   }
 }
 

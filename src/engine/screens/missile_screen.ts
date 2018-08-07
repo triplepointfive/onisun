@@ -1,8 +1,97 @@
 import { Screen, ScreenType } from './internal'
 import { Game } from '../game'
+import { Point, bresenham } from '../utils'
+import { Memory } from '../memory';
+import { IdleScreen } from './idle_screen';
 
 export class MissileScreen extends Screen {
+  public targetPos: Point
+  private memory: Memory
+  private targetEnemyIndex: number = undefined
+  private enemies: Point[] = []
+
   constructor(game: Game) {
     super(ScreenType.Missile, game)
+
+    this.findEnemies()
+    console.log(this.enemies)
+    this.memory = this.player.stageMemory()
+    this.resetTargetId()
+    this.drawPath()
+  }
+
+  public nextTarget(): void {
+    if (this.targetEnemyIndex === undefined) {
+      return this.resetTargetId()
+    }
+
+    this.targetEnemyIndex += 1
+
+    if (this.targetEnemyIndex >= this.enemies.length) {
+      this.targetEnemyIndex = 0
+    }
+
+    this.updateTarget(this.enemies[this.targetEnemyIndex])
+  }
+
+  public previousTarget(): void {
+    if (this.targetEnemyIndex === undefined) {
+      return this.resetTargetId()
+    }
+
+    this.targetEnemyIndex -= 1
+
+    if (this.targetEnemyIndex < 0) {
+      this.targetEnemyIndex = this.enemies.length - 1
+    }
+
+    this.updateTarget(this.enemies[this.targetEnemyIndex])
+  }
+
+  public close(): void {
+    this.resetPath()
+    this.game.screen = new IdleScreen(this.game)
+  }
+
+  private resetTargetId(): void {
+    if (this.enemies.length) {
+      this.targetEnemyIndex = 0
+      this.updateTarget(this.enemies[this.targetEnemyIndex])
+    } else {
+      this.targetEnemyIndex = undefined
+      this.updateTarget(this.player.pos)
+    }
+  }
+
+  private resetPath(): void {
+    if (!this.targetPos) {
+      return
+    }
+
+    bresenham(this.player.pos, this.targetPos, (x, y) => {
+      this.memory.at(x, y).effect = undefined
+    })
+  }
+
+  private drawPath(): void {
+    bresenham(this.player.pos, this.targetPos, (x, y) => {
+      this.memory.at(x, y).effect = 'x'
+    })
+  }
+
+  private updateTarget(newPos: Point): void {
+    this.resetPath()
+    this.targetPos = newPos.copy()
+    this.drawPath()
+  }
+
+  private findEnemies(): void {
+    this.enemies = []
+
+    this.player.stageMemory().each((tile, x, y) => {
+      if (tile.visible && tile.creature() && tile.creature().id !== this.player.id) {
+        this.enemies.push(new Point(x, y))
+      }
+    })
   }
 }

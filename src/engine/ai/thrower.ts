@@ -2,15 +2,14 @@ import { AI } from './internal'
 import {
   Creature,
   Ability,
-  CreatureId,
   Phantom,
   Reaction,
   ThrowEvent,
 } from '../creature'
-import { Usage, Item, GroupedItem } from '../items/internal'
+import { GroupedItem } from '../items/internal'
 import { Point, bresenham } from '../utils'
 import { ItemFlightEffect } from '../effect'
-import { MissileSlot, Wearing } from '../inventory'
+import { MissileSlot } from '../inventory'
 
 export class Thrower extends AI {
   public victim: Creature
