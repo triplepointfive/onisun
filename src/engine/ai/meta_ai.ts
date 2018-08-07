@@ -15,6 +15,7 @@ import {
 import { compact, flatten, includes } from 'lodash'
 import { IdleScreen } from '../screens/idle_screen'
 import { InventorySlot } from '../inventory'
+import { MissileScreen } from '../screens/missile_screen';
 
 export abstract class AIEvent {
   protected logger: Logger
@@ -225,6 +226,12 @@ export class AIDrinkItem extends AIEvent {
     this.player.inventory.removeFromBag(this.potion, 1)
     this.potion.onDrink(this.game)
     this.logger.drink(this.potion)
+  }
+}
+
+export class AIMissileDialog extends AIEvent {
+  public act(): void {
+    this.game.screen = new MissileScreen(this.game)
   }
 }
 

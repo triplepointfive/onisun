@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>MissileScreen</div>
 </template>
 
 <script lang='ts'>
@@ -7,7 +7,7 @@ import Vue from 'vue'
 import { IdleInputKey } from '../../src/engine'
 
 export default Vue.extend({
-  name: 'IdleScreen',
+  name: 'MissileScreen',
   props: ['screen'],
   methods: {
     close(inputKey) {
@@ -47,8 +47,6 @@ export default Vue.extend({
         return this.close(IdleInputKey.Inventory)
       case 'I':
         return this.close(IdleInputKey.Bag)
-      case 't':
-        return this.close(IdleInputKey.Missile)
       case ',':
         return this.close(IdleInputKey.PickUp)
       case 'd':
@@ -60,3 +58,4 @@ export default Vue.extend({
   }
 })
 </script>
+

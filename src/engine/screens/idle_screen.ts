@@ -8,6 +8,7 @@ import {
   DropItemsScreen,
   DrinkScreen,
   BagScreen,
+  AIMissileDialog,
 } from '../../engine'
 import { InventoryScreen } from './inventory_screen'
 
@@ -23,6 +24,7 @@ export enum IdleInputKey {
   DownLeft,
 
   Handle,
+  Missile,
 
   Inventory,
   Bag,
@@ -64,6 +66,9 @@ export class IdleScreen extends Screen {
 
       case IdleInputKey.PickUp:
         return new AIPickUpItemsDialog(this.game).act()
+      case IdleInputKey.Missile:
+        return new AIMissileDialog(this.game).act()
+
       case IdleInputKey.Drop:
         this.game.screen = new DropItemsScreen(this.game)
         return

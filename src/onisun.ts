@@ -39,6 +39,7 @@ import { OnisunProfessionPicker } from './onisun/professions'
 import { ProfessionPickingScreen } from './engine/screens/profession_picking_screen'
 import { HealPotion } from './onisun/potions'
 export * from './onisun/professions'
+export * from './onisun/talents'
 
 export type GeneratorOptions = {
   minSize: number
@@ -46,6 +47,7 @@ export type GeneratorOptions = {
   roomsCount: number
 
   addDoors: boolean
+  simple: boolean
 }
 
 export let baseConfig = {
@@ -53,6 +55,7 @@ export let baseConfig = {
   minSize: 3,
   maxSize: 10,
   roomsCount: 10,
+  simple: true,
 }
 
 const weapons = new Pool<null, Item>([
@@ -187,8 +190,8 @@ export class Onisun extends Game {
     // let map4 = this.generateMap(generatorOptions)
     // let map5 = this.generateMap(generatorOptions)
 
-    addCreatures(0.05, map1, creaturesPool1)
-    addCreatures(0.06, map2, creaturesPool2)
+    // addCreatures(0.05, map1, creaturesPool1)
+    // addCreatures(0.06, map2, creaturesPool2)
     // addCreatures(0.07, map3, creaturesPool3)
     // addCreatures(0.08, map4, creaturesPool4)
     // addCreatures(0.09, map5, creaturesPool5)
@@ -200,14 +203,15 @@ export class Onisun extends Game {
 
     this.currentMap = map1
 
-    // rat().addToMap(new Point(1, 3), this.currentMap)
-    // rat().addToMap(new Point(1, 4), this.currentMap)
+    rat().addToMap(new Point(4, 1), this.currentMap)
+    rat().addToMap(new Point(2, 5), this.currentMap)
+    rat().addToMap(new Point(6, 3), this.currentMap)
 
     addOnTile(
       this.currentMap,
       tile => tile.isFloor() && tile.passibleThrough(),
       (x, y) => {
-        this.player.addToMap(new Point(x, y), this.currentMap)
+        this.player.addToMap(new Point(1, 3), this.currentMap)
       }
     )
   }
@@ -223,7 +227,7 @@ export class Onisun extends Game {
         dexterity: 3,
         health: 10,
         radius: 10,
-        speed: 100,
+        speed: 80,
       }),
       new PlayerAI(),
       // new Dispatcher(),
@@ -251,15 +255,17 @@ export class Onisun extends Game {
       options.roomsCount
     )
 
-    // map = drawn([
-    //   'WWWWWWWWWWW',
-    //   'WRRRRRRRRRW',
-    //   'WRRRRRRRRRW',
-    //   'WRRRRRRRRRW',
-    //   'WRRRRRRRRRW',
-    //   'WRRRRRRRRRW',
-    //   'WWWWWWWWWWW',
-    // ])
+    if (options.simple) {
+      map = drawn([
+        'WWWWWWWWWWW',
+        'WRRRRRRRRRW',
+        'WRRRRRRRRRW',
+        'WRRRRRRRRRW',
+        'WRRRRRRRRRW',
+        'WRRRRRRRRRW',
+        'WWWWWWWWWWW',
+      ])
+    }
 
     if (options.addDoors) {
       addDoors(map)

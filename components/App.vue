@@ -73,6 +73,7 @@ import ProfessionPickingScreen from './screens/ProfessionPickingScreen.vue'
 import ItemsListingScreen from './screens/ItemsListingScreen.vue'
 import TalentsTreeScreen from './screens/TalentsTreeScreen.vue'
 import InventoryScreen from './screens/InventoryScreen.vue'
+import MissileScreen from './screens/MissileScreen.vue'
 
 import { LevelMap, ScreenType, Screen } from '../src/engine'
 
@@ -109,6 +110,8 @@ export default Vue.extend({
         return ItemsListingScreen
       case ScreenType.Inventory:
         return InventoryScreen
+      case ScreenType.Missile:
+        return MissileScreen
       }
     }
   },

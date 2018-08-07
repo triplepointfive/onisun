@@ -7,6 +7,7 @@ export enum ScreenType {
   AbilitiesPicking,
   Inventory,
   ItemsListing,
+  Missile,
 }
 
 export abstract class Screen {
