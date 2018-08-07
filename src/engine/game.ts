@@ -19,8 +19,18 @@ export abstract class Game {
     this.running = true
 
     while (!this.player.dead && !this.screen) {
-      this.player.currentLevel.turn()
+      const effect = this.player.currentLevel.turn()
+
+      if (effect) {
+        this.player.rebuildVision()
+        effect.patchMemory(this.player.stageMemory())
+
+        this.running = false
+        return
+      }
     }
+
+    this.player.rebuildVision()
 
     this.running = false
   }

@@ -76,7 +76,7 @@ export class LevelMap extends Mapped<Tile> {
     this.timeline.add([undefined, effect], effect.speed())
   }
 
-  public turn(): void {
+  public turn(): Effect {
     const [actorId, effect] = this.timeline.next()
 
     if (actorId !== undefined) {
@@ -90,8 +90,7 @@ export class LevelMap extends Mapped<Tile> {
           this.timeline.add([actorId, undefined], actor.speed())
         }
       }
-
-      this.game.player.rebuildVision()
+      return
     } else if (effect) {
       if (effect.done()) {
         effect.onDone()
@@ -99,8 +98,7 @@ export class LevelMap extends Mapped<Tile> {
         this.timeline.add([undefined, effect], effect.speed())
       }
 
-      this.game.player.rebuildVision()
-      effect.patchMemory(this.game.player.stageMemory())
+      return effect
     } else {
       throw 'Timeline event is empty!'
     }
