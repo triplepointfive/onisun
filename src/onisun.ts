@@ -244,7 +244,7 @@ export class Onisun extends Game {
     player.inventory.putToBag(katana, 1)
     player.inventory.putToBag(rock, 30)
     // player.putOn(RightHandSlot, dagger)
-    // player.putOn(MissileSlot, rock)
+    player.inventory.equip(player, MissileSlot, rock)
 
     return player
   }

@@ -3,6 +3,7 @@ import { Game } from '../game'
 import { Point, bresenham, bresenhamInclusion } from '../utils'
 import { Memory } from '../memory';
 import { IdleScreen } from './idle_screen';
+import { AIMissileAttack } from '../../engine';
 
 export class MissileScreen extends Screen {
   public targetPos: Point
@@ -45,6 +46,11 @@ export class MissileScreen extends Screen {
     }
 
     this.updateTarget(this.enemies[this.targetEnemyIndex])
+  }
+
+  public attack(): void {
+    // TODO: Check the path exists
+    new AIMissileAttack(this.targetPos, this.game).act()
   }
 
   public close(): void {

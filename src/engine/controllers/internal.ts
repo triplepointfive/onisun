@@ -1,9 +1,9 @@
 import { Logger } from '../logger';
-import { Player, AttackEvent } from '../creature';
+import { Player, AttackEvent, ThrowEvent, Reaction, Creature } from '../creature';
 import { Game } from '../game';
 import { Tile, StairwayDown, StairwayUp } from '../tile';
-import { Direction } from '../utils';
-import { IdleScreen, PickUpScreen, GroupedItem, InventorySlot, Potion, Item } from '../../engine';
+import { Direction, Point, bresenham } from '../utils';
+import { IdleScreen, PickUpScreen, GroupedItem, InventorySlot, Potion, Item, ItemFlightEffect, MissileSlot } from '../../engine';
 import { MissileScreen } from '../screens/missile_screen';
 
 export abstract class Controller {
@@ -157,5 +157,32 @@ export class AIDrinkItem extends Controller {
 export class AIMissileDialog extends Controller {
   public act(): void {
     this.game.screen = new MissileScreen(this.game)
+  }
+}
+
+export class AIMissileAttack extends Controller {
+  constructor(private targetPos: Point, game: Game) {
+    super(game)
+  }
+
+  public act(): void {
+    let path = []
+
+    bresenham(this.player.pos, this.targetPos, (x, y) => path.push(new Point(x, y)))
+
+    const missile = this.player.inventory.inSlot(MissileSlot).item
+    this.player.inventory.removeWearing(this.player, MissileSlot, 1)
+
+    const tile = this.player.currentLevel.at(this.targetPos.x, this.targetPos.y)
+    // TODO: Remove real link
+    let victim: Creature = tile.creature.real()
+    const effect = new ItemFlightEffect(missile, path, () => {
+      if (victim) {
+        victim.on(new ThrowEvent(this.player, missile))
+      }
+    })
+
+    this.player.currentLevel.addEffect(effect)
+    this.game.screen = undefined
   }
 }
