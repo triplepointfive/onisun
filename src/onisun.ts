@@ -31,6 +31,7 @@ import {
   MissileSlot,
   PlayerAI,
   Talent,
+  MissileWeaponSlot,
 } from './engine'
 import { TalentStatus } from './engine/profession'
 import { TalentsTreeScreen } from './engine/screens/talents_tree_screen'
@@ -38,9 +39,13 @@ import { TalentsTreeScreen } from './engine/screens/talents_tree_screen'
 import { OnisunProfessionPicker } from './onisun/professions'
 import { ProfessionPickingScreen } from './engine/screens/profession_picking_screen'
 import { HealPotion } from './onisun/potions'
-import { MissileScreen } from './engine/screens/missile_screen';
+import { woodenArrow, ironArrow, commonBow, smallRock } from './onisun/items';
+import { Inventory } from './engine/inventory';
+import { InventoryScreen } from './engine/screens/inventory_screen';
+
 export * from './onisun/professions'
 export * from './onisun/talents'
+export * from './onisun/items'
 
 export type GeneratorOptions = {
   minSize: number
@@ -64,7 +69,6 @@ const weapons = new Pool<null, Item>([
   [3, () => new OneHandWeapon('Axe', new Modifier({ attack: 7 }))],
   [7, () => new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))],
   [5, () => new OneHandWeapon('Hammer', new Modifier({ attack: 5 }))],
-  [5, () => new Missile('Rock', new Modifier({}))],
 ])
 
 const itemsPool = new Pool<null, Item>([
@@ -204,11 +208,11 @@ export class Onisun extends Game {
 
     this.currentMap = map1
 
-    rat().addToMap(new Point(4, 1), this.currentMap)
-    rat().addToMap(new Point(2, 5), this.currentMap)
-    rat().addToMap(new Point(6, 3), this.currentMap)
-    rat().addToMap(new Point(4, 3), this.currentMap)
-    rat().addToMap(new Point(8, 3), this.currentMap)
+    // rat().addToMap(new Point(4, 1), this.currentMap)
+    // rat().addToMap(new Point(2, 5), this.currentMap)
+    // rat().addToMap(new Point(6, 3), this.currentMap)
+    // rat().addToMap(new Point(4, 3), this.currentMap)
+    // rat().addToMap(new Point(8, 3), this.currentMap)
 
     addOnTile(
       this.currentMap,
@@ -218,7 +222,7 @@ export class Onisun extends Game {
       }
     )
 
-    this.screen = new MissileScreen(this)
+    this.screen = new InventoryScreen(this)
   }
 
   protected initPlayer(): Player {
@@ -241,12 +245,24 @@ export class Onisun extends Game {
 
     const dagger = new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))
     const katana = new OneHandWeapon('Katana', new Modifier({ attack: 10 }))
-    const rock = new Missile('Rock', new Modifier({}))
+
+    const wooden = woodenArrow()
+    const iron = ironArrow()
+    const rock = smallRock()
+
+    const bow = commonBow()
+
     player.inventory.putToBag(dagger, 2)
     player.inventory.putToBag(katana, 1)
-    player.inventory.putToBag(rock, 30)
+
+    player.inventory.putToBag(wooden, 5)
+    player.inventory.putToBag(iron, 5)
+    player.inventory.putToBag(rock, 5)
+
+    player.inventory.putToBag(bow, 2)
+
     // player.putOn(RightHandSlot, dagger)
-    player.inventory.equip(player, MissileSlot, rock)
+    player.inventory.equip(player, MissileWeaponSlot, bow)
 
     return player
   }

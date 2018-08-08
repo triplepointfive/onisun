@@ -14,7 +14,7 @@
           <span class='part'>
             {{ displayBodyPart(position.inventorySlot) }}
           </span>
-          <span class='separator float-right'>
+          <span class='separator'>
               &#58;
           </span>
         </td>
@@ -36,6 +36,7 @@ import {
   RightHandSlot,
   BodySlot,
   MissileSlot,
+  MissileWeaponSlot,
 } from '../../src/engine'
 
 import {
@@ -100,22 +101,10 @@ export default Vue.extend({
           return 'Левая рука'
         case RightHandSlot.id:
           return 'Правая рука'
-        // case BodyPart.Legs:
-        //   return '足'
-        // case BodyPart.Finger:
-        //   return '指'
-        // case BodyPart.Head:
-        //   return '頭'
-        // case BodyPart.Eye:
-        //   return '目'
-        // case BodyPart.Neck:
-        //   return '首'
-        // case BodyPart.Back:
-        //   return '背'
         case BodySlot.id:
           return 'Корпус'
-        // case BodyPart.MissileWeapon:
-        //   return 'MissileWeapon'
+        case MissileWeaponSlot.id:
+          return 'Метательное'
         case MissileSlot.id:
           return 'Снаряды'
         default:
@@ -184,6 +173,13 @@ export default Vue.extend({
     text-overflow: ellipsis;
 
     width: 15%;
+    padding-right: 0.5rem;
+    position: relative;
+
+    .separator {
+      position: absolute;
+      right: 0;
+    }
   }
 
   .name {

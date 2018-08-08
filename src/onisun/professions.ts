@@ -1,5 +1,5 @@
 import { ProfessionPicker, Profession, Player } from '../engine'
-import { AttackerTwoHandedWeapons } from './talents';
+import { AttackerTwoHandedWeapons } from './talents'
 
 enum OnisunProfessionId {
   Attacker,
@@ -10,9 +10,7 @@ export class OnisunAttackerProfession extends Profession {
   constructor(level: number = 1) {
     super(OnisunProfessionId.Attacker, 'Оружейник', level)
 
-    this.talents.push(
-      new AttackerTwoHandedWeapons()
-    )
+    this.talents.push(new AttackerTwoHandedWeapons())
   }
 }
 

@@ -1,10 +1,19 @@
-import { Logger } from '../logger';
-import { Player, AttackEvent, ThrowEvent, Reaction, Creature } from '../creature';
-import { Game } from '../game';
-import { Tile, StairwayDown, StairwayUp } from '../tile';
-import { Direction, Point, bresenham } from '../utils';
-import { IdleScreen, PickUpScreen, GroupedItem, InventorySlot, Potion, Item, ItemFlightEffect, MissileSlot } from '../../engine';
-import { MissileScreen } from '../screens/missile_screen';
+import { Logger } from '../logger'
+import { Player, AttackEvent, ThrowEvent, Creature } from '../creature'
+import { Game } from '../game'
+import { Tile, StairwayDown, StairwayUp } from '../tile'
+import { Direction, Point } from '../utils'
+import {
+  IdleScreen,
+  PickUpScreen,
+  GroupedItem,
+  InventorySlot,
+  Potion,
+  Item,
+  ItemFlightEffect,
+  MissileSlot,
+} from '../../engine'
+import { MissileScreen } from '../screens/missile_screen'
 
 export abstract class Controller {
   protected logger: Logger
@@ -178,7 +187,8 @@ export class AIMissileAttack extends Controller {
     const missile = this.player.inventory.inSlot(MissileSlot).item
     this.player.inventory.removeWearing(this.player, MissileSlot, 1)
 
-    let path = [], victim: Creature
+    let path = [],
+      victim: Creature
 
     this.path.forEach(point => {
       if (!victim) {

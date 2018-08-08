@@ -33,8 +33,10 @@ export class InventoryScreen extends Screen {
           inventorySlot: inventorySlot,
           item: equipment && equipment.item,
           count: equipment && equipment.count,
-          availableItems: cares.filter(groupedItem =>
-            intersection(groupedItem.item.usages, inventorySlot.usages).length > 0
+          availableItems: cares.filter(
+            groupedItem =>
+              intersection(groupedItem.item.usages, inventorySlot.usages)
+                .length > 0
           ),
         }
       })

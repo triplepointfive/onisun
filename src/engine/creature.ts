@@ -202,12 +202,7 @@ export class Creature extends Phantom {
     super(specie)
     this.ai = ai
 
-    this.inventory = new Inventory([
-      RightHandSlot,
-      LeftHandSlot,
-      BodySlot,
-      MissileSlot,
-    ])
+    this.inventory = new Inventory()
   }
 
   public addToMap(pos: Point, level: LevelMap) {

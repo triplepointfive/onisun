@@ -133,6 +133,7 @@ const WEAPON = new ItemTile('刀', 200, 200, 200)
 const CORPSE = new ItemTile('体', 200, 200, 200)
 const BODY_ARMOR = new ItemTile('胸', 200, 200, 200)
 const MISSILE = new ItemTile('石', 200, 200, 200)
+const MISSILE_WEAPON = new ItemTile(']', 200, 200, 200)
 
 const POTION = new ItemTile('！', 200, 200, 200)
 
@@ -146,6 +147,8 @@ export const displayItem = function(item: Item): ItemTile {
       return BODY_ARMOR
     case ItemGroup.Missile:
       return MISSILE
+    case ItemGroup.MissileWeapon:
+      return MISSILE_WEAPON
     case ItemGroup.Potion:
       return POTION
     default:

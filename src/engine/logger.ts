@@ -92,7 +92,7 @@ export class Logger {
   }
 
   public nothingToShotWith(): void {
-    this.addMessage(LogLevel.DEBUG, 'You have nothing to shot with')
+    this.addMessage(LogLevel.DEBUG, 'You have nothing to shoot with')
   }
 
   public pickedUpItem(item: Item, count: number): void {

@@ -28,8 +28,13 @@ export const BodySlot: InventorySlot = {
   usages: [Usage.WearsOnBody],
   useSingleItem: true,
 }
-export const MissileSlot: InventorySlot = {
+export const MissileWeaponSlot: InventorySlot = {
   id: 4,
+  usages: [Usage.Shoot],
+  useSingleItem: true,
+}
+export const MissileSlot: InventorySlot = {
+  id: 5,
   usages: [Usage.Throw],
   useSingleItem: false,
 }
@@ -38,17 +43,9 @@ export const allInventorySlots = [
   RightHandSlot,
   LeftHandSlot,
   BodySlot,
+  MissileWeaponSlot,
   MissileSlot,
 ]
-// LeftHand,
-// Legs,
-// Finger,
-// Head,
-// Eye,
-// Neck,
-// Back,
-
-// MissileWeapon,
 
 export type Wearing = {
   inventorySlot: InventorySlot
@@ -59,7 +56,7 @@ export class Inventory {
   private wearings: Wearing[] = []
   private bag: ItemsBunch = new ItemsBunch()
 
-  constructor(parts: InventorySlot[]) {
+  constructor(parts: InventorySlot[] = allInventorySlots) {
     this.wearings = parts.map(inventorySlot => {
       return { inventorySlot: inventorySlot }
     })
@@ -98,8 +95,9 @@ export class Inventory {
   }
 
   public canWear(item: Item) {
-    return this.wearings.some(wearing =>
-      intersection(item.usages, wearing.inventorySlot.usages).length > 0
+    return this.wearings.some(
+      wearing =>
+        intersection(item.usages, wearing.inventorySlot.usages).length > 0
     )
   }
 

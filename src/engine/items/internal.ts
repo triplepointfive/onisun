@@ -8,6 +8,7 @@ export enum Usage {
   WeaponOneHand,
   WearsOnBody,
   Throw,
+  Shoot,
 }
 
 export enum ItemGroup {
@@ -16,6 +17,15 @@ export enum ItemGroup {
   Consumable,
   Missile,
   Potion,
+  MissileWeapon,
+}
+
+export enum ItemSubgroup {
+  MissileRock,
+  Sling,
+
+  Bow,
+  Arrows,
 }
 
 export type ItemId = number
@@ -120,10 +130,20 @@ export abstract class Potion extends Item {
   abstract onDrink(game: Game): void
 }
 
-export class Missile extends Item {
+export abstract class Missile extends Item {
   constructor(name: string, modifier: Modifier) {
     super(ItemGroup.Missile, name, [Usage.Throw], modifier)
   }
+
+  public abstract worksWith(item: Item): boolean
+}
+
+export abstract class MissileWeapon extends Item {
+  constructor(name: string, modifier: Modifier) {
+    super(ItemGroup.MissileWeapon, name, [Usage.Shoot], modifier)
+  }
+
+  public abstract worksWith(item: Item): boolean
 }
 
 export class BodyArmor extends Item {
@@ -134,6 +154,6 @@ export class BodyArmor extends Item {
 
 export class OneHandWeapon extends Item {
   constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.OneHandWeapon, name, [Usage.WeaponOneHand], modifier)
+    super(ItemGroup.MissileWeapon, name, [Usage.WeaponOneHand], modifier)
   }
 }

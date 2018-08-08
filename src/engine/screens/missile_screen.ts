@@ -1,9 +1,9 @@
 import { Screen, ScreenType } from './internal'
 import { Game } from '../game'
 import { Point, bresenham, bresenhamInclusion, Direction } from '../utils'
-import { Memory } from '../memory';
-import { IdleScreen } from './idle_screen';
-import { AIMissileAttack } from '../../engine';
+import { Memory } from '../memory'
+import { IdleScreen } from './idle_screen'
+import { AIMissileAttack } from '../../engine'
 
 export class MissileScreen extends Screen {
   public targetPos: Point
@@ -53,7 +53,10 @@ export class MissileScreen extends Screen {
       dest = this.targetPos.add(direction),
       tile = stage.at(dest.x, dest.y)
 
-    if (tile.visibleThrough() && this.player.stageMemory().at(dest.x, dest.y).visible) {
+    if (
+      tile.visibleThrough() &&
+      this.player.stageMemory().at(dest.x, dest.y).visible
+    ) {
       this.updateTarget(dest)
       this.targetEnemyIndex = undefined
     }
@@ -81,7 +84,7 @@ export class MissileScreen extends Screen {
   }
 
   private resetPath(): void {
-    this.path.forEach(({ x, y }) => this.memory.at(x, y).effect = undefined)
+    this.path.forEach(({ x, y }) => (this.memory.at(x, y).effect = undefined))
   }
 
   private drawPath(): void {
@@ -109,7 +112,11 @@ export class MissileScreen extends Screen {
     this.enemies = []
 
     this.player.stageMemory().each((tile, x, y) => {
-      if (tile.visible && tile.creature() && tile.creature().id !== this.player.id) {
+      if (
+        tile.visible &&
+        tile.creature() &&
+        tile.creature().id !== this.player.id
+      ) {
         this.enemies.push(new Point(x, y))
       }
     })

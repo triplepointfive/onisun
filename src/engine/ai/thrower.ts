@@ -1,11 +1,5 @@
 import { AI } from './internal'
-import {
-  Creature,
-  Ability,
-  Phantom,
-  Reaction,
-  ThrowEvent,
-} from '../creature'
+import { Creature, Ability, Phantom, Reaction, ThrowEvent } from '../creature'
 import { GroupedItem } from '../items/internal'
 import { Point, bresenham } from '../utils'
 import { ItemFlightEffect } from '../effect'
