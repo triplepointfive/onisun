@@ -161,21 +161,24 @@ export class AIMissileDialog extends Controller {
 }
 
 export class AIMissileAttack extends Controller {
-  constructor(private targetPos: Point, game: Game) {
+  constructor(private path: Point[], game: Game) {
     super(game)
   }
 
   public act(): void {
-    let path = []
-
-    bresenham(this.player.pos, this.targetPos, (x, y) => path.push(new Point(x, y)))
-
     const missile = this.player.inventory.inSlot(MissileSlot).item
     this.player.inventory.removeWearing(this.player, MissileSlot, 1)
 
-    const tile = this.player.currentLevel.at(this.targetPos.x, this.targetPos.y)
-    // TODO: Remove real link
-    let victim: Creature = tile.creature && tile.creature.real()
+    let path = [], victim: Creature
+
+    this.path.forEach(point => {
+      if (!victim) {
+        const tile = this.player.currentLevel.at(point.x, point.y)
+        victim = tile.creature && tile.creature.real()
+        this.path.push(point)
+      }
+    })
+
     const effect = new ItemFlightEffect(missile, path, () => {
       if (victim) {
         victim.on(new ThrowEvent(this.player, missile))

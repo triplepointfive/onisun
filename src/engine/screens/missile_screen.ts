@@ -10,6 +10,7 @@ export class MissileScreen extends Screen {
   private memory: Memory
   private targetEnemyIndex: number = undefined
   private enemies: Point[] = []
+  private path: Point[] = []
 
   constructor(game: Game) {
     super(ScreenType.Missile, game)
@@ -52,15 +53,16 @@ export class MissileScreen extends Screen {
       dest = this.targetPos.add(direction),
       tile = stage.at(dest.x, dest.y)
 
-    if (tile.visibleThrough()) {
+    if (tile.visibleThrough() && this.player.stageMemory().at(dest.x, dest.y).visible) {
       this.updateTarget(dest)
       this.targetEnemyIndex = undefined
     }
   }
 
   public attack(): void {
-    // TODO: Check the path exists
-    new AIMissileAttack(this.targetPos, this.game).act()
+    if (!this.targetPos.eq(this.player.pos)) {
+      new AIMissileAttack(this.path, this.game).act()
+    }
   }
 
   public close(): void {
@@ -79,18 +81,21 @@ export class MissileScreen extends Screen {
   }
 
   private resetPath(): void {
-    if (!this.targetPos) {
-      return
-    }
-
-    bresenhamInclusion(this.player.pos, this.targetPos, (x, y) => {
-      this.memory.at(x, y).effect = undefined
-    })
+    this.path.forEach(({ x, y }) => this.memory.at(x, y).effect = undefined)
   }
 
   private drawPath(): void {
+    this.path = []
+    let stop = false
+    const stage = this.player.currentLevel
+
     bresenhamInclusion(this.player.pos, this.targetPos, (x, y) => {
-      this.memory.at(x, y).effect = 'x'
+      if (!stage.at(x, y).passibleThrough()) {
+        stop = true
+      }
+
+      this.path.push(new Point(x, y))
+      this.memory.at(x, y).effect = stop ? 'o' : 'x'
     })
   }
 

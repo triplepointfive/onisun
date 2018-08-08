@@ -207,6 +207,8 @@ export class Onisun extends Game {
     rat().addToMap(new Point(4, 1), this.currentMap)
     rat().addToMap(new Point(2, 5), this.currentMap)
     rat().addToMap(new Point(6, 3), this.currentMap)
+    rat().addToMap(new Point(4, 3), this.currentMap)
+    rat().addToMap(new Point(8, 3), this.currentMap)
 
     addOnTile(
       this.currentMap,
@@ -260,13 +262,13 @@ export class Onisun extends Game {
 
     if (options.simple) {
       map = drawn([
-        'WWWWWWWWWWW',
-        'WRRRRRRRRRW',
-        'WRRRRRRRRRW',
-        'WRRRRRRRRRW',
-        'WRRRRRRRRRW',
-        'WRRRRRRRRRW',
-        'WWWWWWWWWWW',
+        'WWWWWWWWWWWWWWWWWWWWWW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WWWWWWWWWWWWWWWWWWWWWW',
       ])
     }
 

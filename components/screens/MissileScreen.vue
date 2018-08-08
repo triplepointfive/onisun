@@ -42,7 +42,7 @@ export default Vue.extend({
       case '<':
         this.screen.previousTarget()
         break
-      case 'T':
+      case 't':
         this.screen.attack()
         break
       case 'Escape':
