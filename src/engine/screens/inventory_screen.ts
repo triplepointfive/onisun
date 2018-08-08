@@ -28,11 +28,11 @@ export class InventoryScreen extends Screen {
 
     this.positions = this.player.inventory
       .wears()
-      .map(({ inventorySlot, equipment }) => {
+      .map(inventorySlot => {
         return {
           inventorySlot: inventorySlot,
-          item: equipment && equipment.item,
-          count: equipment && equipment.count,
+          item: inventorySlot.equipment && inventorySlot.equipment.item,
+          count: inventorySlot.equipment && inventorySlot.equipment.count,
           availableItems: cares.filter(
             groupedItem =>
               intersection(groupedItem.item.usages, inventorySlot.usages)

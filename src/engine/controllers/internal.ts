@@ -11,7 +11,6 @@ import {
   Potion,
   Item,
   ItemFlightEffect,
-  MissileSlot,
 } from '../../engine'
 import { MissileScreen } from '../screens/missile_screen'
 
@@ -137,8 +136,8 @@ export class AITakeOffItem extends Controller {
 
   public act(): void {
     // TODO: assert slot is not empty
-    const groupedItem = this.player.inventory.inSlot(this.slot)
-    this.player.inventory.takeOff(this.player, this.slot)
+    const groupedItem = this.slot.equipment
+    this.slot.takeOff(this.player)
     this.logger.takeOff(groupedItem.item)
   }
 }
@@ -149,7 +148,7 @@ export class AIPutOnItem extends Controller {
   }
 
   public act(): void {
-    this.player.inventory.equip(this.player, this.slot, this.item)
+    this.slot.equip(this.player, this.item)
     this.logger.putOn(this.item)
   }
 }
@@ -168,7 +167,7 @@ export class AIDrinkItem extends Controller {
 
 export class AIMissileDialog extends Controller {
   public act(): void {
-    const missile = this.player.inventory.inSlot(MissileSlot)
+    const missile = this.player.inventory.missileSlot.equipment
 
     if (missile && missile.item) {
       this.game.screen = new MissileScreen(this.game)
@@ -184,8 +183,10 @@ export class AIMissileAttack extends Controller {
   }
 
   public act(): void {
-    const missile = this.player.inventory.inSlot(MissileSlot).item
-    this.player.inventory.removeWearing(this.player, MissileSlot, 1)
+    const slot = this.player.inventory.missileSlot,
+      missile = slot.equipment.item
+
+    slot.removeItem(this.player, 1)
 
     let path = [],
       victim: Creature

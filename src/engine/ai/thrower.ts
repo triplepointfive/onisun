@@ -3,7 +3,6 @@ import { Creature, Ability, Phantom, Reaction, ThrowEvent } from '../creature'
 import { GroupedItem } from '../items/internal'
 import { Point, bresenham } from '../utils'
 import { ItemFlightEffect } from '../effect'
-import { MissileSlot } from '../inventory'
 
 export class Thrower extends AI {
   public victim: Creature
@@ -20,7 +19,7 @@ export class Thrower extends AI {
 
   public act(actor: Creature): void {
     const missile = this.missiles.item
-    actor.inventory.removeWearing(actor, MissileSlot, 1)
+    actor.inventory.missileSlot.removeItem(actor, 1)
 
     let path = []
 
@@ -37,7 +36,7 @@ export class Thrower extends AI {
   }
 
   private hasMissile(actor: Creature): boolean {
-    this.missiles = actor.inventory.inSlot(MissileSlot)
+    this.missiles = actor.inventory.missileSlot.equipment
     return this.missiles !== undefined
   }
 

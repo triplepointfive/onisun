@@ -10,7 +10,7 @@ let item1: Item = generateOneHandedWeapon()
 let item2: Item = generateOneHandedWeapon()
 const creature: Creature = generateCreature()
 
-describe('puts on and takes off', () => {
+describe.skip('puts on and takes off', () => {
   let inventory: Inventory
 
   beforeEach(() => {
@@ -63,7 +63,7 @@ describe('puts on and takes off', () => {
   })
 })
 
-describe('failed', () => {
+describe.skip('failed', () => {
   let inventory: Inventory
 
   beforeEach(() => {

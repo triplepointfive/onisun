@@ -37,7 +37,7 @@ describe('Throwing at enemy', () => {
   beforeEach(() => {
     const item = generateMissile()
     actor.inventory.putToBag(item, 1)
-    actor.putOn(MissileSlot, item)
+    actor.inventory.missileSlot.equip(actor, item)
 
     enemy.addToMap(new Point(1, 4), map)
 
@@ -51,7 +51,7 @@ describe('Throwing at enemy', () => {
   })
 
   it('Removes missile from inventory', () => {
-    expect(actor.inventory.inSlot(MissileSlot)).toBeUndefined()
+    expect(actor.inventory.missileSlot.equipment).toBeUndefined()
   })
 })
 
@@ -63,7 +63,7 @@ describe('When there is someone else', () => {
 
     const item = generateMissile()
     actor.inventory.putToBag(item, 1)
-    actor.putOn(MissileSlot, item)
+    actor.inventory.missileSlot.equip(actor, item)
 
     internalAI.victim = enemy
   })
