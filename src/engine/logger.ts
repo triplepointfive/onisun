@@ -91,6 +91,10 @@ export class Logger {
     this.addMessage(LogLevel.INFO, `You drunk ${item.name}`)
   }
 
+  public nothingToShotWith(): void {
+    this.addMessage(LogLevel.DEBUG, 'You have nothing to shot with')
+  }
+
   public pickedUpItem(item: Item, count: number): void {
     if (count === 1) {
       this.addMessage(LogLevel.INFO, `You picked up ${item.name}`)

@@ -39,6 +39,8 @@ export class AIMoveEvent extends Controller {
     } else {
       this.game.logger.ranIntoAnObstacle()
     }
+
+    this.game.screen = undefined
   }
 }
 
@@ -48,6 +50,7 @@ export class AIHandleEnvEvent extends Controller {
 
     if (tile instanceof StairwayDown || tile instanceof StairwayUp) {
       tile.go(this.player)
+      this.game.screen = undefined
     } else {
       this.player.currentLevel.game.logger.howToHandle()
     }
@@ -62,10 +65,10 @@ export class AIPickUpItemsDialog extends Controller {
     switch ((items && items.bunch.length) || 0) {
       case 0:
         game.logger.noItemsToPickUp()
-        game.screen = new IdleScreen(this.game)
         return
       case 1:
         new AIPickUpItems(items.bunch, this.game).act()
+        this.game.screen = undefined
         return
       default:
         game.screen = new PickUpScreen(game)
@@ -156,7 +159,13 @@ export class AIDrinkItem extends Controller {
 
 export class AIMissileDialog extends Controller {
   public act(): void {
-    this.game.screen = new MissileScreen(this.game)
+    const missile = this.player.inventory.inSlot(MissileSlot)
+
+    if (missile && missile.item) {
+      this.game.screen = new MissileScreen(this.game)
+    } else {
+      this.logger.nothingToShotWith()
+    }
   }
 }
 

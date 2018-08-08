@@ -39,9 +39,6 @@ export class IdleScreen extends Screen {
   }
 
   public onInput(key: IdleInputKey) {
-    // TODO: Shouldn't be done here, move to every command
-    this.game.screen = undefined
-
     switch (key) {
       case IdleInputKey.Right:
         return new AIMoveEvent(Direction.right, this.game).act()
