@@ -20,9 +20,9 @@ describe.skip('puts on and takes off', () => {
   it('empty slot', () => {
     inventory.putToBag(item1, 1)
     inventory.equip(creature, RightHandSlot, item1)
-    expect(inventory.wears()[0].equipment.item).toEqual(item1)
+    expect(inventory.slots()[0].equipment.item).toEqual(item1)
     inventory.takeOff(creature, RightHandSlot)
-    expect(inventory.wears()[0].equipment).toBeNull()
+    expect(inventory.slots()[0].equipment).toBeNull()
     expect(inventory.cares().length).toEqual(1)
     expect(inventory.cares()[0].item).toEqual(item1)
   })
@@ -33,12 +33,12 @@ describe.skip('puts on and takes off', () => {
     inventory.equip(creature, RightHandSlot, item1)
     inventory.equip(creature, RightHandSlot, item2)
 
-    expect(inventory.wears()[0].equipment.item).toBe(item2)
+    expect(inventory.slots()[0].equipment.item).toBe(item2)
     expect(inventory.cares().length).toEqual(1)
     expect(inventory.cares()[0].item).toEqual(item1)
 
     inventory.takeOff(creature, RightHandSlot)
-    expect(inventory.wears()[0].equipment).toBeNull()
+    expect(inventory.slots()[0].equipment).toBeNull()
     expect(inventory.cares().length).toEqual(2)
     expect(inventory.cares()[0].item).toEqual(item1)
     expect(inventory.cares()[1].item).toEqual(item2)
@@ -49,7 +49,7 @@ describe.skip('puts on and takes off', () => {
 
     inventory.putToBag(item1, 1)
     inventory.equip(creature, RightHandSlot, item1)
-    expect(inventory.wears()[0].equipment.item).toBe(item1)
+    expect(inventory.slots()[0].equipment.item).toBe(item1)
 
     expect(inventory.inSlot(RightHandSlot).item).toEqual(item1)
   })
@@ -73,7 +73,7 @@ describe.skip('failed', () => {
   it('can not wear if there is no matching slot', () => {
     inventory.putToBag(item1, 1)
     inventory.equip(creature, RightHandSlot, item1)
-    expect(inventory.wears()[0].equipment).toBeFalsy()
+    expect(inventory.slots()[0].equipment).toBeFalsy()
     expect(inventory.cares().length).toEqual(1)
   })
 
@@ -92,8 +92,8 @@ describe.skip('failed', () => {
   })
 
   it('takes off the item that is not put on yet', () => {
-    expect(inventory.wears()[0].equipment).toBeFalsy()
+    expect(inventory.slots()[0].equipment).toBeFalsy()
     inventory.takeOff(creature, BodySlot)
-    expect(inventory.wears()[0].equipment).toBeFalsy()
+    expect(inventory.slots()[0].equipment).toBeFalsy()
   })
 })

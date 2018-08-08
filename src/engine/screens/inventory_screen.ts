@@ -9,8 +9,6 @@ import {
 } from '../../engine'
 import { IdleScreen } from './idle_screen'
 
-import { intersection } from 'lodash'
-
 interface InventoryPosition {
   inventorySlot: InventorySlot
   item: Item
@@ -24,22 +22,14 @@ export class InventoryScreen extends Screen {
   constructor(game: Game) {
     super(ScreenType.Inventory, game)
 
-    const cares = this.player.inventory.cares()
-
-    this.positions = this.player.inventory
-      .wears()
-      .map(inventorySlot => {
-        return {
-          inventorySlot: inventorySlot,
-          item: inventorySlot.equipment && inventorySlot.equipment.item,
-          count: inventorySlot.equipment && inventorySlot.equipment.count,
-          availableItems: cares.filter(
-            groupedItem =>
-              intersection(groupedItem.item.usages, inventorySlot.usages)
-                .length > 0
-          ),
-        }
-      })
+    this.positions = this.player.inventory.slots().map(inventorySlot => {
+      return {
+        inventorySlot: inventorySlot,
+        item: inventorySlot.equipment && inventorySlot.equipment.item,
+        count: inventorySlot.equipment && inventorySlot.equipment.count,
+        availableItems: inventorySlot.matchingItems(this.player.inventory)
+      }
+    })
   }
 
   public takeOff(position: InventoryPosition) {

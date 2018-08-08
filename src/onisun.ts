@@ -39,9 +39,9 @@ import { TalentsTreeScreen } from './engine/screens/talents_tree_screen'
 import { OnisunProfessionPicker } from './onisun/professions'
 import { ProfessionPickingScreen } from './engine/screens/profession_picking_screen'
 import { HealPotion } from './onisun/potions'
-import { woodenArrow, ironArrow, commonBow, smallRock } from './onisun/items';
-import { Inventory } from './engine/inventory';
-import { InventoryScreen } from './engine/screens/inventory_screen';
+import { woodenArrow, ironArrow, commonBow, smallRock } from './onisun/items'
+import { Inventory } from './engine/inventory'
+import { InventoryScreen } from './engine/screens/inventory_screen'
 
 export * from './onisun/professions'
 export * from './onisun/talents'
@@ -262,7 +262,7 @@ export class Onisun extends Game {
     player.inventory.putToBag(bow, 2)
 
     // player.putOn(RightHandSlot, dagger)
-    player.inventory.missileSlot.equip(player, bow)
+    player.inventory.missileWeaponSlot.equip(player, bow)
 
     return player
   }

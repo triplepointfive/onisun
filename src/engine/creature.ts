@@ -220,7 +220,7 @@ export class Creature extends Phantom {
     let tile = this.currentLevel.at(this.pos.x, this.pos.y)
     tile.addItem(new Corpse(this.specie), 1)
 
-    this.inventory.wears().forEach(({ equipment }) => {
+    this.inventory.slots().forEach(({ equipment }) => {
       if (equipment) {
         tile.addItem(equipment.item, equipment.count)
       }

@@ -60,6 +60,8 @@ export class Item {
   public groupsWith(item: Item): boolean {
     return this.name === item.name
   }
+
+  public worksWith(item: Item): boolean { return true }
 }
 
 let inventoryItemId = 1
@@ -134,16 +136,12 @@ export abstract class Missile extends Item {
   constructor(name: string, modifier: Modifier) {
     super(ItemGroup.Missile, name, [Usage.Throw], modifier)
   }
-
-  public abstract worksWith(item: Item): boolean
 }
 
 export abstract class MissileWeapon extends Item {
   constructor(name: string, modifier: Modifier) {
     super(ItemGroup.MissileWeapon, name, [Usage.Shoot], modifier)
   }
-
-  public abstract worksWith(item: Item): boolean
 }
 
 export class BodyArmor extends Item {

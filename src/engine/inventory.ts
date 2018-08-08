@@ -10,16 +10,11 @@ export abstract class InventorySlot {
     public readonly usages: Usage[],
     // Has to put only a single item or can put a bunch of them
     public readonly useSingleItem: boolean,
-
-    public equipment?: GroupedItem,
+    public equipment?: GroupedItem
   ) {}
 
   public matchingItems(inventory: Inventory): GroupedItem[] {
     return inventory.cares().filter(itemGroup => this.match(itemGroup.item))
-  }
-
-  public match(item: Item): boolean {
-    return intersection(item.usages, this.usages).length > 0
   }
 
   public removeItem(actor: Creature, count: number): void {
@@ -62,50 +57,66 @@ export abstract class InventorySlot {
       this.equipment = null
     }
   }
-}
 
-export class MissileSlot extends InventorySlot {
-  constructor() {
-    super(
-      [Usage.Throw],
-      false,
-    )
+  protected match(item: Item): boolean {
+    return intersection(item.usages, this.usages).length > 0
   }
 }
 
 export class RightHandSlot extends InventorySlot {
+  public name: string = 'Правая рука'
   constructor() {
-    super(
-  [Usage.WeaponOneHand],
-  true,
-    )
+    super([Usage.WeaponOneHand], true)
   }
 }
 
 export class LeftHandSlot extends InventorySlot {
+  public name: string = 'Левая рука'
   constructor() {
-    super(
-  [Usage.WeaponOneHand],
-  true,
-    )
+    super([Usage.WeaponOneHand], true)
   }
 }
 
 export class BodySlot extends InventorySlot {
+  public name: string = 'Корпус'
   constructor() {
-    super(
-  [Usage.WearsOnBody],
-  true,
-    )
+    super([Usage.WearsOnBody], true)
   }
 }
 
 export class MissileWeaponSlot extends InventorySlot {
+  public name: string = 'Метательное'
   constructor() {
-    super(
-  [Usage.Shoot],
-  true,
-    )
+    super([Usage.Shoot], true)
+  }
+
+  public matchingItems(inventory: Inventory): GroupedItem[] {
+    let baseMatch = super.matchingItems(inventory),
+      missile = inventory.missileSlot.equipment
+
+    if (missile) {
+      return baseMatch.filter(groupedItem => groupedItem.item.worksWith(missile.item))
+    }
+
+    return baseMatch
+  }
+}
+
+export class MissileSlot extends InventorySlot {
+  public name: string = 'Снаряды'
+  constructor() {
+    super([Usage.Throw], false)
+  }
+
+  public matchingItems(inventory: Inventory): GroupedItem[] {
+    let baseMatch = super.matchingItems(inventory),
+      missileWeapon = inventory.missileWeaponSlot.equipment
+
+    if (missileWeapon) {
+      return baseMatch.filter(groupedItem => groupedItem.item.worksWith(missileWeapon.item))
+    }
+
+    return baseMatch
   }
 }
 
@@ -142,7 +153,7 @@ export class Inventory {
   //   }
   // }
 
-  public wears(): InventorySlot[] {
+  public slots(): InventorySlot[] {
     return [
       this.rightHandSlot,
       this.leftHandSlot,
@@ -157,9 +168,8 @@ export class Inventory {
   }
 
   public canWear(item: Item) {
-    return this.wears().some(
-      wearing =>
-        intersection(item.usages, wearing.usages).length > 0
+    return this.slots().some(
+      wearing => intersection(item.usages, wearing.usages).length > 0
     )
   }
 

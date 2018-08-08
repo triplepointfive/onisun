@@ -96,20 +96,7 @@ export default Vue.extend({
       }
     },
     displayBodyPart(bodyPart) {
-      switch (bodyPart.id) {
-        case LeftHandSlot.id:
-          return 'Левая рука'
-        case RightHandSlot.id:
-          return 'Правая рука'
-        case BodySlot.id:
-          return 'Корпус'
-        case MissileWeaponSlot.id:
-          return 'Метательное'
-        case MissileSlot.id:
-          return 'Снаряды'
-        default:
-          throw `Unknow body part ${bodyPart}`
-      }
+      return bodyPart.name
     },
     displayItem(item) {
       if (item) {

@@ -3,11 +3,7 @@ import { Creature, Player } from '../creature'
 import { ItemsBunch, Item } from '../items/internal'
 import { Tile } from '../tile'
 import { Logger } from '../logger'
-import {
-  Game,
-  Modifier,
-  AIPutOnItem,
-} from '../../engine'
+import { Game, Modifier, AIPutOnItem } from '../../engine'
 
 import { compact, flatten, includes } from 'lodash'
 
@@ -35,7 +31,6 @@ export class AIItemPickedEvent extends AIEvent {
   public act(): void {
     this.player.inventory.cares().forEach(item => {
       // const wearing = this.whereToWear(item.item)
-
       // if (wearing) {
       //   // TODO: Use matching slot
       //   new AIPutOnItem(wearing.inventorySlot, item.item, this.game).act()
@@ -47,7 +42,7 @@ export class AIItemPickedEvent extends AIEvent {
   //   const matches: Wearing[] = compact(
   //     flatten(
   //       item.usages.map(usage =>
-  //         this.player.inventory.wears().filter(wearing => includes(wearing.inventorySlot.usages, usage))
+  //         this.player.inventory.slots().filter(wearing => includes(wearing.inventorySlot.usages, usage))
   //       )
   //     ).map(wearing => this.player.inventory.matchingEquip(wearing.inventorySlot))
   //   )
