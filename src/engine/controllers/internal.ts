@@ -170,7 +170,11 @@ export class AIMissileDialog extends Controller {
     const missile = this.player.inventory.missileSlot.equipment
 
     if (missile && missile.item) {
-      this.game.screen = new MissileScreen(this.game)
+      if (missile.item.canThrow(this.player)) {
+        this.game.screen = new MissileScreen(this.game)
+      } else {
+        this.logger.needMissileWeapon()
+      }
     } else {
       this.logger.nothingToShotWith()
     }

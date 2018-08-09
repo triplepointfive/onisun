@@ -1,4 +1,4 @@
-import { Missile, MissileWeapon, Item, Modifier } from '../engine'
+import { Missile, MissileWeapon, Item, Modifier, Player } from '../engine'
 
 class MissileRock extends Missile {
   public worksWith(item: Item): boolean {
@@ -9,6 +9,10 @@ class MissileRock extends Missile {
 class Arrow extends Missile {
   public worksWith(item: Item): boolean {
     return item instanceof Bow
+  }
+
+  public canThrow(player: Player): boolean {
+    return !!player.inventory.missileWeaponSlot.equipment
   }
 }
 

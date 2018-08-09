@@ -95,6 +95,10 @@ export class Logger {
     this.addMessage(LogLevel.DEBUG, 'You have nothing to shoot with')
   }
 
+  public needMissileWeapon(): void {
+    this.addMessage(LogLevel.DEBUG, 'Мне нужен лук или типа того')
+  }
+
   public pickedUpItem(item: Item, count: number): void {
     if (count === 1) {
       this.addMessage(LogLevel.INFO, `You picked up ${item.name}`)

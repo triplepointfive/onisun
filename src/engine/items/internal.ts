@@ -1,4 +1,4 @@
-import { Specie, Creature } from '../creature'
+import { Specie, Creature, Player } from '../creature'
 import { Modifier } from '../characteristics'
 
 import { remove } from 'lodash'
@@ -62,6 +62,10 @@ export class Item {
   }
 
   public worksWith(item: Item): boolean {
+    return true
+  }
+
+  public canThrow(player: Player): boolean {
     return true
   }
 }
