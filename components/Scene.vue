@@ -1,33 +1,11 @@
 <template>
   <div class='scene'>
-    <div class='row'>
-      <div class='col mr-0'>
-        <div class='unicodetiles' ref="scene"></div>
-      </div>
-
-      <div class='col pl-0'>
-        <div class='fps mb-2 '>FPS {{ fps }}</div>
-        <div>
-          MAP {{ level.id }}
-          <input type='checkbox' v-model='wholeMap'>
-        </div>
-
-        <Stats :creature='player'/>
-
-        <ul>
-          <li v-for='group in tileItems' :key='group.item.name'>
-            {{ group.count }}: {{ group.item.name }}
-          </li>
-        </ul>
-      </div>
-    </div>
+    <div class='unicodetiles' ref="scene"></div>
   </div>
-
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
-import Stats from './stats.vue'
 
 import {
   domRenderer,
@@ -82,14 +60,9 @@ export default Vue.extend({
       eng: null,
       drawInterval: null,
       ts: Date.now(),
-      fps: 0,
-      counter: 0,
       interval: 100,
       step: 0,
     }
-  },
-  components: {
-    Stats
   },
   methods: {
     getTile(x, y) {
@@ -195,8 +168,6 @@ export default Vue.extend({
     drawScene() {
       const ts = Date.now()
       if (this.ts + 1000 < ts) {
-        this.fps = this.counter
-        this.counter = 0
         this.ts = ts
       }
 
@@ -204,7 +175,6 @@ export default Vue.extend({
       this.eng.update(this.term.cx, this.term.cy);
       this.term.render();
 
-      this.counter += 1
       this.step += 1
     },
     lighting(tile, x, y, time) {
