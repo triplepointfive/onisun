@@ -5,7 +5,7 @@ import { Item } from './items'
 export class Attribute {
   public modifiers: number[] = []
 
-  constructor(protected max: number, protected current: number = max) {}
+  constructor(protected max: number, public current: number = max) {}
 
   public maximum(): number {
     return this.max

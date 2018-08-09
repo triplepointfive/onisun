@@ -1,5 +1,5 @@
 <template>
-  <div id='talents-tree-container' class='screen-modal text-center'>
+  <div id='talents-tree-container' class='simple-popover screen-modal text-center'>
     <b-tabs card v-model='professionIndex' class='tabs-list'>
       <b-tab
         v-for='profession in screen.player.professions'
@@ -16,7 +16,8 @@
             <div
               class='talent-cell'
               :class='talentStatus(talent)'
-              :id="j + 'talentTree-'+i" variant="primary"
+              :id="j + 'talentTree-'+i"
+              variant="primary"
               @click='pickTalent(talent)'
               @dblclick="close(talent)"
             >
@@ -208,40 +209,6 @@ export default Vue.extend({
       }
     }
 
-  }
-
-  .popover {
-    background-color: rgba(0, 0, 0, 0.9) !important;
-    border: 2px solid grey !important;
-    margin: 0 !important;
-
-    .arrow {
-      display: none !important;
-    }
-
-    .popover-body {
-      padding: 0.5rem;
-    }
-
-    p {
-      margin-bottom: 0;
-    }
-
-    .name {
-      color: white;
-    }
-
-    .rank {
-      color: white;
-    }
-
-    .requirements {
-      color: red;
-    }
-
-    .description {
-      color: gold;
-    }
   }
 }
 

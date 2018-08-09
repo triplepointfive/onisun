@@ -1,8 +1,8 @@
 <template>
-  <div id='app' class='container' v-if='game'>
-    <Scene :level='game.currentMap' :player='game.player' v-if='game.player && !game.player.dead'/>
+  <div id='app' class='container-fluid' v-if='game'>
+    <Scene class='scene' :level='game.currentMap' :player='game.player' v-if='game.player && !game.player.dead'/>
 
-    <Stats :creature='game.player' v-if='game.player && !game.player.dead'/>
+    <Stats class='player-stats' :creature='game.player' v-if='game.player && !game.player.dead'/>
 
     <div v-if='game.player && game.player.dead'>You are dead</div>
 
@@ -129,5 +129,14 @@ export default Vue.extend({
 }
 .row {
   white-space: nowrap;
+}
+
+#app {
+  .player-stats {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+  }
 }
 </style>

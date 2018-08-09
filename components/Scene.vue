@@ -1,6 +1,5 @@
 <template lang='pug'>
-.scene
-  .unicodetiles(ref='scene')
+.unicodetiles(ref='scene')
 </template>
 
 <script lang='ts'>

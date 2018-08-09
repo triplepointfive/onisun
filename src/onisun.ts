@@ -195,7 +195,7 @@ export class Onisun extends Game {
     // let map4 = this.generateMap(generatorOptions)
     // let map5 = this.generateMap(generatorOptions)
 
-    // addCreatures(0.05, map1, creaturesPool1)
+    addCreatures(0.95, map1, creaturesPool1)
     // addCreatures(0.06, map2, creaturesPool2)
     // addCreatures(0.07, map3, creaturesPool3)
     // addCreatures(0.08, map4, creaturesPool4)
@@ -232,7 +232,7 @@ export class Onisun extends Game {
         attack: 1,
         defense: 4,
         dexterity: 3,
-        health: 10,
+        health: 100,
         radius: 10,
         speed: 80,
       }),

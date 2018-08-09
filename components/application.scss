@@ -2,6 +2,11 @@ div {
   font-family: "Lucida Console", Monaco, monospace
 }
 
+body {
+  position: fixed;
+  overflow: hidden;
+}
+
 .screen-modal {
   position: fixed;
   top: 10%;
@@ -27,5 +32,41 @@ div {
 
   .bottom {
 
+  }
+}
+
+.simple-popover {
+  .popover {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    border: 2px solid grey !important;
+    margin: 0 !important;
+
+    .arrow {
+      display: none !important;
+    }
+
+    .popover-body {
+      padding: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+
+    .name {
+      color: white;
+    }
+
+    .rank {
+      color: white;
+    }
+
+    .requirements {
+      color: red;
+    }
+
+    .description {
+      color: gold;
+    }
   }
 }
