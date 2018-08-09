@@ -61,7 +61,9 @@ export class Item {
     return this.name === item.name
   }
 
-  public worksWith(item: Item): boolean { return true }
+  public worksWith(item: Item): boolean {
+    return true
+  }
 }
 
 let inventoryItemId = 1
@@ -134,7 +136,7 @@ export abstract class Potion extends Item {
 
 export abstract class Missile extends Item {
   constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.Missile, name, [Usage.Throw], modifier)
+    super(ItemGroup.Missile, name, [], modifier)
   }
 }
 

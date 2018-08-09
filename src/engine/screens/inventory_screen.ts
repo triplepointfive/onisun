@@ -27,7 +27,7 @@ export class InventoryScreen extends Screen {
         inventorySlot: inventorySlot,
         item: inventorySlot.equipment && inventorySlot.equipment.item,
         count: inventorySlot.equipment && inventorySlot.equipment.count,
-        availableItems: inventorySlot.matchingItems(this.player.inventory)
+        availableItems: inventorySlot.matchingItems(this.player.inventory),
       }
     })
   }

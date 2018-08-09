@@ -10,7 +10,7 @@ import {
 import { IdleScreen } from './idle_screen'
 import { GroupedItem, ItemGroup, Potion } from '../items/internal'
 import { InventoryScreen } from './inventory_screen'
-import { InventorySlot } from '../inventory'
+import { InventorySlot } from '../inventory_slot'
 
 interface ItemsListingPosition {
   item: Item

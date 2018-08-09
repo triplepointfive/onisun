@@ -8,14 +8,8 @@ import {
   LevelMap,
   LevelMapId,
   Memory,
-} from '../engine'
-import {
   Inventory,
-  MissileSlot,
-  BodySlot,
-  RightHandSlot,
-  LeftHandSlot,
-} from './inventory'
+} from '../engine'
 
 import { Level } from './level'
 import { includes } from 'lodash'

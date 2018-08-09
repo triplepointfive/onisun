@@ -221,8 +221,6 @@ export class Onisun extends Game {
         this.player.addToMap(new Point(1, 3), this.currentMap)
       }
     )
-
-    this.screen = new InventoryScreen(this)
   }
 
   protected initPlayer(): Player {
@@ -262,7 +260,8 @@ export class Onisun extends Game {
     player.inventory.putToBag(bow, 2)
 
     // player.putOn(RightHandSlot, dagger)
-    player.inventory.missileWeaponSlot.equip(player, bow)
+    // player.inventory.missileWeaponSlot.equip(player, bow)
+    player.inventory.missileSlot.equip(player, wooden)
 
     return player
   }
