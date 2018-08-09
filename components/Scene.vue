@@ -1,7 +1,6 @@
-<template>
-  <div class='scene'>
-    <div class='unicodetiles' ref="scene"></div>
-  </div>
+<template lang='pug'>
+.scene
+  .unicodetiles(ref='scene')
 </template>
 
 <script lang='ts'>
