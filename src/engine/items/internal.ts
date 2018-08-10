@@ -62,7 +62,7 @@ export class Item {
   }
 
   public worksWith(item: Item): boolean {
-    return true
+    return false
   }
 
   public canThrow(player: Player): boolean {
