@@ -132,6 +132,7 @@ export default Vue.extend({
 
 #app {
   padding: 0;
+  height: 100%;
 
   .player-stats {
     position: fixed;

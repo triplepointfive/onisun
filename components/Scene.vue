@@ -226,6 +226,7 @@ export default Vue.extend({
   display: inline-block;
 
   width: 100%;
+  height: 100%;
 
   div {
     float: left;
