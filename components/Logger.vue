@@ -3,7 +3,6 @@
     <table class='table table-sm table-striped'>
       <tbody>
         <tr :class='rowClass(record)' v-for='(record, i) in messages' :key='i'>
-          <td>{{ ts(record) }}</td>
           <td>{{ record.message }}</td>
         </tr>
       </tbody>
@@ -17,8 +16,6 @@ import { takeRight } from 'lodash'
 
 import { LogLevel } from '../src/engine'
 
-import * as moment from 'moment'
-
 export default Vue.extend({
   name: 'Logger',
   props: ['logger'],
@@ -28,9 +25,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    ts(record) {
-      return moment(record.ts).format("hh:mm:ss")
-    },
     rowClass(record) {
       switch (record.level) {
         case LogLevel.DEBUG:

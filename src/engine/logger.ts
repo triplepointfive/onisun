@@ -1,6 +1,4 @@
-import * as moment from 'moment'
 import { Creature } from './creature'
-import { Moment } from 'moment'
 import { Item, Potion } from './items/internal'
 
 export enum LogLevel {
@@ -13,7 +11,6 @@ export enum LogLevel {
 export class LogMessage {
   constructor(
     public level: LogLevel,
-    public ts: Moment,
     public message: string
   ) {}
 }
@@ -132,6 +129,6 @@ export class Logger {
   }
 
   protected addMessage(level: LogLevel, message: string): void {
-    this.messages.push(new LogMessage(level, moment(), message))
+    this.messages.push(new LogMessage(level, message))
   }
 }
