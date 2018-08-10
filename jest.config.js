@@ -15,4 +15,5 @@ module.exports = {
     "node"
   ],
   "collectCoverageFrom": ["src/**/*.{ts,js}"],
+  "testURL": 'http://localhost',
 }
