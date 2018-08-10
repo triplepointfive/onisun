@@ -3,6 +3,7 @@
     <Scene class='scene' :level='game.currentMap' :player='game.player' v-if='game.player && !game.player.dead'/>
 
     <Stats class='player-stats' :creature='game.player' v-if='game.player && !game.player.dead'/>
+    <Logger class='logger-panel' :logger='game.logger' />
 
     <div v-if='game.player && game.player.dead'>You are dead</div>
 
@@ -12,8 +13,6 @@
       :screen='game.screen'
       ref="screenComponent"
       />
-
-    <Logger :logger='game.logger' />
   </div>
 </template>
 
@@ -132,11 +131,19 @@ export default Vue.extend({
 }
 
 #app {
+  padding: 0;
+
   .player-stats {
     position: fixed;
     bottom: 0;
     left: 50%;
     transform: translate(-50%);
+  }
+
+  .logger-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
   }
 }
 </style>

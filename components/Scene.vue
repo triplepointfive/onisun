@@ -169,8 +169,8 @@ export default Vue.extend({
         this.ts = ts
       }
 
-      // this.eng.update(this.player.x, this.player.y);
-      this.eng.update(this.term.cx, this.term.cy);
+      this.eng.update(this.player.pos.x, this.player.pos.y);
+      // this.eng.update(this.term.cx, this.term.cy);
       this.term.render();
 
       this.step += 1
@@ -218,12 +218,14 @@ export default Vue.extend({
 .unicodetiles {
   background-color: black;
   font-family: "DejaVuSansMono", "DejaVu Sans Mono", monospace;
-  font-size: 16px;
+  font-size: 2rem;
   white-space: pre;
   text-align: center;
   line-height: 1;
   letter-spacing: 0px;
   display: inline-block;
+
+  width: 100%;
 
   div {
     float: left;

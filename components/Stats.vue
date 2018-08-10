@@ -74,13 +74,15 @@ $height: 100px;
 $width: 100px;
 
 .panel {
-  border: 1px solid black;
+  border: 3px solid white;
   border-bottom: 0;
 
   border-radius: $height/2 $height/2 0 0;
   height: $height;
 
   padding: 0 $height / 2 0 $height / 2;
+  background-color: black;
+  color: white;
 
   .cell {
     display: inline-block;
@@ -88,7 +90,7 @@ $width: 100px;
 
     border-width: 0 1px 0 1px;
     border-style: solid;
-    border-color: black;
+    border-color: white;
 
     text-align: center;
     height: $height;
@@ -101,7 +103,7 @@ $width: 100px;
 
     border-width: 0 1px 0 1px;
     border-style: solid;
-    border-color: black;
+    border-color: white;
 
     text-align: center;
     height: $height;

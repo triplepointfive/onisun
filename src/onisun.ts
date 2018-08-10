@@ -61,7 +61,7 @@ export let baseConfig = {
   minSize: 3,
   maxSize: 10,
   roomsCount: 10,
-  simple: true,
+  simple: false,
 }
 
 const weapons = new Pool<null, Item>([
@@ -195,7 +195,7 @@ export class Onisun extends Game {
     // let map4 = this.generateMap(generatorOptions)
     // let map5 = this.generateMap(generatorOptions)
 
-    addCreatures(0.95, map1, creaturesPool1)
+    addCreatures(0.05, map1, creaturesPool1)
     // addCreatures(0.06, map2, creaturesPool2)
     // addCreatures(0.07, map3, creaturesPool3)
     // addCreatures(0.08, map4, creaturesPool4)
@@ -218,7 +218,7 @@ export class Onisun extends Game {
       this.currentMap,
       tile => tile.isFloor() && tile.passibleThrough(),
       (x, y) => {
-        this.player.addToMap(new Point(1, 3), this.currentMap)
+        this.player.addToMap(new Point(x, y), this.currentMap)
       }
     )
   }
@@ -227,7 +227,7 @@ export class Onisun extends Game {
     const playerSpecie = new Specie('Player', Clan.Player, allAbilities)
 
     let player = new Player(
-      new Level([1, 1, 1, 3, 10]),
+      new Level([1, 3, 5, 10, 20]),
       new Characteristics({
         attack: 1,
         defense: 4,
@@ -268,8 +268,8 @@ export class Onisun extends Game {
 
   protected generateMap(options: GeneratorOptions): LevelMap {
     let map = dungeon(
-      20,
       40,
+      30,
       options.minSize,
       options.maxSize,
       options.roomsCount
