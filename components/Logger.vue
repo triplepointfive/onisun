@@ -1,17 +1,13 @@
-<template>
-  <div class='logger' ref='container'>
-    <table class='table table-sm table-striped'>
-      <tbody>
-        <tr :class='rowClass(record)' v-for='(record, i) in messages' :key='i'>
-          <td>{{ record.message }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<template lang='pug'>
+.logger
+  div(:class='rowClass(record)' v-for='(record, i) in messages' :key='i')
+    | {{ record.message }}
+    | {{ counter(record.counter) }}
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
+
 import { takeRight } from 'lodash'
 
 import { LogLevel } from '../src/engine'
@@ -19,31 +15,57 @@ import { LogLevel } from '../src/engine'
 export default Vue.extend({
   name: 'Logger',
   props: ['logger'],
+  data() {
+    return {
+      lastId: 0,
+    }
+  },
   computed: {
     messages() {
       return takeRight(this.logger.messages, 5)
     }
   },
   methods: {
+    counter(value) {
+      if (value) {
+        return `x${value}`
+      }
+    },
     rowClass(record) {
       switch (record.level) {
         case LogLevel.DEBUG:
-          return 'table-secondary'
+          return 'debug'
         case LogLevel.INFO:
-          return 'table-info'
+          return 'info'
         case LogLevel.WARNING:
-          return 'table-warning'
+          return 'warning'
         case LogLevel.DANGER:
-          return 'table-danger'
+          return 'danger'
       }
     }
   }
 })
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 .logger {
   height: 200px;
   overflow-y: scroll;
+
+  .debug {
+    color: grey;
+  }
+
+  .warning {
+    color: orange;
+  }
+
+  .info {
+    color: yellow;
+  }
+
+  .danger {
+    color: red;
+  }
 }
 </style>

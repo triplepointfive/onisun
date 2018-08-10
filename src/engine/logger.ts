@@ -1,6 +1,8 @@
 import { Creature } from './creature'
 import { Item, Potion } from './items/internal'
 
+import { last } from 'lodash'
+
 export enum LogLevel {
   DEBUG,
   INFO,
@@ -8,11 +10,10 @@ export enum LogLevel {
   DANGER,
 }
 
-export class LogMessage {
-  constructor(
-    public level: LogLevel,
-    public message: string
-  ) {}
+export interface LogMessage {
+  level: LogLevel
+  message: string
+  counter?: number
 }
 
 export class Logger {
@@ -129,6 +130,12 @@ export class Logger {
   }
 
   protected addMessage(level: LogLevel, message: string): void {
-    this.messages.push(new LogMessage(level, message))
+    const lastRow: LogMessage = last(this.messages)
+
+    if (lastRow && lastRow.message === message) {
+      lastRow.counter = (lastRow.counter || 1) + 1
+    } else {
+      this.messages.push({ level, message, counter: null })
+    }
   }
 }
