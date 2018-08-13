@@ -1,7 +1,7 @@
 import { LevelMap, LevelMapId } from './level_map'
 import { Game } from './game'
-import { addOnTile } from './generator/post';
-import { StairwayDown, StairwayUp, Tile } from './tile';
+import { addOnTile } from './generator/post'
+import { StairwayDown, StairwayUp, Tile } from './tile'
 
 export abstract class Dungeon {
   protected levels: LevelMap[] = []

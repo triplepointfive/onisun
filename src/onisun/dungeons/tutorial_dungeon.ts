@@ -1,6 +1,18 @@
-import { Dungeon, addOnTile, Point, Game, LevelMap, dungeon, addDoors, centralize, addItems, drawn, addCreatures } from '../../engine'
-import { weapons, itemsPool } from '../items';
-import { creaturesPool1 } from '../creatures';
+import {
+  Dungeon,
+  addOnTile,
+  Point,
+  Game,
+  LevelMap,
+  dungeon,
+  addDoors,
+  centralize,
+  addItems,
+  drawn,
+  addCreatures,
+} from '../../engine'
+import { weapons, itemsPool } from '../items'
+import { creaturesPool1 } from '../creatures'
 
 const initId: number = -1
 
@@ -26,11 +38,20 @@ export class TutorialDungeon extends Dungeon {
   }
 
   public build(): void {
-    this.game.addMap(-1, (id, game) => this.addStairDown(this.generateMap(id), 0))
+    this.game.addMap(-1, (id, game) =>
+      this.addStairDown(this.generateMap(id), 0)
+    )
 
     for (let i = 0; i < 5; i++) {
       this.game.addMap(i, (id, game) => {
-        return addCreatures(i * 0.01, this.addStairUp(this.addStairDown(this.generateMap(id), i + 1), i - 1), creaturesPool1)
+        return addCreatures(
+          i * 0.01,
+          this.addStairUp(
+            this.addStairDown(this.generateMap(id), i + 1),
+            i - 1
+          ),
+          creaturesPool1
+        )
       })
     }
 

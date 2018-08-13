@@ -1,5 +1,14 @@
-import { Missile, MissileWeapon, Item, Modifier, Player, OneHandWeapon, BodyArmor, Pool } from '../engine'
-import { HealPotion } from './potions';
+import {
+  Missile,
+  MissileWeapon,
+  Item,
+  Modifier,
+  Player,
+  OneHandWeapon,
+  BodyArmor,
+  Pool,
+} from '../engine'
+import { HealPotion } from './potions'
 
 class MissileRock extends Missile {
   public worksWith(item: Item): boolean {

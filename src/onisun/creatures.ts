@@ -1,4 +1,11 @@
-import { Characteristics, Creature, Dispatcher, Specie, Clan, Pool } from '../engine'
+import {
+  Characteristics,
+  Creature,
+  Dispatcher,
+  Specie,
+  Clan,
+  Pool,
+} from '../engine'
 
 const newCreature = (characteristics: Characteristics, name: string) => {
   return new Creature(
@@ -92,12 +99,21 @@ const dragon = () => {
   )
 }
 
-export const creaturesPool1 = new Pool<null, Creature>([[10, rat], [1, floatingEye]])
+export const creaturesPool1 = new Pool<null, Creature>([
+  [10, rat],
+  [1, floatingEye],
+])
 export const creaturesPool2 = new Pool<null, Creature>([[1, rat], [2, orc]])
 export const creaturesPool3 = new Pool<null, Creature>([
   [1, rat],
   [1, orc],
   [2, undead],
 ])
-export const creaturesPool4 = new Pool<null, Creature>([[2, undead], [2, robot]])
-export const creaturesPool5 = new Pool<null, Creature>([[2, robot], [1, dragon]])
+export const creaturesPool4 = new Pool<null, Creature>([
+  [2, undead],
+  [2, robot],
+])
+export const creaturesPool5 = new Pool<null, Creature>([
+  [2, robot],
+  [1, dragon],
+])
