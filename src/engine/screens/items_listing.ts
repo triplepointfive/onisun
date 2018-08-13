@@ -4,13 +4,11 @@ import {
   Item,
   AIPickUpItems,
   AIDropItems,
-  AIPutOnItem,
   AIDrinkItem,
 } from '../../engine'
 import { IdleScreen } from './idle_screen'
 import { GroupedItem, ItemGroup, Potion } from '../items/internal'
 import { InventoryScreen } from './inventory_screen'
-import { InventorySlot } from '../inventory_slot'
 
 interface ItemsListingPosition {
   item: Item
@@ -70,7 +68,7 @@ export class PutOnItemsScreen extends ItemsListingScreen {
   public singleItemMode: boolean = true
 
   constructor(
-    protected inventorySlot: InventorySlot,
+    private onWithItem: (itemGroup: ItemsListingPosition) => void,
     public positions: ItemsListingPosition[],
     game: Game
   ) {
@@ -85,8 +83,7 @@ export class PutOnItemsScreen extends ItemsListingScreen {
   }
 
   public withItem(itemGroup: ItemsListingPosition): void {
-    new AIPutOnItem(this.inventorySlot, itemGroup.item, this.game).act()
-    this.game.screen = undefined
+    this.onWithItem(itemGroup)
   }
 
   public close(): void {

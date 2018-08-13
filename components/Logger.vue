@@ -49,9 +49,6 @@ export default Vue.extend({
 
 <style lang='scss' scoped>
 .logger {
-  height: 200px;
-  overflow-y: scroll;
-
   .debug {
     color: grey;
   }
