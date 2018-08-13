@@ -22,28 +22,14 @@ import {
   Game,
   Point,
   Level,
-  Ability,
-  Missile,
-  ProfessionPicker,
-  Profession,
-  GroupedItem,
-  MissileSlot,
   PlayerAI,
-  Talent,
-  MissileWeaponSlot,
   StairwayDown,
   StairwayUp,
 } from './engine'
-import { TalentStatus } from './engine/profession'
-import { TalentsTreeScreen } from './engine/screens/talents_tree_screen'
 
 import { OnisunProfessionPicker } from './onisun/professions'
-import { ProfessionPickingScreen } from './engine/screens/profession_picking_screen'
 import { HealPotion } from './onisun/potions'
 import { woodenArrow, ironArrow, commonBow, smallRock } from './onisun/items'
-import { Inventory } from './engine/inventory'
-import { InventoryScreen } from './engine/screens/inventory_screen'
-import { identifier } from '../node_modules/@types/babel-types';
 
 export * from './onisun/professions'
 export * from './onisun/talents'
@@ -208,6 +194,7 @@ const generateMap = (id: number, game: Game, options: GeneratorOptions) => {
   }
   centralize(map)
   map.game = game
+  map.name = `MP ${id}`
 
   addItems(0.05, map, weapons.merge(itemsPool))
 
@@ -222,8 +209,6 @@ export class Onisun extends Game {
     this.player = this.initPlayer()
     this.professionPicker = new OnisunProfessionPicker(this.player)
     this.player.professions.push(this.professionPicker.attacker)
-
-    console.time('generateMap')
 
     this.addMap(-1, (id, game) => {
       let map = generateMap(id, game, generatorOptions)
@@ -265,8 +250,6 @@ export class Onisun extends Game {
         return map
       })
     }
-
-    console.timeEnd('generateMap')
 
     this.currentMap = this.getMap(-1)
 

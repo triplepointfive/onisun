@@ -34,6 +34,9 @@
     full-name='Скорость'
     :attr='creature.characteristics.speed'
     )
+  .cell
+    .value
+      | {{ creature.currentLevel.name }}
 </template>
 
 <script lang="ts">

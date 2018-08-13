@@ -15,6 +15,7 @@ export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public game: Game
   public timeline: Timeline<TimeEvent>
+  public name: string
 
   constructor(public readonly id: LevelMapId, map: Tile[][]) {
     super(map)
