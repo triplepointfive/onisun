@@ -34,7 +34,7 @@ export class InventoryScreen extends Screen {
 
   public putOn(position: InventoryPosition) {
     this.game.screen = new PutOnItemsScreen(
-      (itemGroup) => {
+      itemGroup => {
         new AIPutOnItem(position.inventorySlot, itemGroup.item, this.game).act()
         this.takeTime = true
         this.rebuildPositions()

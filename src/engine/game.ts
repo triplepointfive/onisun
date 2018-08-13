@@ -11,7 +11,7 @@ export abstract class Game {
   public running: boolean = false
   public professionPicker: ProfessionPicker
 
-  protected maps: Map<LevelMapId, (LevelMap|MapGenerator)> = new Map()
+  protected maps: Map<LevelMapId, LevelMap | MapGenerator> = new Map()
 
   public turn() {
     if (this.running || this.screen) {
@@ -40,7 +40,7 @@ export abstract class Game {
   }
 
   public getMap(id: LevelMapId): LevelMap {
-    let levelMap: (LevelMap|MapGenerator) = this.maps[id]
+    let levelMap: LevelMap | MapGenerator = this.maps[id]
 
     if (levelMap instanceof LevelMap) {
       return levelMap

@@ -26,12 +26,7 @@ const generate = function(dimX: number, dimY: number): Tile[][] {
     }
 
     // TODO check height and widht match
-    if (
-      pos.x <= 0 ||
-      pos.y <= 0 ||
-      pos.x >= dimX - 1 ||
-      pos.y >= dimY - 1
-    ) {
+    if (pos.x <= 0 || pos.y <= 0 || pos.x >= dimX - 1 || pos.y >= dimY - 1) {
       pos = new Point(Math.floor(dimX / 2), Math.floor(dimY / 2))
       continue
     }

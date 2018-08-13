@@ -1,16 +1,16 @@
 import {
   drawn,
   centralize,
-  connectMaps,
   StairwayDown,
   StairwayUp,
   addOnTile,
+  LevelMap,
 } from '../../src/engine'
 import { prettyMap } from '../helpers'
 
 describe('centralize', () => {
   describe('When is already centralized', () => {
-    let map = drawn(['WWW', 'WRW', 'WWW'])
+    let map = new LevelMap(0, drawn(['WWW', 'WRW', 'WWW']))
 
     it('Does nothing', () => {
       centralize(map)
@@ -19,7 +19,7 @@ describe('centralize', () => {
   })
 
   describe('Vertically', () => {
-    let map = drawn(['WWW', 'WRW', 'WWW', 'WWW', 'WWW'])
+    let map = new LevelMap(0, drawn(['WWW', 'WRW', 'WWW', 'WWW', 'WWW']))
 
     it('Does nothing', () => {
       centralize(map)
@@ -28,7 +28,7 @@ describe('centralize', () => {
   })
 
   describe('Horizontally', () => {
-    let map = drawn(['WWWWW', 'WWWRW', 'WWWWW'])
+    let map = new LevelMap(0, drawn(['WWWWW', 'WWWRW', 'WWWWW']))
 
     it('Does nothing', () => {
       centralize(map)
@@ -37,7 +37,10 @@ describe('centralize', () => {
   })
 
   describe('Both', () => {
-    let map = drawn(['WWWWW', 'WWWWW', 'WWWWW', 'WWWRW', 'WWWWW'])
+    let map = new LevelMap(
+      0,
+      drawn(['WWWWW', 'WWWWW', 'WWWWW', 'WWWRW', 'WWWWW'])
+    )
 
     it('Does nothing', () => {
       centralize(map)
@@ -52,22 +55,22 @@ describe('centralize', () => {
   })
 })
 
-describe('connectMaps', () => {
-  let map1 = drawn(['R'])
-  let map2 = drawn(['R'])
-  connectMaps(map1, map2)
-
-  it('adds downstairs on first map', () => {
-    expect(map1.at(0, 0)).toBeInstanceOf(StairwayDown)
-  })
-
-  it('adds upstairs on second map', () => {
-    expect(map2.at(0, 0)).toBeInstanceOf(StairwayUp)
-  })
-})
+// describe('connectMaps', () => {
+//   let map1 = drawn(['R'])
+//   let map2 = drawn(['R'])
+//   connectMaps(map1, map2)
+//
+//   it('adds downstairs on first map', () => {
+//     expect(map1.at(0, 0)).toBeInstanceOf(StairwayDown)
+//   })
+//
+//   it('adds upstairs on second map', () => {
+//     expect(map2.at(0, 0)).toBeInstanceOf(StairwayUp)
+//   })
+// })
 
 describe('addOnTile', () => {
-  let map = drawn(['R'])
+  let map = new LevelMap(0, drawn(['R']))
 
   it('Fail when there is no matching tiles', () => {
     expect(() => {

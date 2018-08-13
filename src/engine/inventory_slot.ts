@@ -5,6 +5,8 @@ import { intersection } from 'lodash'
 import { Inventory } from './inventory'
 
 export abstract class InventorySlot {
+  public name: string
+
   constructor(
     // What kind of items can be put in slot
     public readonly usages: Usage[],
@@ -47,11 +49,12 @@ export abstract class InventorySlot {
   }
 
   public takeOff(actor: Creature): void {
-    // TODO: Assert if nothing to remove?
     if (this.equipment) {
       actor.inventory.putToBag(this.equipment.item, this.equipment.count)
       this.equipment.item.onTakeOff(actor)
       this.equipment = null
+    } else {
+      throw `Slot ${this.name} has nothing to take off`
     }
   }
 

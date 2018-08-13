@@ -169,24 +169,24 @@ const creaturesPool4 = new Pool<null, Creature>([[2, undead], [2, robot]])
 const creaturesPool5 = new Pool<null, Creature>([[2, robot], [1, dragon]])
 
 const generateMap = (id: number, game: Game, options: GeneratorOptions) => {
-  let map = new LevelMap(id, dungeon(
-    40,
-    30,
-    options.minSize,
-    options.maxSize,
-    options.roomsCount
-  ))
+  let map = new LevelMap(
+    id,
+    dungeon(40, 30, options.minSize, options.maxSize, options.roomsCount)
+  )
 
   if (options.simple) {
-    map = new LevelMap(id, drawn([
-      'WWWWWWWWWWWWWWWWWWWWWW',
-      'WRRRRRRRRRRRRRRRRRRRRW',
-      'WRRRRRRRRRRRRRRRRRRRRW',
-      'WRRRRRRRRRRRRRRRRRRRRW',
-      'WRRRRRRRRRRRRRRRRRRRRW',
-      'WRRRRRRRRRRRRRRRRRRRRW',
-      'WWWWWWWWWWWWWWWWWWWWWW',
-    ]))
+    map = new LevelMap(
+      id,
+      drawn([
+        'WWWWWWWWWWWWWWWWWWWWWW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WRRRRRRRRRRRRRRRRRRRRW',
+        'WWWWWWWWWWWWWWWWWWWWWW',
+      ])
+    )
   }
 
   if (options.addDoors) {
@@ -225,7 +225,7 @@ export class Onisun extends Game {
       return map
     })
 
-    for (let i = 0; i < 50; i ++) {
+    for (let i = 0; i < 50; i++) {
       this.addMap(i, (id, game) => {
         let map = generateMap(id, game, generatorOptions)
 

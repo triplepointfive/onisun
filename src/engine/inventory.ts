@@ -58,12 +58,6 @@ export class Inventory {
     return this.bag.bunch
   }
 
-  public canWear(item: Item) {
-    return this.slots().some(
-      wearing => intersection(item.usages, wearing.usages).length > 0
-    )
-  }
-
   // public matchingEquip(slot: InventorySlot): Wearing {
   //   return this.wearings.find(wearSlot => wearSlot.inventorySlot.id === slot.id)
   // }

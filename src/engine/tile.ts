@@ -111,26 +111,19 @@ abstract class Stairway extends Tile {
     const adjacentMap = this.currentMap.game.getMap(this.adjacentMapId)
     this.enterPos = adjacentMap.matchStairs(this.currentMap.id, actor.pos)
 
-
     adjacentMap.enter(actor, this.enterPos)
     adjacentMap.game.currentMap = adjacentMap
   }
 }
 
 export class StairwayDown extends Stairway {
-  constructor(
-    public currentMap: LevelMap,
-    public adjacentMapId: LevelMapId,
-  ) {
+  constructor(public currentMap: LevelMap, public adjacentMapId: LevelMapId) {
     super('>', '>', TileTypes.StairwayDown)
   }
 }
 
 export class StairwayUp extends Stairway {
-  constructor(
-    public currentMap: LevelMap,
-    public adjacentMapId: LevelMapId,
-  ) {
+  constructor(public currentMap: LevelMap, public adjacentMapId: LevelMapId) {
     super('<', '<', TileTypes.StairwayUp)
   }
 }
