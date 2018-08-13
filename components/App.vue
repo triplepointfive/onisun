@@ -1,19 +1,29 @@
-<template>
-  <div id='app' class='container-fluid' v-if='game'>
-    <Scene class='scene' :level='game.currentMap' :player='game.player' v-if='game.player && !game.player.dead'/>
+<template lang='pug'>
+#app.container-fluid(v-if='game')
+  Scene.scene(
+    :level='game.currentMap'
+    :player='game.player'
+    v-if='game.player && !game.player.dead'
+    )
 
-    <Stats class='player-stats' :creature='game.player' v-if='game.player && !game.player.dead'/>
-    <Logger class='logger-panel' :logger='game.logger' />
+  Stats.player-stats(
+    :creature='game.player'
+    v-if='game.player && !game.player.dead'
+    )
 
-    <div v-if='game.player && game.player.dead'>You are dead</div>
+  Logger.logger-panel(
+    :logger='game.logger'
+    )
 
-    <component
-      v-if='game.screen'
-      :is='screenComponent'
-      :screen='game.screen'
-      ref="screenComponent"
-      />
-  </div>
+  div(v-if='game.player && game.player.dead')
+    | You are dead
+
+  component(
+    v-if='game.screen'
+    :is='screenComponent'
+    :screen='game.screen'
+    ref="screenComponent"
+    )
 </template>
 
 <script lang='ts'>

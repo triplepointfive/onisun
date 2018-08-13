@@ -39,7 +39,7 @@ export class TutorialDungeon extends Dungeon {
 
   public build(): void {
     this.game.addMap(-1, (id, game) =>
-      this.addStairDown(this.generateMap(id), 0)
+      addCreatures(0.3, this.addStairDown(this.generateMap(id), 0), creaturesPool1)
     )
 
     for (let i = 0; i < 5; i++) {

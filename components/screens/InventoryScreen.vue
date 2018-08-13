@@ -1,32 +1,16 @@
-<template>
-  <div class='screen-modal'>
-    <span class='title'>Инвентарь</span>
+<template lang='pug'>
+  .screen-modal
+    span.title Инвентарь
 
-    <table class='content inventory-list'>
-      <tr v-for='(position, index) in screen.positions' :key='index' :class='availableStatus(position)'>
-        <td class='slot'>
-          <span class='letter'>
-            {{ indexLetter(index) }}
-          </span>
-          <span class='dash'>
-            &#8212;
-          </span>
-          <span class='part'>
-            {{ displayBodyPart(position.inventorySlot) }}
-          </span>
-          <span class='separator'>
-              &#58;
-          </span>
-        </td>
-        <td class='name' :class='positionStatus(position)'>
-          {{ itemName(position) }}
-        </td>
-        <td class='weight'>
-          {{ itemWeight(position) }}
-        </td>
-      </tr>
-    </table>
-  </div>
+    table.content.inventory-list
+      tr(v-for='(position, index) in screen.positions' :key='index' :class='availableStatus(position)')
+        td.slot
+          span.letter {{ indexLetter(index) }}
+          span.dash &#8212;
+          span.part {{ displayBodyPart(position.inventorySlot) }}
+          span.separator &#58;
+        td.name(:class='positionStatus(position)') {{ itemName(position) }}
+        td.weight {{ itemWeight(position) }}
 </template>
 
 <script lang='ts'>
@@ -166,6 +150,10 @@ export default Vue.extend({
     .separator {
       position: absolute;
       right: 0;
+    }
+
+    .dash {
+      padding: 0.5rem;
     }
   }
 

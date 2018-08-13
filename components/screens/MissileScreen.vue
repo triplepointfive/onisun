@@ -1,5 +1,5 @@
-<template>
-  <div>MissileScreen</div>
+<template lang='pug'>
+div
 </template>
 
 <script lang='ts'>

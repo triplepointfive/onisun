@@ -1,29 +1,15 @@
-<template>
-  <div class='screen-modal'>
-    <span class='title'>{{ screen.title }}</span>
+<template lang='pug'>
+.screen-modal
+  span.title {{ screen.title }}
 
-    <table class='container positions-list'>
-      <tr v-for='(position, index) in screen.positions' :key='index' :class='positionStatus(position)'>
-        <td class='selected'>
-          <div class='sign' v-if='positionSelected(index)'>
-            &#43;
-          </div>
-        </td>
-        <td class='letter'>
-          {{ indexLetter(index) }}
-        </td>
-        <td class='separator'>
-          &mdash;
-        </td>
-        <td class='name'>
-          {{ position.item.name }} ({{ position.count }})
-        </td>
-        <td class='weight'>
-          &#91;{{ position.item.weight }}g&#93;
-        </td>
-      </tr>
-    </table>
-  </div>
+  table.container.positions-list
+    tr(v-for='(position, index) in screen.positions' :key='index' :class='positionStatus(position)')
+      td.selected
+        .sign(v-if='positionSelected(index)') &#43;
+      td.letter {{ indexLetter(index) }}
+      td.separator &mdash;
+      td.name {{ position.item.name }} ({{ position.count }})
+      td.weight &#91;{{ position.item.weight }}g&#93;
 </template>
 
 <script lang='ts'>

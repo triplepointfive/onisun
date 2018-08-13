@@ -1,23 +1,18 @@
-<template>
-  <div class='screen-modal text-center'>
-    <div class='title'>{{ screen.title }}</div>
-    <div class='content'>
-      <div
-        class='option p-2 m-3'
-        v-for='option in screen.options'
-        :key='option.id'
-        @click='picked = option'
-        @dblclick="close(option)"
-        :class="{ 'picked': picked && picked.id === option.id }"
-      >
-        <img class='icon' :src='iconPath(option.id)'>
-        <div class='name'>{{ option.name }}</div>
-      </div>
-    </div>
-    <div class='bottom'>
-      <b-btn @click='close' v-if='picked !== null' variant='success'>Подтвердить</b-btn>
-    </div>
-  </div>
+<template lang='pug'>
+.screen-modal.text-center
+  .title {{ screen.title }}
+  .content
+    .option.p-2.m-3(
+      v-for='option in screen.options'
+      :key='option.id'
+      @click='picked = option'
+      @dblclick="close(option)"
+      :class="{ 'picked': picked && picked.id === option.id }"
+      )
+      img.icon(:src='iconPath(option.id)')
+      .name {{ option.name }}
+  .bottom
+    b-btn(@click='close' v-if='picked !== null' variant='success') Подтвердить
 </template>
 
 <script lang='ts'>

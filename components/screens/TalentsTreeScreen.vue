@@ -1,52 +1,36 @@
-<template>
-  <div id='talents-tree-container' class='simple-popover screen-modal text-center'>
-    <b-tabs card v-model='professionIndex' class='tabs-list'>
-      <b-tab
-        v-for='profession in screen.player.professions'
-        :title='profession.name'
-        :key='profession.id'
-        no-body
-      >
-      </b-tab>
-    </b-tabs>
+<template lang='pug'>
+#talents-tree-container.simple-popover.screen-modal.text-center
+  b-tabs.tabs-list(card v-model='professionIndex')
+    b-tab(
+      v-for='profession in screen.player.professions'
+      :title='profession.name'
+      :key='profession.id'
+      no-body
+      )
 
-    <table class='content'>
-      <tr v-for='(group, i) in groupedTalents' :key='i'>
-        <td class='cell' v-for='(talent, j) in group' :key='j'>
-            <div
-              class='talent-cell'
-              :class='talentStatus(talent)'
-              :id="j + 'talentTree-'+i"
-              variant="primary"
-              @click='pickTalent(talent)'
-              @dblclick="close(talent)"
-            >
-              <img class='icon' :src="'assets/talents/' + iconPath(talent.id)">
-              <span class="level">{{ talentTip(talent) }}</span>
+  table.content
+    tr(v-for='(group, i) in groupedTalents' :key='i')
+      td.cell(v-for='(talent, j) in group' :key='j')
+          .talent-cell(
+            :class='talentStatus(talent)'
+            :id="j + 'talentTree-'+i"
+            variant="primary"
+            @click='pickTalent(talent)'
+            @dblclick="close(talent)"
+            )
+            img.icon(:src="'assets/talents/' + iconPath(talent.id)")
+            span.level {{ talentTip(talent) }}
 
-              <b-popover :target="j + 'talentTree-'+i" triggers="hover" container='talents-tree-container'>
-                <template>
-                  <p class='name'>{{ talent.name }}</p>
-                  <small>
-                    <p class='rank'>
-                      Уровень {{ talent.rank }}/{{ talent.maxRank }}
-                    </p>
-                    <p class='requirements' v-if="talentStatus(talent) === '-unavailable'">
-                      Требуется {{ talent.depth * profession.depthCost }} очков в {{ profession.name }}
-                    </p>
-                    <p class='description'>
-                      {{ talent.description }}
-                    </p>
-                  </small>
-                </template>
-              </b-popover>
-            </div>
-        </td>
-      </tr>
-    </table>
+            b-popover(:target="j + 'talentTree-'+i" triggers="hover" container='talents-tree-container')
+              template
+                p.name {{ talent.name }}
+                small
+                  p.rank Уровень {{ talent.rank }}/{{ talent.maxRank }}
+                  p.requirements(v-if="talentStatus(talent) === '-unavailable'")
+                    | Требуется {{ talent.depth * profession.depthCost }} очков в {{ profession.name }}
+                  p.description {{ talent.description }}
 
-    <b-btn variant='default' v-if='picked !== null' @click='close()'>Подтвердить</b-btn>
-  </div>
+  b-btn(variant='default' v-if='picked !== null' @click='close()') Подтвердить
 </template>
 
 <script lang='ts'>
