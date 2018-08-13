@@ -61,7 +61,7 @@ export let baseConfig = {
   minSize: 3,
   maxSize: 10,
   roomsCount: 10,
-  simple: false,
+  simple: true,
 }
 
 const weapons = new Pool<null, Item>([
@@ -202,7 +202,7 @@ export class Onisun extends Game {
     // addCreatures(0.09, map5, creaturesPool5)
 
     connectMaps(map1, map2)
-    // connectMaps(map2, map3)
+  // connectMaps(map2, map3)
     // connectMaps(map3, map4)
     // connectMaps(map4, map5)
 
@@ -267,16 +267,16 @@ export class Onisun extends Game {
   }
 
   protected generateMap(options: GeneratorOptions): LevelMap {
-    let map = dungeon(
+    let map = new LevelMap(1, dungeon(
       40,
       30,
       options.minSize,
       options.maxSize,
       options.roomsCount
-    )
+    ))
 
     if (options.simple) {
-      map = drawn([
+      map = new LevelMap(2, drawn([
         'WWWWWWWWWWWWWWWWWWWWWW',
         'WRRRRRRRRRRRRRRRRRRRRW',
         'WRRRRRRRRRRRRRRRRRRRRW',
@@ -284,7 +284,7 @@ export class Onisun extends Game {
         'WRRRRRRRRRRRRRRRRRRRRW',
         'WRRRRRRRRRRRRRRRRRRRRW',
         'WWWWWWWWWWWWWWWWWWWWWW',
-      ])
+      ]))
     }
 
     if (options.addDoors) {

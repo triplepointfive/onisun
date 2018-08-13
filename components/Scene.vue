@@ -139,8 +139,8 @@ export default Vue.extend({
     initViewport() {
       this.term = new Viewport(
         this.$refs.scene,
-        this.level.width,
-        this.level.height,
+        Math.max(this.level.width, 40),
+        Math.max(this.level.height, 40),
         webGLRenderer,
         true,
       )

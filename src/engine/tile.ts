@@ -1,7 +1,7 @@
 import { Phantom, Creature } from './creature'
 import { Item } from './items'
 import { Point } from './utils'
-import { LevelMap } from './map'
+import { LevelMap } from './level_map'
 import { ItemsBunch } from './items/internal'
 
 export enum TileTypes {

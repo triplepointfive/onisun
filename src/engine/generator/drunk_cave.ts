@@ -1,5 +1,5 @@
 import { Point, rand, twoDimArray } from '../utils'
-import { LevelMap, Tile } from '../../engine'
+import { Tile } from '../../engine'
 
 const newSpace = function(): Tile {
   return Tile.retrieve('C')
@@ -9,8 +9,8 @@ const newWall = function(): Tile {
   return Tile.retrieve('W')
 }
 
-const generate = function(dimX: number, dimY: number): LevelMap {
-  let level = new LevelMap(twoDimArray(dimX, dimY, newWall))
+const generate = function(dimX: number, dimY: number): Tile[][] {
+  let level = twoDimArray(dimX, dimY, newWall)
   let freeCellsCount = 1
   let pos = new Point(Math.floor(dimX / 2), Math.floor(dimY / 2))
 
@@ -29,15 +29,15 @@ const generate = function(dimX: number, dimY: number): LevelMap {
     if (
       pos.x <= 0 ||
       pos.y <= 0 ||
-      pos.x >= level.width - 1 ||
-      pos.y >= level.height - 1
+      pos.x >= dimX - 1 ||
+      pos.y >= dimY - 1
     ) {
       pos = new Point(Math.floor(dimX / 2), Math.floor(dimY / 2))
       continue
     }
 
-    if (level.at(pos.x, pos.y).isWall()) {
-      level.setTile(pos.x, pos.y, newSpace())
+    if (level[pos.x][pos.y].isWall()) {
+      level[pos.x][pos.y] = newSpace()
       freeCellsCount += 1
     }
 

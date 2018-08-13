@@ -1,5 +1,5 @@
 import { Rect, Point, rand, min, twoDimArray } from '../utils'
-import { LevelMap, Tile } from '../../engine'
+import { Tile } from '../../engine'
 
 const THICKNESS = 0
 
@@ -262,7 +262,7 @@ export default function(
   minSize: number,
   maxSize: number,
   roomsCount: number
-): LevelMap {
+): Tile[][] {
   // TODO: Validate min or max size is lower than map's sizes
   const dungeon = new DungeonGenerator(dimX, dimY, minSize, maxSize, roomsCount)
 
@@ -272,5 +272,5 @@ export default function(
 
   for (let i = 0; i < dungeon.roads.length; i++) dungeon.roads[i].add(stage)
 
-  return new LevelMap(stage)
+  return stage
 }

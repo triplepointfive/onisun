@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 
-import { LevelMap, Tile } from '../../engine'
+import { Tile } from '../../engine'
 
 type BlockId = string
 
@@ -304,7 +304,7 @@ class Map {
     return this.blockMap[i][j].block !== undefined
   }
 
-  public buildMap(): LevelMap {
+  public buildMap(): Tile[][] {
     const iterateHeight = this.height - 1
     const iterateWidth = this.width - 1
 
@@ -334,11 +334,7 @@ class Map {
       }
     }
 
-    return new LevelMap(this.map)
-  }
-
-  private addDoor(): boolean {
-    return Math.random() > 0.5
+    return this.map
   }
 }
 
@@ -421,7 +417,7 @@ const blocks = [
   },
 ]
 
-const generate = function(dimX: number, dimY: number): LevelMap {
+const generate = function(dimX: number, dimY: number): Tile[][] {
   let blockRepository = new BlockRepository(
     new Block(rawToTiles(blocks[0].content), blocks[0].weight)
   )

@@ -13,18 +13,11 @@ export type TimeEvent = [CreatureId, Effect]
 
 export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
-  public id: LevelMapId
   public game: Game
   public timeline: Timeline<TimeEvent>
 
-  private static lastId: LevelMapId = 0
-  public static getId(): LevelMapId {
-    return this.lastId++
-  }
-
-  constructor(map: Tile[][]) {
+  constructor(public readonly id: LevelMapId, map: Tile[][]) {
     super(map)
-    this.id = LevelMap.getId()
     this.timeline = new Timeline()
   }
 
