@@ -1,7 +1,7 @@
 import { Phantom, Creature } from './creature'
 import { Item } from './items'
 import { Point } from './utils'
-import { LevelMap } from './level_map'
+import { LevelMap, LevelMapId } from './level_map'
 import { ItemsBunch } from './items/internal'
 
 export enum TileTypes {
@@ -100,23 +100,27 @@ export class Tile {
 }
 
 abstract class Stairway extends Tile {
-  protected currentMap: LevelMap
-  protected adjacentMap: LevelMap
-  protected enterPos: Point
+  public currentMap: LevelMap
+  public adjacentMapId: LevelMapId
+  public enterPos: Point
 
   public go(actor: Creature): void {
     this.currentMap.leave(actor)
-    this.adjacentMap.enter(actor, this.enterPos)
 
-    this.adjacentMap.game.currentMap = this.adjacentMap
+    // TODO: Do not do this if already connected
+    const adjacentMap = this.currentMap.game.getMap(this.adjacentMapId)
+    this.enterPos = adjacentMap.matchStairs(this.currentMap.id, actor.pos)
+
+
+    adjacentMap.enter(actor, this.enterPos)
+    adjacentMap.game.currentMap = adjacentMap
   }
 }
 
 export class StairwayDown extends Stairway {
   constructor(
-    protected currentMap: LevelMap,
-    protected adjacentMap: LevelMap,
-    protected enterPos: Point
+    public currentMap: LevelMap,
+    public adjacentMapId: LevelMapId,
   ) {
     super('>', '>', TileTypes.StairwayDown)
   }
@@ -124,9 +128,8 @@ export class StairwayDown extends Stairway {
 
 export class StairwayUp extends Stairway {
   constructor(
-    protected currentMap: LevelMap,
-    protected adjacentMap: LevelMap,
-    protected enterPos: Point
+    public currentMap: LevelMap,
+    public adjacentMapId: LevelMapId,
   ) {
     super('<', '<', TileTypes.StairwayUp)
   }

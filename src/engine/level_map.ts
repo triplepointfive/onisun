@@ -2,7 +2,7 @@ import { Creature, CreatureId } from './creature'
 import { Mapped, Point } from './utils'
 import { Timeline } from './timeline'
 import { Game } from './game'
-import { Tile } from './tile'
+import { Tile, StairwayDown, StairwayUp } from './tile'
 
 import { remove } from 'lodash'
 import { Effect } from '../engine'
@@ -95,5 +95,20 @@ export class LevelMap extends Mapped<Tile> {
     } else {
       throw 'Timeline event is empty!'
     }
+  }
+
+  public matchStairs(adjustId: LevelMapId, enterPos: Point): Point {
+    let stairPos: Point
+
+    this.each((tile, x, y) => {
+      if (tile instanceof StairwayDown || tile instanceof StairwayUp) {
+        if (tile.adjacentMapId === adjustId) {
+          tile.enterPos = enterPos
+          stairPos = new Point(x, y)
+        }
+      }
+    })
+
+    return stairPos
   }
 }

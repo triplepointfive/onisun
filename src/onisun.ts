@@ -6,7 +6,6 @@ import {
   addItems,
   centralize,
   addOnTile,
-  connectMaps,
   Creature,
   Clan,
   Player,
@@ -32,6 +31,8 @@ import {
   PlayerAI,
   Talent,
   MissileWeaponSlot,
+  StairwayDown,
+  StairwayUp,
 } from './engine'
 import { TalentStatus } from './engine/profession'
 import { TalentsTreeScreen } from './engine/screens/talents_tree_screen'
@@ -42,6 +43,7 @@ import { HealPotion } from './onisun/potions'
 import { woodenArrow, ironArrow, commonBow, smallRock } from './onisun/items'
 import { Inventory } from './engine/inventory'
 import { InventoryScreen } from './engine/screens/inventory_screen'
+import { identifier } from '../node_modules/@types/babel-types';
 
 export * from './onisun/professions'
 export * from './onisun/talents'
@@ -60,7 +62,7 @@ export let baseConfig = {
   addDoors: false,
   minSize: 3,
   maxSize: 10,
-  roomsCount: 10,
+  roomsCount: 3,
   simple: true,
 }
 
@@ -180,6 +182,38 @@ const creaturesPool3 = new Pool<null, Creature>([
 const creaturesPool4 = new Pool<null, Creature>([[2, undead], [2, robot]])
 const creaturesPool5 = new Pool<null, Creature>([[2, robot], [1, dragon]])
 
+const generateMap = (id: number, game: Game, options: GeneratorOptions) => {
+  let map = new LevelMap(id, dungeon(
+    40,
+    30,
+    options.minSize,
+    options.maxSize,
+    options.roomsCount
+  ))
+
+  if (options.simple) {
+    map = new LevelMap(id, drawn([
+      'WWWWWWWWWWWWWWWWWWWWWW',
+      'WRRRRRRRRRRRRRRRRRRRRW',
+      'WRRRRRRRRRRRRRRRRRRRRW',
+      'WRRRRRRRRRRRRRRRRRRRRW',
+      'WRRRRRRRRRRRRRRRRRRRRW',
+      'WRRRRRRRRRRRRRRRRRRRRW',
+      'WWWWWWWWWWWWWWWWWWWWWW',
+    ]))
+  }
+
+  if (options.addDoors) {
+    addDoors(map)
+  }
+  centralize(map)
+  map.game = game
+
+  addItems(0.05, map, weapons.merge(itemsPool))
+
+  return map
+}
+
 export class Onisun extends Game {
   public professionPicker: OnisunProfessionPicker
 
@@ -189,30 +223,52 @@ export class Onisun extends Game {
     this.professionPicker = new OnisunProfessionPicker(this.player)
     this.player.professions.push(this.professionPicker.attacker)
 
-    let map1 = this.generateMap(generatorOptions)
-    let map2 = this.generateMap(generatorOptions)
-    // let map3 = this.generateMap(generatorOptions)
-    // let map4 = this.generateMap(generatorOptions)
-    // let map5 = this.generateMap(generatorOptions)
+    console.time('generateMap')
 
-    // addCreatures(0.05, map1, creaturesPool1)
-    // addCreatures(0.06, map2, creaturesPool2)
-    // addCreatures(0.07, map3, creaturesPool3)
-    // addCreatures(0.08, map4, creaturesPool4)
-    // addCreatures(0.09, map5, creaturesPool5)
+    this.addMap(-1, (id, game) => {
+      let map = generateMap(id, game, generatorOptions)
 
-    connectMaps(map1, map2)
-  // connectMaps(map2, map3)
-    // connectMaps(map3, map4)
-    // connectMaps(map4, map5)
+      addOnTile(
+        map,
+        tile => tile.isFloor() && tile.passibleThrough(),
+        (x, y) => {
+          const downTile = new StairwayDown(map, 0)
+          map.setTile(x, y, downTile)
+        }
+      )
 
-    this.currentMap = map1
+      return map
+    })
 
-    // rat().addToMap(new Point(4, 1), this.currentMap)
-    // rat().addToMap(new Point(2, 5), this.currentMap)
-    // rat().addToMap(new Point(6, 3), this.currentMap)
-    // rat().addToMap(new Point(4, 3), this.currentMap)
-    // rat().addToMap(new Point(8, 3), this.currentMap)
+    for (let i = 0; i < 50; i ++) {
+      this.addMap(i, (id, game) => {
+        let map = generateMap(id, game, generatorOptions)
+
+        addOnTile(
+          map,
+          tile => tile.isFloor() && tile.passibleThrough(),
+          (x, y) => {
+            map.setTile(x, y, new StairwayUp(map, i - 1))
+          }
+        )
+
+        addOnTile(
+          map,
+          tile => tile.isFloor() && tile.passibleThrough(),
+          (x, y) => {
+            map.setTile(x, y, new StairwayDown(map, i + 1))
+          }
+        )
+
+        addCreatures(i * 0.05, map, creaturesPool1)
+
+        return map
+      })
+    }
+
+    console.timeEnd('generateMap')
+
+    this.currentMap = this.getMap(-1)
 
     addOnTile(
       this.currentMap,
@@ -237,7 +293,6 @@ export class Onisun extends Game {
         speed: 80,
       }),
       new PlayerAI(),
-      // new Dispatcher(),
       playerSpecie
     )
 
@@ -264,37 +319,5 @@ export class Onisun extends Game {
     player.inventory.missileSlot.equip(player, wooden)
 
     return player
-  }
-
-  protected generateMap(options: GeneratorOptions): LevelMap {
-    let map = new LevelMap(1, dungeon(
-      40,
-      30,
-      options.minSize,
-      options.maxSize,
-      options.roomsCount
-    ))
-
-    if (options.simple) {
-      map = new LevelMap(2, drawn([
-        'WWWWWWWWWWWWWWWWWWWWWW',
-        'WRRRRRRRRRRRRRRRRRRRRW',
-        'WRRRRRRRRRRRRRRRRRRRRW',
-        'WRRRRRRRRRRRRRRRRRRRRW',
-        'WRRRRRRRRRRRRRRRRRRRRW',
-        'WRRRRRRRRRRRRRRRRRRRRW',
-        'WWWWWWWWWWWWWWWWWWWWWW',
-      ]))
-    }
-
-    if (options.addDoors) {
-      addDoors(map)
-    }
-    centralize(map)
-    map.game = this
-
-    addItems(0.05, map, weapons.merge(itemsPool))
-
-    return map
   }
 }

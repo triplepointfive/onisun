@@ -1,6 +1,7 @@
 export * from './engine/ai'
 export * from './engine/effect'
 export * from './engine/creature'
+export * from './engine/dungeon'
 export * from './engine/inventory'
 export * from './engine/items'
 export * from './engine/tile'
