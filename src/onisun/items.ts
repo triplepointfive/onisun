@@ -1,4 +1,5 @@
-import { Missile, MissileWeapon, Item, Modifier, Player } from '../engine'
+import { Missile, MissileWeapon, Item, Modifier, Player, OneHandWeapon, BodyArmor, Pool } from '../engine'
+import { HealPotion } from './potions';
 
 class MissileRock extends Missile {
   public worksWith(item: Item): boolean {
@@ -36,3 +37,17 @@ export const smallRock = () => new MissileRock('Small rock', noMod)
 
 export const woodenArrow = () => new Arrow('Wooden arrow', noMod)
 export const ironArrow = () => new Arrow('Iron arrow', noMod)
+
+export const weapons = new Pool<null, Item>([
+  [1, () => new OneHandWeapon('Katana', new Modifier({ attack: 10 }))],
+  [3, () => new OneHandWeapon('Axe', new Modifier({ attack: 7 }))],
+  [7, () => new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))],
+  [5, () => new OneHandWeapon('Hammer', new Modifier({ attack: 5 }))],
+])
+
+export const itemsPool = new Pool<null, Item>([
+  [1, () => new BodyArmor('Кольчуга', new Modifier({ defense: 10 }))],
+  [5, () => new BodyArmor('Латы', new Modifier({ defense: 5 }))],
+  [10, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
+  [100, () => new HealPotion()],
+])

@@ -1,4 +1,4 @@
-import { LevelMap, Tile, StairwayDown, StairwayUp, Item } from '../../engine'
+import { LevelMap, Tile, Item } from '../../engine'
 import { Pool } from '../pool'
 import { Creature } from '../creature'
 import { Point, cycle } from '../utils'
@@ -133,27 +133,3 @@ export const addOnTile = function(
 
   throw 'post add failed to add tile'
 }
-
-// export const connectMaps = function(map1: LevelMap, map2: LevelMap) {
-//   addOnTile(
-//     map1,
-//     tile => tile.isFloor() && tile.passibleThrough(),
-//     (dx, dy) => {
-//       let downTile
-//
-//       addOnTile(
-//         map2,
-//         tile => tile.isFloor() && tile.passibleThrough(),
-//         (ux, uy) => {
-//           const upTile = new StairwayUp(map2, map1, new Point(dx, dy))
-//           map2.setTile(ux, uy, upTile)
-//
-//           downTile = new StairwayDown(map1, map2, new Point(ux, uy))
-//         }
-//       )
-//
-//       map1.setTile(dx, dy, downTile)
-//     }
-//   )
-// }
-//

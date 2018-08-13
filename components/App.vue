@@ -36,16 +36,14 @@ import { LevelMap, ScreenType, Screen } from '../src/engine'
 
 import {
   Onisun,
-  baseConfig,
 } from '../src/onisun'
 import { setInterval, clearInterval } from 'timers';
 
 export default Vue.extend({
   data() {
     return {
-      game: new Onisun(baseConfig),
+      game: new Onisun(),
       ts: Date.now(),
-      generatorOptions: baseConfig,
       loopIntervalId: undefined
     }
   },
@@ -74,11 +72,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    generateMap() {
-      this.game = new Onisun(
-        this.generatorOptions,
-      )
-    },
     loop() {
       this.game.turn()
     },
