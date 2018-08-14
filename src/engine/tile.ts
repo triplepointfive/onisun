@@ -19,7 +19,6 @@ export abstract class Tile {
 
   constructor(
     public key: string,
-    public display: string,
     public kind: TileTypes
   ) {}
 
@@ -80,15 +79,23 @@ export class Floor extends Tile {
   }
 
   protected buildNew(): Tile {
-    return new Floor(this.key, this.display, this.kind)
+    return new Floor(this.key, this.kind)
   }
 }
 
 export class Corridor extends Floor {}
 
-export class Room extends Floor {}
+export class Room extends Floor {
+  constructor() {
+    super('R', TileTypes.Floor)
+  }
+}
 
 export class Door extends Tile {
+  constructor() {
+    super('D', TileTypes.Door)
+  }
+
   public visibleThrough(): boolean {
     return false
   }
@@ -98,13 +105,13 @@ export class Door extends Tile {
   }
 
   protected buildNew(): Tile {
-    return new Door(this.key, this.display, this.kind)
+    return new Door()
   }
 }
 
 export class Wall extends Tile {
   constructor() {
-    super('W', '#', TileTypes.Wall)
+    super('W', TileTypes.Wall)
   }
 
   public visibleThrough(): boolean {
@@ -143,7 +150,7 @@ abstract class Stairway extends Tile {
 
 export class StairwayDown extends Stairway {
   constructor(public currentMap: LevelMap, public adjacentMapId: LevelMapId) {
-    super('>', '>', TileTypes.StairwayDown)
+    super('>', TileTypes.StairwayDown)
   }
 
   public visit(tileVisitor: TileVisitor): void {
@@ -157,7 +164,7 @@ export class StairwayDown extends Stairway {
 
 export class StairwayUp extends Stairway {
   constructor(public currentMap: LevelMap, public adjacentMapId: LevelMapId) {
-    super('<', '<', TileTypes.StairwayUp)
+    super('<', TileTypes.StairwayUp)
   }
 
   public visit(tileVisitor: TileVisitor): void {
@@ -187,15 +194,19 @@ export abstract class TileVisitor {
   public onWall(wall: Wall): void {
     this.default(wall)
   }
+
   public onFloor(floor: Floor): void {
     this.default(floor)
   }
+
   public onStairwayDown(stairway: StairwayDown): void {
     this.default(stairway)
   }
+
   public onStairwayUp(stairway: StairwayUp): void {
     this.default(stairway)
   }
+
   public onDoor(door: Door): void {
     this.default(door)
   }

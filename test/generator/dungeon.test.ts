@@ -1,18 +1,18 @@
-import { dungeon, LevelMap, Tile, TileTypes } from '../../src/engine'
+import { dungeon, LevelMap, Tile, TileTypes, Corridor, Room, Wall } from '../../src/engine'
 import { prettyMap } from '../helpers'
 
 it('When exact match', () => {
   let map = new LevelMap(
     0,
-    dungeon(
+    dungeon<Tile>(
       5,
       5,
       3,
       3,
       1,
-      () => new Tile('R', ' ', TileTypes.Floor),
-      () => new Tile('C', ' ', TileTypes.Floor),
-      () => new Tile('W', '#', TileTypes.Wall)
+      () => new Room(),
+      () => new Corridor('C', TileTypes.Floor),
+      () => new Wall()
     )
   )
 
@@ -23,15 +23,15 @@ describe('When there is multiple rooms', () => {
   it('Builds a road between them', () => {
     const map = new LevelMap(
       0,
-      dungeon(
+      dungeon<Tile>(
         20,
         20,
         3,
         3,
         100,
-        () => new Tile('R', ' ', TileTypes.Floor),
-        () => new Tile('C', ' ', TileTypes.Floor),
-        () => new Tile('W', '#', TileTypes.Wall)
+        () => new Room(),
+        () => new Corridor('C', TileTypes.Floor),
+        () => new Wall()
       )
     )
     expect(map.map.some(row => row.some(tile => tile.key === 'C'))).toBeTruthy()

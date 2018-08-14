@@ -33,10 +33,10 @@ const config = {
 }
 
 const tiles: Map<string, () => Tile> = new Map()
-tiles.set('C', () => new Corridor('C', ' ', TileTypes.Floor))
+tiles.set('C', () => new Corridor('C', TileTypes.Floor))
 tiles.set('W', () => new Wall())
-tiles.set('R', () => new Floor('R', ' ', TileTypes.Floor))
-tiles.set('D', () => new Door('D', '+', TileTypes.Door))
+tiles.set('R', () => new Floor('R', TileTypes.Floor))
+tiles.set('D', () => new Door())
 
 export class TutorialDungeon extends Dungeon {
   public enter(): void {
@@ -85,8 +85,8 @@ export class TutorialDungeon extends Dungeon {
         config.minSize,
         config.maxSize,
         config.roomsCount,
-        () => new Room('R', ' ', TileTypes.Floor),
-        () => new Corridor('C', ' ', TileTypes.Floor),
+        () => new Room(),
+        () => new Corridor('C', TileTypes.Floor),
         () => new Wall()
       )
     )

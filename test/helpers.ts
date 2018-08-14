@@ -23,6 +23,7 @@ import {
   Wall,
   Floor,
   Door,
+  Room,
 } from '../src/engine'
 
 import { times, random } from 'lodash'
@@ -34,10 +35,10 @@ export const generateString = function(length: number = 7): string {
 }
 
 export const testTiles: Map<string, () => Tile> = new Map()
-testTiles.set('C', () => new Corridor('C', ' ', TileTypes.Floor))
+testTiles.set('C', () => new Corridor('C', TileTypes.Floor))
 testTiles.set('W', () => new Wall())
-testTiles.set('R', () => new Floor('R', ' ', TileTypes.Floor))
-testTiles.set('D', () => new Door('D', '+', TileTypes.Door))
+testTiles.set('R', () => new Room())
+testTiles.set('D', () => new Door())
 
 export const generateOneHandedWeapon = function(
   modifier: Modifier = new Modifier({})
