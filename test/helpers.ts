@@ -19,6 +19,10 @@ import {
   drawn,
   Game,
   TileTypes,
+  Corridor,
+  Wall,
+  Floor,
+  Door,
 } from '../src/engine'
 
 import { times, random } from 'lodash'
@@ -29,12 +33,11 @@ export const generateString = function(length: number = 7): string {
     .substring(length)
 }
 
-export const testTiles: Map<string, () => Tile> = new Map([
-  ['C', () => new Tile('C', ' ', TileTypes.Floor)],
-  ['R', () => new Tile('R', ' ', TileTypes.Floor)],
-  ['W', () => new Tile('W', '#', TileTypes.Wall)],
-  ['D', () => new Tile('D', '+', TileTypes.Door)],
-])
+export const testTiles: Map<string, () => Tile> = new Map()
+testTiles.set('C', () => new Corridor('C', ' ', TileTypes.Floor))
+testTiles.set('W', () => new Wall())
+testTiles.set('R', () => new Floor('R', ' ', TileTypes.Floor))
+testTiles.set('D', () => new Door('D', '+', TileTypes.Door))
 
 export const generateOneHandedWeapon = function(
   modifier: Modifier = new Modifier({})
@@ -172,8 +175,4 @@ export const generateProfession = function(level: number = 1): Profession {
   return new Profession(professionId++, name, level)
 }
 
-export class TestCreature extends Creature {
-  public putOn(slot, item) {
-    this.inventory.equip(this, slot, item)
-  }
-}
+export class TestCreature extends Creature {}

@@ -1,4 +1,4 @@
-import { Tile, TileTypes } from './tile'
+import { Tile, Wall } from './tile'
 import { Creature, Phantom, twoDimArray } from '../engine'
 import { ItemsBunch } from './items/internal'
 import { Mapped } from './utils'
@@ -39,7 +39,7 @@ export class MemoryTile {
 
 export class Memory extends Mapped<MemoryTile> {
   constructor(width: number, height: number) {
-    const baseTile = new Tile('W', '#', TileTypes.Wall)
+    const baseTile = new Wall()
     super(twoDimArray(width, height, () => new MemoryTile(baseTile)))
   }
 

@@ -12,7 +12,7 @@ import {
 } from '../../engine'
 import { weapons, itemsPool } from '../items'
 import { creaturesPool1 } from '../creatures'
-import { FireTrap, Tile, TileTypes } from '../../engine/tile';
+import { Tile, TileTypes, Door, Wall, Floor, Corridor, Room } from '../../engine/tile';
 
 const initId: number = -1
 
@@ -24,12 +24,11 @@ const config = {
   simple: false,
 }
 
-const tiles: Map<string, () => Tile> = new Map([
-  ['C', () => new Tile('C', ' ', TileTypes.Floor)],
-  ['R', () => new Tile('R', ' ', TileTypes.Floor)],
-  ['W', () => new Tile('W', '#', TileTypes.Wall)],
-  ['D', () => new Tile('D', '+', TileTypes.Door)],
-])
+const tiles: Map<string, () => Tile> = new Map()
+tiles.set('C', () => new Corridor('C', ' ', TileTypes.Floor))
+tiles.set('W', () => new Wall())
+tiles.set('R', () => new Floor('R', ' ', TileTypes.Floor))
+tiles.set('D', () => new Door('D', '+', TileTypes.Door))
 
 export class TutorialDungeon extends Dungeon {
   public enter(): void {
@@ -68,10 +67,10 @@ export class TutorialDungeon extends Dungeon {
   private generateMap(id: number): LevelMap {
     let map = new LevelMap(
       id,
-      dungeon(40, 30, config.minSize, config.maxSize, config.roomsCount,
-      () => new Tile('R', ' ', TileTypes.Floor),
-      () => new Tile('C', ' ', TileTypes.Floor),
-      () => new Tile('W', '#', TileTypes.Wall),
+      dungeon<Tile>(40, 30, config.minSize, config.maxSize, config.roomsCount,
+      () => new Room('R', ' ', TileTypes.Floor),
+      () => new Corridor('C', ' ', TileTypes.Floor),
+      () => new Wall(),
       )
     )
 
@@ -103,7 +102,7 @@ export class TutorialDungeon extends Dungeon {
         map,
         tile => tile.isFloor() && tile.passibleThrough(),
         (x, y) => {
-          map.setTile(x, y, new FireTrap())
+          // map.setTile(x, y, new FireTrap())
         }
       )
     }

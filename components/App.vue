@@ -30,7 +30,6 @@
 import Vue from 'vue'
 import * as _ from 'lodash'
 
-import Cell from './Cell.vue'
 import Logger from './Logger.vue'
 import Scene from './Scene.vue'
 import Stats from './stats.vue'
@@ -58,7 +57,6 @@ export default Vue.extend({
     }
   },
   components: {
-    Cell,
     Logger,
     Scene,
     Stats,
