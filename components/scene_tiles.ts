@@ -1,16 +1,24 @@
-import { Tile } from '../vendor/unicodetiles.ts/src/index'
+import { Tile as UniTile } from '../vendor/unicodetiles.ts/src/index'
 
 import {
   Item,
   ItemGroup,
+  TileVisitor,
+
+  Wall,
+  Floor,
+  Tile,
+  StairwayDown,
+  StairwayUp,
+  Door,
 } from '../src/engine'
 
 const DEFAULT_GREY: number = 120
 const IMPORTANT_GREY: number = 180
 const DEFAULT_LIT = { r: 255, g: 165, b: 0 }
 
-export class DisplayTile extends Tile {
-  public lighted(degree: number): Tile {
+export class DisplayTile extends UniTile {
+  public lighted(degree: number): UniTile {
     return this
   }
 
@@ -18,7 +26,7 @@ export class DisplayTile extends Tile {
     super(char, r, g, b)
   }
 
-  protected litBackground(tile: Tile, degree: number): Tile {
+  protected litBackground(tile: UniTile, degree: number): UniTile {
     tile.setBackground(
       DEFAULT_LIT.r * degree,
       DEFAULT_LIT.g * degree,
@@ -27,7 +35,7 @@ export class DisplayTile extends Tile {
     return tile
   }
 
-  protected litColor(tile: Tile, degree: number): Tile {
+  protected litColor(tile: UniTile, degree: number): UniTile {
     tile.setColor(
       DEFAULT_LIT.r * degree,
       DEFAULT_LIT.g * degree,
@@ -99,13 +107,13 @@ export class WallTile extends DisplayTile {
   }
 }
 
-export class StairwayDown extends DisplayTile {
+export class StairwayDownD extends DisplayTile {
   constructor() {
     super('＞')
   }
 }
 
-export class StairwayUp extends DisplayTile {
+export class StairwayUpD extends DisplayTile {
   constructor() {
     super('＜')
   }
@@ -154,4 +162,48 @@ export const displayItem = function(item: Item): ItemTile {
     default:
       throw `Unknown group ${item} with type ${item.group}`
   }
+}
+
+const DOOR = new DoorTile()
+const WALL = new WallTile()
+const TRAP = new DisplayTile('^', 200, 0, 0)
+const FLOOR = new FloorTile()
+const STAIRWAY_DOWN = new StairwayDownD()
+const STAIRWAY_UP = new StairwayUpD()
+const NULL_TILE = new DisplayTile('　', 0, 0, 0)
+
+
+export class DisplayTileVisitor extends TileVisitor {
+  public tile: DisplayTile
+
+  public onWall(wall: Wall): void {
+    this.tile = WALL
+  }
+
+  public onFloor(floor: Floor): void {
+    this.tile = FLOOR
+  }
+
+  public onStairwayDown(stairway: StairwayDown): void {
+    this.tile = STAIRWAY_DOWN
+  }
+
+  public onStairwayUp(stairway: StairwayUp): void {
+    this.tile = STAIRWAY_UP
+  }
+
+  public onDoor(door: Door): void {
+    this.tile = DOOR
+  }
+
+  protected default(tile: Tile): void {
+    this.tile = NULL_TILE
+  }
+}
+
+const displayTileVisitor = new DisplayTileVisitor()
+
+export const displayTile = function(tile): DisplayTile {
+  tile.visit(displayTileVisitor)
+  return displayTileVisitor.tile
 }

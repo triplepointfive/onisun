@@ -1,4 +1,4 @@
-import { Tile, Wall } from './tile'
+import { Tile, Wall, TileVisitor } from './tile'
 import { Creature, Phantom, twoDimArray } from '../engine'
 import { ItemsBunch } from './items/internal'
 import { Mapped } from './utils'
@@ -34,6 +34,10 @@ export class MemoryTile {
     this.visible = false
     this.effect = undefined
     this.tile.creature = undefined
+  }
+
+  public visit(tileVisitor: TileVisitor): void {
+    this.tile.visit(tileVisitor)
   }
 }
 

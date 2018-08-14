@@ -16,15 +16,11 @@ import {
 
 import {
   CreatureTile,
-  DoorTile,
-  FloorTile,
   ItemTile,
-  WallTile,
-  StairwayUp,
-  StairwayDown,
   DisplayTile,
 
   displayItem,
+  displayTile,
 } from './scene_tiles'
 
 const HUMAN  = new CreatureTile('俺', 0, 255, 0)
@@ -34,14 +30,7 @@ const HUMAN4 = new CreatureTile('俺', 255, 0, 255)
 const HUMAN5 = new CreatureTile('俺', 0, 255, 255)
 
 const RAT = new CreatureTile('ｄ', 197, 65, 38)
-
-const DOOR = new DoorTile()
-const WALL = new WallTile()
-const TRAP = new DisplayTile('^', 200, 0, 0)
-const FLOOR = new FloorTile()
-const STAIRWAY_DOWN = new StairwayDown()
-const STAIRWAY_UP = new StairwayUp()
-const NULLTILE = new DisplayTile('　', 0, 0, 0)
+const NULL_TILE = new DisplayTile('　', 0, 0, 0)
 
 const nextItemAnimation = [
   new ItemTile('｜', 200, 200, 200),
@@ -69,14 +58,14 @@ export default Vue.extend({
       const tile = this.wholeMap ? this.stage.at(x, y) : this.stage.at(x, y).tile
 
       if (!tile) {
-        return NULLTILE
+        return NULL_TILE
       }
 
       if (effect) {
         if (tile.creature) {
-          let displayTile = this.creatureTile(tile.creature).clone()
-          displayTile.setBackground(200, 0, 0)
-          return displayTile
+          let dTile = this.creatureTile(tile.creature).clone()
+          dTile.setBackground(200, 0, 0)
+          return dTile
         } else {
           return new DisplayTile(effect, 200, 200, 0)
         }
@@ -104,22 +93,7 @@ export default Vue.extend({
         }
       }
 
-      switch (tile.display) {
-      case '^':
-        return TRAP
-      case '#':
-        return WALL
-      case '+':
-        return DOOR
-      case ' ':
-        return FLOOR
-      case '<':
-        return STAIRWAY_UP
-      case '>':
-        return STAIRWAY_DOWN
-      default:
-        return NULLTILE
-      }
+      return displayTile(tile)
     },
     creatureTile(creature) {
       if (creature.name() == 'Rat') {
