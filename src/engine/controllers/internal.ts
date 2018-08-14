@@ -11,6 +11,8 @@ import {
   Potion,
   Item,
   ItemFlightEffect,
+  ProfessionPickingScreen,
+  TalentsTreeScreen,
 } from '../../engine'
 import { MissileScreen } from '../screens/missile_screen'
 
@@ -48,7 +50,14 @@ export class AIMoveEvent extends Controller {
       this.game.logger.ranIntoAnObstacle()
     }
 
-    this.game.screen = undefined
+    if (this.player.levelUps > 0) {
+      this.game.screen =
+        (this.player.level.current - this.player.levelUps + 1) % 3 === 0
+          ? new ProfessionPickingScreen(this.game)
+          : new TalentsTreeScreen(this.game)
+    } else {
+      this.game.screen = undefined
+    }
   }
 }
 

@@ -8,10 +8,5 @@ export class PlayerAI extends MetaAI {
 
     // this.runEvents(player)
     game.screen = new IdleScreen(game)
-
-    if (player.levelUps > 0) {
-      // TODO: Should never get here
-      player.currentLevel.game.screen = new ProfessionPickingScreen(game)
-    }
   }
 }

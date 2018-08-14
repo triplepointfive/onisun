@@ -84,6 +84,7 @@ export class LevelMap extends Mapped<Tile> {
           this.timeline.add([actorId, undefined], actor.speed())
         }
       }
+
       return
     } else if (effect) {
       if (effect.done()) {

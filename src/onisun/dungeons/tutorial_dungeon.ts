@@ -2,7 +2,6 @@ import {
   Dungeon,
   addOnTile,
   Point,
-  Game,
   LevelMap,
   dungeon,
   addDoors,
@@ -20,8 +19,8 @@ const config = {
   addDoors: false,
   minSize: 3,
   maxSize: 10,
-  roomsCount: 3,
-  simple: true,
+  roomsCount: 10,
+  simple: false,
 }
 
 export class TutorialDungeon extends Dungeon {
