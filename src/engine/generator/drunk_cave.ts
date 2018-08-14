@@ -1,10 +1,15 @@
 import { Point, rand, twoDimArray } from '../utils'
 
-const generate = function<T>(dimX: number, dimY: number, newWall: () => T, newSpace: () => T): T[][] {
+const generate = function<T>(
+  dimX: number,
+  dimY: number,
+  newWall: () => T,
+  newSpace: () => T
+): T[][] {
   let level = twoDimArray(dimX, dimY, newWall),
-      walls = twoDimArray(dimX, dimY, () => true),
-      freeCellsCount = 1,
-      pos = new Point(Math.floor(dimX / 2), Math.floor(dimY / 2))
+    walls = twoDimArray(dimX, dimY, () => true),
+    freeCellsCount = 1,
+    pos = new Point(Math.floor(dimX / 2), Math.floor(dimY / 2))
 
   const requiredEmptyCells = (dimX * dimY) / 4
 

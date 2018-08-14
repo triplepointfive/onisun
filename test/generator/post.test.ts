@@ -1,9 +1,4 @@
-import {
-  drawn,
-  centralize,
-  addOnTile,
-  LevelMap,
-} from '../../src/engine'
+import { drawn, centralize, addOnTile, LevelMap } from '../../src/engine'
 import { prettyMap, testTiles } from '../helpers'
 
 describe('centralize', () => {
@@ -17,7 +12,10 @@ describe('centralize', () => {
   })
 
   describe('Vertically', () => {
-    let map = new LevelMap(0, drawn(['WWW', 'WRW', 'WWW', 'WWW', 'WWW'], testTiles))
+    let map = new LevelMap(
+      0,
+      drawn(['WWW', 'WRW', 'WWW', 'WWW', 'WWW'], testTiles)
+    )
 
     it('Does nothing', () => {
       centralize(map)

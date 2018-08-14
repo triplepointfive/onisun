@@ -43,7 +43,9 @@ export abstract class Tile {
     return this.kind === TileTypes.Floor
   }
 
-  public visibleThrough(): boolean { return true }
+  public visibleThrough(): boolean {
+    return true
+  }
 
   public passibleThrough(actor?: Creature): boolean {
     if (actor && this.creature) {
@@ -82,9 +84,9 @@ export class Floor extends Tile {
   }
 }
 
-export class Corridor extends Floor { }
+export class Corridor extends Floor {}
 
-export class Room extends Floor { }
+export class Room extends Floor {}
 
 export class Door extends Tile {
   public visibleThrough(): boolean {
@@ -181,13 +183,22 @@ export class StairwayUp extends Stairway {
 //
 // }
 
-
 export abstract class TileVisitor {
-  public onWall(wall: Wall): void { this.default(wall) }
-  public onFloor(floor: Floor): void { this.default(floor) }
-  public onStairwayDown(stairway: StairwayDown): void { this.default(stairway) }
-  public onStairwayUp(stairway: StairwayUp): void { this.default(stairway) }
-  public onDoor(door: Door): void { this.default(door) }
+  public onWall(wall: Wall): void {
+    this.default(wall)
+  }
+  public onFloor(floor: Floor): void {
+    this.default(floor)
+  }
+  public onStairwayDown(stairway: StairwayDown): void {
+    this.default(stairway)
+  }
+  public onStairwayUp(stairway: StairwayUp): void {
+    this.default(stairway)
+  }
+  public onDoor(door: Door): void {
+    this.default(door)
+  }
 
   protected default(tile: Tile): void {}
 }

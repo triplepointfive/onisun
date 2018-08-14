@@ -123,17 +123,20 @@ export class TestGame extends Game {}
 export const generateLevelMap = function(): LevelMap {
   let map = new LevelMap(
     0,
-    drawn([
-      'WWWWW',
-      'WRRRW',
-      'WRRRW',
-      'WRRRW',
-      'WRRRW',
-      'WRRRW',
-      'WRRRW',
-      'WRRRW',
-      'WWWWW',
-    ], testTiles)
+    drawn(
+      [
+        'WWWWW',
+        'WRRRW',
+        'WRRRW',
+        'WRRRW',
+        'WRRRW',
+        'WRRRW',
+        'WRRRW',
+        'WRRRW',
+        'WWWWW',
+      ],
+      testTiles
+    )
   )
 
   map.game = generateGame()

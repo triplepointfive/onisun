@@ -12,7 +12,15 @@ import {
 } from '../../engine'
 import { weapons, itemsPool } from '../items'
 import { creaturesPool1 } from '../creatures'
-import { Tile, TileTypes, Door, Wall, Floor, Corridor, Room } from '../../engine/tile';
+import {
+  Tile,
+  TileTypes,
+  Door,
+  Wall,
+  Floor,
+  Corridor,
+  Room,
+} from '../../engine/tile'
 
 const initId: number = -1
 
@@ -45,7 +53,11 @@ export class TutorialDungeon extends Dungeon {
 
   public build(): void {
     this.game.addMap(-1, (id, game) =>
-      addCreatures(0, this.addStairDown(this.generateMap(id), 0), creaturesPool1)
+      addCreatures(
+        0,
+        this.addStairDown(this.generateMap(id), 0),
+        creaturesPool1
+      )
     )
 
     for (let i = 0; i < 5; i++) {
@@ -67,25 +79,33 @@ export class TutorialDungeon extends Dungeon {
   private generateMap(id: number): LevelMap {
     let map = new LevelMap(
       id,
-      dungeon<Tile>(40, 30, config.minSize, config.maxSize, config.roomsCount,
-      () => new Room('R', ' ', TileTypes.Floor),
-      () => new Corridor('C', ' ', TileTypes.Floor),
-      () => new Wall(),
+      dungeon<Tile>(
+        40,
+        30,
+        config.minSize,
+        config.maxSize,
+        config.roomsCount,
+        () => new Room('R', ' ', TileTypes.Floor),
+        () => new Corridor('C', ' ', TileTypes.Floor),
+        () => new Wall()
       )
     )
 
     if (config.simple) {
       map = new LevelMap(
         id,
-        drawn([
-          'WWWWWWWWWWWWWWWWWWWWWW',
-          'WRRRRRRRRRRRRRRRRRRRRW',
-          'WRRRRRRRRRRRRRRRRRRRRW',
-          'WRRRRRRRRRRRRRRRRRRRRW',
-          'WRRRRRRRRRRRRRRRRRRRRW',
-          'WRRRRRRRRRRRRRRRRRRRRW',
-          'WWWWWWWWWWWWWWWWWWWWWW',
-        ], tiles)
+        drawn(
+          [
+            'WWWWWWWWWWWWWWWWWWWWWW',
+            'WRRRRRRRRRRRRRRRRRRRRW',
+            'WRRRRRRRRRRRRRRRRRRRRW',
+            'WRRRRRRRRRRRRRRRRRRRRW',
+            'WRRRRRRRRRRRRRRRRRRRRW',
+            'WRRRRRRRRRRRRRRRRRRRRW',
+            'WWWWWWWWWWWWWWWWWWWWWW',
+          ],
+          tiles
+        )
       )
     }
 
@@ -96,8 +116,7 @@ export class TutorialDungeon extends Dungeon {
     map.game = this.game
     map.name = `MP ${id}`
 
-
-    for (let i = 0; i < 4; i ++) {
+    for (let i = 0; i < 4; i++) {
       addOnTile(
         map,
         tile => tile.isFloor() && tile.passibleThrough(),

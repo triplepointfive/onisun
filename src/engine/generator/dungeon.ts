@@ -249,16 +249,24 @@ export default function<T>(
   roomsCount: number,
   newRoomSpace: () => T,
   newCorridor: () => T,
-  newWall: () => T,
+  newWall: () => T
 ): T[][] {
   // TODO: Validate min or max size is lower than map's sizes
-  const dungeon = new DungeonGenerator<T>(dimX, dimY, minSize, maxSize, roomsCount)
+  const dungeon = new DungeonGenerator<T>(
+    dimX,
+    dimY,
+    minSize,
+    maxSize,
+    roomsCount
+  )
 
   let stage = twoDimArray(dimX, dimY, newWall)
   let walls = twoDimArray(dimX, dimY, () => true)
 
-  for (let i = 0; i < dungeon.rooms.length; i++) dungeon.rooms[i].add(stage, walls, newRoomSpace)
-  for (let i = 0; i < dungeon.roads.length; i++) dungeon.roads[i].add(stage, walls, newCorridor)
+  for (let i = 0; i < dungeon.rooms.length; i++)
+    dungeon.rooms[i].add(stage, walls, newRoomSpace)
+  for (let i = 0; i < dungeon.roads.length; i++)
+    dungeon.roads[i].add(stage, walls, newCorridor)
 
   return stage
 }
