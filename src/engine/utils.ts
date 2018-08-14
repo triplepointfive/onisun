@@ -21,12 +21,11 @@ export const rand = function(max: number): number {
   return Math.floor(Math.random() * max)
 }
 
-/* tslint:disable no-any */
-export const twoDimArray = function(
+export const twoDimArray = function<T>(
   width: number,
   height: number,
-  value: (x: number, y: number) => any
-): Array<Array<any>> {
+  value: (x: number, y: number) => T
+): T[][] {
   let field = Array(width)
 
   for (let i = 0; i < width; i++) {

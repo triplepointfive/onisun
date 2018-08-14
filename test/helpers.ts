@@ -18,6 +18,7 @@ import {
   Level,
   drawn,
   Game,
+  TileTypes,
 } from '../src/engine'
 
 import { times, random } from 'lodash'
@@ -27,6 +28,13 @@ export const generateString = function(length: number = 7): string {
     .toString(36)
     .substring(length)
 }
+
+export const testTiles: Map<string, () => Tile> = new Map([
+  ['C', () => new Tile('C', ' ', TileTypes.Floor)],
+  ['R', () => new Tile('R', ' ', TileTypes.Floor)],
+  ['W', () => new Tile('W', '#', TileTypes.Wall)],
+  ['D', () => new Tile('D', '+', TileTypes.Door)],
+])
 
 export const generateOneHandedWeapon = function(
   modifier: Modifier = new Modifier({})
@@ -122,7 +130,7 @@ export const generateLevelMap = function(): LevelMap {
       'WRRRW',
       'WRRRW',
       'WWWWW',
-    ])
+    ], testTiles)
   )
 
   map.game = generateGame()

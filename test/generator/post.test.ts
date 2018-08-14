@@ -1,16 +1,14 @@
 import {
   drawn,
   centralize,
-  StairwayDown,
-  StairwayUp,
   addOnTile,
   LevelMap,
 } from '../../src/engine'
-import { prettyMap } from '../helpers'
+import { prettyMap, testTiles } from '../helpers'
 
 describe('centralize', () => {
   describe('When is already centralized', () => {
-    let map = new LevelMap(0, drawn(['WWW', 'WRW', 'WWW']))
+    let map = new LevelMap(0, drawn(['WWW', 'WRW', 'WWW'], testTiles))
 
     it('Does nothing', () => {
       centralize(map)
@@ -19,7 +17,7 @@ describe('centralize', () => {
   })
 
   describe('Vertically', () => {
-    let map = new LevelMap(0, drawn(['WWW', 'WRW', 'WWW', 'WWW', 'WWW']))
+    let map = new LevelMap(0, drawn(['WWW', 'WRW', 'WWW', 'WWW', 'WWW'], testTiles))
 
     it('Does nothing', () => {
       centralize(map)
@@ -28,7 +26,7 @@ describe('centralize', () => {
   })
 
   describe('Horizontally', () => {
-    let map = new LevelMap(0, drawn(['WWWWW', 'WWWRW', 'WWWWW']))
+    let map = new LevelMap(0, drawn(['WWWWW', 'WWWRW', 'WWWWW'], testTiles))
 
     it('Does nothing', () => {
       centralize(map)
@@ -39,7 +37,7 @@ describe('centralize', () => {
   describe('Both', () => {
     let map = new LevelMap(
       0,
-      drawn(['WWWWW', 'WWWWW', 'WWWWW', 'WWWRW', 'WWWWW'])
+      drawn(['WWWWW', 'WWWWW', 'WWWWW', 'WWWRW', 'WWWWW'], testTiles)
     )
 
     it('Does nothing', () => {
@@ -70,7 +68,7 @@ describe('centralize', () => {
 // })
 
 describe('addOnTile', () => {
-  let map = new LevelMap(0, drawn(['R']))
+  let map = new LevelMap(0, drawn(['R'], testTiles))
 
   it('Fail when there is no matching tiles', () => {
     expect(() => {

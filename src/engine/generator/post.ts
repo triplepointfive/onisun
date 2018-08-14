@@ -7,7 +7,8 @@ import { random } from 'lodash'
 
 export const addDoors = function(
   level: LevelMap,
-  addDoor: () => boolean = () => true
+  doorTile: () => Tile,
+  addDoor: () => boolean = () => true,
 ): LevelMap {
   for (let j = 1; j < level.height - 1; j++) {
     for (let i = 1; i < level.width; i++) {
@@ -43,7 +44,7 @@ export const addDoors = function(
         (left.key === 'W' && right.key === 'W') ||
         (up.key === 'W' && down.key === 'W')
       ) {
-        level.setTile(i, j, Tile.retrieve('D'))
+        level.setTile(i, j, doorTile())
       }
     }
   }

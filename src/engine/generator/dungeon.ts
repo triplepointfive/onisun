@@ -1,26 +1,10 @@
 import { Rect, Point, rand, min, twoDimArray } from '../utils'
-import { Tile } from '../../engine'
 
 const THICKNESS = 0
-
-const newRoomSpace = function(): Tile {
-  return Tile.retrieve('R')
-}
-
-const newCorridor = function(): Tile {
-  return Tile.retrieve('C')
-}
-
-const newWall = function(): Tile {
-  return Tile.retrieve('W')
-}
-
-type Stage = Tile[][]
-
 const RAY_TURNS = 60
 const DELTA_ANGLE = Math.PI / (RAY_TURNS * 2)
 
-class Room extends Rect {
+class Room<T> extends Rect {
   notCross(rect: Rect): boolean {
     return (
       rect.x - THICKNESS > this.x + this.w ||
@@ -37,12 +21,13 @@ class Room extends Rect {
     )
   }
 
-  add(stage: Stage): void {
+  add(stage: T[][], walls: boolean[][], newRoomSpace): void {
     let i: number = 0
     while (i < this.w) {
       let j: number = 0
       while (j < this.h) {
         stage[this.x + i][this.y + j] = newRoomSpace()
+        walls[this.x + i][this.y + j] = false
         j++
       }
 
@@ -51,7 +36,7 @@ class Room extends Rect {
   }
 }
 
-class Road extends Rect {
+class Road<T> extends Rect {
   lined: boolean
 
   constructor(x: number, y: number, w: number, h: number) {
@@ -59,12 +44,12 @@ class Road extends Rect {
     this.lined = (x >= w && y >= h) || (w >= x && h >= y)
   }
 
-  add(stage: Stage): void {
+  add(stage: T[][], walls: boolean[][], newCorridor): void {
     let [hx, hy, w] = this.horizontalLine()
 
     let i = 0
     while (i < w) {
-      if (stage[hx + i][hy].key === 'W') {
+      if (walls[hx + i][hy]) {
         stage[hx + i][hy] = newCorridor()
       }
       i += 1
@@ -73,7 +58,7 @@ class Road extends Rect {
     let [vx, vy, h] = this.verticalLine()
     let j = 0
     while (j < h) {
-      if (stage[vx][vy + j].key === 'W') {
+      if (walls[vx][vy + j]) {
         stage[vx][vy + j] = newCorridor()
       }
       j += 1
@@ -123,9 +108,9 @@ class Road extends Rect {
   }
 }
 
-class DungeonGenerator {
-  rooms: Array<Room>
-  roads: Array<Road>
+class DungeonGenerator<T> {
+  rooms: Room<T>[]
+  roads: Road<T>[]
 
   constructor(
     protected maxX: number,
@@ -134,7 +119,7 @@ class DungeonGenerator {
     private maxSize: number,
     private roomsCount: number
   ) {
-    let rooms: Room[] = new Array(this.roomsCount)
+    let rooms: Room<T>[] = new Array(this.roomsCount)
       .fill(undefined)
       .map(_ => this.generateRoom())
 
@@ -142,7 +127,7 @@ class DungeonGenerator {
     this.roads = this.buildRoads(this.rooms)
   }
 
-  private generateRoom(): Room {
+  private generateRoom(): Room<T> {
     return new Room(
       0,
       0,
@@ -153,8 +138,8 @@ class DungeonGenerator {
 
   // Takes a room and tries to put it on a ray coming from (0, 0)
   // until the room finds empty place for it.
-  private ray(rooms: Room[]): Room[] {
-    return rooms.reduce((pickedRooms: Room[], currentRoom: Room) => {
+  private ray(rooms: Room<T>[]): Room<T>[] {
+    return rooms.reduce((pickedRooms: Room<T>[], currentRoom: Room<T>) => {
       for (
         let i = 0, angle = (rand(360) / 180) * Math.PI;
         i < RAY_TURNS;
@@ -199,27 +184,27 @@ class DungeonGenerator {
     }, [])
   }
 
-  private normalize(rooms: Room[]): Room[] {
+  private normalize(rooms: Room<T>[]): Room<T>[] {
     const minX = min(rooms.map(room => room.x)) - 1
     rooms.forEach(room => {
       room.move(-minX, 0)
     })
-    rooms = rooms.filter((room: Room) => room.x + room.w < this.maxX)
+    rooms = rooms.filter((room: Room<T>) => room.x + room.w < this.maxX)
 
     const minY = min(rooms.map(room => room.y)) - 1
     rooms.forEach(room => {
       room.move(0, -minY)
     })
-    return rooms.filter((room: Room) => room.y + room.h < this.maxY)
+    return rooms.filter((room: Room<T>) => room.y + room.h < this.maxY)
   }
 
-  private buildRoads(rooms: Room[]): Road[] {
+  private buildRoads(rooms: Room<T>[]): Road<T>[] {
     let points: Point[] = rooms.map(room => {
       return room.pointWithin()
     })
 
     let connectedPoints: Point[] = [points.shift()]
-    let roads: Road[] = []
+    let roads: Road<T>[] = []
 
     const distance = function(point1: Point, point2: Point): number {
       // No need to calc square root since it's being used for comparison only.
@@ -256,21 +241,24 @@ class DungeonGenerator {
   }
 }
 
-export default function(
+export default function<T>(
   dimX: number,
   dimY: number,
   minSize: number,
   maxSize: number,
-  roomsCount: number
-): Tile[][] {
+  roomsCount: number,
+  newRoomSpace: () => T,
+  newCorridor: () => T,
+  newWall: () => T,
+): T[][] {
   // TODO: Validate min or max size is lower than map's sizes
-  const dungeon = new DungeonGenerator(dimX, dimY, minSize, maxSize, roomsCount)
+  const dungeon = new DungeonGenerator<T>(dimX, dimY, minSize, maxSize, roomsCount)
 
   let stage = twoDimArray(dimX, dimY, newWall)
+  let walls = twoDimArray(dimX, dimY, () => true)
 
-  for (let i = 0; i < dungeon.rooms.length; i++) dungeon.rooms[i].add(stage)
-
-  for (let i = 0; i < dungeon.roads.length; i++) dungeon.roads[i].add(stage)
+  for (let i = 0; i < dungeon.rooms.length; i++) dungeon.rooms[i].add(stage, walls, newRoomSpace)
+  for (let i = 0; i < dungeon.roads.length; i++) dungeon.roads[i].add(stage, walls, newCorridor)
 
   return stage
 }

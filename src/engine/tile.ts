@@ -10,34 +10,14 @@ export enum TileTypes {
   Floor,
   StairwayDown,
   StairwayUp,
+  Trap,
 }
 
 export class Tile {
   public creature?: Phantom
   public items: ItemsBunch
 
-  private static repository: { [key: string]: Tile } = {}
-
-  public static retrieve(key: string): Tile {
-    switch (key) {
-      case 'R':
-        return new Tile('R', ' ', TileTypes.Floor)
-      case 'C':
-        return new Tile('C', ' ', TileTypes.Floor)
-      case 'W':
-        return new Tile('W', '#', TileTypes.Wall)
-      case 'D':
-        return new Tile('D', '+', TileTypes.Door)
-      case '>':
-        return new Tile('>', '>', TileTypes.StairwayDown)
-      case '<':
-        return new Tile('<', '<', TileTypes.StairwayUp)
-      default:
-        throw `Tile '${key}' is not registered!`
-    }
-  }
-
-  protected constructor(
+  constructor(
     public key: string,
     public display: string,
     public kind: TileTypes
@@ -86,7 +66,8 @@ export class Tile {
   }
 
   public clone(): Tile {
-    let tile = Tile.retrieve(this.key)
+    let tile = new Tile(this.key, this.display, this.kind)
+
     if (this.creature) {
       tile.creature = this.creature.clone()
     }
@@ -126,4 +107,18 @@ export class StairwayUp extends Stairway {
   constructor(public currentMap: LevelMap, public adjacentMapId: LevelMapId) {
     super('<', '<', TileTypes.StairwayUp)
   }
+}
+
+export abstract class Trap extends Tile {
+  constructor() {
+    super('^', '^', TileTypes.Trap)
+  }
+}
+
+export class FireTrap extends Trap {
+
+}
+
+export class IceTrap extends Trap {
+
 }

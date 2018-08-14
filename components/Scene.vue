@@ -37,6 +37,7 @@ const RAT = new CreatureTile('ｄ', 197, 65, 38)
 
 const DOOR = new DoorTile()
 const WALL = new WallTile()
+const TRAP = new DisplayTile('^', 200, 0, 0)
 const FLOOR = new FloorTile()
 const STAIRWAY_DOWN = new StairwayDown()
 const STAIRWAY_UP = new StairwayUp()
@@ -104,6 +105,8 @@ export default Vue.extend({
       }
 
       switch (tile.display) {
+      case '^':
+        return TRAP
       case '#':
         return WALL
       case '+':

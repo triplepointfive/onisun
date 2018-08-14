@@ -1,8 +1,7 @@
 import { twoDimArray } from '../utils'
-import { Tile } from '../../engine'
 
-export default function(drawMap: string[]): Tile[][] {
+export default function<T>(drawMap: string[], collection: Map<string, () => T>): T[][] {
   return twoDimArray(drawMap[0].length, drawMap.length, (x, y) =>
-    Tile.retrieve(drawMap[y].charAt(x))
+    collection.get(drawMap[y].charAt(x))()
   )
 }

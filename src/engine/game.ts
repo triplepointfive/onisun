@@ -40,13 +40,13 @@ export abstract class Game {
   }
 
   public getMap(id: LevelMapId): LevelMap {
-    let levelMap: LevelMap | MapGenerator = this.maps[id]
+    let levelMap: LevelMap | MapGenerator = this.maps.get(id)
 
     if (levelMap instanceof LevelMap) {
       return levelMap
     } else if (levelMap instanceof Function) {
       levelMap = levelMap(id, this)
-      this.maps[id] = levelMap
+      this.maps.set(id, levelMap)
       return levelMap
     } else {
       throw `LevelMap with id ${id} is not found`
@@ -55,6 +55,6 @@ export abstract class Game {
 
   public addMap(id: LevelMapId, generator: MapGenerator): void {
     // TODO: Raise if presence
-    this.maps[id] = generator
+    this.maps.set(id, generator)
   }
 }
