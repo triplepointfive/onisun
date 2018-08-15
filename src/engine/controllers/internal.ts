@@ -1,5 +1,5 @@
 import { Logger } from '../logger'
-import { Player, AttackEvent, ThrowEvent, Creature } from '../creature'
+import { Player, AttackEvent, ThrowEvent, Creature, Reaction } from '../creature'
 import { Game } from '../game'
 import { Tile } from '../tile'
 import { Direction, Point } from '../utils'
@@ -50,19 +50,23 @@ export class AIMoveEvent extends Controller {
     if (tile.passibleThrough(this.player)) {
       this.player.move(dest)
     } else if (tile.creature) {
-      tile.creature.real().on(new AttackEvent(this.player))
+      if (tile.creature.real().on(new AttackEvent(this.player)) === Reaction.DIE) {
+        if (this.player.levelUps > 0) {
+          this.game.screen =
+            (this.player.level.current - this.player.levelUps + 1) % 3 === 0
+              ? new ProfessionPickingScreen(this.game)
+              : new TalentsTreeScreen(this.game)
+        } else {
+          this.game.screen = undefined
+        }
+
+        return
+      }
     } else {
       this.game.logger.ranIntoAnObstacle()
     }
 
-    if (this.player.levelUps > 0) {
-      this.game.screen =
-        (this.player.level.current - this.player.levelUps + 1) % 3 === 0
-          ? new ProfessionPickingScreen(this.game)
-          : new TalentsTreeScreen(this.game)
-    } else {
-      this.game.screen = undefined
-    }
+    this.game.screen = undefined
   }
 }
 
@@ -204,8 +208,17 @@ export class AIMissileAttack extends Controller {
     })
 
     const effect = new ItemFlightEffect(missile, path, () => {
-      if (victim) {
-        victim.on(new ThrowEvent(this.player, missile))
+      if (victim && victim.on(new ThrowEvent(this.player, missile)) === Reaction.DIE) {
+        // TODO: Remove duplicity
+        if (this.player.levelUps > 0) {
+          this.game.screen =
+            (this.player.level.current - this.player.levelUps + 1) % 3 === 0
+              ? new ProfessionPickingScreen(this.game)
+              : new TalentsTreeScreen(this.game)
+        } else {
+          this.game.screen = undefined
+        }
+        return
       }
     })
 
