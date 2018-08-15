@@ -5,11 +5,10 @@ import {
   BodySlot,
   MissileWeaponSlot,
   MissileSlot,
+  BootsSlot,
 } from './inventory_slot'
 
 import { Item, GroupedItem, ItemsBunch } from './items'
-
-import { intersection } from 'lodash'
 
 export class Inventory {
   private bag: ItemsBunch = new ItemsBunch()
@@ -19,6 +18,7 @@ export class Inventory {
   public bodySlot = new BodySlot()
   public missileWeaponSlot = new MissileWeaponSlot()
   public missileSlot = new MissileSlot()
+  public bootsSlot = new BootsSlot()
 
   // public inSlot(slot: InventorySlot): GroupedItem {
   //   const wearing = this.matchingEquip(slot)
@@ -49,6 +49,7 @@ export class Inventory {
       this.rightHandSlot,
       this.leftHandSlot,
       this.bodySlot,
+      this.bootsSlot,
       this.missileWeaponSlot,
       this.missileSlot,
     ]

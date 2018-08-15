@@ -9,6 +9,7 @@ export enum Usage {
   WearsOnBody,
   Throw,
   Shoot,
+  Boots,
 }
 
 export enum ItemGroup {

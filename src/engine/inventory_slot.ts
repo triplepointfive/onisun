@@ -84,6 +84,13 @@ export class BodySlot extends InventorySlot {
   }
 }
 
+export class BootsSlot extends InventorySlot {
+  public name: string = 'Ботинки'
+  constructor() {
+    super([Usage.Boots], true)
+  }
+}
+
 export class MissileWeaponSlot extends InventorySlot {
   public name: string = 'Метательное'
   constructor() {
