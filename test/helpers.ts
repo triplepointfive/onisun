@@ -152,16 +152,23 @@ export const generateGame = function(): Game {
 
 class TileCharVisitor extends TileVisitor {
   public char: string
-  public onWall(): void { this.char = 'W' }
-  public onDoor(): void { this.char = 'D' }
-  public onFloor(): void { this.char = ' ' }
-  protected default(): void { this.char = '?' }
+  public onWall(): void {
+    this.char = 'W'
+  }
+  public onDoor(): void {
+    this.char = 'D'
+  }
+  public onFloor(): void {
+    this.char = ' '
+  }
+  protected default(): void {
+    this.char = '?'
+  }
 }
-
 
 export const prettyMap = function(map: LevelMap): string[] {
   let stringMap = new Array(map.map[0].length).fill(''),
-      visitor = new TileCharVisitor()
+    visitor = new TileCharVisitor()
 
   map.map.forEach(column => {
     column.forEach((tile, i) => {

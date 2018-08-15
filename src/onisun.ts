@@ -18,6 +18,7 @@ import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
 export * from './onisun/professions'
 export * from './onisun/talents'
 export * from './onisun/items'
+export * from './onisun/tiles'
 
 export class Onisun extends Game {
   public professionPicker: OnisunProfessionPicker

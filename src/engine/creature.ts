@@ -9,13 +9,14 @@ import {
   LevelMapId,
   Memory,
   Inventory,
+  Game,
 } from '../engine'
 
 import { Level } from './level'
 import { includes } from 'lodash'
 import { Item } from './items'
 import { Profession } from './profession'
-import { TileVisitor, Door, Tile } from './tile';
+import { TileVisitor, Door, Tile, Trap } from './tile'
 
 export enum Clan {
   Player,
@@ -103,6 +104,34 @@ export class AttackEvent extends Event {
   }
 }
 
+export class TrapEvent extends Event {
+  constructor(private trap: Trap) {
+    super()
+  }
+
+  public affect(actor: Creature): Reaction {
+    const damage = 10,
+      game = actor.currentLevel.game
+
+    // TODO: Special messages for dying.
+    if (game.player.stageMemory().at(actor.pos.x, actor.pos.y).visible) {
+      if (game.player.id === actor.id) {
+        game.logger.youSteppedInTrap()
+      } else {
+        game.logger.creatureSteppedInTrap(actor)
+      }
+    }
+
+    if (damage >= actor.characteristics.health.currentValue()) {
+      actor.die()
+      return Reaction.DIE
+    } else {
+      actor.characteristics.health.decrease(damage)
+      return Reaction.HURT
+    }
+  }
+}
+
 export class ThrowEvent extends Event {
   constructor(public actor: Creature, public missile: Item) {
     super()
@@ -173,10 +202,7 @@ class VisibilityTileVisitor extends TileVisitor {
   private x: number
   private y: number
 
-  constructor(
-    public creature: Creature,
-    public stage: LevelMap,
-  ) {
+  constructor(private creature: Creature, private stage: LevelMap) {
     super()
   }
 
@@ -188,11 +214,22 @@ class VisibilityTileVisitor extends TileVisitor {
   }
 
   public onDoor(door: Door) {
-    this.visible = this.creature.pos.x === this.x && this.creature.pos.y === this.y
+    this.visible =
+      this.creature.pos.x === this.x && this.creature.pos.y === this.y
   }
 
   protected default(tile: Tile) {
     this.visible = this.stage.visibleThrough(this.x, this.y)
+  }
+}
+
+class SteppingTileVisitor extends TileVisitor {
+  constructor(private creature: Creature, private game: Game) {
+    super()
+  }
+
+  public onTrap(trap: Trap): void {
+    trap.activate(this.game, this.creature)
   }
 }
 
@@ -205,6 +242,7 @@ export class Creature extends Phantom {
   public previousPos: Point
   public previousLevel: LevelMap
   public pos: Point
+  public dead: boolean = false
 
   constructor(
     public characteristics: Characteristics,
@@ -228,6 +266,7 @@ export class Creature extends Phantom {
 
   public die(): void {
     this.currentLevel.removeCreature(this)
+    this.dead = true
 
     let tile = this.currentLevel.at(this.pos.x, this.pos.y)
     tile.addItem(new Corpse(this.specie), 1)
@@ -275,6 +314,10 @@ export class Creature extends Phantom {
     ).creature = undefined
     this.currentLevel.at(this.pos.x, this.pos.y).creature = this
 
+    this.currentLevel
+      .at(this.pos.x, this.pos.y)
+      .visit(new SteppingTileVisitor(this, this.currentLevel.game))
+
     this.previousLevel = undefined
   }
 
@@ -316,8 +359,6 @@ export class Creature extends Phantom {
 }
 
 export class Player extends Creature {
-  public dead: boolean = false
-
   public levelUps: number = 0
   public professions: Profession[] = []
 
@@ -328,11 +369,6 @@ export class Player extends Creature {
     specie: Specie
   ) {
     super(characteristics, ai, specie)
-  }
-
-  public act(stage: LevelMap): void {
-    super.act(stage)
-    // TODO: Simplify this? No need to move here
   }
 
   public move(dest: Point) {
@@ -346,11 +382,10 @@ export class Player extends Creature {
     this.currentLevel.at(this.pos.x, this.pos.y).creature = this
 
     this.previousLevel = undefined
-  }
 
-  public die(): void {
-    super.die() // We do not want player to act after they death
-    this.dead = true
+    this.currentLevel
+      .at(this.pos.x, this.pos.y)
+      .visit(new SteppingTileVisitor(this, this.currentLevel.game))
   }
 
   public rebuildVision(): void {

@@ -3,6 +3,7 @@ import { Item } from './items'
 import { Point } from './utils'
 import { LevelMap, LevelMapId } from './level_map'
 import { ItemsBunch } from './items/internal'
+import { Game } from './game'
 
 export enum TileTypes {
   Wall,
@@ -17,10 +18,7 @@ export abstract class Tile {
   public creature?: Phantom
   public items: ItemsBunch
 
-  constructor(
-    public key: string,
-    public kind: TileTypes
-  ) {}
+  constructor(public key: string, public kind: TileTypes) {}
 
   public addItem(item: Item, count: number): void {
     if (!this.items) {
@@ -168,19 +166,25 @@ export class StairwayUp extends Stairway {
   }
 }
 
-// export abstract class Trap extends Tile {
-//   constructor() {
-//     super('^', '^', TileTypes.Trap)
-//   }
-// }
-//
-// export class FireTrap extends Trap {
-//
-// }
-//
-// export class IceTrap extends Trap {
-//
-// }
+export abstract class Trap extends Tile {
+  constructor(public revealed: boolean = false, public readonly type: number) {
+    super('^', TileTypes.Trap)
+  }
+
+  public visit(tileVisitor: TileVisitor): void {
+    tileVisitor.onTrap(this)
+  }
+
+  public activate(game: Game, actor: Creature): void {
+    if (game.player.stageMemory().at(actor.pos.x, actor.pos.y).visible) {
+      this.revealed = true
+    }
+
+    this.affect(game, actor)
+  }
+
+  protected abstract affect(game: Game, actor: Creature): void
+}
 
 export abstract class TileVisitor {
   public onWall(wall: Wall): void {
@@ -201,6 +205,10 @@ export abstract class TileVisitor {
 
   public onDoor(door: Door): void {
     this.default(door)
+  }
+
+  public onTrap(trap: Trap): void {
+    this.default(trap)
   }
 
   protected default(tile: Tile): void {}

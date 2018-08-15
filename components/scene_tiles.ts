@@ -11,7 +11,12 @@ import {
   StairwayDown,
   StairwayUp,
   Door,
+  Trap,
 } from '../src/engine'
+
+import {
+  OnisunTrapType,
+} from '../src/onisun'
 
 const DEFAULT_GREY: number = 120
 const IMPORTANT_GREY: number = 180
@@ -166,12 +171,13 @@ export const displayItem = function(item: Item): ItemTile {
 
 const DOOR = new DoorTile()
 const WALL = new WallTile()
-const TRAP = new DisplayTile('^', 200, 0, 0)
 const FLOOR = new FloorTile()
 const STAIRWAY_DOWN = new StairwayDownD()
 const STAIRWAY_UP = new StairwayUpD()
 const NULL_TILE = new DisplayTile('　', 0, 0, 0)
 
+const FIRE_TRAP = new DisplayTile('^', 200, 0, 0)
+const ICE_TRAP = new DisplayTile('^', 0, 0, 200)
 
 export class DisplayTileVisitor extends TileVisitor {
   public tile: DisplayTile
@@ -194,6 +200,22 @@ export class DisplayTileVisitor extends TileVisitor {
 
   public onDoor(door: Door): void {
     this.tile = DOOR
+  }
+
+  public onTrap(trap: Trap): void {
+    if (!trap.revealed) {
+      this.tile = FLOOR
+      return
+    }
+
+    switch (trap.type) {
+    case OnisunTrapType.Fire:
+      this.tile = FIRE_TRAP
+      break
+    case OnisunTrapType.Ice:
+      this.tile = ICE_TRAP
+      break
+    }
   }
 
   protected default(tile: Tile): void {

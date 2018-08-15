@@ -86,7 +86,10 @@ export class Fov {
             start = newStart
           }
         } else {
-          if (this.solidChecker.isSolid(currentX, currentY) && distance < this.radius) {
+          if (
+            this.solidChecker.isSolid(currentX, currentY) &&
+            distance < this.radius
+          ) {
             // hit a wall within sight line
             blocked = true
             this.castLight(distance + 1, start, leftSlope, xx, xy, yx, yy)

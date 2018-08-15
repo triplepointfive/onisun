@@ -6,7 +6,7 @@ import { Creature } from '../creature'
 import * as graphlib from 'graphlib'
 import { Loiter } from './loiter'
 import { MetaAI } from './meta_ai'
-import { TileVisitor } from '../tile';
+import { TileVisitor } from '../tile'
 
 type NodeID = string
 
@@ -71,7 +71,10 @@ export class Patrol extends AI {
   }
 
   public trackMovement(actor: Creature): void {
-    if (this.step >= NEW_POINT_EVERY || new PatrolTileVisitor().addNode(actor)) {
+    if (
+      this.step >= NEW_POINT_EVERY ||
+      new PatrolTileVisitor().addNode(actor)
+    ) {
       this.addNode(actor.pos.x, actor.pos.y)
     }
     this.step += 1

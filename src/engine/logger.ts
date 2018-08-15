@@ -97,6 +97,14 @@ export class Logger {
     this.addMessage(LogLevel.DEBUG, 'Мне нужен лук или типа того')
   }
 
+  public youSteppedInTrap(): void {
+    this.addMessage(LogLevel.DANGER, 'Я наступил в ловушку')
+  }
+
+  public creatureSteppedInTrap(creature: Creature): void {
+    this.addMessage(LogLevel.DANGER, `${creature.name()} наступил в ловушку`)
+  }
+
   public pickedUpItem(item: Item, count: number): void {
     if (count === 1) {
       this.addMessage(LogLevel.INFO, `You picked up ${item.name}`)

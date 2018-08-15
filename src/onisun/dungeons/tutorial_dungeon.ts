@@ -21,6 +21,7 @@ import {
   Corridor,
   Room,
 } from '../../engine/tile'
+import { OnisunFireTrap, OnisunIceTrap } from '../tiles'
 
 const initId: number = -1
 
@@ -29,7 +30,7 @@ const config = {
   minSize: 3,
   maxSize: 10,
   roomsCount: 10,
-  simple: false,
+  simple: true,
 }
 
 const tiles: Map<string, () => Tile> = new Map()
@@ -54,7 +55,7 @@ export class TutorialDungeon extends Dungeon {
   public build(): void {
     this.game.addMap(-1, (id, game) =>
       addCreatures(
-        0,
+        0.1,
         this.addStairDown(this.generateMap(id), 0),
         creaturesPool1
       )
@@ -116,12 +117,20 @@ export class TutorialDungeon extends Dungeon {
     map.game = this.game
     map.name = `MP ${id}`
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 10; i++) {
       addOnTile(
         map,
         tile => tile.isFloor() && tile.passibleThrough(),
         (x, y) => {
-          // map.setTile(x, y, new FireTrap())
+          map.setTile(x, y, new OnisunFireTrap())
+        }
+      )
+
+      addOnTile(
+        map,
+        tile => tile.isFloor() && tile.passibleThrough(),
+        (x, y) => {
+          map.setTile(x, y, new OnisunIceTrap())
         }
       )
     }

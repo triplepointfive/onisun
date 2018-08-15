@@ -1,4 +1,12 @@
-import { dungeon, LevelMap, Tile, TileTypes, Corridor, Room, Wall } from '../../src/engine'
+import {
+  dungeon,
+  LevelMap,
+  Tile,
+  TileTypes,
+  Corridor,
+  Room,
+  Wall,
+} from '../../src/engine'
 import { prettyMap } from '../helpers'
 
 it('When exact match', () => {
