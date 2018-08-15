@@ -1,0 +1,118 @@
+import { Creature, Reaction, Player } from './creature'
+import { Item } from './items';
+import { Trap } from './tile';
+
+export abstract class Event {
+  public abstract affect(subject: Creature): Reaction;
+}
+
+export class AttackEvent extends Event {
+  constructor(public actor: Creature) {
+    super()
+  }
+
+  public affect(subject: Creature): Reaction {
+    if (this.actor.characteristics.misses(subject.characteristics)) {
+      subject.currentLevel.game.logger.missMessage(this.actor, subject)
+      return Reaction.DODGE
+    }
+
+    const damage = this.actor.characteristics.damageTo(subject.characteristics)
+
+    if (damage >= subject.characteristics.health.currentValue()) {
+      this.actor.on(new AddExperienceEvent(subject))
+      subject.currentLevel.game.logger.killMessage(damage, this.actor, subject)
+      subject.die()
+      return Reaction.DIE
+    } else {
+      subject.characteristics.health.decrease(damage)
+      subject.currentLevel.game.logger.hurtMessage(damage, this.actor, subject)
+      return Reaction.HURT
+    }
+  }
+}
+
+export class TrapEvent extends Event {
+  constructor(private trap: Trap) {
+    super()
+  }
+
+  public affect(actor: Creature): Reaction {
+    const damage = 10,
+      game = actor.currentLevel.game
+
+    // TODO: Special messages for dying.
+    if (game.player.stageMemory().at(actor.pos.x, actor.pos.y).visible) {
+      if (game.player.id === actor.id) {
+        game.logger.youSteppedInTrap()
+      } else {
+        game.logger.creatureSteppedInTrap(actor)
+      }
+    }
+
+    if (damage >= actor.characteristics.health.currentValue()) {
+      actor.die()
+      return Reaction.DIE
+    } else {
+      actor.characteristics.health.decrease(damage)
+      return Reaction.HURT
+    }
+  }
+}
+
+export class ThrowEvent extends Event {
+  constructor(public actor: Creature, public missile: Item) {
+    super()
+  }
+
+  public affect(subject: Creature): Reaction {
+    if (this.actor.characteristics.throwMisses(subject.characteristics)) {
+      subject.currentLevel.game.logger.throwMissMessage(
+        this.actor,
+        subject,
+        this.missile
+      )
+      return Reaction.THROW_DODGE
+    }
+
+    const damage = this.actor.characteristics.throwDamageTo(
+      subject.characteristics,
+      this.missile
+    )
+
+    if (damage >= subject.characteristics.health.currentValue()) {
+      this.actor.on(new AddExperienceEvent(subject))
+      subject.currentLevel.game.logger.throwKillMessage(
+        damage,
+        this.actor,
+        subject,
+        this.missile
+      )
+      subject.die()
+      return Reaction.DIE
+    } else {
+      subject.characteristics.health.decrease(damage)
+      subject.currentLevel.game.logger.throwHurtMessage(
+        damage,
+        this.actor,
+        subject,
+        this.missile
+      )
+      return Reaction.HURT
+    }
+  }
+}
+
+export class AddExperienceEvent extends Event {
+  constructor(public actor: Creature) {
+    super()
+  }
+
+  public affect(subject: Creature): Reaction {
+    if (subject instanceof Player) {
+      subject.levelUps += subject.level.add(1)
+    }
+
+    return Reaction.NOTHING
+  }
+}

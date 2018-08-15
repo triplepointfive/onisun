@@ -1,5 +1,6 @@
 import { Logger } from '../logger'
-import { Player, AttackEvent, ThrowEvent, Creature, Reaction } from '../creature'
+import { Player, Creature, Reaction } from '../creature'
+import { AttackEvent, ThrowEvent } from '../event'
 import { Game } from '../game'
 import { Tile } from '../tile'
 import { Direction, Point } from '../utils'
