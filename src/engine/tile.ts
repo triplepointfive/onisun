@@ -123,14 +123,11 @@ abstract class Stairway extends Tile {
   public enterPos: Point
 
   public go(actor: Creature): void {
-    this.currentMap.leave(actor)
-
     // TODO: Do not do this if already connected
     const adjacentMap = this.currentMap.game.getMap(this.adjacentMapId)
     this.enterPos = adjacentMap.matchStairs(this.currentMap.id, actor.pos)
 
-    adjacentMap.enter(actor, this.enterPos)
-    adjacentMap.game.currentMap = adjacentMap
+    actor.move(this.enterPos, adjacentMap)
   }
 
   public visibleThrough(): boolean {

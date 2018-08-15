@@ -240,7 +240,6 @@ export class Creature extends Phantom {
   public inventory: Inventory
 
   public previousPos: Point
-  public previousLevel: LevelMap
   public pos: Point
   public dead: boolean = false
 
@@ -258,7 +257,6 @@ export class Creature extends Phantom {
   public addToMap(pos: Point, level: LevelMap) {
     this.pos = pos
     this.previousPos = this.pos.copy()
-    this.previousLevel = this.currentLevel
     this.currentLevel = level
     level.addCreature(this)
     this.visionMask(level)
@@ -306,23 +304,26 @@ export class Creature extends Phantom {
     this.visionMask(stage)
     this.previousPos = this.pos.copy()
     this.ai.act(this, true)
+  }
 
-    let previousPosLevel = this.previousLevel || this.currentLevel
-    previousPosLevel.at(
-      this.previousPos.x,
-      this.previousPos.y
-    ).creature = undefined
+  public move(nextPoint: Point, nextLevel = this.currentLevel) {
+    if (nextLevel.id !== this.currentLevel.id) {
+      this.currentLevel.leave(this)
+
+      nextLevel.enter(this, nextPoint)
+      nextLevel.game.currentMap = nextLevel
+      this.currentLevel = nextLevel
+    } else {
+      this.currentLevel.at(this.pos.x, this.pos.y).creature = undefined
+    }
+
+    this.pos = nextPoint.copy()
+
     this.currentLevel.at(this.pos.x, this.pos.y).creature = this
 
     this.currentLevel
       .at(this.pos.x, this.pos.y)
       .visit(new SteppingTileVisitor(this, this.currentLevel.game))
-
-    this.previousLevel = undefined
-  }
-
-  public move(nextPoint: Point) {
-    this.pos = nextPoint.copy()
   }
 
   public clone(): Phantom {
@@ -369,23 +370,6 @@ export class Player extends Creature {
     specie: Specie
   ) {
     super(characteristics, ai, specie)
-  }
-
-  public move(dest: Point) {
-    super.move(dest)
-
-    let previousPosLevel = this.previousLevel || this.currentLevel
-    previousPosLevel.at(
-      this.previousPos.x,
-      this.previousPos.y
-    ).creature = undefined
-    this.currentLevel.at(this.pos.x, this.pos.y).creature = this
-
-    this.previousLevel = undefined
-
-    this.currentLevel
-      .at(this.pos.x, this.pos.y)
-      .visit(new SteppingTileVisitor(this, this.currentLevel.game))
   }
 
   public rebuildVision(): void {
