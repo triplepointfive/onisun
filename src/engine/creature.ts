@@ -15,6 +15,7 @@ import { Level } from './level'
 import { includes } from 'lodash'
 import { Item } from './items'
 import { Profession } from './profession'
+import { TileVisitor, Door, Tile } from './tile';
 
 export enum Clan {
   Player,
@@ -167,6 +168,34 @@ export enum Reaction {
   NOTHING,
 }
 
+class VisibilityTileVisitor extends TileVisitor {
+  public visible: boolean = false
+  private x: number
+  private y: number
+
+  constructor(
+    public creature: Creature,
+    public stage: LevelMap,
+  ) {
+    super()
+  }
+
+  public isSolid(x: number, y: number): boolean {
+    this.x = x
+    this.y = y
+    this.stage.at(x, y).visit(this)
+    return !this.visible
+  }
+
+  public onDoor(door: Door) {
+    this.visible = this.creature.pos.x === this.x && this.creature.pos.y === this.y
+  }
+
+  protected default(tile: Tile) {
+    this.visible = this.stage.visibleThrough(this.x, this.y)
+  }
+}
+
 export class Creature extends Phantom {
   public ai: MetaAI
   public stageMemories: { [key: string]: Memory } = {}
@@ -272,29 +301,17 @@ export class Creature extends Phantom {
         .see(stage.at(x, y), degree)
     }
 
+    const visitor = new VisibilityTileVisitor(this, stage)
+
     new Fov(
       this.pos.x,
       this.pos.y,
       this.radius(),
       stage.width,
       stage.height,
-      this.isSolid(stage),
+      visitor,
       see
     ).calc()
-  }
-
-  private isSolid(stage: LevelMap): (x: number, y: number) => boolean {
-    return (x: number, y: number) => {
-      if (stage.visibleThrough(x, y)) {
-        return false
-      } else {
-        return !(
-          stage.at(x, y).isDoor() &&
-          this.pos.x === x &&
-          this.pos.y === y
-        )
-      }
-    }
   }
 }
 

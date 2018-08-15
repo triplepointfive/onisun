@@ -1,3 +1,7 @@
+interface SolidChecker {
+  isSolid(x: number, y: number): boolean
+}
+
 export class Fov {
   private doubleRadius: number
 
@@ -7,7 +11,7 @@ export class Fov {
     private radius: number,
     private width: number,
     private height: number,
-    private checkSolid: (x: number, y: number) => boolean,
+    private solidChecker: SolidChecker,
     private markVisible: (x: number, y: number, degree: number) => void
   ) {
     this.doubleRadius = this.radius * this.radius
@@ -16,7 +20,7 @@ export class Fov {
   public calc(): void {
     this.markVisible(this.startx, this.starty, 1)
 
-    if (!this.checkSolid(this.startx, this.starty)) {
+    if (!this.solidChecker.isSolid(this.startx, this.starty)) {
       ;[[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([dx, dy]) => {
         this.castLight(1, 1.0, 0.0, 0, dx, dy, 0)
         this.castLight(1, 1.0, 0.0, dx, 0, 0, dy)
@@ -74,7 +78,7 @@ export class Fov {
 
         if (blocked) {
           // previous cell was a blocking one
-          if (this.checkSolid(currentX, currentY)) {
+          if (this.solidChecker.isSolid(currentX, currentY)) {
             // hit a wall
             newStart = rightSlope
           } else {
@@ -82,7 +86,7 @@ export class Fov {
             start = newStart
           }
         } else {
-          if (this.checkSolid(currentX, currentY) && distance < this.radius) {
+          if (this.solidChecker.isSolid(currentX, currentY) && distance < this.radius) {
             // hit a wall within sight line
             blocked = true
             this.castLight(distance + 1, start, leftSlope, xx, xy, yx, yy)

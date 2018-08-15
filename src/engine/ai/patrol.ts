@@ -6,10 +6,25 @@ import { Creature } from '../creature'
 import * as graphlib from 'graphlib'
 import { Loiter } from './loiter'
 import { MetaAI } from './meta_ai'
+import { TileVisitor } from '../tile';
 
 type NodeID = string
 
 const NEW_POINT_EVERY: number = 10
+
+class PatrolTileVisitor extends TileVisitor {
+  public status: boolean = false
+
+  public addNode(actor: Creature): boolean {
+    this.status = false
+    actor.currentLevel.at(actor.previousPos.x, actor.previousPos.y).visit(this)
+    return this.status
+  }
+
+  public onDoor() {
+    this.status = true
+  }
+}
 
 export class Patrol extends AI {
   private i: NodeID
@@ -56,7 +71,7 @@ export class Patrol extends AI {
   }
 
   public trackMovement(actor: Creature): void {
-    if (this.step >= NEW_POINT_EVERY || this.shouldAddNode(actor)) {
+    if (this.step >= NEW_POINT_EVERY || new PatrolTileVisitor().addNode(actor)) {
       this.addNode(actor.pos.x, actor.pos.y)
     }
     this.step += 1
@@ -122,12 +137,5 @@ export class Patrol extends AI {
 
   private markNodeVisited(nodeID: NodeID): void {
     this.lastNodeVisit[nodeID] = this.step
-  }
-
-  private shouldAddNode(actor: Creature): boolean {
-    return actor
-      .stageMemory()
-      .at(actor.previousPos.x, actor.previousPos.y)
-      .tile.isDoor()
   }
 }

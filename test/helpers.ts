@@ -24,6 +24,7 @@ import {
   Floor,
   Door,
   Room,
+  TileVisitor,
 } from '../src/engine'
 
 import { times, random } from 'lodash'
@@ -149,24 +150,23 @@ export const generateGame = function(): Game {
   return new TestGame()
 }
 
-export const tileToChar = function(tile: Tile): string {
-  if (tile.isWall()) {
-    return 'W'
-  } else if (tile.isDoor()) {
-    return 'D'
-  } else if (tile.isFloor) {
-    return ' '
-  } else {
-    return '?'
-  }
+class TileCharVisitor extends TileVisitor {
+  public char: string
+  public onWall(): void { this.char = 'W' }
+  public onDoor(): void { this.char = 'D' }
+  public onFloor(): void { this.char = ' ' }
+  protected default(): void { this.char = '?' }
 }
 
+
 export const prettyMap = function(map: LevelMap): string[] {
-  let stringMap = new Array(map.map[0].length).fill('')
+  let stringMap = new Array(map.map[0].length).fill(''),
+      visitor = new TileCharVisitor()
 
   map.map.forEach(column => {
     column.forEach((tile, i) => {
-      stringMap[i] += tileToChar(tile)
+      tile.visit(visitor)
+      stringMap[i] += visitor.char
     })
   })
 

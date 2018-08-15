@@ -30,14 +30,6 @@ export abstract class Tile {
     this.items.put(item, count)
   }
 
-  public isDoor(): boolean {
-    return this.kind === TileTypes.Door
-  }
-
-  public isWall(): boolean {
-    return this.kind === TileTypes.Wall
-  }
-
   public isFloor(): boolean {
     return this.kind === TileTypes.Floor
   }
