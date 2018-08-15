@@ -35,7 +35,7 @@ export class Descender extends GoToTileAI {
     // Should stay here at least for a turn
     const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
     if (this.canDescend && tile instanceof StairwayDown) {
-      tile.go(actor)
+      // tile.go(actor)
     }
   }
 }

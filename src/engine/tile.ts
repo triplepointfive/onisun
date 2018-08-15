@@ -117,18 +117,10 @@ export class Wall extends Tile {
   }
 }
 
-abstract class Stairway extends Tile {
+export abstract class Stairway extends Tile {
   public currentMap: LevelMap
   public adjacentMapId: LevelMapId
   public enterPos: Point
-
-  public go(actor: Creature): void {
-    // TODO: Do not do this if already connected
-    const adjacentMap = this.currentMap.game.getMap(this.adjacentMapId)
-    this.enterPos = adjacentMap.matchStairs(this.currentMap.id, actor.pos)
-
-    actor.move(this.enterPos, adjacentMap)
-  }
 
   public visibleThrough(): boolean {
     return true
@@ -193,11 +185,11 @@ export abstract class TileVisitor {
   }
 
   public onStairwayDown(stairway: StairwayDown): void {
-    this.default(stairway)
+    this.onStairway(stairway)
   }
 
   public onStairwayUp(stairway: StairwayUp): void {
-    this.default(stairway)
+    this.onStairway(stairway)
   }
 
   public onDoor(door: Door): void {
@@ -206,6 +198,10 @@ export abstract class TileVisitor {
 
   public onTrap(trap: Trap): void {
     this.default(trap)
+  }
+
+  protected onStairway(stairway: Stairway): void {
+    this.default(stairway)
   }
 
   protected default(tile: Tile): void {}

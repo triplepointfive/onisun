@@ -21,6 +21,8 @@ export { default as drawn } from './engine/generator/drawn'
 export { default as dungeon } from './engine/generator/dungeon'
 
 export * from './engine/controllers/internal'
+export * from './engine/controllers/handle_controller'
+
 export * from './engine/inventory_slot'
 
 export * from './engine/screens/internal'

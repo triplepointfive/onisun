@@ -1,7 +1,7 @@
 import { Logger } from '../logger'
 import { Player, AttackEvent, ThrowEvent, Creature } from '../creature'
 import { Game } from '../game'
-import { Tile, StairwayDown, StairwayUp } from '../tile'
+import { Tile } from '../tile'
 import { Direction, Point } from '../utils'
 import {
   IdleScreen,
@@ -15,6 +15,7 @@ import {
   TalentsTreeScreen,
 } from '../../engine'
 import { MissileScreen } from '../screens/missile_screen'
+import { LevelMap } from '../level_map'
 
 export abstract class Controller {
   protected logger: Logger
@@ -27,8 +28,12 @@ export abstract class Controller {
 
   public abstract act(): void
 
+  protected currentLevel(): LevelMap {
+    return this.player.currentLevel
+  }
+
   protected tile(): Tile {
-    return this.player.currentLevel.at(this.player.pos.x, this.player.pos.y)
+    return this.currentLevel().at(this.player.pos.x, this.player.pos.y)
   }
 }
 
@@ -61,34 +66,20 @@ export class AIMoveEvent extends Controller {
   }
 }
 
-export class AIHandleEnvEvent extends Controller {
-  public act(): void {
-    const tile = this.tile()
-
-    if (tile instanceof StairwayDown || tile instanceof StairwayUp) {
-      tile.go(this.player)
-      this.game.screen = undefined
-    } else {
-      this.player.currentLevel.game.logger.howToHandle()
-    }
-  }
-}
-
 export class AIPickUpItemsDialog extends Controller {
   public act(): void {
-    const items = this.tile().items,
-      game = this.player.currentLevel.game
+    const items = this.tile().items
 
     switch ((items && items.bunch.length) || 0) {
       case 0:
-        game.logger.noItemsToPickUp()
+        this.game.logger.noItemsToPickUp()
         return
       case 1:
         new AIPickUpItems(items.bunch, this.game).act()
         this.game.screen = undefined
         return
       default:
-        game.screen = new PickUpScreen(game)
+        this.game.screen = new PickUpScreen(this.game)
         return
     }
   }
