@@ -3,7 +3,7 @@ import { Creature, Ability, Phantom, Reaction } from '../creature'
 import { GroupedItem } from '../items/internal'
 import { Point, bresenham } from '../utils'
 import { ItemFlightEffect } from '../effect'
-import { ThrowEvent } from '../event';
+import { ThrowEvent } from '../event'
 
 export class Thrower extends AI {
   public victim: Creature

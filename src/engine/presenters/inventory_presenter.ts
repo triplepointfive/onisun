@@ -33,16 +33,22 @@ export class InventoryPresenter extends Presenter {
   }
 
   public putOn(position: InventoryPosition) {
-    this.redirect(new PutOnItemsPresenter(
-      itemGroup => {
-        new AIPutOnItem(position.inventorySlot, itemGroup.item, this.game).act()
-        this.takeTime = true
-        this.rebuildPositions()
-        this.redirect(this)
-      },
-      position.availableItems,
-      this.game
-    ))
+    this.redirect(
+      new PutOnItemsPresenter(
+        itemGroup => {
+          new AIPutOnItem(
+            position.inventorySlot,
+            itemGroup.item,
+            this.game
+          ).act()
+          this.takeTime = true
+          this.rebuildPositions()
+          this.redirect(this)
+        },
+        position.availableItems,
+        this.game
+      )
+    )
   }
 
   public close() {

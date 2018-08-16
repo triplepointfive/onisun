@@ -35,7 +35,9 @@ export class AIItemPickedEvent extends AIEvent {
     })
   }
 
-  public immediate(): boolean { return false }
+  public immediate(): boolean {
+    return false
+  }
 
   // private whereToWear(item: Item): Wearing {
   //   const matches: Wearing[] = compact(

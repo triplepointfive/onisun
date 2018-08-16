@@ -1,6 +1,11 @@
 import { MetaAI, AIEvent } from './meta_ai'
 import { Player } from '../creature'
-import { IdlePresenter, Game, TalentsTreePresenter, ProfessionPickingPresenter } from '../../engine'
+import {
+  IdlePresenter,
+  Game,
+  TalentsTreePresenter,
+  ProfessionPickingPresenter,
+} from '../../engine'
 import { Presenter } from '../presenters/internal'
 
 export class AINewLevelEvent extends AIEvent {
@@ -10,13 +15,18 @@ export class AINewLevelEvent extends AIEvent {
 
   public act(): void {
     if (this.level % 3 === 0) {
-      this.game.ai.presenter = new ProfessionPickingPresenter(this.level, this.game)
+      this.game.ai.presenter = new ProfessionPickingPresenter(
+        this.level,
+        this.game
+      )
     } else {
       this.game.ai.presenter = new TalentsTreePresenter(this.level, this.game)
     }
   }
 
-  public immediate(): boolean { return true }
+  public immediate(): boolean {
+    return true
+  }
 }
 
 export class PlayerAI extends MetaAI {

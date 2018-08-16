@@ -15,7 +15,7 @@ import {
 } from '../../engine'
 import { MissilePresenter } from '../presenters/missile_presenter'
 import { LevelMap } from '../level_map'
-import { Presenter } from '../presenters/internal';
+import { Presenter } from '../presenters/internal'
 
 export abstract class Controller {
   protected logger: Logger
@@ -206,8 +206,9 @@ export class AIMissileAttack extends Controller {
     this.game.effect = new ItemFlightEffect(missile, flightPath, () => {
       if (victim) {
         victim.on(new ThrowEvent(this.player, missile)) === Reaction.DIE
-        this.endTurn()
       }
+
+      this.endTurn()
     })
   }
 }

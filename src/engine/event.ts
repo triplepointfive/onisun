@@ -1,11 +1,13 @@
 import { Creature, Reaction, Player } from './creature'
 import { Item } from './items'
 import { Trap } from './tile'
-import { AINewLevelEvent } from './ai';
+import { AINewLevelEvent } from './ai'
 
 export abstract class Event {
-  public abstract affectCreature(subject: Creature): Reaction;
-  public affectPlayer(subject: Player): Reaction { return this.affectCreature(subject) };
+  public abstract affectCreature(subject: Creature): Reaction
+  public affectPlayer(subject: Player): Reaction {
+    return this.affectCreature(subject)
+  }
 }
 
 export class AttackEvent extends Event {
@@ -116,7 +118,9 @@ export class AddExperienceEvent extends Event {
 
   public affectPlayer(subject: Player): Reaction {
     subject.level.add(1).forEach(level => {
-      subject.ai.pushEvent(new AINewLevelEvent(level, subject.currentLevel.game))
+      subject.ai.pushEvent(
+        new AINewLevelEvent(level, subject.currentLevel.game)
+      )
     })
 
     return Reaction.NOTHING

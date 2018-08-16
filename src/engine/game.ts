@@ -84,7 +84,6 @@ export abstract class Game {
 
       return
     } else if (effect) {
-
       return effect
     } else {
       throw 'Timeline event is empty!'
