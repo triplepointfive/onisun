@@ -1,16 +1,12 @@
 import { Logger } from '../logger'
 import { Player, Creature, Reaction } from '../creature'
-import { AttackEvent, ThrowEvent } from '../events/internal'
+import { ThrowEvent } from '../events/internal'
 import { Game } from '../game'
 import { Tile } from '../tile'
-import { Direction, Point } from '../utils'
+import { Point } from '../utils'
 import {
   IdlePresenter,
-  PickUpPresenter,
   GroupedItem,
-  InventorySlot,
-  Potion,
-  Item,
   ItemFlightEffect,
 } from '../../engine'
 import { MissilePresenter } from '../presenters/missile_presenter'
@@ -42,46 +38,6 @@ export abstract class Controller {
 
   protected redirect(presenter: Presenter): void {
     this.game.ai.redirect(presenter)
-  }
-}
-
-export class PickUpItemsDialogController extends Controller {
-  public act(): void {
-    const items = this.tile().items
-
-    switch ((items && items.bunch.length) || 0) {
-      case 0:
-        this.game.logger.noItemsToPickUp()
-        return
-      case 1:
-        new PickUpItemsController(items.bunch, this.game).act()
-        return
-      default:
-        this.redirect(new PickUpPresenter(this.game))
-        return
-    }
-  }
-}
-
-export class PickUpItemsController extends Controller {
-  constructor(private items: GroupedItem[], game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    if (!this.items.length) {
-      this.redirect(new IdlePresenter(this.game))
-    }
-
-    let tileItems = this.tile().items
-
-    this.items.forEach(({ item, count }) => {
-      this.player.inventory.putToBag(item, count)
-      this.game.logger.pickedUpItem(item, count)
-      tileItems.remove(item, count)
-    })
-
-    this.endTurn()
   }
 }
 

@@ -2,7 +2,7 @@ import { Presenter, PresenterType } from './internal'
 import {
   Game,
   Item,
-  PickUpItemsController,
+  PickUpItemsEvent,
   DropItemsController,
   DrinkPotionEvent,
 } from '../../engine'
@@ -46,7 +46,8 @@ export class PickUpPresenter extends ItemsListingPresenter {
 
   public pickUpItems(items: GroupedItem[]): void {
     // TODO: Validate items are part of positions
-    new PickUpItemsController(items, this.game).act()
+    this.player.on(new PickUpItemsEvent(this.tile(), items, this.game))
+    this.endTurn()
   }
 }
 

@@ -2,13 +2,14 @@ import { Presenter, PresenterType } from './internal'
 import {
   Game,
   Direction,
-  PickUpItemsDialogController,
   DropItemsPresenter,
   DrinkPresenter,
   BagPresenter,
   MissileDialogController,
   HandleController,
   AttackEvent,
+  PickUpItemsEvent,
+  PickUpPresenter,
 } from '../../engine'
 import { InventoryPresenter } from './inventory_presenter'
 
@@ -62,7 +63,7 @@ export class IdlePresenter extends Presenter {
         return new HandleController(this.game).act()
 
       case IdleInputKey.PickUp:
-        return new PickUpItemsDialogController(this.game).act()
+        return this.pickUpDialog()
       case IdleInputKey.Missile:
         return new MissileDialogController(this.game).act()
 
@@ -95,5 +96,23 @@ export class IdlePresenter extends Presenter {
     }
 
     this.endTurn()
+  }
+
+  private pickUpDialog(): void {
+    const tile = this.tile(),
+      items = tile.items
+
+    switch ((items && items.bunch.length) || 0) {
+      case 0:
+        this.game.logger.noItemsToPickUp()
+        return
+      case 1:
+        this.player.on(new PickUpItemsEvent(tile, items.bunch, this.game))
+        this.endTurn()
+        return
+      default:
+        this.redirect(new PickUpPresenter(this.game))
+        return
+    }
   }
 }

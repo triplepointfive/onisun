@@ -1,5 +1,7 @@
 import { Game } from '../game'
 import { Player } from '../creature'
+import { LevelMap } from '../level_map';
+import { Tile } from '../tile';
 
 export enum PresenterType {
   ProfessionPicking,
@@ -18,6 +20,14 @@ export abstract class Presenter {
   }
 
   public build() {}
+
+  protected currentLevel(): LevelMap {
+    return this.player.currentLevel
+  }
+
+  protected tile(): Tile {
+    return this.currentLevel().at(this.player.pos.x, this.player.pos.y)
+  }
 
   protected endTurn(): void {
     this.game.ai.endTurn()
