@@ -21,7 +21,7 @@ class Room<T> extends Rect {
     )
   }
 
-  add(stage: T[][], walls: boolean[][], newRoomSpace): void {
+  add(stage: T[][], walls: boolean[][], newRoomSpace: () => T): void {
     let i: number = 0
     while (i < this.w) {
       let j: number = 0
@@ -44,7 +44,7 @@ class Road<T> extends Rect {
     this.lined = (x >= w && y >= h) || (w >= x && h >= y)
   }
 
-  add(stage: T[][], walls: boolean[][], newCorridor): void {
+  add(stage: T[][], walls: boolean[][], newCorridor: () => T): void {
     let [hx, hy, w] = this.horizontalLine()
 
     let i = 0

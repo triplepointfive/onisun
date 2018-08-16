@@ -2,13 +2,13 @@ import { random } from 'lodash'
 
 export class Pool<Input, Output> {
   private totalWeight: number = 0
-  private items: [number, (Input) => Output][] = []
+  private items: [number, (input: Input) => Output][] = []
 
-  constructor(items: [number, (Input) => Output][]) {
+  constructor(items: [number, (input: Input) => Output][]) {
     items.forEach(([weight, item]) => this.add(weight, item))
   }
 
-  public add(weight: number, item: (Input) => Output): void {
+  public add(weight: number, item: (input: Input) => Output): void {
     if (weight < 1) {
       throw `Item's weight is lower than 1`
     }

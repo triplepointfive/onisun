@@ -22,7 +22,7 @@ export class Thrower extends AI {
     const missile = this.missiles.item
     actor.inventory.missileSlot.removeItem(actor, 1)
 
-    let path = []
+    let path: Point[] = []
 
     bresenham(actor.pos, this.victim.pos, (x, y) => path.push(new Point(x, y)))
 

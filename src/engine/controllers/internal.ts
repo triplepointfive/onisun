@@ -192,7 +192,7 @@ export class AIMissileAttack extends Controller {
 
     slot.removeItem(this.player, 1)
 
-    let flightPath = [],
+    let flightPath: Point[] = [],
       victim: Creature
 
     this.path.forEach(point => {

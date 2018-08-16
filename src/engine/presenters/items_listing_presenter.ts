@@ -24,7 +24,7 @@ abstract class ItemsListingPresenter extends Presenter {
     this.initPositions()
   }
 
-  protected abstract initPositions()
+  protected abstract initPositions(): void
 
   public close(): void {
     this.redirect(new IdlePresenter(this.game))

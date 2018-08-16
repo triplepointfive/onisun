@@ -32,7 +32,12 @@ export enum Ability {
   Throwing,
 }
 
-export const allAbilities = Object.keys(Ability).map(key => Ability[key])
+export const allAbilities = [
+  Ability.GoStairwayDown,
+  Ability.Inventory,
+  Ability.PutOn,
+  Ability.Throwing,
+]
 
 export class Specie {
   constructor(

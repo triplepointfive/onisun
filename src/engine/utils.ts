@@ -13,6 +13,7 @@ export class Rect {
   }
 }
 
+// TODO: Remove this
 export const succ = function(c: string): string {
   return String.fromCharCode(c.charCodeAt(0) + 1)
 }
@@ -90,7 +91,7 @@ export abstract class Mapped<T> {
     this.height = map[0].length
   }
 
-  public at(x, y): T {
+  public at(x: number, y: number): T {
     return this.map[x][y]
   }
 
@@ -132,7 +133,7 @@ export const cycle = function(list: any[], dx: number): any[] {
 export const bresenham = function(
   p0: Point,
   p1: Point,
-  on: (x, y) => void
+  on: (x: number, y: number) => void
 ): void {
   let [x0, x1, y0, y1] = [p0.x, p1.x, p0.y, p1.y]
   let steps = Math.max(Math.abs(x0 - x1), Math.abs(y0 - y1))
@@ -151,14 +152,14 @@ export const bresenham = function(
 export const bresenhamInclusion = function(
   p0: Point,
   p1: Point,
-  on: (x, y) => void
+  on: (x: number, y: number) => void
 ): void {
   bresenham(p0, p1, on)
   on(p1.x, p1.y)
 }
 
 export class Direction extends Point {
-  private constructor(x, y) {
+  private constructor(x: number, y: number) {
     super(x, y)
   }
 

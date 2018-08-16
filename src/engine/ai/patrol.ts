@@ -98,15 +98,18 @@ export class Patrol extends AI {
   }
 
   private pickUpNewTarget(actor: Creature): void {
-    let seenLastID: NodeID = this.graph.nodes()[0]
-    let seenLastStep: number = this.lastNodeVisit[seenLastID]
+    let seenLastID: NodeID = this.graph.nodes()[0],
+        seenLastStep: number = this.lastNodeVisit[seenLastID],
+        nodes = this.graph.neighbors(this.currentNodeID)
 
-    this.graph.neighbors(this.currentNodeID).forEach((nodeID: NodeID) => {
-      if (seenLastStep > (this.lastNodeVisit[nodeID] || 0)) {
-        seenLastID = nodeID
-        seenLastStep = this.lastNodeVisit[seenLastID]
-      }
-    })
+    if (nodes) {
+      nodes.forEach((nodeID: NodeID) => {
+        if (seenLastStep > (this.lastNodeVisit[nodeID] || 0)) {
+          seenLastID = nodeID
+          seenLastStep = this.lastNodeVisit[seenLastID]
+        }
+      })
+    }
 
     this.targetNodeID = seenLastID
     this.buildNewPath(actor)
