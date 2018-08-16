@@ -45,28 +45,6 @@ export abstract class Controller {
   }
 }
 
-export class MoveController extends Controller {
-  constructor(public direction: Direction, game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    const stage = this.player.currentLevel,
-      dest = this.player.pos.add(this.direction),
-      tile = stage.at(dest.x, dest.y)
-
-    if (tile.passibleThrough(this.player)) {
-      this.player.move(dest)
-    } else if (tile.creature) {
-      tile.creature.real().on(new AttackEvent(this.player))
-    } else {
-      this.game.logger.ranIntoAnObstacle()
-    }
-
-    this.endTurn()
-  }
-}
-
 export class PickUpItemsDialogController extends Controller {
   public act(): void {
     const items = this.tile().items
@@ -126,19 +104,6 @@ export class DropItemsController extends Controller {
     })
 
     this.endTurn()
-  }
-}
-
-export class TakeOffItemController extends Controller {
-  constructor(private slot: InventorySlot, game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    // TODO: assert slot is not empty
-    const groupedItem = this.slot.equipment
-    this.slot.takeOff(this.player)
-    this.logger.takeOff(groupedItem.item)
   }
 }
 

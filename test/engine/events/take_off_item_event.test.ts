@@ -3,33 +3,34 @@ import {
   generatePlayer,
   generateOneHandedWeapon,
 } from '../../helpers'
-import { PutOnItemEvent } from '../../../src/engine'
+import { TakeOffItemEvent, LeftHandSlot, Player } from '../../../src/engine'
 
-describe('Put item on event', () => {
+describe('Taking item off event', () => {
   let item = generateOneHandedWeapon(),
-    player,
+    player: Player,
     game,
     event,
-    slot
+    slot: LeftHandSlot
 
   beforeEach(() => {
     player = generatePlayer()
-    player.inventory.putToBag(item, 1)
     game = generateGame()
+    player.inventory.putToBag(item, 1)
     slot = player.inventory.leftHandSlot
-    event = new PutOnItemEvent(slot, item, game)
+    slot.equip(player, item)
+    event = new TakeOffItemEvent(slot, game)
   })
 
   it('removes item from inventory', () => {
-    expect(player.inventory.findInBag(item)).toBeTruthy()
-    player.on(event)
     expect(player.inventory.findInBag(item)).toBeFalsy()
+    player.on(event)
+    expect(player.inventory.findInBag(item)).toBeTruthy()
   })
 
-  it('adds item to slot', () => {
-    expect(player.inventory.leftHandSlot.equipment).toBeFalsy()
-    player.on(event)
+  it('adds item to bag', () => {
     expect(player.inventory.leftHandSlot.equipment).toBeTruthy()
+    player.on(event)
+    expect(player.inventory.leftHandSlot.equipment).toBeFalsy()
   })
 
   it('adds a message to log', () => {

@@ -1,7 +1,6 @@
 import { Presenter, PresenterType } from './internal'
 import {
   Game,
-  MoveController,
   Direction,
   PickUpItemsDialogController,
   DropItemsPresenter,
@@ -9,6 +8,7 @@ import {
   BagPresenter,
   MissileDialogController,
   HandleController,
+  AttackEvent,
 } from '../../engine'
 import { InventoryPresenter } from './inventory_presenter'
 
@@ -41,22 +41,22 @@ export class IdlePresenter extends Presenter {
   public onInput(key: IdleInputKey) {
     switch (key) {
       case IdleInputKey.Right:
-        return new MoveController(Direction.right, this.game).act()
+        return this.move(Direction.right)
       case IdleInputKey.Left:
-        return new MoveController(Direction.left, this.game).act()
+        return this.move(Direction.left)
       case IdleInputKey.Down:
-        return new MoveController(Direction.down, this.game).act()
+        return this.move(Direction.down)
       case IdleInputKey.Up:
-        return new MoveController(Direction.up, this.game).act()
+        return this.move(Direction.up)
 
       case IdleInputKey.UpRight:
-        return new MoveController(Direction.upRight, this.game).act()
+        return this.move(Direction.upRight)
       case IdleInputKey.UpLeft:
-        return new MoveController(Direction.upLeft, this.game).act()
+        return this.move(Direction.upLeft)
       case IdleInputKey.DownRight:
-        return new MoveController(Direction.downRight, this.game).act()
+        return this.move(Direction.downRight)
       case IdleInputKey.DownLeft:
-        return new MoveController(Direction.downLeft, this.game).act()
+        return this.move(Direction.downLeft)
 
       case IdleInputKey.Handle:
         return new HandleController(this.game).act()
@@ -79,5 +79,21 @@ export class IdlePresenter extends Presenter {
         this.redirect(new BagPresenter(this.game))
         return
     }
+  }
+
+  private move(direction: Direction): void {
+    const stage = this.player.currentLevel,
+      dest = this.player.pos.add(direction),
+      tile = stage.at(dest.x, dest.y)
+
+    if (tile.passibleThrough(this.player)) {
+      this.player.move(dest)
+    } else if (tile.creature) {
+      tile.creature.real().on(new AttackEvent(this.player))
+    } else {
+      this.game.logger.ranIntoAnObstacle()
+    }
+
+    this.endTurn()
   }
 }

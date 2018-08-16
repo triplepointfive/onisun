@@ -1,12 +1,12 @@
 import { Presenter, PresenterType } from './internal'
 import {
   Game,
-  TakeOffItemController,
   Item,
   InventorySlot,
   GroupedItem,
   PutOnItemsPresenter,
   PutOnItemEvent,
+  TakeOffItemEvent,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
 
@@ -27,7 +27,7 @@ export class InventoryPresenter extends Presenter {
   }
 
   public takeOff(position: InventoryPosition) {
-    new TakeOffItemController(position.inventorySlot, this.game).act()
+    this.player.on(new TakeOffItemEvent(position.inventorySlot, this.game))
     this.takeTime = true
     this.rebuildPositions()
   }
