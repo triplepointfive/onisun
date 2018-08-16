@@ -17,10 +17,7 @@ export abstract class AIEvent {
   }
 
   public abstract act(): void
-
-  protected tile(): Tile {
-    return this.player.currentLevel.at(this.player.pos.x, this.player.pos.y)
-  }
+  public abstract immediate(): boolean
 }
 
 export class AIItemPickedEvent extends AIEvent {
@@ -37,6 +34,8 @@ export class AIItemPickedEvent extends AIEvent {
       // }
     })
   }
+
+  public immediate(): boolean { return false }
 
   // private whereToWear(item: Item): Wearing {
   //   const matches: Wearing[] = compact(

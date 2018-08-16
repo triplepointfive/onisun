@@ -7,13 +7,11 @@ export class ProfessionPickingPresenter extends Presenter {
   public options: Profession[]
   public title: string
 
-  constructor(game: Game) {
+  constructor(public readonly level: number, game: Game) {
     super(PresenterType.ProfessionPicking, game)
     this.options = this.game.professionPicker.available(this.player)
 
-    this.title = `Gained ${this.player.level.current -
-      this.player.levelUps +
-      1} level`
+    this.title = `Gained ${level} level`
   }
 
   public onInput(pickedProfession: Profession) {
@@ -26,6 +24,6 @@ export class ProfessionPickingPresenter extends Presenter {
       this.player.professions.push(pickedProfession)
     }
 
-    this.redirect(new TalentsTreePresenter(this.game))
+    this.redirect(new TalentsTreePresenter(this.level, this.game))
   }
 }

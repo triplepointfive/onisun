@@ -1,7 +1,7 @@
 import { Event } from './event'
 
 import { Point } from './utils'
-import { MetaAI } from './ai'
+import { MetaAI, PlayerAI } from './ai'
 import { Fov } from './fov'
 
 import {
@@ -167,7 +167,7 @@ export class Creature extends Phantom {
   }
 
   public on(event: Event): Reaction {
-    return event.affect(this)
+    return event.affectCreature(this)
   }
 
   public real(): Creature {
@@ -246,13 +246,13 @@ export class Creature extends Phantom {
 }
 
 export class Player extends Creature {
-  public levelUps: number = 0
+  public ai: PlayerAI
   public professions: Profession[] = []
 
   constructor(
     public level: Level,
     characteristics: Characteristics,
-    ai: MetaAI,
+    ai: PlayerAI,
     specie: Specie
   ) {
     super(characteristics, ai, specie)
@@ -260,5 +260,9 @@ export class Player extends Creature {
 
   public rebuildVision(): void {
     this.visionMask(this.currentLevel)
+  }
+
+  public on(event: Event): Reaction {
+    return event.affectPlayer(this)
   }
 }

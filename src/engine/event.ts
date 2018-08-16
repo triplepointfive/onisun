@@ -1,9 +1,11 @@
 import { Creature, Reaction, Player } from './creature'
-import { Item } from './items';
-import { Trap } from './tile';
+import { Item } from './items'
+import { Trap } from './tile'
+import { AINewLevelEvent } from './ai';
 
 export abstract class Event {
-  public abstract affect(subject: Creature): Reaction;
+  public abstract affectCreature(subject: Creature): Reaction;
+  public affectPlayer(subject: Player): Reaction { return this.affectCreature(subject) };
 }
 
 export class AttackEvent extends Event {
@@ -11,7 +13,7 @@ export class AttackEvent extends Event {
     super()
   }
 
-  public affect(subject: Creature): Reaction {
+  public affectCreature(subject: Creature): Reaction {
     if (this.actor.characteristics.misses(subject.characteristics)) {
       subject.currentLevel.game.logger.missMessage(this.actor, subject)
       return Reaction.DODGE
@@ -37,7 +39,7 @@ export class TrapEvent extends Event {
     super()
   }
 
-  public affect(actor: Creature): Reaction {
+  public affectCreature(actor: Creature): Reaction {
     const damage = 10,
       game = actor.currentLevel.game
 
@@ -65,7 +67,7 @@ export class ThrowEvent extends Event {
     super()
   }
 
-  public affect(subject: Creature): Reaction {
+  public affectCreature(subject: Creature): Reaction {
     if (this.actor.characteristics.throwMisses(subject.characteristics)) {
       subject.currentLevel.game.logger.throwMissMessage(
         this.actor,
@@ -108,10 +110,14 @@ export class AddExperienceEvent extends Event {
     super()
   }
 
-  public affect(subject: Creature): Reaction {
-    if (subject instanceof Player) {
-      subject.levelUps += subject.level.add(1)
-    }
+  public affectCreature(subject: Creature): Reaction {
+    return Reaction.NOTHING
+  }
+
+  public affectPlayer(subject: Player): Reaction {
+    subject.level.add(1).forEach(level => {
+      subject.ai.pushEvent(new AINewLevelEvent(level, subject.currentLevel.game))
+    })
 
     return Reaction.NOTHING
   }

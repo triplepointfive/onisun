@@ -1,25 +1,46 @@
-import { MetaAI } from './meta_ai'
+import { MetaAI, AIEvent } from './meta_ai'
 import { Player } from '../creature'
-import { IdlePresenter, Game } from '../../engine'
+import { IdlePresenter, Game, TalentsTreePresenter, ProfessionPickingPresenter } from '../../engine'
 import { Presenter } from '../presenters/internal'
+
+export class AINewLevelEvent extends AIEvent {
+  constructor(public level: number, game: Game) {
+    super(game)
+  }
+
+  public act(): void {
+    if (this.level % 3 === 0) {
+      this.game.ai.presenter = new ProfessionPickingPresenter(this.level, this.game)
+    } else {
+      this.game.ai.presenter = new TalentsTreePresenter(this.level, this.game)
+    }
+  }
+
+  public immediate(): boolean { return true }
+}
 
 export class PlayerAI extends MetaAI {
   public presenter: Presenter = null
   private player: Player
   private game: Game
+  public levelUps: number = 0
 
   public act(player: Player): void {
     this.player = player
     this.game = player.currentLevel.game
 
-    // this.runEvents(player)
     this.presenter = new IdlePresenter(this.game)
     this.game.ai = this
   }
 
   public endTurn(): void {
-    this.game.ai = null
-    this.presenter = null
+    let event = this.events.pop()
+    if (event) {
+      event.act()
+    } else {
+      this.game.ai = null
+      this.presenter = null
+    }
   }
 
   public redirect(presenter: Presenter): void {

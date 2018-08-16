@@ -1,5 +1,5 @@
 import { Presenter, PresenterType } from './internal'
-import { Game, ProfessionPickingPresenter } from '../../engine'
+import { Game } from '../../engine'
 import { Profession, Talent, TalentStatus } from '../profession'
 
 interface TalentWithStatus extends Talent {
@@ -14,7 +14,7 @@ interface TalentsTreePresenterProfession {
 export class TalentsTreePresenter extends Presenter {
   public options: TalentsTreePresenterProfession[] = []
 
-  constructor(game: Game) {
+  constructor(public readonly level: number, game: Game) {
     super(PresenterType.AbilitiesPicking, game)
 
     this.options = this.player.professions.map(profession => {
@@ -36,18 +36,9 @@ export class TalentsTreePresenter extends Presenter {
     profession.talents.find(talent => talent.id === talentId).rank += 1
     profession.points += 1
 
-    this.player.levelUps -= 1
     this.player.characteristics.levelUp(this.player.specie)
 
-    if (this.player.levelUps > 0) {
-      this.redirect(
-        (this.player.level.current - this.player.levelUps + 1) % 3 === 0
-          ? new ProfessionPickingPresenter(this.game)
-          : new TalentsTreePresenter(this.game)
-          )
-    } else {
-      this.endTurn()
-    }
+    this.endTurn()
   }
 
   private status(talent: Talent, profession: Profession): TalentStatus {

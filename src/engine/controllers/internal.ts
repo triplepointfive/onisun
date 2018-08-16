@@ -12,8 +12,6 @@ import {
   Potion,
   Item,
   ItemFlightEffect,
-  ProfessionPickingPresenter,
-  TalentsTreePresenter,
 } from '../../engine'
 import { MissilePresenter } from '../presenters/missile_presenter'
 import { LevelMap } from '../level_map'
@@ -60,19 +58,7 @@ export class AIMoveEvent extends Controller {
     if (tile.passibleThrough(this.player)) {
       this.player.move(dest)
     } else if (tile.creature) {
-      if (tile.creature.real().on(new AttackEvent(this.player)) === Reaction.DIE) {
-        if (this.player.levelUps > 0) {
-          this.redirect(
-            (this.player.level.current - this.player.levelUps + 1) % 3 === 0
-              ? new ProfessionPickingPresenter(this.game)
-              : new TalentsTreePresenter(this.game)
-          )
-        } else {
-          this.endTurn()
-        }
-
-        return
-      }
+      tile.creature.real().on(new AttackEvent(this.player))
     } else {
       this.game.logger.ranIntoAnObstacle()
     }
@@ -91,7 +77,6 @@ export class AIPickUpItemsDialog extends Controller {
         return
       case 1:
         new AIPickUpItems(items.bunch, this.game).act()
-        this.endTurn()
         return
       default:
         this.redirect(new PickUpPresenter(this.game))
@@ -218,23 +203,11 @@ export class AIMissileAttack extends Controller {
       }
     })
 
-    const effect = new ItemFlightEffect(missile, flightPath, () => {
-      if (victim && victim.on(new ThrowEvent(this.player, missile)) === Reaction.DIE) {
-        // TODO: Remove duplicity
-        if (this.player.levelUps > 0) {
-          this.redirect(
-            (this.player.level.current - this.player.levelUps + 1) % 3 === 0
-              ? new ProfessionPickingPresenter(this.game)
-              : new TalentsTreePresenter(this.game)
-          )
-        } else {
-          this.endTurn()
-        }
-        return
+    this.game.effect = new ItemFlightEffect(missile, flightPath, () => {
+      if (victim) {
+        victim.on(new ThrowEvent(this.player, missile)) === Reaction.DIE
+        this.endTurn()
       }
     })
-
-    this.player.currentLevel.addEffect(effect)
-    this.endTurn()
   }
 }

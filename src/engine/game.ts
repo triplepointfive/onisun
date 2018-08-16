@@ -11,31 +11,36 @@ export abstract class Game {
   public ai: PlayerAI = null
   public running: boolean = false
   public professionPicker: ProfessionPicker
+  public effect: Effect
 
   protected maps: Map<LevelMapId, LevelMap | MapGenerator> = new Map()
 
   public turn() {
-    if (this.running || this.ai) {
+    if (this.running || (this.ai && !this.effect)) {
       return
     }
-
-    this.player.ai.runEvents()
-
     this.running = true
 
-    while (!this.player.dead && !this.ai) {
-      const effect = this.levelMapTurn()
+    // this.player.ai.runEvents()
 
-      if (effect) {
-        this.player.rebuildVision()
-        effect.patchMemory(this.player.stageMemory())
-
-        this.running = false
-        return
+    const effect = this.effect
+    if (this.effect) {
+      if (this.effect.done()) {
+        this.effect.onDone()
+        this.effect = null
       }
-    }
 
-    this.player.rebuildVision()
+      this.player.rebuildVision()
+      effect.patchMemory(this.player.stageMemory())
+
+      this.running = false
+    } else {
+      while (!this.player.dead && !this.ai) {
+        this.levelMapTurn()
+      }
+
+      this.player.rebuildVision()
+    }
 
     this.running = false
   }
@@ -79,11 +84,6 @@ export abstract class Game {
 
       return
     } else if (effect) {
-      if (effect.done()) {
-        effect.onDone()
-      } else {
-        timeline.add([undefined, effect], effect.speed())
-      }
 
       return effect
     } else {
