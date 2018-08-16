@@ -9,7 +9,7 @@ import { Effect } from '../engine'
 
 export type LevelMapId = number
 
-export type TimeEvent = [CreatureId, Effect]
+type TimeEvent = [CreatureId, Effect]
 
 export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
@@ -68,35 +68,6 @@ export class LevelMap extends Mapped<Tile> {
 
   public addEffect(effect: Effect): void {
     this.timeline.add([undefined, effect], effect.speed())
-  }
-
-  public turn(): Effect {
-    const [actorId, effect] = this.timeline.next()
-
-    if (actorId !== undefined) {
-      const actor = this.creatures.find(creature => actorId === creature.id)
-
-      if (actor) {
-        actor.act(this)
-
-        // If they are still on a map
-        if (this.creatures.find(creature => actorId === creature.id)) {
-          this.timeline.add([actorId, undefined], actor.speed())
-        }
-      }
-
-      return
-    } else if (effect) {
-      if (effect.done()) {
-        effect.onDone()
-      } else {
-        this.timeline.add([undefined, effect], effect.speed())
-      }
-
-      return effect
-    } else {
-      throw 'Timeline event is empty!'
-    }
   }
 
   public matchStairs(adjustId: LevelMapId, enterPos: Point): Point {

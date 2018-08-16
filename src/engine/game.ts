@@ -1,6 +1,7 @@
 import { Logger, LevelMap, Player, Presenter, LevelMapId } from '../engine'
 import { ProfessionPicker } from './profession'
 import { MetaAI } from './ai/meta_ai'
+import { Effect } from './effect';
 
 type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
 
@@ -25,7 +26,7 @@ export abstract class Game {
     this.running = true
 
     while (!this.player.dead && !this.screen) {
-      const effect = this.player.currentLevel.turn()
+      const effect = this.levelMapTurn()
 
       if (effect) {
         this.player.rebuildVision()
@@ -58,5 +59,37 @@ export abstract class Game {
   public addMap(id: LevelMapId, generator: MapGenerator): void {
     // TODO: Raise if presence
     this.maps.set(id, generator)
+  }
+
+  private levelMapTurn(): Effect {
+    let timeline = this.currentMap.timeline,
+      map = this.currentMap
+
+    const [actorId, effect] = timeline.next()
+
+    if (actorId !== undefined) {
+      const actor = map.creatures.find(creature => actorId === creature.id)
+
+      if (actor) {
+        actor.act(map)
+
+        // If they are still on a map
+        if (map.creatures.find(creature => actorId === creature.id)) {
+          timeline.add([actorId, undefined], actor.speed())
+        }
+      }
+
+      return
+    } else if (effect) {
+      if (effect.done()) {
+        effect.onDone()
+      } else {
+        timeline.add([undefined, effect], effect.speed())
+      }
+
+      return effect
+    } else {
+      throw 'Timeline event is empty!'
+    }
   }
 }

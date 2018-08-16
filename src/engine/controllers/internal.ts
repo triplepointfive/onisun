@@ -207,18 +207,18 @@ export class AIMissileAttack extends Controller {
 
     slot.removeItem(this.player, 1)
 
-    let path = [],
+    let flightPath = [],
       victim: Creature
 
     this.path.forEach(point => {
       if (!victim) {
         const tile = this.player.currentLevel.at(point.x, point.y)
         victim = tile.creature && tile.creature.real()
-        this.path.push(point)
+        flightPath.push(point)
       }
     })
 
-    const effect = new ItemFlightEffect(missile, path, () => {
+    const effect = new ItemFlightEffect(missile, flightPath, () => {
       if (victim && victim.on(new ThrowEvent(this.player, missile)) === Reaction.DIE) {
         // TODO: Remove duplicity
         if (this.player.levelUps > 0) {
