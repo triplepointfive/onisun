@@ -45,7 +45,7 @@ export abstract class Controller {
   }
 }
 
-export class AIMoveEvent extends Controller {
+export class MoveController extends Controller {
   constructor(public direction: Direction, game: Game) {
     super(game)
   }
@@ -67,7 +67,7 @@ export class AIMoveEvent extends Controller {
   }
 }
 
-export class AIPickUpItemsDialog extends Controller {
+export class PickUpItemsDialogController extends Controller {
   public act(): void {
     const items = this.tile().items
 
@@ -76,7 +76,7 @@ export class AIPickUpItemsDialog extends Controller {
         this.game.logger.noItemsToPickUp()
         return
       case 1:
-        new AIPickUpItems(items.bunch, this.game).act()
+        new PickUpItemsController(items.bunch, this.game).act()
         return
       default:
         this.redirect(new PickUpPresenter(this.game))
@@ -85,7 +85,7 @@ export class AIPickUpItemsDialog extends Controller {
   }
 }
 
-export class AIPickUpItems extends Controller {
+export class PickUpItemsController extends Controller {
   constructor(private items: GroupedItem[], game: Game) {
     super(game)
   }
@@ -107,7 +107,7 @@ export class AIPickUpItems extends Controller {
   }
 }
 
-export class AIDropItems extends Controller {
+export class DropItemsController extends Controller {
   constructor(private items: GroupedItem[], game: Game) {
     super(game)
   }
@@ -129,7 +129,7 @@ export class AIDropItems extends Controller {
   }
 }
 
-export class AITakeOffItem extends Controller {
+export class TakeOffItemController extends Controller {
   constructor(private slot: InventorySlot, game: Game) {
     super(game)
   }
@@ -142,7 +142,7 @@ export class AITakeOffItem extends Controller {
   }
 }
 
-export class AIPutOnItem extends Controller {
+export class PutOnItemController extends Controller {
   constructor(private slot: InventorySlot, private item: Item, game: Game) {
     super(game)
   }
@@ -153,7 +153,7 @@ export class AIPutOnItem extends Controller {
   }
 }
 
-export class AIDrinkItem extends Controller {
+export class DrinkItemController extends Controller {
   constructor(private potion: Potion, game: Game) {
     super(game)
   }
@@ -165,7 +165,7 @@ export class AIDrinkItem extends Controller {
   }
 }
 
-export class AIMissileDialog extends Controller {
+export class MissileDialogController extends Controller {
   public act(): void {
     const missile = this.player.inventory.missileSlot.equipment
 
@@ -181,7 +181,7 @@ export class AIMissileDialog extends Controller {
   }
 }
 
-export class AIMissileAttack extends Controller {
+export class MissileAttackController extends Controller {
   constructor(private path: Point[], game: Game) {
     super(game)
   }

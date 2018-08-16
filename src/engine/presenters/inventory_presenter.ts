@@ -1,12 +1,12 @@
 import { Presenter, PresenterType } from './internal'
 import {
   Game,
-  AITakeOffItem,
+  TakeOffItemController,
   Item,
   InventorySlot,
   GroupedItem,
   PutOnItemsPresenter,
-  AIPutOnItem,
+  PutOnItemController,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
 
@@ -27,7 +27,7 @@ export class InventoryPresenter extends Presenter {
   }
 
   public takeOff(position: InventoryPosition) {
-    new AITakeOffItem(position.inventorySlot, this.game).act()
+    new TakeOffItemController(position.inventorySlot, this.game).act()
     this.takeTime = true
     this.rebuildPositions()
   }
@@ -36,7 +36,7 @@ export class InventoryPresenter extends Presenter {
     this.redirect(
       new PutOnItemsPresenter(
         itemGroup => {
-          new AIPutOnItem(
+          new PutOnItemController(
             position.inventorySlot,
             itemGroup.item,
             this.game

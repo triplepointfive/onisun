@@ -3,7 +3,7 @@ import { Game } from '../game'
 import { Point, bresenham, bresenhamInclusion, Direction } from '../utils'
 import { Memory } from '../memory'
 import { IdlePresenter } from './idle_presenter'
-import { AIMissileAttack } from '../../engine'
+import { MissileAttackController } from '../../engine'
 
 export class MissilePresenter extends Presenter {
   public targetPos: Point
@@ -64,7 +64,7 @@ export class MissilePresenter extends Presenter {
 
   public attack(): void {
     if (!this.targetPos.eq(this.player.pos)) {
-      new AIMissileAttack(this.path, this.game).act()
+      new MissileAttackController(this.path, this.game).act()
     }
   }
 

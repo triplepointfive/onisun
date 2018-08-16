@@ -25,6 +25,8 @@ import {
   Door,
   Room,
   TileVisitor,
+  Dungeon,
+  PlayerAI,
 } from '../src/engine'
 
 import { times, random } from 'lodash'
@@ -53,6 +55,10 @@ export const generateBodyArmor = function(): BodyArmor {
 
 export const generateMissile = function(): Missile {
   return new Missile('test missile', new Modifier({}))
+}
+
+export const generatePlayerAI = function(): PlayerAI {
+  return new PlayerAI()
 }
 
 export const generateItem = function() {
@@ -115,7 +121,7 @@ export const generatePlayer = function(): Player {
   return new Player(
     generateLevel(),
     generateCharacteristics(),
-    generateMetaAI(),
+    generatePlayerAI(),
     fakeSpecie
   )
 }

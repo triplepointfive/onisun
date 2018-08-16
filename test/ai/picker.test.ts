@@ -21,7 +21,7 @@ describe('When there are no items', () => {
 
 describe('When there is only one item', () => {
   beforeEach(() => {
-    map.at(3, 3).addItem(generateItem())
+    map.at(3, 3).addItem(generateItem(), 1)
     creature.act(map)
   })
 
@@ -37,8 +37,8 @@ describe('When there is only one item', () => {
 
 describe('When there are multiple items', () => {
   beforeEach(() => {
-    map.at(3, 3).addItem(generateItem())
-    map.at(3, 5).addItem(generateItem())
+    map.at(3, 3).addItem(generateItem(), 1)
+    map.at(3, 5).addItem(generateItem(), 1)
     creature.act(map)
   })
 
@@ -62,9 +62,9 @@ describe('When an item is on the same cell as a player', () => {
 
 describe('When items on every single cell around', () => {
   beforeEach(() => {
-    map.at(1, 2).addItem(generateItem())
-    map.at(2, 2).addItem(generateItem())
-    map.at(2, 1).addItem(generateItem())
+    map.at(1, 2).addItem(generateItem(), 1)
+    map.at(2, 2).addItem(generateItem(), 1)
+    map.at(2, 1).addItem(generateItem(), 1)
   })
 
   it('AI is available', () => {

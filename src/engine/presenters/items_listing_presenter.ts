@@ -2,9 +2,9 @@ import { Presenter, PresenterType } from './internal'
 import {
   Game,
   Item,
-  AIPickUpItems,
-  AIDropItems,
-  AIDrinkItem,
+  PickUpItemsController,
+  DropItemsController,
+  DrinkItemController,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
 import { GroupedItem, ItemGroup, Potion } from '../items/internal'
@@ -46,7 +46,7 @@ export class PickUpPresenter extends ItemsListingPresenter {
 
   public pickUpItems(items: GroupedItem[]): void {
     // TODO: Validate items are part of positions
-    new AIPickUpItems(items, this.game).act()
+    new PickUpItemsController(items, this.game).act()
   }
 }
 
@@ -59,7 +59,7 @@ export class DropItemsPresenter extends ItemsListingPresenter {
 
   public pickUpItems(items: GroupedItem[]): void {
     // TODO: Validate items are part of positions
-    new AIDropItems(items, this.game).act()
+    new DropItemsController(items, this.game).act()
   }
 }
 
@@ -106,7 +106,7 @@ export class DrinkPresenter extends ItemsListingPresenter {
   }
 
   public withItem(itemGroup: { item: Potion }): void {
-    new AIDrinkItem(itemGroup.item, this.game).act()
+    new DrinkItemController(itemGroup.item, this.game).act()
     this.endTurn()
   }
 }

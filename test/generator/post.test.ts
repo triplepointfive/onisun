@@ -51,20 +51,6 @@ describe('centralize', () => {
   })
 })
 
-// describe('connectMaps', () => {
-//   let map1 = drawn(['R'])
-//   let map2 = drawn(['R'])
-//   connectMaps(map1, map2)
-//
-//   it('adds downstairs on first map', () => {
-//     expect(map1.at(0, 0)).toBeInstanceOf(StairwayDown)
-//   })
-//
-//   it('adds upstairs on second map', () => {
-//     expect(map2.at(0, 0)).toBeInstanceOf(StairwayUp)
-//   })
-// })
-
 describe('addOnTile', () => {
   let map = new LevelMap(0, drawn(['R'], testTiles))
 
@@ -73,9 +59,7 @@ describe('addOnTile', () => {
       addOnTile(
         map,
         tile => false,
-        (ux, uy) => {
-          // Shouldn't get here
-        }
+        (ux, uy) => {}
       )
     }).toThrowError()
   })

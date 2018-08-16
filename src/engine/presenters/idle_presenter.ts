@@ -1,13 +1,13 @@
 import { Presenter, PresenterType } from './internal'
 import {
   Game,
-  AIMoveEvent,
+  MoveController,
   Direction,
-  AIPickUpItemsDialog,
+  PickUpItemsDialogController,
   DropItemsPresenter,
   DrinkPresenter,
   BagPresenter,
-  AIMissileDialog,
+  MissileDialogController,
   HandleController,
 } from '../../engine'
 import { InventoryPresenter } from './inventory_presenter'
@@ -41,30 +41,30 @@ export class IdlePresenter extends Presenter {
   public onInput(key: IdleInputKey) {
     switch (key) {
       case IdleInputKey.Right:
-        return new AIMoveEvent(Direction.right, this.game).act()
+        return new MoveController(Direction.right, this.game).act()
       case IdleInputKey.Left:
-        return new AIMoveEvent(Direction.left, this.game).act()
+        return new MoveController(Direction.left, this.game).act()
       case IdleInputKey.Down:
-        return new AIMoveEvent(Direction.down, this.game).act()
+        return new MoveController(Direction.down, this.game).act()
       case IdleInputKey.Up:
-        return new AIMoveEvent(Direction.up, this.game).act()
+        return new MoveController(Direction.up, this.game).act()
 
       case IdleInputKey.UpRight:
-        return new AIMoveEvent(Direction.upRight, this.game).act()
+        return new MoveController(Direction.upRight, this.game).act()
       case IdleInputKey.UpLeft:
-        return new AIMoveEvent(Direction.upLeft, this.game).act()
+        return new MoveController(Direction.upLeft, this.game).act()
       case IdleInputKey.DownRight:
-        return new AIMoveEvent(Direction.downRight, this.game).act()
+        return new MoveController(Direction.downRight, this.game).act()
       case IdleInputKey.DownLeft:
-        return new AIMoveEvent(Direction.downLeft, this.game).act()
+        return new MoveController(Direction.downLeft, this.game).act()
 
       case IdleInputKey.Handle:
         return new HandleController(this.game).act()
 
       case IdleInputKey.PickUp:
-        return new AIPickUpItemsDialog(this.game).act()
+        return new PickUpItemsDialogController(this.game).act()
       case IdleInputKey.Missile:
-        return new AIMissileDialog(this.game).act()
+        return new MissileDialogController(this.game).act()
 
       case IdleInputKey.Drop:
         this.redirect(new DropItemsPresenter(this.game))
