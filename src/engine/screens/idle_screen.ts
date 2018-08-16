@@ -1,16 +1,16 @@
-import { Screen, ScreenType } from './internal'
+import { Presenter, PresenterType } from './internal'
 import {
   Game,
   AIMoveEvent,
   Direction,
   AIPickUpItemsDialog,
-  DropItemsScreen,
-  DrinkScreen,
-  BagScreen,
+  DropItemsPresenter,
+  DrinkPresenter,
+  BagPresenter,
   AIMissileDialog,
   HandleController,
 } from '../../engine'
-import { InventoryScreen } from './inventory_screen'
+import { InventoryPresenter } from './inventory_screen'
 
 export enum IdleInputKey {
   Right,
@@ -33,9 +33,9 @@ export enum IdleInputKey {
   Drink,
 }
 
-export class IdleScreen extends Screen {
+export class IdlePresenter extends Presenter {
   constructor(game: Game) {
-    super(ScreenType.Idle, game)
+    super(PresenterType.Idle, game)
   }
 
   public onInput(key: IdleInputKey) {
@@ -67,16 +67,16 @@ export class IdleScreen extends Screen {
         return new AIMissileDialog(this.game).act()
 
       case IdleInputKey.Drop:
-        this.game.screen = new DropItemsScreen(this.game)
+        this.game.screen = new DropItemsPresenter(this.game)
         return
       case IdleInputKey.Drink:
-        this.game.screen = new DrinkScreen(this.game)
+        this.game.screen = new DrinkPresenter(this.game)
         return
       case IdleInputKey.Inventory:
-        this.game.screen = new InventoryScreen(this.game)
+        this.game.screen = new InventoryPresenter(this.game)
         return
       case IdleInputKey.Bag:
-        this.game.screen = new BagScreen(this.game)
+        this.game.screen = new BagPresenter(this.game)
         return
     }
   }

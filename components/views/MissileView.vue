@@ -7,7 +7,7 @@ import Vue from 'vue'
 import { IdleInputKey, Direction } from '../../src/engine'
 
 export default Vue.extend({
-  name: 'MissileScreen',
+  name: 'MissileView',
   props: ['screen'],
   methods: {
     close(inputKey) {

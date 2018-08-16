@@ -1,14 +1,14 @@
 import { Game } from '../game'
-import { ScreenType, Screen } from './internal'
+import { PresenterType, Presenter } from './internal'
 import { Profession } from '../profession'
-import { TalentsTreeScreen } from './talents_tree_screen'
+import { TalentsTreePresenter } from './talents_tree_screen'
 
-export class ProfessionPickingScreen extends Screen {
+export class ProfessionPickingPresenter extends Presenter {
   public options: Profession[]
   public title: string
 
   constructor(game: Game) {
-    super(ScreenType.ProfessionPicking, game)
+    super(PresenterType.ProfessionPicking, game)
     this.options = this.game.professionPicker.available(this.player)
 
     this.title = `Gained ${this.player.level.current -
@@ -26,6 +26,6 @@ export class ProfessionPickingScreen extends Screen {
       this.player.professions.push(pickedProfession)
     }
 
-    this.game.screen = new TalentsTreeScreen(this.game)
+    this.game.screen = new TalentsTreePresenter(this.game)
   }
 }

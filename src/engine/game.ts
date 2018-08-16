@@ -1,4 +1,4 @@
-import { Logger, LevelMap, Player, Screen, LevelMapId } from '../engine'
+import { Logger, LevelMap, Player, Presenter, LevelMapId } from '../engine'
 import { ProfessionPicker } from './profession'
 
 type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
@@ -7,7 +7,7 @@ export abstract class Game {
   public logger: Logger = new Logger()
   public currentMap: LevelMap
   public player: Player
-  public screen: Screen = null
+  public screen: Presenter = null
   public running: boolean = false
   public professionPicker: ProfessionPicker
 

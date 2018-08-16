@@ -1,7 +1,7 @@
 import { Game } from '../game'
 import { Player } from '../creature'
 
-export enum ScreenType {
+export enum PresenterType {
   ProfessionPicking,
   Idle,
   AbilitiesPicking,
@@ -10,10 +10,10 @@ export enum ScreenType {
   Missile,
 }
 
-export abstract class Screen {
+export abstract class Presenter {
   public player: Player
 
-  constructor(public readonly type: ScreenType, protected game: Game) {
+  constructor(public readonly type: PresenterType, protected game: Game) {
     this.player = this.game.player
   }
 

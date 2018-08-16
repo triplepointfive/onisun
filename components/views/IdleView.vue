@@ -7,7 +7,7 @@ import Vue from 'vue'
 import { IdleInputKey } from '../../src/engine'
 
 export default Vue.extend({
-  name: 'IdleScreen',
+  name: 'IdleView',
   props: ['screen'],
   methods: {
     close(inputKey) {

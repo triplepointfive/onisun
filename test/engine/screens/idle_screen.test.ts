@@ -1,8 +1,8 @@
 import {
-  IdleScreen,
+  IdlePresenter,
   IdleInputKey,
   Player,
-  InventoryScreen,
+  InventoryPresenter,
 } from '../../../src/engine'
 
 import { generateGame, TestGame, generatePlayer } from '../../helpers'
@@ -10,15 +10,15 @@ import { generateGame, TestGame, generatePlayer } from '../../helpers'
 describe('puts on and takes off', () => {
   let game: TestGame = generateGame(),
     player: Player,
-    screen: IdleScreen
+    screen: IdlePresenter
 
   beforeEach(() => {
     game.player = player = generatePlayer()
-    game.screen = screen = new IdleScreen(game)
+    game.screen = screen = new IdlePresenter(game)
   })
 
   it('opens inventory screen', () => {
     screen.onInput(IdleInputKey.Inventory)
-    expect(game.screen).toBeInstanceOf(InventoryScreen)
+    expect(game.screen).toBeInstanceOf(InventoryPresenter)
   })
 })

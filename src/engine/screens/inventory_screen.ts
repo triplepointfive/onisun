@@ -1,14 +1,14 @@
-import { Screen, ScreenType } from './internal'
+import { Presenter, PresenterType } from './internal'
 import {
   Game,
   AITakeOffItem,
   Item,
   InventorySlot,
   GroupedItem,
-  PutOnItemsScreen,
+  PutOnItemsPresenter,
   AIPutOnItem,
 } from '../../engine'
-import { IdleScreen } from './idle_screen'
+import { IdlePresenter } from './idle_screen'
 
 interface InventoryPosition {
   inventorySlot: InventorySlot
@@ -17,12 +17,12 @@ interface InventoryPosition {
   availableItems: GroupedItem[]
 }
 
-export class InventoryScreen extends Screen {
+export class InventoryPresenter extends Presenter {
   public positions: InventoryPosition[] = []
   private takeTime: boolean = false
 
   constructor(game: Game) {
-    super(ScreenType.Inventory, game)
+    super(PresenterType.Inventory, game)
     this.rebuildPositions()
   }
 
@@ -33,7 +33,7 @@ export class InventoryScreen extends Screen {
   }
 
   public putOn(position: InventoryPosition) {
-    this.game.screen = new PutOnItemsScreen(
+    this.game.screen = new PutOnItemsPresenter(
       itemGroup => {
         new AIPutOnItem(position.inventorySlot, itemGroup.item, this.game).act()
         this.takeTime = true
@@ -49,7 +49,7 @@ export class InventoryScreen extends Screen {
     if (this.takeTime) {
       this.game.screen = null
     } else {
-      this.game.screen = new IdleScreen(this.game)
+      this.game.screen = new IdlePresenter(this.game)
     }
   }
 

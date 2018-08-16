@@ -1,4 +1,4 @@
-import { Screen, ScreenType } from './internal'
+import { Presenter, PresenterType } from './internal'
 import {
   Game,
   Item,
@@ -6,32 +6,32 @@ import {
   AIDropItems,
   AIDrinkItem,
 } from '../../engine'
-import { IdleScreen } from './idle_screen'
+import { IdlePresenter } from './idle_screen'
 import { GroupedItem, ItemGroup, Potion } from '../items/internal'
-import { InventoryScreen } from './inventory_screen'
+import { InventoryPresenter } from './inventory_screen'
 
 interface ItemsListingPosition {
   item: Item
   count: number
 }
 
-abstract class ItemsListingScreen extends Screen {
+abstract class ItemsListingPresenter extends Presenter {
   public positions: ItemsListingPosition[]
   public title: string
 
   constructor(game: Game) {
-    super(ScreenType.ItemsListing, game)
+    super(PresenterType.ItemsListing, game)
     this.initPositions()
   }
 
   protected abstract initPositions()
 
   public close(): void {
-    this.game.screen = new IdleScreen(this.game)
+    this.game.screen = new IdlePresenter(this.game)
   }
 }
 
-export class PickUpScreen extends ItemsListingScreen {
+export class PickUpPresenter extends ItemsListingPresenter {
   public title: string = 'What to pick up?'
 
   protected initPositions(): void {
@@ -50,7 +50,7 @@ export class PickUpScreen extends ItemsListingScreen {
   }
 }
 
-export class DropItemsScreen extends ItemsListingScreen {
+export class DropItemsPresenter extends ItemsListingPresenter {
   public title: string = 'What to drop?'
 
   protected initPositions(): void {
@@ -63,7 +63,7 @@ export class DropItemsScreen extends ItemsListingScreen {
   }
 }
 
-export class PutOnItemsScreen extends ItemsListingScreen {
+export class PutOnItemsPresenter extends ItemsListingPresenter {
   public title: string = 'What to put on?'
   public singleItemMode: boolean = true
 
@@ -87,11 +87,11 @@ export class PutOnItemsScreen extends ItemsListingScreen {
   }
 
   public close(): void {
-    this.game.screen = new InventoryScreen(this.game)
+    this.game.screen = new InventoryPresenter(this.game)
   }
 }
 
-export class DrinkScreen extends ItemsListingScreen {
+export class DrinkPresenter extends ItemsListingPresenter {
   public title: string = 'Что выпить?'
   public singleItemMode: boolean = true
 
@@ -111,7 +111,7 @@ export class DrinkScreen extends ItemsListingScreen {
   }
 }
 
-export class BagScreen extends ItemsListingScreen {
+export class BagPresenter extends ItemsListingPresenter {
   public title: string = 'Сумка'
   public singleItemMode: boolean = true
 

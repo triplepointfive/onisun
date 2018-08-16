@@ -5,17 +5,17 @@ import { Game } from '../game'
 import { Tile } from '../tile'
 import { Direction, Point } from '../utils'
 import {
-  IdleScreen,
-  PickUpScreen,
+  IdlePresenter,
+  PickUpPresenter,
   GroupedItem,
   InventorySlot,
   Potion,
   Item,
   ItemFlightEffect,
-  ProfessionPickingScreen,
-  TalentsTreeScreen,
+  ProfessionPickingPresenter,
+  TalentsTreePresenter,
 } from '../../engine'
-import { MissileScreen } from '../screens/missile_screen'
+import { MissilePresenter } from '../screens/missile_screen'
 import { LevelMap } from '../level_map'
 
 export abstract class Controller {
@@ -55,8 +55,8 @@ export class AIMoveEvent extends Controller {
         if (this.player.levelUps > 0) {
           this.game.screen =
             (this.player.level.current - this.player.levelUps + 1) % 3 === 0
-              ? new ProfessionPickingScreen(this.game)
-              : new TalentsTreeScreen(this.game)
+              ? new ProfessionPickingPresenter(this.game)
+              : new TalentsTreePresenter(this.game)
         } else {
           this.game.screen = undefined
         }
@@ -84,7 +84,7 @@ export class AIPickUpItemsDialog extends Controller {
         this.game.screen = undefined
         return
       default:
-        this.game.screen = new PickUpScreen(this.game)
+        this.game.screen = new PickUpPresenter(this.game)
         return
     }
   }
@@ -97,7 +97,7 @@ export class AIPickUpItems extends Controller {
 
   public act(): void {
     if (!this.items.length) {
-      this.game.screen = new IdleScreen(this.game)
+      this.game.screen = new IdlePresenter(this.game)
     }
 
     let tileItems = this.tile().items
@@ -119,7 +119,7 @@ export class AIDropItems extends Controller {
 
   public act(): void {
     if (!this.items.length) {
-      this.game.screen = new IdleScreen(this.game)
+      this.game.screen = new IdlePresenter(this.game)
     }
 
     let tile = this.tile()
@@ -176,7 +176,7 @@ export class AIMissileDialog extends Controller {
 
     if (missile && missile.item) {
       if (missile.item.canThrow(this.player)) {
-        this.game.screen = new MissileScreen(this.game)
+        this.game.screen = new MissilePresenter(this.game)
       } else {
         this.logger.needMissileWeapon()
       }
@@ -214,8 +214,8 @@ export class AIMissileAttack extends Controller {
         if (this.player.levelUps > 0) {
           this.game.screen =
             (this.player.level.current - this.player.levelUps + 1) % 3 === 0
-              ? new ProfessionPickingScreen(this.game)
-              : new TalentsTreeScreen(this.game)
+              ? new ProfessionPickingPresenter(this.game)
+              : new TalentsTreePresenter(this.game)
         } else {
           this.game.screen = undefined
         }

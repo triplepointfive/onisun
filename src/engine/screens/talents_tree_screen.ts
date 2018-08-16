@@ -1,21 +1,21 @@
-import { Screen, ScreenType } from './internal'
-import { Game, ProfessionPickingScreen } from '../../engine'
+import { Presenter, PresenterType } from './internal'
+import { Game, ProfessionPickingPresenter } from '../../engine'
 import { Profession, Talent, TalentStatus } from '../profession'
 
 interface TalentWithStatus extends Talent {
   status: TalentStatus
 }
 
-interface TalentsTreeScreenProfession {
+interface TalentsTreePresenterProfession {
   profession: Profession
   talents: TalentWithStatus[]
 }
 
-export class TalentsTreeScreen extends Screen {
-  public options: TalentsTreeScreenProfession[] = []
+export class TalentsTreePresenter extends Presenter {
+  public options: TalentsTreePresenterProfession[] = []
 
   constructor(game: Game) {
-    super(ScreenType.AbilitiesPicking, game)
+    super(PresenterType.AbilitiesPicking, game)
 
     this.options = this.player.professions.map(profession => {
       return {
@@ -42,8 +42,8 @@ export class TalentsTreeScreen extends Screen {
     if (this.player.levelUps > 0) {
       this.game.screen =
         (this.player.level.current - this.player.levelUps + 1) % 3 === 0
-          ? new ProfessionPickingScreen(this.game)
-          : new TalentsTreeScreen(this.game)
+          ? new ProfessionPickingPresenter(this.game)
+          : new TalentsTreePresenter(this.game)
     } else {
       this.game.screen = undefined
     }

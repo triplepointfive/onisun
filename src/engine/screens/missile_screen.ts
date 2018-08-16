@@ -1,11 +1,11 @@
-import { Screen, ScreenType } from './internal'
+import { Presenter, PresenterType } from './internal'
 import { Game } from '../game'
 import { Point, bresenham, bresenhamInclusion, Direction } from '../utils'
 import { Memory } from '../memory'
-import { IdleScreen } from './idle_screen'
+import { IdlePresenter } from './idle_screen'
 import { AIMissileAttack } from '../../engine'
 
-export class MissileScreen extends Screen {
+export class MissilePresenter extends Presenter {
   public targetPos: Point
   private memory: Memory
   private targetEnemyIndex: number = undefined
@@ -13,7 +13,7 @@ export class MissileScreen extends Screen {
   private path: Point[] = []
 
   constructor(game: Game) {
-    super(ScreenType.Missile, game)
+    super(PresenterType.Missile, game)
 
     this.findEnemies()
     this.memory = this.player.stageMemory()
@@ -70,7 +70,7 @@ export class MissileScreen extends Screen {
 
   public close(): void {
     this.resetPath()
-    this.game.screen = new IdleScreen(this.game)
+    this.game.screen = new IdlePresenter(this.game)
   }
 
   private resetTargetId(): void {

@@ -34,14 +34,14 @@ import Logger from './Logger.vue'
 import Scene from './Scene.vue'
 import Stats from './stats.vue'
 
-import Idle from './screens/IdleScreen.vue'
-import ProfessionPickingScreen from './screens/ProfessionPickingScreen.vue'
-import ItemsListingScreen from './screens/ItemsListingScreen.vue'
-import TalentsTreeScreen from './screens/TalentsTreeScreen.vue'
-import InventoryScreen from './screens/InventoryScreen.vue'
-import MissileScreen from './screens/MissileScreen.vue'
+import Idle from './views/IdleView.vue'
+import ProfessionPickingView from './views/ProfessionPickingView.vue'
+import ItemsListingView from './views/ItemsListingView.vue'
+import TalentsTreeView from './views/TalentsTreeView.vue'
+import InventoryView from './views/InventoryView.vue'
+import MissileView from './views/MissileView.vue'
 
-import { LevelMap, ScreenType, Screen } from '../src/engine'
+import { LevelMap, PresenterType } from '../src/engine'
 
 import {
   Onisun,
@@ -64,18 +64,18 @@ export default Vue.extend({
   computed: {
     screenComponent() {
       switch (this.game.screen && this.game.screen.type) {
-      case ScreenType.AbilitiesPicking:
-        return TalentsTreeScreen
-      case ScreenType.ProfessionPicking:
-        return ProfessionPickingScreen
-      case ScreenType.Idle:
+      case PresenterType.AbilitiesPicking:
+        return TalentsTreeView
+      case PresenterType.ProfessionPicking:
+        return ProfessionPickingView
+      case PresenterType.Idle:
         return Idle
-      case ScreenType.ItemsListing:
-        return ItemsListingScreen
-      case ScreenType.Inventory:
-        return InventoryScreen
-      case ScreenType.Missile:
-        return MissileScreen
+      case PresenterType.ItemsListing:
+        return ItemsListingView
+      case PresenterType.Inventory:
+        return InventoryView
+      case PresenterType.Missile:
+        return MissileView
       }
     }
   },
