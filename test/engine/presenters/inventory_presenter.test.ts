@@ -9,11 +9,13 @@ describe('puts on and takes off', () => {
 
   beforeEach(() => {
     game.player = player = generatePlayer()
-    game.screen = screen = new InventoryPresenter(game)
+    screen = new InventoryPresenter(game)
+    screen.redirect = jest.fn()
   })
 
   it('closes inventory', () => {
     screen.close()
-    expect(game.screen).toBeInstanceOf(IdlePresenter)
+    expect(screen.redirect.mock.calls.length).toBe(1)
+    expect(screen.redirect.mock.calls[0][0]).toBeInstanceOf(IdlePresenter)
   })
 })

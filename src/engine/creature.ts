@@ -1,4 +1,4 @@
-import { Event } from './event';
+import { Event } from './event'
 
 import { Point } from './utils'
 import { MetaAI } from './ai'
@@ -16,7 +16,6 @@ import {
 
 import { Level } from './level'
 import { includes } from 'lodash'
-import { Item } from './items'
 import { Profession } from './profession'
 import { TileVisitor, Door, Tile, Trap } from './tile'
 

@@ -20,10 +20,10 @@ export abstract class Presenter {
   public build() {}
 
   protected endTurn(): void {
-    this.game.screen = null
+    this.game.ai.endTurn()
   }
 
   protected redirect(presenter: Presenter): void {
-    this.game.screen = presenter
+    this.game.ai.redirect(presenter)
   }
 }

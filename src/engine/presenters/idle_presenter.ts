@@ -76,7 +76,7 @@ export class IdlePresenter extends Presenter {
         this.redirect(new InventoryPresenter(this.game))
         return
       case IdleInputKey.Bag:
-        this.game.screen = new BagPresenter(this.game)
+        this.redirect(new BagPresenter(this.game))
         return
     }
   }

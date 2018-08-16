@@ -1,7 +1,6 @@
-import { Logger, LevelMap, Player, Presenter, LevelMapId } from '../engine'
+import { Logger, LevelMap, Player, LevelMapId, PlayerAI } from '../engine'
 import { ProfessionPicker } from './profession'
-import { MetaAI } from './ai/meta_ai'
-import { Effect } from './effect';
+import { Effect } from './effect'
 
 type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
 
@@ -9,15 +8,14 @@ export abstract class Game {
   public logger: Logger = new Logger()
   public currentMap: LevelMap
   public player: Player
-  public ai: MetaAI
-  public screen: Presenter = null
+  public ai: PlayerAI = null
   public running: boolean = false
   public professionPicker: ProfessionPicker
 
   protected maps: Map<LevelMapId, LevelMap | MapGenerator> = new Map()
 
   public turn() {
-    if (this.running || this.screen) {
+    if (this.running || this.ai) {
       return
     }
 
@@ -25,7 +23,7 @@ export abstract class Game {
 
     this.running = true
 
-    while (!this.player.dead && !this.screen) {
+    while (!this.player.dead && !this.ai) {
       const effect = this.levelMapTurn()
 
       if (effect) {

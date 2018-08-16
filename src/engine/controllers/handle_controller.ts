@@ -17,7 +17,7 @@ class HandleTileVisitor extends TileVisitor {
     )
     this.player.move(stairway.enterPos, adjacentMap)
 
-    this.game.screen = undefined
+    this.game.ai.endTurn()
   }
 
   protected default(): void {

@@ -19,10 +19,10 @@
     | You are dead
 
   component(
-    v-if='game.screen'
-    :is='screenComponent'
-    :screen='game.screen'
-    ref="screenComponent"
+    v-if='game.ai'
+    :is='viewComponent'
+    :screen='game.ai.presenter'
+    ref="viewComponent"
     )
 </template>
 
@@ -62,8 +62,8 @@ export default Vue.extend({
     Stats,
   },
   computed: {
-    screenComponent() {
-      switch (this.game.screen && this.game.screen.type) {
+    viewComponent() {
+      switch (this.game.ai && this.game.ai.presenter.type) {
       case PresenterType.AbilitiesPicking:
         return TalentsTreeView
       case PresenterType.ProfessionPicking:
@@ -84,9 +84,9 @@ export default Vue.extend({
       this.game.turn()
     },
     onEvent(event) {
-      const screen = this.$refs.screenComponent
-      if (screen) {
-        screen.onEvent(event)
+      const view = this.$refs.viewComponent
+      if (view) {
+        view.onEvent(event)
       }
     }
   },
