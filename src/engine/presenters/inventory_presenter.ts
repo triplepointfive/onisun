@@ -8,7 +8,7 @@ import {
   PutOnItemsPresenter,
   AIPutOnItem,
 } from '../../engine'
-import { IdlePresenter } from './idle_screen'
+import { IdlePresenter } from './idle_presenter'
 
 interface InventoryPosition {
   inventorySlot: InventorySlot
@@ -33,23 +33,23 @@ export class InventoryPresenter extends Presenter {
   }
 
   public putOn(position: InventoryPosition) {
-    this.game.screen = new PutOnItemsPresenter(
+    this.redirect(new PutOnItemsPresenter(
       itemGroup => {
         new AIPutOnItem(position.inventorySlot, itemGroup.item, this.game).act()
         this.takeTime = true
         this.rebuildPositions()
-        this.game.screen = this
+        this.redirect(this)
       },
       position.availableItems,
       this.game
-    )
+    ))
   }
 
   public close() {
     if (this.takeTime) {
-      this.game.screen = null
+      this.endTurn()
     } else {
-      this.game.screen = new IdlePresenter(this.game)
+      this.redirect(new IdlePresenter(this.game))
     }
   }
 

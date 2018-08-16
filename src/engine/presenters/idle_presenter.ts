@@ -10,7 +10,7 @@ import {
   AIMissileDialog,
   HandleController,
 } from '../../engine'
-import { InventoryPresenter } from './inventory_screen'
+import { InventoryPresenter } from './inventory_presenter'
 
 export enum IdleInputKey {
   Right,
@@ -67,13 +67,13 @@ export class IdlePresenter extends Presenter {
         return new AIMissileDialog(this.game).act()
 
       case IdleInputKey.Drop:
-        this.game.screen = new DropItemsPresenter(this.game)
+        this.redirect(new DropItemsPresenter(this.game))
         return
       case IdleInputKey.Drink:
-        this.game.screen = new DrinkPresenter(this.game)
+        this.redirect(new DrinkPresenter(this.game))
         return
       case IdleInputKey.Inventory:
-        this.game.screen = new InventoryPresenter(this.game)
+        this.redirect(new InventoryPresenter(this.game))
         return
       case IdleInputKey.Bag:
         this.game.screen = new BagPresenter(this.game)

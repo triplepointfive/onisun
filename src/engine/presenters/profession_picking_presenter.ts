@@ -1,7 +1,7 @@
 import { Game } from '../game'
 import { PresenterType, Presenter } from './internal'
 import { Profession } from '../profession'
-import { TalentsTreePresenter } from './talents_tree_screen'
+import { TalentsTreePresenter } from './talents_tree_presenter'
 
 export class ProfessionPickingPresenter extends Presenter {
   public options: Profession[]
@@ -26,6 +26,6 @@ export class ProfessionPickingPresenter extends Presenter {
       this.player.professions.push(pickedProfession)
     }
 
-    this.game.screen = new TalentsTreePresenter(this.game)
+    this.redirect(new TalentsTreePresenter(this.game))
   }
 }

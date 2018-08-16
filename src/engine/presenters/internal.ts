@@ -18,4 +18,12 @@ export abstract class Presenter {
   }
 
   public build() {}
+
+  protected endTurn(): void {
+    this.game.screen = null
+  }
+
+  protected redirect(presenter: Presenter): void {
+    this.game.screen = presenter
+  }
 }

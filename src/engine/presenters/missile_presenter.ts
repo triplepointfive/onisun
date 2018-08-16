@@ -2,7 +2,7 @@ import { Presenter, PresenterType } from './internal'
 import { Game } from '../game'
 import { Point, bresenham, bresenhamInclusion, Direction } from '../utils'
 import { Memory } from '../memory'
-import { IdlePresenter } from './idle_screen'
+import { IdlePresenter } from './idle_presenter'
 import { AIMissileAttack } from '../../engine'
 
 export class MissilePresenter extends Presenter {
@@ -70,7 +70,7 @@ export class MissilePresenter extends Presenter {
 
   public close(): void {
     this.resetPath()
-    this.game.screen = new IdlePresenter(this.game)
+    this.redirect(new IdlePresenter(this.game))
   }
 
   private resetTargetId(): void {

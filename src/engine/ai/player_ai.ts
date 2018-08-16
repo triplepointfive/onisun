@@ -1,6 +1,6 @@
 import { MetaAI } from './meta_ai'
 import { Player } from '../creature'
-import { IdlePresenter, ProfessionPickingPresenter } from '../../engine'
+import { IdlePresenter } from '../../engine'
 
 export class PlayerAI extends MetaAI {
   public act(player: Player): void {
@@ -8,5 +8,6 @@ export class PlayerAI extends MetaAI {
 
     // this.runEvents(player)
     game.screen = new IdlePresenter(game)
+    game.ai = this
   }
 }

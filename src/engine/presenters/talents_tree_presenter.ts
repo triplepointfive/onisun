@@ -40,12 +40,13 @@ export class TalentsTreePresenter extends Presenter {
     this.player.characteristics.levelUp(this.player.specie)
 
     if (this.player.levelUps > 0) {
-      this.game.screen =
+      this.redirect(
         (this.player.level.current - this.player.levelUps + 1) % 3 === 0
           ? new ProfessionPickingPresenter(this.game)
           : new TalentsTreePresenter(this.game)
+          )
     } else {
-      this.game.screen = undefined
+      this.endTurn()
     }
   }
 

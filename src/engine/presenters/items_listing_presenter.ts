@@ -6,9 +6,9 @@ import {
   AIDropItems,
   AIDrinkItem,
 } from '../../engine'
-import { IdlePresenter } from './idle_screen'
+import { IdlePresenter } from './idle_presenter'
 import { GroupedItem, ItemGroup, Potion } from '../items/internal'
-import { InventoryPresenter } from './inventory_screen'
+import { InventoryPresenter } from './inventory_presenter'
 
 interface ItemsListingPosition {
   item: Item
@@ -27,7 +27,7 @@ abstract class ItemsListingPresenter extends Presenter {
   protected abstract initPositions()
 
   public close(): void {
-    this.game.screen = new IdlePresenter(this.game)
+    this.redirect(new IdlePresenter(this.game))
   }
 }
 
@@ -87,7 +87,7 @@ export class PutOnItemsPresenter extends ItemsListingPresenter {
   }
 
   public close(): void {
-    this.game.screen = new InventoryPresenter(this.game)
+    this.redirect(new InventoryPresenter(this.game))
   }
 }
 
@@ -107,7 +107,7 @@ export class DrinkPresenter extends ItemsListingPresenter {
 
   public withItem(itemGroup: { item: Potion }): void {
     new AIDrinkItem(itemGroup.item, this.game).act()
-    this.game.screen = undefined
+    this.endTurn()
   }
 }
 
@@ -124,6 +124,6 @@ export class BagPresenter extends ItemsListingPresenter {
   }
 
   public withItem(itemGroup: { item: Potion }): void {
-    this.game.screen = undefined
+    this.endTurn()
   }
 }

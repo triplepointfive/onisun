@@ -15,8 +15,9 @@ import {
   ProfessionPickingPresenter,
   TalentsTreePresenter,
 } from '../../engine'
-import { MissilePresenter } from '../screens/missile_screen'
+import { MissilePresenter } from '../presenters/missile_presenter'
 import { LevelMap } from '../level_map'
+import { Presenter } from '../presenters/internal';
 
 export abstract class Controller {
   protected logger: Logger
@@ -36,6 +37,14 @@ export abstract class Controller {
   protected tile(): Tile {
     return this.currentLevel().at(this.player.pos.x, this.player.pos.y)
   }
+
+  protected endTurn(): void {
+    this.game.screen = null
+  }
+
+  protected redirect(presenter: Presenter): void {
+    this.game.screen = presenter
+  }
 }
 
 export class AIMoveEvent extends Controller {
@@ -53,12 +62,13 @@ export class AIMoveEvent extends Controller {
     } else if (tile.creature) {
       if (tile.creature.real().on(new AttackEvent(this.player)) === Reaction.DIE) {
         if (this.player.levelUps > 0) {
-          this.game.screen =
+          this.redirect(
             (this.player.level.current - this.player.levelUps + 1) % 3 === 0
               ? new ProfessionPickingPresenter(this.game)
               : new TalentsTreePresenter(this.game)
+          )
         } else {
-          this.game.screen = undefined
+          this.endTurn()
         }
 
         return
@@ -67,7 +77,7 @@ export class AIMoveEvent extends Controller {
       this.game.logger.ranIntoAnObstacle()
     }
 
-    this.game.screen = undefined
+    this.endTurn()
   }
 }
 
@@ -81,10 +91,10 @@ export class AIPickUpItemsDialog extends Controller {
         return
       case 1:
         new AIPickUpItems(items.bunch, this.game).act()
-        this.game.screen = undefined
+        this.endTurn()
         return
       default:
-        this.game.screen = new PickUpPresenter(this.game)
+        this.redirect(new PickUpPresenter(this.game))
         return
     }
   }
@@ -97,7 +107,7 @@ export class AIPickUpItems extends Controller {
 
   public act(): void {
     if (!this.items.length) {
-      this.game.screen = new IdlePresenter(this.game)
+      this.redirect(new IdlePresenter(this.game))
     }
 
     let tileItems = this.tile().items
@@ -108,7 +118,7 @@ export class AIPickUpItems extends Controller {
       tileItems.remove(item, count)
     })
 
-    this.game.screen = undefined
+    this.endTurn()
   }
 }
 
@@ -119,7 +129,7 @@ export class AIDropItems extends Controller {
 
   public act(): void {
     if (!this.items.length) {
-      this.game.screen = new IdlePresenter(this.game)
+      this.redirect(new IdlePresenter(this.game))
     }
 
     let tile = this.tile()
@@ -130,7 +140,7 @@ export class AIDropItems extends Controller {
       tile.addItem(item, count)
     })
 
-    this.game.screen = undefined
+    this.endTurn()
   }
 }
 
@@ -176,7 +186,7 @@ export class AIMissileDialog extends Controller {
 
     if (missile && missile.item) {
       if (missile.item.canThrow(this.player)) {
-        this.game.screen = new MissilePresenter(this.game)
+        this.redirect(new MissilePresenter(this.game))
       } else {
         this.logger.needMissileWeapon()
       }
@@ -212,18 +222,19 @@ export class AIMissileAttack extends Controller {
       if (victim && victim.on(new ThrowEvent(this.player, missile)) === Reaction.DIE) {
         // TODO: Remove duplicity
         if (this.player.levelUps > 0) {
-          this.game.screen =
+          this.redirect(
             (this.player.level.current - this.player.levelUps + 1) % 3 === 0
               ? new ProfessionPickingPresenter(this.game)
               : new TalentsTreePresenter(this.game)
+          )
         } else {
-          this.game.screen = undefined
+          this.endTurn()
         }
         return
       }
     })
 
     this.player.currentLevel.addEffect(effect)
-    this.game.screen = undefined
+    this.endTurn()
   }
 }
