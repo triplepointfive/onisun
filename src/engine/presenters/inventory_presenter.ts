@@ -6,7 +6,7 @@ import {
   InventorySlot,
   GroupedItem,
   PutOnItemsPresenter,
-  PutOnItemController,
+  PutOnItemEvent,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
 
@@ -36,11 +36,14 @@ export class InventoryPresenter extends Presenter {
     this.redirect(
       new PutOnItemsPresenter(
         itemGroup => {
-          new PutOnItemController(
-            position.inventorySlot,
-            itemGroup.item,
-            this.game
-          ).act()
+          this.player.on(
+            new PutOnItemEvent(
+              position.inventorySlot,
+              itemGroup.item,
+              this.game
+            )
+          )
+
           this.takeTime = true
           this.rebuildPositions()
           this.redirect(this)

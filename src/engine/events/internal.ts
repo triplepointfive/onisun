@@ -1,16 +1,17 @@
-import { Creature, Reaction, Player } from './creature'
-import { Item } from './items'
-import { Trap } from './tile'
-import { AINewLevelEvent } from './ai'
+import { Creature, Reaction, Player } from '../creature'
+import { Item, Potion } from '../items'
+import { Trap } from '../tile'
+import { AINewLevelEvent } from '../ai'
+import { Game } from '../game'
 
-export abstract class Event {
+export abstract class CreatureEvent {
   public abstract affectCreature(subject: Creature): Reaction
   public affectPlayer(subject: Player): Reaction {
     return this.affectCreature(subject)
   }
 }
 
-export class AttackEvent extends Event {
+export class AttackEvent extends CreatureEvent {
   constructor(public actor: Creature) {
     super()
   }
@@ -36,7 +37,7 @@ export class AttackEvent extends Event {
   }
 }
 
-export class TrapEvent extends Event {
+export class TrapEvent extends CreatureEvent {
   constructor(private trap: Trap) {
     super()
   }
@@ -64,7 +65,7 @@ export class TrapEvent extends Event {
   }
 }
 
-export class ThrowEvent extends Event {
+export class ThrowEvent extends CreatureEvent {
   constructor(public actor: Creature, public missile: Item) {
     super()
   }
@@ -107,7 +108,7 @@ export class ThrowEvent extends Event {
   }
 }
 
-export class AddExperienceEvent extends Event {
+export class AddExperienceEvent extends CreatureEvent {
   constructor(public actor: Creature) {
     super()
   }

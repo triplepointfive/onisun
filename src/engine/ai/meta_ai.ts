@@ -1,11 +1,8 @@
 import { AI } from './internal'
 import { Creature, Player } from '../creature'
 import { ItemsBunch, Item } from '../items/internal'
-import { Tile } from '../tile'
 import { Logger } from '../logger'
-import { Game, Modifier, PutOnItemController } from '../../engine'
-
-import { compact, flatten, includes } from 'lodash'
+import { Game } from '../../engine'
 
 export abstract class AIEvent {
   protected logger: Logger

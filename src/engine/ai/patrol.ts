@@ -99,8 +99,8 @@ export class Patrol extends AI {
 
   private pickUpNewTarget(actor: Creature): void {
     let seenLastID: NodeID = this.graph.nodes()[0],
-        seenLastStep: number = this.lastNodeVisit[seenLastID],
-        nodes = this.graph.neighbors(this.currentNodeID)
+      seenLastStep: number = this.lastNodeVisit[seenLastID],
+      nodes = this.graph.neighbors(this.currentNodeID)
 
     if (nodes) {
       nodes.forEach((nodeID: NodeID) => {

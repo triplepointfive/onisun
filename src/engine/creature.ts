@@ -1,4 +1,4 @@
-import { Event } from './event'
+import { CreatureEvent } from './events/internal'
 
 import { Point } from './utils'
 import { MetaAI, PlayerAI } from './ai'
@@ -171,7 +171,7 @@ export class Creature extends Phantom {
     })
   }
 
-  public on(event: Event): Reaction {
+  public on(event: CreatureEvent): Reaction {
     return event.affectCreature(this)
   }
 
@@ -267,7 +267,7 @@ export class Player extends Creature {
     this.visionMask(this.currentLevel)
   }
 
-  public on(event: Event): Reaction {
+  public on(event: CreatureEvent): Reaction {
     return event.affectPlayer(this)
   }
 }

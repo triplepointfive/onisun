@@ -1,6 +1,6 @@
 import { Logger } from '../logger'
 import { Player, Creature, Reaction } from '../creature'
-import { AttackEvent, ThrowEvent } from '../event'
+import { AttackEvent, ThrowEvent } from '../events/internal'
 import { Game } from '../game'
 import { Tile } from '../tile'
 import { Direction, Point } from '../utils'
@@ -139,29 +139,6 @@ export class TakeOffItemController extends Controller {
     const groupedItem = this.slot.equipment
     this.slot.takeOff(this.player)
     this.logger.takeOff(groupedItem.item)
-  }
-}
-
-export class PutOnItemController extends Controller {
-  constructor(private slot: InventorySlot, private item: Item, game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    this.slot.equip(this.player, this.item)
-    this.logger.putOn(this.item)
-  }
-}
-
-export class DrinkItemController extends Controller {
-  constructor(private potion: Potion, game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    this.player.inventory.removeFromBag(this.potion, 1)
-    this.potion.onDrink(this.game)
-    this.logger.drink(this.potion)
   }
 }
 

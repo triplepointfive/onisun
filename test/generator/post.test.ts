@@ -56,11 +56,7 @@ describe('addOnTile', () => {
 
   it('Fail when there is no matching tiles', () => {
     expect(() => {
-      addOnTile(
-        map,
-        tile => false,
-        (ux, uy) => {}
-      )
+      addOnTile(map, tile => false, (ux, uy) => {})
     }).toThrowError()
   })
 })

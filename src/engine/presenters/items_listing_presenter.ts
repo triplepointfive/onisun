@@ -4,7 +4,7 @@ import {
   Item,
   PickUpItemsController,
   DropItemsController,
-  DrinkItemController,
+  DrinkPotionEvent,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
 import { GroupedItem, ItemGroup, Potion } from '../items/internal'
@@ -106,7 +106,7 @@ export class DrinkPresenter extends ItemsListingPresenter {
   }
 
   public withItem(itemGroup: { item: Potion }): void {
-    new DrinkItemController(itemGroup.item, this.game).act()
+    this.player.on(new DrinkPotionEvent(itemGroup.item, this.game))
     this.endTurn()
   }
 }

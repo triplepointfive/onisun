@@ -107,10 +107,21 @@ export class Modifier extends AttributeSet<number> {
 }
 
 export class Characteristics extends AttributeSet<Attribute> {
-  constructor(
-    { attack, defense, dexterity, health, radius, speed }:
-    { attack: number, defense: number, dexterity: number, health: number, radius: number, speed: number }
-  ) {
+  constructor({
+    attack,
+    defense,
+    dexterity,
+    health,
+    radius,
+    speed,
+  }: {
+    attack: number
+    defense: number
+    dexterity: number
+    health: number
+    radius: number
+    speed: number
+  }) {
     super(
       new PositiveAttribute(attack),
       new PositiveAttribute(defense),
