@@ -53,4 +53,3 @@ describe('Drop items event', () => {
     expect(game.logger.messages.length).toEqual(1)
   })
 })
-

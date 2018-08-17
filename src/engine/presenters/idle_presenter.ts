@@ -5,13 +5,15 @@ import {
   DropItemsPresenter,
   DrinkPresenter,
   BagPresenter,
-  MissileDialogController,
-  HandleController,
   AttackEvent,
   PickUpItemsEvent,
   PickUpPresenter,
+  TileVisitor,
+  Player,
+  Stairway,
 } from '../../engine'
 import { InventoryPresenter } from './inventory_presenter'
+import { MissilePresenter } from './missile_presenter'
 
 export enum IdleInputKey {
   Right,
@@ -32,6 +34,32 @@ export enum IdleInputKey {
   PickUp,
   Drop,
   Drink,
+}
+
+class HandleTileVisitor extends TileVisitor {
+  constructor(
+    private game: Game,
+    private player: Player,
+    private done: () => void
+  ) {
+    super()
+  }
+
+  protected onStairway(stairway: Stairway): void {
+    // TODO: Do not do this if already connected
+    const adjacentMap = this.game.getMap(stairway.adjacentMapId)
+    stairway.enterPos = adjacentMap.matchStairs(
+      this.player.currentLevel.id,
+      this.player.pos
+    )
+    this.player.move(stairway.enterPos, adjacentMap)
+
+    this.done()
+  }
+
+  protected default(): void {
+    this.game.logger.howToHandle()
+  }
 }
 
 export class IdlePresenter extends Presenter {
@@ -60,12 +88,12 @@ export class IdlePresenter extends Presenter {
         return this.move(Direction.downLeft)
 
       case IdleInputKey.Handle:
-        return new HandleController(this.game).act()
+        return this.handle()
 
       case IdleInputKey.PickUp:
         return this.pickUpDialog()
       case IdleInputKey.Missile:
-        return new MissileDialogController(this.game).act()
+        return this.missileDialog()
 
       case IdleInputKey.Drop:
         this.redirect(new DropItemsPresenter(this.game))
@@ -114,5 +142,25 @@ export class IdlePresenter extends Presenter {
         this.redirect(new PickUpPresenter(this.game))
         return
     }
+  }
+
+  private missileDialog(): void {
+    const missile = this.player.inventory.missileSlot.equipment
+
+    if (missile && missile.item) {
+      if (missile.item.canThrow(this.player)) {
+        this.redirect(new MissilePresenter(this.game))
+      } else {
+        this.game.logger.needMissileWeapon()
+      }
+    } else {
+      this.game.logger.nothingToShotWith()
+    }
+  }
+
+  private handle(): void {
+    this.tile().visit(
+      new HandleTileVisitor(this.game, this.player, () => this.endTurn())
+    )
   }
 }

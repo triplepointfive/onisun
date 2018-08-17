@@ -37,22 +37,6 @@ export abstract class Controller {
   }
 }
 
-export class MissileDialogController extends Controller {
-  public act(): void {
-    const missile = this.player.inventory.missileSlot.equipment
-
-    if (missile && missile.item) {
-      if (missile.item.canThrow(this.player)) {
-        this.redirect(new MissilePresenter(this.game))
-      } else {
-        this.logger.needMissileWeapon()
-      }
-    } else {
-      this.logger.nothingToShotWith()
-    }
-  }
-}
-
 export class MissileAttackController extends Controller {
   constructor(private path: Point[], game: Game) {
     super(game)
