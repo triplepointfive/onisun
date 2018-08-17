@@ -2,7 +2,7 @@ import {
   generateGame,
   generatePlayer,
   generateOneHandedWeapon,
-} from '../../helpers'
+} from '../helpers'
 import { PutOnItemEvent } from '../../../src/engine'
 
 describe('Put item on event', () => {

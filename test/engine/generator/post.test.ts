@@ -1,4 +1,4 @@
-import { drawn, centralize, addOnTile, LevelMap } from '../../src/engine'
+import { drawn, centralize, addOnTile, LevelMap } from '../../../src/engine'
 import { prettyMap, testTiles } from '../helpers'
 
 describe('centralize', () => {

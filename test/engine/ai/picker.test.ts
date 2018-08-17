@@ -4,7 +4,7 @@ import {
   generateItem,
   generateGame,
 } from '../helpers'
-import { Picker, Point } from '../../src/engine'
+import { Picker, Point } from '../../../src/engine'
 
 let internalAI = new Picker()
 let creature = generateCreatureWithAI(internalAI)

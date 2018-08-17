@@ -5,7 +5,7 @@ import {
   generateMissile,
   generateGame,
 } from '../helpers'
-import { Point, Thrower, Creature, LevelMap } from '../../src/engine'
+import { Point, Thrower, Creature, LevelMap } from '../../../src/engine'
 
 let internalAI = new Thrower()
 let actor: Creature, enemy: Creature, map: LevelMap, game

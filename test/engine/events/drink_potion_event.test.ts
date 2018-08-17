@@ -1,4 +1,4 @@
-import { generateGame, generatePlayer } from '../../helpers'
+import { generateGame, generatePlayer } from '../helpers'
 import { Potion, Game, DrinkPotionEvent } from '../../../src/engine'
 
 class TestPotion extends Potion {

@@ -1,4 +1,4 @@
-import { Timeline } from '../src/engine'
+import { Timeline } from '../../src/engine'
 
 it('empty', () => {
   let timeline = new Timeline()

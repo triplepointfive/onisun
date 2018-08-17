@@ -1,5 +1,5 @@
 import { generateCreatureWithAI, generateLevelMap } from '../helpers'
-import { SelfHealer, Point } from '../../src/engine'
+import { SelfHealer, Point } from '../../../src/engine'
 
 let creature = generateCreatureWithAI(new SelfHealer())
 const map = generateLevelMap()

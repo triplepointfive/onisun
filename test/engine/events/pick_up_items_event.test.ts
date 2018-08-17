@@ -3,7 +3,7 @@ import {
   generatePlayer,
   generateOneHandedWeapon,
   generateLevelMap,
-} from '../../helpers'
+} from '../helpers'
 import {
   PickUpItemsEvent,
   Player,

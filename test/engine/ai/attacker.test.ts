@@ -4,7 +4,7 @@ import {
   generateLevelMap,
   generateGame,
 } from '../helpers'
-import { Point, LevelMap, Attacker } from '../../src/engine'
+import { Point, LevelMap, Attacker } from '../../../src/engine'
 
 let internalAI = new Attacker(),
   actor = generateCreatureWithAI(internalAI),

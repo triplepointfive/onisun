@@ -2,7 +2,7 @@ import {
   generateGame,
   generatePlayer,
   generateOneHandedWeapon,
-} from '../../helpers'
+} from '../helpers'
 import { TakeOffItemEvent, LeftHandSlot, Player } from '../../../src/engine'
 
 describe('Taking item off event', () => {

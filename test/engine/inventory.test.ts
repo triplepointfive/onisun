@@ -1,10 +1,10 @@
-import { Inventory, RightHandSlot, BodySlot } from '../src/engine'
+import { Inventory, RightHandSlot, BodySlot } from '../../src/engine'
 import {
   generateOneHandedWeapon,
   generateCreature,
   generateBodyArmor,
 } from './helpers'
-import { Creature, Item, GroupedItem } from '../src/engine'
+import { Creature, Item, GroupedItem } from '../../src/engine'
 
 let item1: Item = generateOneHandedWeapon()
 let item2: Item = generateOneHandedWeapon()

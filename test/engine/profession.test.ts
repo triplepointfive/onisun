@@ -1,4 +1,4 @@
-import { ProfessionPicker, Player } from '../src/engine'
+import { ProfessionPicker, Player } from '../../src/engine'
 import { generateProfession, generatePlayer } from './helpers'
 
 describe('ProfessionPicker', () => {

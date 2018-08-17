@@ -13,7 +13,7 @@ import {
   generateLevelMap,
   TestGame,
   generatePlayer,
-} from '../../helpers'
+} from '../helpers'
 
 const level0 = 0,
   level1 = 1,

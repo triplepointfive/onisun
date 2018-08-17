@@ -6,7 +6,7 @@ import {
   Corridor,
   Room,
   Wall,
-} from '../../src/engine'
+} from '../../../src/engine'
 import { prettyMap } from '../helpers'
 
 it('When exact match', () => {

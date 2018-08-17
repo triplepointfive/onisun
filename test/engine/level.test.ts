@@ -1,4 +1,4 @@
-import { Level } from '../src/engine'
+import { Level } from '../../src/engine'
 
 it('Increases experience', () => {
   let level = new Level([2, 5])

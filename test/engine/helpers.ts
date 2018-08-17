@@ -27,7 +27,7 @@ import {
   TileVisitor,
   Dungeon,
   PlayerAI,
-} from '../src/engine'
+} from '../../src/engine'
 
 import { times, random } from 'lodash'
 

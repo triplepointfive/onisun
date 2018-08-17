@@ -3,7 +3,7 @@ import {
   generatePlayer,
   generateCreature,
   generateLevelMap,
-} from '../../helpers'
+} from '../helpers'
 import {
   Game,
   TrapEvent,
