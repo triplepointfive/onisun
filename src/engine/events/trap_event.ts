@@ -1,24 +1,32 @@
 import { CreatureEvent } from './internal'
 import { Trap } from '../tile'
-import { Creature, Reaction } from '../creature'
+import { Creature, Reaction, Player } from '../creature'
+import { Game } from '../game'
 
 export class TrapEvent extends CreatureEvent {
-  constructor(private trap: Trap) {
+  constructor(private trap: Trap, private game: Game) {
     super()
   }
 
   public affectCreature(actor: Creature): Reaction {
-    const damage = 10,
-      game = actor.currentLevel.game
-
     // TODO: Special messages for dying.
-    if (game.player.stageMemory().at(actor.pos.x, actor.pos.y).visible) {
-      if (game.player.id === actor.id) {
-        game.logger.youSteppedInTrap()
-      } else {
-        game.logger.creatureSteppedInTrap(actor)
-      }
+    if (this.game.player.stageMemory().at(actor.pos.x, actor.pos.y).visible) {
+      this.trap.revealed = true
+      this.game.logger.creatureSteppedInTrap(actor)
     }
+
+    return this.doDamage(actor)
+  }
+
+  public affectPlayer(actor: Player): Reaction {
+    this.game.logger.youSteppedInTrap()
+    this.trap.revealed = true
+
+    return this.doDamage(actor)
+  }
+
+  private doDamage(actor: Creature): Reaction {
+    const damage = 10
 
     if (damage >= actor.characteristics.health.currentValue()) {
       actor.die()

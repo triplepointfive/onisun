@@ -15,7 +15,7 @@ export class OnisunFireTrap extends Trap {
   }
 
   protected affect(game: Game, creature: Creature): void {
-    creature.on(new TrapEvent(this))
+    creature.on(new TrapEvent(this, game))
   }
 }
 
@@ -29,6 +29,6 @@ export class OnisunIceTrap extends Trap {
   }
 
   protected affect(game: Game, creature: Creature): void {
-    creature.on(new TrapEvent(this))
+    creature.on(new TrapEvent(this, game))
   }
 }

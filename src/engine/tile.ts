@@ -165,10 +165,6 @@ export abstract class Trap extends Tile {
   }
 
   public activate(game: Game, actor: Creature): void {
-    if (game.player.stageMemory().at(actor.pos.x, actor.pos.y).visible) {
-      this.revealed = true
-    }
-
     this.affect(game, actor)
   }
 
