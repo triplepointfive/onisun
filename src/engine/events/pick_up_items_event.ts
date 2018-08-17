@@ -1,8 +1,8 @@
-import { CreatureEvent } from './internal';
-import { GroupedItem } from '../items';
-import { Game } from '../game';
-import { Tile } from '../../engine';
-import { Reaction, Creature } from '../creature';
+import { CreatureEvent } from './internal'
+import { GroupedItem } from '../items'
+import { Game } from '../game'
+import { Tile } from '../../engine'
+import { Reaction, Creature } from '../creature'
 
 export class PickUpItemsEvent extends CreatureEvent {
   constructor(private tile: Tile, private items: GroupedItem[], private game: Game) {
