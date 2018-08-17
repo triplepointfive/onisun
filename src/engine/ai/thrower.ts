@@ -2,8 +2,7 @@ import { AI } from './internal'
 import { Creature, Ability, Phantom, Reaction } from '../creature'
 import { GroupedItem } from '../items/internal'
 import { Point, bresenham } from '../utils'
-import { ItemFlightEffect } from '../effect'
-import { ThrowEvent } from '../../engine'
+import { MissileAttackEvent } from '../../engine'
 
 export class Thrower extends AI {
   public victim: Creature
@@ -19,21 +18,16 @@ export class Thrower extends AI {
   }
 
   public act(actor: Creature): void {
-    const missile = this.missiles.item
-    actor.inventory.missileSlot.removeItem(actor, 1)
-
     let path: Point[] = []
 
     bresenham(actor.pos, this.victim.pos, (x, y) => path.push(new Point(x, y)))
 
-    const effect = new ItemFlightEffect(missile, path, () => {
-      if (this.victim.on(new ThrowEvent(actor, missile)) === Reaction.DIE) {
+    actor.on(new MissileAttackEvent(path, actor.currentLevel.game, (reaction: Reaction) => {
+      if (reaction === Reaction.DIE) {
         this.victim = undefined
         this.previousVictim = undefined
       }
-    })
-
-    actor.currentLevel.addEffect(effect)
+    }))
   }
 
   private hasMissile(actor: Creature): boolean {

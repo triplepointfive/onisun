@@ -147,8 +147,6 @@ export const generateLevelMap = function(): LevelMap {
     )
   )
 
-  map.game = generateGame()
-
   return map
 }
 

@@ -2,16 +2,18 @@ import {
   generateCreatureWithAI,
   generateCreature,
   generateLevelMap,
+  generateGame,
 } from '../helpers'
 import { Point, LevelMap, Attacker } from '../../src/engine'
 
-let internalAI = new Attacker()
-let actor = generateCreatureWithAI(internalAI)
-let enemy = generateCreature()
-let map: LevelMap
+let internalAI = new Attacker(),
+    actor = generateCreatureWithAI(internalAI),
+    enemy = generateCreature(),
+    map: LevelMap
 
 beforeEach(() => {
   map = generateLevelMap()
+  map.game = generateGame()
   actor.addToMap(new Point(1, 1), map)
   actor.characteristics.dexterity.constantIncrease(10000)
 })

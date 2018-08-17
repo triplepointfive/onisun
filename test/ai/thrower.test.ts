@@ -3,24 +3,24 @@ import {
   generateCreature,
   generateLevelMap,
   generateMissile,
+  generateGame,
 } from '../helpers'
 import {
   Point,
   Thrower,
-  Ability,
-  GroupedItem,
-  MissileSlot,
   Creature,
   LevelMap,
 } from '../../src/engine'
 
 let internalAI = new Thrower()
-let actor: Creature, enemy: Creature, map: LevelMap
+let actor: Creature, enemy: Creature, map: LevelMap, game
 
 beforeEach(() => {
   actor = generateCreatureWithAI(internalAI)
   enemy = generateCreature()
   map = generateLevelMap()
+  game = generateGame()
+  map.game = game
 
   actor.addToMap(new Point(1, 1), map)
   actor.characteristics.dexterity.constantIncrease(10000)
@@ -45,9 +45,7 @@ describe('Throwing at enemy', () => {
   })
 
   it('Adds throwing effect', () => {
-    const [nextActor, effect] = map.timeline.next()
-    expect(nextActor).toBeFalsy()
-    expect(effect).toBeTruthy()
+    expect(game.effect).toBeTruthy()
   })
 
   it('Removes missile from inventory', () => {

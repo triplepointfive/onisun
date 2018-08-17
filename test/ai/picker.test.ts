@@ -2,15 +2,18 @@ import {
   generateCreatureWithAI,
   generateLevelMap,
   generateItem,
+  generateGame,
 } from '../helpers'
 import { Picker, Point } from '../../src/engine'
 
 let internalAI = new Picker()
 let creature = generateCreatureWithAI(internalAI)
-const map = generateLevelMap()
+const map = generateLevelMap(),
+  game = generateGame()
 
 beforeEach(() => {
   creature.addToMap(new Point(1, 1), map)
+  map.game = game
 })
 
 describe('When there are no items', () => {

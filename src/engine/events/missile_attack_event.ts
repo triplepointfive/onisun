@@ -9,7 +9,7 @@ export class MissileAttackEvent extends CreatureEvent {
   constructor(
     private path: Point[],
     private game: Game,
-    private done: () => void
+    private done: (reaction: Reaction) => void
   ) {
     super()
   }
@@ -33,10 +33,10 @@ export class MissileAttackEvent extends CreatureEvent {
 
     this.game.effect = new ItemFlightEffect(missile, flightPath, () => {
       if (victim) {
-        victim.on(new ThrowEvent(actor, missile)) === Reaction.DIE
+        this.done(victim.on(new ThrowEvent(actor, missile)))
+      } else {
+        this.done(Reaction.NOTHING)
       }
-
-      this.done()
     })
 
     return Reaction.NOTHING
