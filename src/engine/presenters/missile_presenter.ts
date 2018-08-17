@@ -1,9 +1,9 @@
 import { Presenter, PresenterType } from './internal'
 import { Game } from '../game'
-import { Point, bresenham, bresenhamInclusion, Direction } from '../utils'
+import { Point, bresenhamInclusion, Direction } from '../utils'
 import { Memory } from '../memory'
 import { IdlePresenter } from './idle_presenter'
-import { MissileAttackController } from '../../engine'
+import { MissileAttackEvent } from '../../engine'
 
 export class MissilePresenter extends Presenter {
   public targetPos: Point
@@ -64,7 +64,9 @@ export class MissilePresenter extends Presenter {
 
   public attack(): void {
     if (!this.targetPos.eq(this.player.pos)) {
-      new MissileAttackController(this.path, this.game).act()
+      this.player.on(
+        new MissileAttackEvent(this.path, this.game, () => this.endTurn())
+      )
     }
   }
 

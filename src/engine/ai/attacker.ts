@@ -1,6 +1,6 @@
 import { AI } from './internal'
 import { Phantom, Creature, Reaction } from '../creature'
-import { AttackEvent } from '../events/internal'
+import { AttackEvent } from '../../engine'
 
 export class Attacker extends AI {
   public victim?: Creature
