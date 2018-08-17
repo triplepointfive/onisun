@@ -1,9 +1,20 @@
-import { generateGame, generatePlayer, generateCreature, generateLevelMap } from '../../helpers'
-import { Game, TrapEvent, Trap, Creature, Player, Point } from '../../../src/engine'
+import {
+  generateGame,
+  generatePlayer,
+  generateCreature,
+  generateLevelMap,
+} from '../../helpers'
+import {
+  Game,
+  TrapEvent,
+  Trap,
+  Creature,
+  Player,
+  Point,
+} from '../../../src/engine'
 
 class TestTrap extends Trap {
-  protected affect(game: Game, actor: Creature): void {
-  }
+  protected affect(game: Game, actor: Creature): void {}
 
   public buildNew(): TestTrap {
     return this
@@ -13,10 +24,7 @@ class TestTrap extends Trap {
 const testTrap = 0
 
 describe('Trap event', () => {
-  let player: Player,
-    game,
-    event,
-    trap: TestTrap
+  let player: Player, game, event, trap: TestTrap
 
   beforeEach(() => {
     player = generatePlayer()
@@ -62,7 +70,9 @@ describe('Trap event', () => {
     })
 
     it('may even kill', () => {
-      creature.characteristics.health.decrease(player.characteristics.health.maximum() - 1)
+      creature.characteristics.health.decrease(
+        player.characteristics.health.maximum() - 1
+      )
       creature.die = jest.fn()
       creature.on(event)
       expect(creature.die.mock.calls.length).toEqual(1)
@@ -89,7 +99,9 @@ describe('Trap event', () => {
     })
 
     it('may even kill', () => {
-      player.characteristics.health.decrease(player.characteristics.health.maximum() - 1)
+      player.characteristics.health.decrease(
+        player.characteristics.health.maximum() - 1
+      )
       player.die = jest.fn()
       player.on(event)
       expect(player.die.mock.calls.length).toEqual(1)

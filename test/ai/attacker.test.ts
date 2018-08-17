@@ -7,9 +7,9 @@ import {
 import { Point, LevelMap, Attacker } from '../../src/engine'
 
 let internalAI = new Attacker(),
-    actor = generateCreatureWithAI(internalAI),
-    enemy = generateCreature(),
-    map: LevelMap
+  actor = generateCreatureWithAI(internalAI),
+  enemy = generateCreature(),
+  map: LevelMap
 
 beforeEach(() => {
   map = generateLevelMap()

@@ -64,11 +64,11 @@ export abstract class Game {
     this.maps.set(id, generator)
   }
 
-  private levelMapTurn(): Effect {
+  private levelMapTurn(): void {
     let timeline = this.currentMap.timeline,
       map = this.currentMap
 
-    const [actorId, effect] = timeline.next()
+    const actorId = timeline.next()
 
     if (actorId !== undefined) {
       const actor = map.creatures.find(creature => actorId === creature.id)
@@ -78,13 +78,11 @@ export abstract class Game {
 
         // If they are still on a map
         if (map.creatures.find(creature => actorId === creature.id)) {
-          timeline.add([actorId, undefined], actor.speed())
+          timeline.add(actorId, actor.speed())
         }
       }
 
       return
-    } else if (effect) {
-      return effect
     } else {
       throw 'Timeline event is empty!'
     }

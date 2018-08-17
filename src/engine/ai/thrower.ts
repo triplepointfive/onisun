@@ -22,12 +22,18 @@ export class Thrower extends AI {
 
     bresenham(actor.pos, this.victim.pos, (x, y) => path.push(new Point(x, y)))
 
-    actor.on(new MissileAttackEvent(path, actor.currentLevel.game, (reaction: Reaction) => {
-      if (reaction === Reaction.DIE) {
-        this.victim = undefined
-        this.previousVictim = undefined
-      }
-    }))
+    actor.on(
+      new MissileAttackEvent(
+        path,
+        actor.currentLevel.game,
+        (reaction: Reaction) => {
+          if (reaction === Reaction.DIE) {
+            this.victim = undefined
+            this.previousVictim = undefined
+          }
+        }
+      )
+    )
   }
 
   private hasMissile(actor: Creature): boolean {
