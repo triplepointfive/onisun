@@ -3,8 +3,8 @@ import {
   Game,
   Item,
   PickUpItemsEvent,
-  DropItemsController,
   DrinkPotionEvent,
+  DropItemsEvent,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
 import { GroupedItem, ItemGroup, Potion } from '../items/internal'
@@ -59,8 +59,14 @@ export class DropItemsPresenter extends ItemsListingPresenter {
   }
 
   public pickUpItems(items: GroupedItem[]): void {
-    // TODO: Validate items are part of positions
-    new DropItemsController(items, this.game).act()
+    const tile = this.tile()
+
+    if (tile.items && tile.items.bunch.length) {
+      this.player.on(new DropItemsEvent(tile, items, this.game))
+      this.endTurn()
+    } else {
+      this.redirect(new IdlePresenter(this.game))
+    }
   }
 }
 

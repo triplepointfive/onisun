@@ -4,11 +4,7 @@ import { ThrowEvent } from '../events/internal'
 import { Game } from '../game'
 import { Tile } from '../tile'
 import { Point } from '../utils'
-import {
-  IdlePresenter,
-  GroupedItem,
-  ItemFlightEffect,
-} from '../../engine'
+import { IdlePresenter, GroupedItem, ItemFlightEffect } from '../../engine'
 import { MissilePresenter } from '../presenters/missile_presenter'
 import { LevelMap } from '../level_map'
 import { Presenter } from '../presenters/internal'
@@ -38,28 +34,6 @@ export abstract class Controller {
 
   protected redirect(presenter: Presenter): void {
     this.game.ai.redirect(presenter)
-  }
-}
-
-export class DropItemsController extends Controller {
-  constructor(private items: GroupedItem[], game: Game) {
-    super(game)
-  }
-
-  public act(): void {
-    if (!this.items.length) {
-      this.redirect(new IdlePresenter(this.game))
-    }
-
-    let tile = this.tile()
-
-    this.items.forEach(({ item, count }) => {
-      this.player.inventory.removeFromBag(item, count)
-      this.game.logger.droppedItem(item, count)
-      tile.addItem(item, count)
-    })
-
-    this.endTurn()
   }
 }
 

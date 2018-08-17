@@ -5,7 +5,11 @@ import { Tile } from '../../engine'
 import { Reaction, Creature } from '../creature'
 
 export class PickUpItemsEvent extends CreatureEvent {
-  constructor(private tile: Tile, private items: GroupedItem[], private game: Game) {
+  constructor(
+    private tile: Tile,
+    private items: GroupedItem[],
+    private game: Game
+  ) {
     super()
   }
 
