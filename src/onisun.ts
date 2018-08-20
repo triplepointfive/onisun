@@ -13,7 +13,7 @@ import {
 } from './engine'
 
 import { OnisunProfessionPicker } from './onisun/professions'
-import { woodenArrow, ironArrow, commonBow, smallRock } from './onisun/items'
+import { woodenArrow, ironArrow, commonBow, smallRock, LightSpeedBoots } from './onisun/items'
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
 
 export * from './onisun/professions'
@@ -74,7 +74,7 @@ export class Onisun extends Game {
     player.inventory.missileWeaponSlot.equip(player, bow)
     player.inventory.missileSlot.equip(player, wooden)
 
-    player.addImpact(ImpactType.Blind, 'boots')
+    player.inventory.putToBag(new LightSpeedBoots(), 1)
 
     return player
   }

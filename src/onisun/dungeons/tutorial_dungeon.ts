@@ -138,8 +138,6 @@ export class TutorialDungeon extends Dungeon {
 
     addItems(0.05, map, weapons.merge(itemsPool))
 
-    map.at(1, 1).addItem(new LightSpeedBoots(), 1)
-
     return map
   }
 }

@@ -11,6 +11,7 @@ import {
 } from '../engine'
 import { HealPotion } from './potions'
 import { Boots } from '../engine/items';
+import { ImpactType } from '../engine/lib/impact';
 
 class MissileRock extends Missile {
   public worksWith(item: Item): boolean {
@@ -69,8 +70,10 @@ export class LightSpeedBoots extends Boots {
   }
 
   public onPutOn(creature: Creature): void {
+    creature.addImpact(ImpactType.Blind, this.name)
   }
 
   public onTakeOff(creature: Creature): void {
+    creature.removeImpact(ImpactType.Blind, this.name)
   }
 }

@@ -11,17 +11,25 @@ class Impact {
   constructor(public readonly type: ImpactType) {
   }
 
+  public addTempEffect(turns: number): void {
+    this.tempEffects += turns
+  }
+
   public addConstEffect(effect: string): void {
     // TODO: Validate keys do not repeat
     this.constEffects.push(effect)
   }
 
+  public removeTempEffect(): void {
+    this.tempEffects = 0
+  }
+
   public removeConstEffect(effect: string): void {
-    remove(this.constEffects, effect)
+    remove(this.constEffects, impact => impact === effect)
   }
 
   public active(): boolean {
-    return this.tempEffects === 0 && this.constEffects.length > 0
+    return this.tempEffects > 0 || this.constEffects.length > 0
   }
 
   public turn(): void {
@@ -38,9 +46,13 @@ export class ImpactBunch {
     return this.impacts().filter(impact => impact.active()).map(impact => impact.type)
   }
 
-  // public addImpact(type: ImpactType, turns: number): void {
-  //   this.bunch.push(new Impact(turns))
-  // }
+  public addImpact(type: ImpactType, turns: number): void {
+    this.impactByType(type).addTempEffect(turns)
+  }
+
+  public removeImpact(type: ImpactType): void {
+    this.impactByType(type).removeTempEffect()
+  }
 
   public addConstImpact(type: ImpactType, effect: string): void {
     this.impactByType(type).addConstEffect(effect)
@@ -50,10 +62,9 @@ export class ImpactBunch {
     this.impactByType(type).removeConstEffect(effect)
   }
 
-  // public turn(): void {
-  //   this.bunch.forEach(impact => impact.turn())
-  //   this.bunch = this.bunch.filter(impact => !impact.done)
-  // }
+  public turn(): void {
+    this.impacts().forEach(impact => impact.turn())
+  }
 
   protected impactByType(type: ImpactType): Impact {
     switch (type) {

@@ -19,7 +19,7 @@ import { Level } from './level'
 import { includes } from 'lodash'
 import { Profession } from './profession'
 import { TileVisitor, Door, Tile, Trap } from './tile'
-import { ImpactType } from './impact';
+import { ImpactType } from './lib/impact';
 
 export enum Clan {
   Player,
