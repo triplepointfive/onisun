@@ -9,6 +9,7 @@ import {
   Game,
   Level,
   PlayerAI,
+  ImpactType,
 } from './engine'
 
 import { OnisunProfessionPicker } from './onisun/professions'
@@ -72,6 +73,8 @@ export class Onisun extends Game {
     // player.putOn(RightHandSlot, dagger)
     player.inventory.missileWeaponSlot.equip(player, bow)
     player.inventory.missileSlot.equip(player, wooden)
+
+    player.addImpact(ImpactType.Blind, 'boots')
 
     return player
   }

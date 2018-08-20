@@ -147,6 +147,7 @@ const CORPSE = new ItemTile('体', 200, 200, 200)
 const BODY_ARMOR = new ItemTile('胸', 200, 200, 200)
 const MISSILE = new ItemTile('石', 200, 200, 200)
 const MISSILE_WEAPON = new ItemTile(']', 200, 200, 200)
+const BOOTS = new ItemTile('[', 255, 255, 0)
 
 const POTION = new ItemTile('！', 200, 200, 200)
 
@@ -164,8 +165,11 @@ export const displayItem = function(item: Item): ItemTile {
       return MISSILE_WEAPON
     case ItemGroup.Potion:
       return POTION
+    case ItemGroup.Boots:
+      return BOOTS
     default:
-      throw `Unknown group ${item} with type ${item.group}`
+      console.error(`Unknown group ${item} with type ${item.group}`)
+      return CORPSE
   }
 }
 

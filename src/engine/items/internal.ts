@@ -19,6 +19,7 @@ export enum ItemGroup {
   Missile,
   Potion,
   MissileWeapon,
+  Boots,
 }
 
 export enum ItemSubgroup {
@@ -160,5 +161,11 @@ export class BodyArmor extends Item {
 export class OneHandWeapon extends Item {
   constructor(name: string, modifier: Modifier) {
     super(ItemGroup.MissileWeapon, name, [Usage.WeaponOneHand], modifier)
+  }
+}
+
+export class Boots extends Item {
+  constructor(name: string, modifier: Modifier) {
+    super(ItemGroup.Boots, name, [Usage.Boots], modifier)
   }
 }

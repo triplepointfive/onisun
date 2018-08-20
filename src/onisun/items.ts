@@ -7,8 +7,10 @@ import {
   OneHandWeapon,
   BodyArmor,
   Pool,
+  Creature,
 } from '../engine'
 import { HealPotion } from './potions'
+import { Boots } from '../engine/items';
 
 class MissileRock extends Missile {
   public worksWith(item: Item): boolean {
@@ -60,3 +62,15 @@ export const itemsPool = new Pool<null, Item>([
   [10, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
   [100, () => new HealPotion()],
 ])
+
+export class LightSpeedBoots extends Boots {
+  constructor() {
+    super('Кроссовки скорости света', new Modifier({}))
+  }
+
+  public onPutOn(creature: Creature): void {
+  }
+
+  public onTakeOff(creature: Creature): void {
+  }
+}

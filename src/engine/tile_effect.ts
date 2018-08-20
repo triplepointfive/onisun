@@ -2,7 +2,7 @@ import { Item } from './items/internal'
 import { Point } from './utils'
 import { Memory } from './memory'
 
-export abstract class Effect {
+export abstract class TileEffect {
   constructor(public onDone: () => void) {}
 
   public abstract done(): boolean
@@ -12,7 +12,7 @@ export abstract class Effect {
   }
 }
 
-export class ItemFlightEffect extends Effect {
+export class ItemFlightTileEffect extends TileEffect {
   constructor(
     public readonly item: Item,
     private frames: Point[],

@@ -14,6 +14,9 @@
   Logger.logger-panel(
     :logger='game.logger'
     )
+  Impacts.effect-panel(
+    :impacts='game.player.impacts()'
+  )
 
   div(v-if='game.player && game.player.dead')
     | You are dead
@@ -32,7 +35,8 @@ import * as _ from 'lodash'
 
 import Logger from './Logger.vue'
 import Scene from './Scene.vue'
-import Stats from './stats.vue'
+import Stats from './Stats.vue'
+import Impacts from './Impacts.vue'
 
 import Idle from './views/IdleView.vue'
 import ProfessionPickingView from './views/ProfessionPickingView.vue'
@@ -57,6 +61,7 @@ export default Vue.extend({
     }
   },
   components: {
+    Impacts,
     Logger,
     Scene,
     Stats,
@@ -146,6 +151,12 @@ export default Vue.extend({
     position: fixed;
     top: 0;
     left: 0;
+  }
+
+  .effect-panel {
+    position: fixed;
+    right: 1rem;
+    top: 1rem;
   }
 }
 </style>

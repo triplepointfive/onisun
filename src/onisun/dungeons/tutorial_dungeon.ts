@@ -10,7 +10,7 @@ import {
   drawn,
   addCreatures,
 } from '../../engine'
-import { weapons, itemsPool } from '../items'
+import { weapons, itemsPool, LightSpeedBoots } from '../items'
 import { creaturesPool1 } from '../creatures'
 import {
   Tile,
@@ -47,7 +47,8 @@ export class TutorialDungeon extends Dungeon {
       this.game.currentMap,
       tile => tile.isFloor() && tile.passibleThrough(),
       (x, y) => {
-        this.game.player.addToMap(new Point(x, y), this.game.currentMap)
+        // this.game.player.addToMap(new Point(x, y), this.game.currentMap)
+        this.game.player.addToMap(new Point(1, 2), this.game.currentMap)
       }
     )
   }
@@ -136,6 +137,8 @@ export class TutorialDungeon extends Dungeon {
     }
 
     addItems(0.05, map, weapons.merge(itemsPool))
+
+    map.at(1, 1).addItem(new LightSpeedBoots(), 1)
 
     return map
   }

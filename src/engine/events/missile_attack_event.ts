@@ -2,7 +2,7 @@ import { CreatureEvent } from './internal'
 import { Point } from '../utils'
 import { Game } from '../game'
 import { Creature, Reaction } from '../creature'
-import { ItemFlightEffect } from '../effect'
+import { ItemFlightTileEffect } from '../tile_effect'
 import { ThrowEvent } from './throw_event'
 
 export class MissileAttackEvent extends CreatureEvent {
@@ -31,7 +31,7 @@ export class MissileAttackEvent extends CreatureEvent {
       }
     })
 
-    this.game.effect = new ItemFlightEffect(missile, flightPath, () => {
+    this.game.effect = new ItemFlightTileEffect(missile, flightPath, () => {
       if (victim) {
         this.done(victim.on(new ThrowEvent(actor, missile)))
       } else {

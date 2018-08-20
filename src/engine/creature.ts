@@ -12,12 +12,14 @@ import {
   Memory,
   Inventory,
   Game,
+  ImpactBunch,
 } from '../engine'
 
 import { Level } from './level'
 import { includes } from 'lodash'
 import { Profession } from './profession'
 import { TileVisitor, Door, Tile, Trap } from './tile'
+import { ImpactType } from './impact';
 
 export enum Clan {
   Player,
@@ -134,6 +136,8 @@ export class Creature extends Phantom {
   public pos: Point
   public dead: boolean = false
 
+  private impactsBunch: ImpactBunch
+
   constructor(
     public characteristics: Characteristics,
     ai: MetaAI,
@@ -247,6 +251,27 @@ export class Creature extends Phantom {
       visitor,
       see
     ).calc()
+  }
+
+  public addImpact(type: ImpactType, effect: string): void {
+    if (!this.impactsBunch) {
+      this.impactsBunch = new ImpactBunch()
+    }
+
+    this.impactsBunch.addConstImpact(type, effect)
+  }
+
+  public removeImpact(type: ImpactType, effect: string): void {
+    // TODO: Should never get here
+    this.impactsBunch.removeConstImpact(type, effect)
+  }
+
+  public impacts(): ImpactType[] {
+    if (this.impactsBunch) {
+      return this.impactsBunch.activeImpacts()
+    }
+
+    return []
   }
 }
 

@@ -1,6 +1,6 @@
 import { Logger, LevelMap, Player, LevelMapId, PlayerAI } from '../engine'
 import { ProfessionPicker } from './profession'
-import { Effect } from './effect'
+import { TileEffect } from './tile_effect'
 
 type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
 
@@ -11,7 +11,7 @@ export abstract class Game {
   public ai: PlayerAI = null
   public running: boolean = false
   public professionPicker: ProfessionPicker
-  public effect: Effect
+  public effect: TileEffect
 
   protected maps: Map<LevelMapId, LevelMap | MapGenerator> = new Map()
 
