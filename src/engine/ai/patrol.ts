@@ -7,6 +7,7 @@ import * as graphlib from 'graphlib'
 import { Loiter } from './loiter'
 import { MetaAI } from './meta_ai'
 import { TileVisitor } from '../models/tile'
+import { MoveEvent } from '../events/move_event'
 
 type NodeID = string
 
@@ -137,7 +138,7 @@ export class Patrol extends AI {
         return this.act(actor, false)
       }
     } else {
-      actor.move(nextPoint)
+      actor.on(new MoveEvent(actor.currentLevel.game, nextPoint))
     }
   }
 

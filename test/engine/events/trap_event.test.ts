@@ -48,7 +48,7 @@ describe('Trap event', () => {
     })
 
     it('leaves trap hidden when player does not see', () => {
-      creature.move(new Point(1, 5))
+      creature.addToMap(new Point(1, 5), map)
       player.characteristics.radius.decrease(10)
       player.rebuildVision()
 

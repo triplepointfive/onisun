@@ -10,7 +10,6 @@ import {
   LevelMapId,
   Memory,
   Inventory,
-  Game,
   ImpactBunch,
   MetaAI,
   PlayerAI,
@@ -19,7 +18,7 @@ import {
 import { Level } from '../lib/level'
 import { includes } from 'lodash'
 import { Profession } from './profession'
-import { TileVisitor, Door, Tile, Trap } from './tile'
+import { TileVisitor, Door, Tile } from './tile'
 import { ImpactType } from '../lib/impact'
 import { Stat } from '../lib/stat'
 
@@ -118,16 +117,6 @@ class VisibilityTileVisitor extends TileVisitor {
   }
 }
 
-class SteppingTileVisitor extends TileVisitor {
-  constructor(private creature: Creature, private game: Game) {
-    super()
-  }
-
-  public onTrap(trap: Trap): void {
-    trap.activate(this.game, this.creature)
-  }
-}
-
 export class Creature extends Phantom {
   public ai: MetaAI
   public stageMemories: { [key: string]: Memory } = {}
@@ -207,26 +196,6 @@ export class Creature extends Phantom {
     this.visionMask(stage)
     this.previousPos = this.pos.copy()
     this.ai.act(this, true)
-  }
-
-  public move(nextPoint: Point, nextLevel = this.currentLevel) {
-    if (nextLevel.id !== this.currentLevel.id) {
-      this.currentLevel.leave(this)
-
-      nextLevel.enter(this, nextPoint)
-      nextLevel.game.currentMap = nextLevel
-      this.currentLevel = nextLevel
-    } else {
-      this.currentLevel.at(this.pos.x, this.pos.y).creature = undefined
-    }
-
-    this.pos = nextPoint.copy()
-
-    this.currentLevel.at(this.pos.x, this.pos.y).creature = this
-
-    this.currentLevel
-      .at(this.pos.x, this.pos.y)
-      .visit(new SteppingTileVisitor(this, this.currentLevel.game))
   }
 
   public clone(): Phantom {

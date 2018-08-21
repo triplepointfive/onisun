@@ -2,17 +2,20 @@ import { CreatureEvent } from './internal'
 import { Creature, Reaction } from '../models/creature'
 import { AddExperienceEvent } from './add_experience_event'
 import { Item } from '../models/items'
+import { Game } from '../models/game'
 
 export class ThrowEvent extends CreatureEvent {
-  constructor(public actor: Creature, public missile: Item) {
+  constructor(
+    public actor: Creature,
+    public missile: Item,
+    private game: Game
+  ) {
     super()
   }
 
   public affectCreature(subject: Creature): Reaction {
-    let game = subject.currentLevel.game
-
     if (this.actor.characteristics.throwMisses(subject.characteristics)) {
-      game.logger.throwMissMessage(this.actor, subject, this.missile)
+      this.game.logger.throwMissMessage(this.actor, subject, this.missile)
       return Reaction.THROW_DODGE
     }
 
@@ -22,13 +25,23 @@ export class ThrowEvent extends CreatureEvent {
     )
 
     if (damage >= subject.characteristics.health.currentValue()) {
-      this.actor.on(new AddExperienceEvent(subject, game))
-      game.logger.throwKillMessage(damage, this.actor, subject, this.missile)
+      this.actor.on(new AddExperienceEvent(subject, this.game))
+      this.game.logger.throwKillMessage(
+        damage,
+        this.actor,
+        subject,
+        this.missile
+      )
       subject.die()
       return Reaction.DIE
     } else {
       subject.characteristics.health.decrease(damage)
-      game.logger.throwHurtMessage(damage, this.actor, subject, this.missile)
+      this.game.logger.throwHurtMessage(
+        damage,
+        this.actor,
+        subject,
+        this.missile
+      )
       return Reaction.HURT
     }
   }

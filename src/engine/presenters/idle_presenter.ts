@@ -14,6 +14,7 @@ import {
 } from '../../engine'
 import { InventoryPresenter } from './inventory_presenter'
 import { MissilePresenter } from './missile_presenter'
+import { MoveEvent } from '../events/move_event'
 
 export enum IdleInputKey {
   Right,
@@ -52,7 +53,7 @@ class HandleTileVisitor extends TileVisitor {
       this.player.currentLevel.id,
       this.player.pos
     )
-    this.player.move(stairway.enterPos, adjacentMap)
+    this.player.on(new MoveEvent(this.game, stairway.enterPos, adjacentMap))
 
     this.done()
   }
@@ -116,7 +117,7 @@ export class IdlePresenter extends Presenter {
       tile = stage.at(dest.x, dest.y)
 
     if (tile.passibleThrough(this.player)) {
-      this.player.move(dest)
+      this.player.on(new MoveEvent(this.game, dest))
     } else if (tile.creature) {
       tile.creature.real().on(new AttackEvent(this.player, this.game))
     } else {

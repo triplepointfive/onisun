@@ -33,7 +33,7 @@ export class MissileAttackEvent extends CreatureEvent {
 
     this.game.effect = new ItemFlightTileEffect(missile, flightPath, () => {
       if (victim) {
-        this.done(victim.on(new ThrowEvent(actor, missile)))
+        this.done(victim.on(new ThrowEvent(actor, missile, this.game)))
       } else {
         this.done(Reaction.NOTHING)
       }

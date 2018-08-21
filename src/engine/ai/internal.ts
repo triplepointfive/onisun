@@ -4,6 +4,7 @@ import { Creature, Phantom, Clan } from '../models/creature'
 import { sample } from 'lodash'
 import { MetaAI } from './meta_ai'
 import { MemoryTile } from '../models/memory'
+import { MoveEvent } from '../events/move_event'
 
 const FIRST_STEP: number = 1
 
@@ -32,7 +33,7 @@ export abstract class AI {
     const path = this.leePath(actor, point => destination.eq(point))
 
     if (path.length) {
-      actor.move(path[0])
+      actor.on(new MoveEvent(actor.currentLevel.game, path[0]))
     }
 
     return !!path.length
@@ -42,7 +43,7 @@ export abstract class AI {
     const path = this.leePath(actor, point => destination.nextTo(point))
 
     if (path.length) {
-      actor.move(path[0])
+      actor.on(new MoveEvent(actor.currentLevel.game, path[0]))
     }
 
     return !!path.length
