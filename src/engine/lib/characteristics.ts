@@ -1,6 +1,6 @@
 import { remove, sum } from 'lodash'
-import { Specie } from './creature'
-import { Item } from './items'
+import { Specie } from '../creature'
+import { Item } from '../items'
 
 export class Attribute {
   public modifiers: number[] = []
@@ -168,6 +168,7 @@ export class Characteristics extends AttributeSet<Attribute> {
   }
 
   public throwDamageTo(victim: Characteristics, missile: Item): number {
+    // TODO
     return 10
   }
 
@@ -176,10 +177,12 @@ export class Characteristics extends AttributeSet<Attribute> {
   }
 
   protected regenerationValue(): number {
+    // TODO
     return 1
   }
 
   public regenerateEvery(): number {
+    // TODO
     return 8
   }
 

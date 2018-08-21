@@ -1,5 +1,5 @@
 import { Specie, Creature, Player } from '../creature'
-import { Modifier } from '../characteristics'
+import { Modifier } from '../lib/characteristics'
 
 import { remove } from 'lodash'
 import { Game } from '../game'

@@ -32,7 +32,7 @@ abstract class ItemsListingPresenter extends Presenter {
 }
 
 export class PickUpPresenter extends ItemsListingPresenter {
-  public title: string = 'What to pick up?'
+  public title: string = 'Что поднять?'
 
   protected initPositions(): void {
     const items = this.player.currentLevel.at(
@@ -52,17 +52,15 @@ export class PickUpPresenter extends ItemsListingPresenter {
 }
 
 export class DropItemsPresenter extends ItemsListingPresenter {
-  public title: string = 'What to drop?'
+  public title: string = 'Что положить?'
 
   protected initPositions(): void {
     this.positions = this.player.inventory.cares()
   }
 
   public pickUpItems(items: GroupedItem[]): void {
-    const tile = this.tile()
-
-    if (tile.items && tile.items.bunch.length) {
-      this.player.on(new DropItemsEvent(tile, items, this.game))
+    if (items.length) {
+      this.player.on(new DropItemsEvent(this.tile(), items, this.game))
       this.endTurn()
     } else {
       this.redirect(new IdlePresenter(this.game))
@@ -71,7 +69,7 @@ export class DropItemsPresenter extends ItemsListingPresenter {
 }
 
 export class PutOnItemsPresenter extends ItemsListingPresenter {
-  public title: string = 'What to put on?'
+  public title: string = 'Что надеть?'
   public singleItemMode: boolean = true
 
   constructor(

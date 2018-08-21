@@ -39,8 +39,7 @@ export abstract class InventorySlot {
     // TODO: assert that can't equip more than have in inventory
     // TODO: assert can equip
     if (this.equipment) {
-      inventory.putToBag(this.equipment.item, this.equipment.count)
-      this.equipment.item.onTakeOff(actor)
+      this.takeOff(actor)
     }
     const count = this.useSingleItem ? 1 : groupItem.count
     this.equipment = new GroupedItem(count, item)
@@ -49,13 +48,13 @@ export abstract class InventorySlot {
   }
 
   public takeOff(actor: Creature): void {
-    if (this.equipment) {
-      actor.inventory.putToBag(this.equipment.item, this.equipment.count)
-      this.equipment.item.onTakeOff(actor)
-      this.equipment = null
-    } else {
+    if (!this.equipment) {
       throw `Slot ${this.name} has nothing to take off`
     }
+
+    actor.inventory.putToBag(this.equipment.item, this.equipment.count)
+    this.equipment.item.onTakeOff(actor)
+    this.equipment = null
   }
 
   protected match(item: Item): boolean {

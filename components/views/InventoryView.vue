@@ -1,6 +1,7 @@
 <template lang='pug'>
   .screen-modal
-    span.title Инвентарь
+    .h4.title Инвентарь
+    .subtitle.my-3 Нагрузка {{ player.stuffWeight.current }} из {{ player.carryingCapacity.current }}
 
     table.content.inventory-list
       tr(v-for='(position, index) in screen.positions' :key='index' :class='availableStatus(position)')
@@ -89,7 +90,7 @@ export default Vue.extend({
     },
     itemName(position) {
       if (position.item) {
-        return `${position.item.name} (${position.count})`
+        return `${position.item.name} ${position.count > 1 ? `(${position.count})` : ''}`
       } else {
         return '-'
       }
@@ -172,4 +173,3 @@ export default Vue.extend({
   }
 }
 </style>
-

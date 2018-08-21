@@ -20,6 +20,7 @@ import { includes } from 'lodash'
 import { Profession } from './profession'
 import { TileVisitor, Door, Tile, Trap } from './tile'
 import { ImpactType } from './lib/impact';
+import { Stat } from './lib/stat';
 
 export enum Clan {
   Player,
@@ -138,6 +139,9 @@ export class Creature extends Phantom {
 
   private impactsBunch: ImpactBunch
 
+  public stuffWeight: Stat
+  public carryingCapacity: Stat
+
   constructor(
     public characteristics: Characteristics,
     ai: MetaAI,
@@ -147,6 +151,9 @@ export class Creature extends Phantom {
     this.ai = ai
 
     this.inventory = new Inventory()
+
+    this.stuffWeight = new Stat(0)
+    this.carryingCapacity = new Stat(100)
   }
 
   public addToMap(pos: Point, level: LevelMap) {

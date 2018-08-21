@@ -1,6 +1,7 @@
 <template lang='pug'>
 .screen-modal
   span.title {{ screen.title }}
+  .subtitle.my-3 Нагрузка {{ player.stuffWeight.current }} из {{ player.carryingCapacity.current }}
 
   table.container.positions-list
     tr(v-for='(position, index) in screen.positions' :key='index' :class='positionStatus(position)')
