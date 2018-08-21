@@ -78,7 +78,7 @@ export abstract class Game {
     const actor = map.creatures.find(creature => actorId === creature.id)
 
     if (actor) {
-      actor.act(map)
+      actor.act(map, this)
 
       // If they are still on a map
       if (map.creatures.find(creature => actorId === creature.id)) {

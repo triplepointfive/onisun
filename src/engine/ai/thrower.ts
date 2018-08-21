@@ -3,6 +3,7 @@ import { Creature, Ability, Phantom, Reaction } from '../models/creature'
 import { GroupedItem } from '../models/items'
 import { Point, bresenham } from '../utils/utils'
 import { MissileAttackEvent } from '../../engine'
+import { Game } from '../models/game'
 
 export class Thrower extends AI {
   public victim: Creature
@@ -17,7 +18,7 @@ export class Thrower extends AI {
     )
   }
 
-  public act(actor: Creature): void {
+  public act(actor: Creature, game: Game): void {
     let path: Point[] = []
 
     bresenham(actor.pos, this.victim.pos, (x, y) => path.push(new Point(x, y)))
@@ -25,7 +26,7 @@ export class Thrower extends AI {
     actor.on(
       new MissileAttackEvent(
         path,
-        actor.currentLevel.game,
+        game,
         (reaction: Reaction) => {
           if (reaction === Reaction.DIE) {
             this.victim = undefined

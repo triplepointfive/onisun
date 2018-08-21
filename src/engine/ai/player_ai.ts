@@ -13,7 +13,7 @@ export class AINewLevelEvent extends AIEvent {
     super(game)
   }
 
-  public act(): void {
+  public run(): void {
     if (this.level % 3 === 0) {
       this.game.ai.presenter = new ProfessionPickingPresenter(
         this.level,
@@ -35,9 +35,9 @@ export class PlayerAI extends MetaAI {
   private game: Game
   public levelUps: number = 0
 
-  public act(player: Player): void {
+  public act(player: Player, game: Game): void {
     this.player = player
-    this.game = player.currentLevel.game
+    this.game = game
 
     this.presenter = new IdlePresenter(this.game)
     this.game.ai = this
@@ -46,7 +46,7 @@ export class PlayerAI extends MetaAI {
   public endTurn(): void {
     let event = this.events.pop()
     if (event) {
-      event.act()
+      event.run()
     } else {
       this.game.ai = null
       this.presenter = null

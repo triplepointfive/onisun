@@ -1,6 +1,7 @@
 import { FollowTargetAI } from './internal'
 import { Phantom, Creature, CreatureId } from '../models/creature'
 import { Point } from '../utils/utils'
+import { Game } from '../models/game'
 
 export class Chaser extends FollowTargetAI {
   private victimId?: CreatureId
@@ -30,8 +31,8 @@ export class Chaser extends FollowTargetAI {
     return !!this.victimId
   }
 
-  protected goTo(actor: Creature): boolean {
-    return this.followTo(actor, this.destination)
+  protected goTo(actor: Creature, game: Game): boolean {
+    return this.followTo(actor, this.destination, game)
   }
 
   private buildVictimPath(actor: Creature): boolean {

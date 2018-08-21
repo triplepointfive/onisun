@@ -8,6 +8,7 @@ import { Loiter } from './loiter'
 import { MetaAI } from './meta_ai'
 import { TileVisitor } from '../models/tile'
 import { MoveEvent } from '../events/move_event'
+import { Game } from '../models/game'
 
 type NodeID = string
 
@@ -52,9 +53,9 @@ export class Patrol extends AI {
     return this.graph.nodes().length > 1
   }
 
-  public act(actor: Creature, firstTurn: boolean = true): void {
+  public act(actor: Creature, game: Game, firstTurn: boolean = true): void {
     if (this.path.length) {
-      this.moveToTarget(actor, firstTurn)
+      this.moveToTarget(actor, game, firstTurn)
     } else {
       if (this.targetNodeID) {
         this.markNodeVisited(this.targetNodeID)
@@ -62,7 +63,7 @@ export class Patrol extends AI {
       }
 
       this.pickUpNewTarget(actor)
-      this.moveToTarget(actor, firstTurn)
+      this.moveToTarget(actor, game, firstTurn)
     }
     this.step += 1
   }
@@ -116,15 +117,15 @@ export class Patrol extends AI {
     this.buildNewPath(actor)
   }
 
-  private moveToTarget(actor: Creature, firstTurn: boolean): void {
+  private moveToTarget(actor: Creature, game: Game, firstTurn: boolean): void {
     const nextPoint: Point = this.path.shift()
 
     if (!nextPoint) {
       if (firstTurn) {
         this.path = []
-        this.act(actor, false)
+        this.act(actor, game, false)
       } else {
-        new Loiter(this.prevAI).act(actor, firstTurn)
+        new Loiter(this.prevAI).act(actor, game, firstTurn)
       }
     } else if (
       actor
@@ -135,10 +136,10 @@ export class Patrol extends AI {
       this.buildNewPath
 
       if (this.path.length) {
-        return this.act(actor, false)
+        return this.act(actor, game, false)
       }
     } else {
-      actor.on(new MoveEvent(actor.currentLevel.game, nextPoint))
+      actor.on(new MoveEvent(game, nextPoint))
     }
   }
 

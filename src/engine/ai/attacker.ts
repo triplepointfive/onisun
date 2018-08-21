@@ -1,6 +1,6 @@
 import { AI } from './internal'
 import { Phantom, Creature, Reaction } from '../models/creature'
-import { AttackEvent } from '../../engine'
+import { AttackEvent, Game } from '../../engine'
 
 export class Attacker extends AI {
   public victim?: Creature
@@ -9,24 +9,21 @@ export class Attacker extends AI {
     return this.canAttack(actor)
   }
 
-  public act(actor: Creature, firstTurn: boolean = true): void {
+  public act(actor: Creature, game: Game, firstTurn: boolean = true): void {
     if (this.victimInAccess(actor)) {
-      this.attack(actor)
+      this.attack(actor, game)
     } else {
       if (!firstTurn) {
         throw 'Attacker got called twice'
       }
 
       this.pickNewVictim(actor)
-      this.act(actor, false)
+      this.act(actor, game, false)
     }
   }
 
-  protected attack(actor: Creature) {
-    if (
-      this.victim.on(new AttackEvent(actor, actor.currentLevel.game)) ===
-      Reaction.DIE
-    ) {
+  protected attack(actor: Creature, game: Game) {
+    if (this.victim.on(new AttackEvent(actor, game)) === Reaction.DIE) {
       this.victim = undefined
     }
   }

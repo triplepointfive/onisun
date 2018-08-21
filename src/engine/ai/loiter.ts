@@ -1,11 +1,12 @@
 import { AI } from './internal'
 import { Creature } from '../models/creature'
 import { MoveEvent } from '../events/move_event'
+import { Game } from '../models/game'
 
 export class Loiter extends AI {
   // private turns: number = 0
 
-  act(actor: Creature, firstTurn: boolean = true): void {
+  act(actor: Creature, game: Game, firstTurn: boolean = true): void {
     // if (this.turns > 1) {
     //   actor.ai = this.prevAI
     //   this.prevAI.act(actor, false)
@@ -16,7 +17,7 @@ export class Loiter extends AI {
 
     if (path.length) {
       // this.turns += 1
-      actor.on(new MoveEvent(actor.currentLevel.game, path[0]))
+      actor.on(new MoveEvent(game, path[0]))
     }
   }
 

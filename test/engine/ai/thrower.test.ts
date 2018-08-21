@@ -23,7 +23,7 @@ beforeEach(() => {
 
 describe('When there is nothing to throw', () => {
   it('Is not available', () => {
-    expect(() => actor.act(map)).toThrow()
+    expect(() => actor.act(map, game)).toThrow()
     expect(internalAI.available(actor)).toBeFalsy()
   })
 })
@@ -36,7 +36,7 @@ describe('Throwing at enemy', () => {
 
     enemy.addToMap(new Point(1, 4), map)
 
-    actor.act(map)
+    actor.act(map, game)
   })
 
   it('Adds throwing effect', () => {
@@ -65,7 +65,7 @@ describe('When there is someone else', () => {
     enemy2.addToMap(new Point(1, 3), map)
     enemy.addToMap(new Point(1, 4), map)
 
-    actor.act(map)
+    actor.act(map, game)
 
     expect(internalAI.victim.id).toEqual(enemy2.id)
   })
@@ -74,7 +74,7 @@ describe('When there is someone else', () => {
     enemy.addToMap(new Point(1, 3), map)
     enemy2.addToMap(new Point(3, 1), map)
 
-    actor.act(map)
+    actor.act(map, game)
 
     expect(internalAI.victim.id).toEqual(enemy.id)
   })
@@ -83,7 +83,7 @@ describe('When there is someone else', () => {
     enemy2.addToMap(new Point(3, 1), map)
     enemy.addToMap(new Point(1, 7), map)
 
-    actor.act(map)
+    actor.act(map, game)
 
     expect(internalAI.victim.id).toEqual(enemy2.id)
   })

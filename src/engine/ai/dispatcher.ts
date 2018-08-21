@@ -11,6 +11,7 @@ import { Thrower } from './thrower'
 import { Descender } from './descender'
 import { SelfHealer } from './selfhealer'
 import { AI } from './internal'
+import { Game } from '../models/game'
 
 export class Dispatcher extends MetaAI {
   private escaper: Escaper
@@ -42,7 +43,7 @@ export class Dispatcher extends MetaAI {
     this.descender = new Descender(this)
   }
 
-  public act(actor: Creature, firstTurn: boolean = true): void {
+  public act(actor: Creature, game: Game, firstTurn: boolean = true): void {
     // Never dispatch twice
     if (!firstTurn) {
       throw 'Meta AI called recursively'
@@ -81,7 +82,7 @@ export class Dispatcher extends MetaAI {
     }
 
     this.resetEvents()
-    this.aiToRun.act(actor, firstTurn)
+    this.aiToRun.act(actor, game, firstTurn)
   }
 
   private feelsGood(actor: Creature): boolean {

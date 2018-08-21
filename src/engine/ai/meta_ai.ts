@@ -13,7 +13,7 @@ export abstract class AIEvent {
     this.logger = game.logger
   }
 
-  public abstract act(): void
+  public abstract run(): void
   public abstract immediate(): boolean
 }
 
@@ -22,12 +22,12 @@ export class AIItemPickedEvent extends AIEvent {
     super(game)
   }
 
-  public act(): void {
+  public run(): void {
     this.player.inventory.cares().forEach(item => {
       // const wearing = this.whereToWear(item.item)
       // if (wearing) {
       //   // TODO: Use matching slot
-      //   new AIPutOnItem(wearing.inventorySlot, item.item, this.game).act()
+      //   new AIPutOnItem(wearing.inventorySlot, item.item, this.game).run()
       // }
     })
   }
@@ -104,7 +104,7 @@ export abstract class MetaAI extends AI {
 
   public runEvents(): void {
     this.events.forEach(event => {
-      event.act()
+      event.run()
     })
 
     this.resetEvents()

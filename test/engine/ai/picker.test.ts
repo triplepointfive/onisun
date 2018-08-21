@@ -25,7 +25,7 @@ describe('When there are no items', () => {
 describe('When there is only one item', () => {
   beforeEach(() => {
     map.at(3, 3).addItem(generateItem(), 1)
-    creature.act(map)
+    creature.act(map, game)
   })
 
   it('AI is available', () => {
@@ -42,7 +42,7 @@ describe('When there are multiple items', () => {
   beforeEach(() => {
     map.at(3, 3).addItem(generateItem(), 1)
     map.at(3, 5).addItem(generateItem(), 1)
-    creature.act(map)
+    creature.act(map, game)
   })
 
   it('AI is available', () => {
@@ -75,7 +75,7 @@ describe('When items on every single cell around', () => {
   })
 
   it('Moves to adjacent cell', () => {
-    creature.act(map)
+    creature.act(map, game)
     expect(creature.pos.x === 2 || creature.pos.y === 2).toBeTruthy()
   })
 })

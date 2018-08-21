@@ -13,6 +13,7 @@ import {
   ImpactBunch,
   MetaAI,
   PlayerAI,
+  Game,
 } from '../../engine'
 
 import { Level } from '../lib/level'
@@ -192,10 +193,10 @@ export class Creature extends Phantom {
     return this.stageMemories[levelId]
   }
 
-  public act(stage: LevelMap) {
+  public act(stage: LevelMap, game: Game) {
     this.visionMask(stage)
     this.previousPos = this.pos.copy()
-    this.ai.act(this, true)
+    this.ai.act(this, game, true)
   }
 
   public clone(): Phantom {

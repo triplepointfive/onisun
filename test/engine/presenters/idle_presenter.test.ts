@@ -72,7 +72,7 @@ describe('puts on and takes off', () => {
 
     it('failed to handle common tile', () => {
       player.addToMap(stairPos.add(fakeStairPos), game.getMap(level0))
-      game.ai.act(player)
+      game.ai.act(player, game)
 
       expect(game.logger.messages.length).toEqual(0)
       screen.onInput(IdleInputKey.Handle)
@@ -84,7 +84,7 @@ describe('puts on and takes off', () => {
 
     it('handles stairs', () => {
       player.addToMap(stairPos, game.getMap(level0))
-      game.ai.act(player)
+      game.ai.act(player, game)
 
       screen.onInput(IdleInputKey.Handle)
       expect(game.logger.messages.length).toEqual(0)

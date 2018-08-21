@@ -5,6 +5,7 @@ import { sample } from 'lodash'
 import { MetaAI } from './meta_ai'
 import { MemoryTile } from '../models/memory'
 import { MoveEvent } from '../events/move_event'
+import { Game } from '../models/game'
 
 const FIRST_STEP: number = 1
 
@@ -18,13 +19,13 @@ export abstract class AI {
 
   constructor(public prevAI?: MetaAI, public id: AIId = AI.getId()) {}
 
-  public abstract act(actor: Creature, firstTurn: boolean): void
+  public abstract act(actor: Creature, game: Game, firstTurn: boolean): void
 
   public abstract available(actor: Creature): boolean
 
   public reset(): void {}
 
-  protected moveTo(actor: Creature, destination: Point): boolean {
+  protected moveTo(actor: Creature, destination: Point, game: Game): boolean {
     // TODO: Rethink of it
     if (actor.pos.eq(destination)) {
       return true
@@ -33,17 +34,17 @@ export abstract class AI {
     const path = this.leePath(actor, point => destination.eq(point))
 
     if (path.length) {
-      actor.on(new MoveEvent(actor.currentLevel.game, path[0]))
+      actor.on(new MoveEvent(game, path[0]))
     }
 
     return !!path.length
   }
 
-  protected followTo(actor: Creature, destination: Point): boolean {
+  protected followTo(actor: Creature, destination: Point, game: Game): boolean {
     const path = this.leePath(actor, point => destination.nextTo(point))
 
     if (path.length) {
-      actor.on(new MoveEvent(actor.currentLevel.game, path[0]))
+      actor.on(new MoveEvent(game, path[0]))
     }
 
     return !!path.length
@@ -199,17 +200,17 @@ export abstract class FollowTargetAI extends AI {
     return this.foundNewTarget(actor) || !!this.destination
   }
 
-  public act(actor: Creature): void {
+  public act(actor: Creature, game: Game): void {
     if (!this.destination) {
       throw `FollowTargetAI's act got called when there is no destination!`
     }
 
-    if (this.goTo(actor)) {
+    if (this.goTo(actor, game)) {
       this.onMove(actor)
       // If got the destination
       if (this.destination.eq(actor.pos)) {
         this.destination = undefined
-        this.onReach(actor)
+        this.onReach(actor, game)
       }
     } else {
       // If can not move
@@ -222,13 +223,13 @@ export abstract class FollowTargetAI extends AI {
     this.destination = undefined
   }
 
-  protected goTo(actor: Creature): boolean {
-    return this.moveTo(actor, this.destination)
+  protected goTo(actor: Creature, game: Game): boolean {
+    return this.moveTo(actor, this.destination, game)
   }
 
   protected abstract foundNewTarget(actor: Creature): boolean
   protected onMove(actor: Creature): void {}
-  protected onReach(actor: Creature): void {}
+  protected onReach(actor: Creature, game: Game): void {}
   protected onCantMove(actor: Creature): void {}
 }
 
