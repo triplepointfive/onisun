@@ -52,6 +52,13 @@ describe('with two creatures', () => {
     timeline.remove(actor2)
     expect(timeline.actors()).toEqual([])
   })
+
+  it('removes first actor', () => {
+    timeline.add(actor1, 4)
+    timeline.add(actor2, 8)
+    timeline.remove(actor1)
+    expect(timeline.next()).toEqual(actor2)
+  })
 })
 
 describe('multiple ones', () => {

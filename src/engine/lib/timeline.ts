@@ -1,8 +1,8 @@
-import { forEach, keys, min, remove, size, pullAt } from 'lodash'
+import { forEach, keys, min, remove, size, pullAt, pickBy } from 'lodash'
 
 export class Timeline<T> {
-  private step: number = 0
-  private turns: { [key: number]: T[] } = {}
+  public step: number = 0
+  public turns: { [key: number]: T[] } = {}
 
   public add(item: T, delta: number): void {
     const ts = this.step + delta
@@ -18,10 +18,16 @@ export class Timeline<T> {
     forEach(this.turns, (value, key) => {
       remove(value, element => element === item)
     })
+
+    this.turns = pickBy(this.turns, (val: T[]) => val.length > 0)
   }
 
   public next(): T {
     this.step = min(keys(this.turns).map(x => parseInt(x)))
+
+    if (!this.step) {
+      throw 'Timeline.next called when there is no ones turn'
+    }
 
     const [element] = pullAt(this.turns[this.step], 0)
 
@@ -29,7 +35,7 @@ export class Timeline<T> {
       delete this.turns[this.step]
     }
 
-    return element
+    return element === undefined ? this.next() : element
   }
 
   public actors(): T[] {

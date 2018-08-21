@@ -73,21 +73,19 @@ export abstract class Game {
 
     const actorId = timeline.next()
 
-    if (actorId !== undefined) {
-      const actor = map.creatures.find(creature => actorId === creature.id)
-
-      if (actor) {
-        actor.act(map)
-
-        // If they are still on a map
-        if (map.creatures.find(creature => actorId === creature.id)) {
-          timeline.add(actorId, actor.speed())
-        }
-      }
-
-      return
-    } else {
+    if (actorId === undefined) {
       throw 'Timeline event is empty!'
+    }
+
+    const actor = map.creatures.find(creature => actorId === creature.id)
+
+    if (actor) {
+      actor.act(map)
+
+      // If they are still on a map
+      if (map.creatures.find(creature => actorId === creature.id)) {
+        timeline.add(actorId, actor.speed())
+      }
     }
   }
 }

@@ -23,14 +23,12 @@ export class MoveEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
-    let nextLevel = this.nextLevel || actor.currentLevel
-
-    if (nextLevel.id !== actor.currentLevel.id) {
+    if (this.nextLevel && this.nextLevel.id !== actor.currentLevel.id) {
       actor.currentLevel.leave(actor)
 
-      nextLevel.enter(actor, this.nextPoint)
-      this.game.currentMap = nextLevel
-      actor.currentLevel = nextLevel
+      this.nextLevel.enter(actor, this.nextPoint)
+      this.game.currentMap = this.nextLevel
+      actor.currentLevel = this.nextLevel
     } else {
       actor.currentLevel.at(actor.pos.x, actor.pos.y).creature = undefined
     }
