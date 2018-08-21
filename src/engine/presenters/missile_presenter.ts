@@ -1,9 +1,8 @@
 import { Presenter, PresenterType } from './internal'
-import { Game } from '../game'
-import { Point, bresenhamInclusion, Direction } from '../utils'
-import { Memory } from '../memory'
+import { Point, bresenhamInclusion, Direction } from '../utils/utils'
+import { Memory } from '../models/memory'
 import { IdlePresenter } from './idle_presenter'
-import { MissileAttackEvent } from '../../engine'
+import { MissileAttackEvent, Game } from '../../engine'
 
 export class MissilePresenter extends Presenter {
   public targetPos: Point

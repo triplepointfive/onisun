@@ -1,4 +1,4 @@
-import { Point, rand, twoDimArray } from '../utils'
+import { Point, rand, twoDimArray } from '../utils/utils'
 
 const generate = function<T>(
   dimX: number,

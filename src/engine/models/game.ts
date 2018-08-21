@@ -1,6 +1,9 @@
-import { Logger, LevelMap, Player, LevelMapId, PlayerAI } from '../engine'
 import { ProfessionPicker } from './profession'
 import { TileEffect } from './tile_effect'
+import { LevelMapId, LevelMap } from './level_map'
+import { Logger } from './logger'
+import { Player } from './creature'
+import { PlayerAI } from '../../engine'
 
 type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
 

@@ -1,15 +1,14 @@
 import { remove } from 'lodash'
 
 export enum ImpactType {
-  Blind
+  Blind,
 }
 
 class Impact {
   private constEffects: string[] = []
   private tempEffects: number = 0
 
-  constructor(public readonly type: ImpactType) {
-  }
+  constructor(public readonly type: ImpactType) {}
 
   public addTempEffect(turns: number): void {
     this.tempEffects += turns
@@ -43,7 +42,9 @@ export class ImpactBunch {
   private blindness: Impact = new Impact(ImpactType.Blind)
 
   public activeImpacts(): ImpactType[] {
-    return this.impacts().filter(impact => impact.active()).map(impact => impact.type)
+    return this.impacts()
+      .filter(impact => impact.active())
+      .map(impact => impact.type)
   }
 
   public addImpact(type: ImpactType, turns: number): void {
@@ -74,8 +75,6 @@ export class ImpactBunch {
   }
 
   private impacts(): Impact[] {
-    return [
-      this.blindness
-    ]
+    return [this.blindness]
   }
 }

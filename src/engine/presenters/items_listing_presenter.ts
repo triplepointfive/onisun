@@ -7,7 +7,7 @@ import {
   DropItemsEvent,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
-import { GroupedItem, ItemGroup, Potion } from '../items/internal'
+import { GroupedItem, ItemGroup, Potion } from '../models/items'
 import { InventoryPresenter } from './inventory_presenter'
 
 interface ItemsListingPosition {

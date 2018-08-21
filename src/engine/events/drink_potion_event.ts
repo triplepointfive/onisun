@@ -1,9 +1,6 @@
-import { Potion } from '../items'
-
-import { Game } from '../game'
-
-import { Creature, Reaction } from '../creature'
+import { Creature, Reaction } from '../models/creature'
 import { CreatureEvent } from './internal'
+import { Potion, Game } from '../../engine'
 
 export class DrinkPotionEvent extends CreatureEvent {
   constructor(private potion: Potion, private game: Game) {

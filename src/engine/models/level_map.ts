@@ -1,6 +1,6 @@
 import { Creature, CreatureId } from './creature'
-import { Mapped, Point } from './utils'
-import { Timeline } from './timeline'
+import { Mapped, Point } from '../utils/utils'
+import { Timeline } from '../lib/timeline'
 import { Game } from './game'
 import { Tile, StairwayDown, StairwayUp } from './tile'
 

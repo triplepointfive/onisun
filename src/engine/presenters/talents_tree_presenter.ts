@@ -1,6 +1,6 @@
 import { Presenter, PresenterType } from './internal'
 import { Game } from '../../engine'
-import { Profession, Talent, TalentStatus } from '../profession'
+import { Profession, Talent, TalentStatus } from '../models/profession'
 
 interface TalentWithStatus extends Talent {
   status: TalentStatus

@@ -1,7 +1,7 @@
-import { Game } from '../game'
-import { Player } from '../creature'
-import { LevelMap } from '../level_map'
-import { Tile } from '../tile'
+import { Player } from '../models/creature'
+import { LevelMap } from '../models/level_map'
+import { Tile } from '../models/tile'
+import { Game } from '../../engine'
 
 export enum PresenterType {
   ProfessionPicking,

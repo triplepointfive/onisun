@@ -1,18 +1,16 @@
-import {
-  AI,
-  Attacker,
-  Chaser,
-  Escaper,
-  Explorer,
-  Loiter,
-  Picker,
-  Patrol,
-  SelfHealer,
-  Descender,
-  Thrower,
-} from '../ai'
-import { Creature } from '../creature'
+import { Creature } from '../models/creature'
 import { MetaAI } from './meta_ai'
+import { Escaper } from './escaper'
+import { Explorer } from './explorer'
+import { Chaser } from './chaser'
+import { Attacker } from './attacker'
+import { Picker } from './picker'
+import { Patrol } from './patrol'
+import { Loiter } from './loiter'
+import { Thrower } from './thrower'
+import { Descender } from './descender'
+import { SelfHealer } from './selfhealer'
+import { AI } from './internal'
 
 export class Dispatcher extends MetaAI {
   private escaper: Escaper

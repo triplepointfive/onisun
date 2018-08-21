@@ -1,9 +1,9 @@
 import { CreatureEvent } from './internal'
-import { Creature, Reaction, Player } from '../creature'
-import { AINewLevelEvent } from '../ai'
+import { Creature, Reaction, Player } from '../models/creature'
+import { Game, AINewLevelEvent } from '../../engine'
 
 export class AddExperienceEvent extends CreatureEvent {
-  constructor(public actor: Creature) {
+  constructor(public actor: Creature, private game: Game) {
     super()
   }
 
@@ -13,9 +13,7 @@ export class AddExperienceEvent extends CreatureEvent {
 
   public affectPlayer(subject: Player): Reaction {
     subject.level.add(1).forEach(level => {
-      subject.ai.pushEvent(
-        new AINewLevelEvent(level, subject.currentLevel.game)
-      )
+      subject.ai.pushEvent(new AINewLevelEvent(level, this.game))
     })
 
     return Reaction.NOTHING

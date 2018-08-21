@@ -1,8 +1,6 @@
 import { CreatureEvent } from './internal'
-import { GroupedItem } from '../items'
-import { Game } from '../game'
-import { Tile } from '../../engine'
-import { Creature, Reaction } from '../creature'
+import { Tile, GroupedItem, Game } from '../../engine'
+import { Creature, Reaction } from '../models/creature'
 
 export class DropItemsEvent extends CreatureEvent {
   constructor(

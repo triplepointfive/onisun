@@ -1,5 +1,5 @@
 import { AI } from './internal'
-import { Phantom, Creature, Reaction } from '../creature'
+import { Phantom, Creature, Reaction } from '../models/creature'
 import { AttackEvent } from '../../engine'
 
 export class Attacker extends AI {
@@ -23,7 +23,10 @@ export class Attacker extends AI {
   }
 
   protected attack(actor: Creature) {
-    if (this.victim.on(new AttackEvent(actor)) === Reaction.DIE) {
+    if (
+      this.victim.on(new AttackEvent(actor, actor.currentLevel.game)) ===
+      Reaction.DIE
+    ) {
       this.victim = undefined
     }
   }

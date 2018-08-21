@@ -1,5 +1,5 @@
 import { AI } from './internal'
-import { Creature } from '../creature'
+import { Creature } from '../models/creature'
 
 export class Loiter extends AI {
   // private turns: number = 0

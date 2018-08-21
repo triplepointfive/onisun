@@ -7,8 +7,7 @@ import {
   MissileSlot,
   BootsSlot,
 } from './inventory_slot'
-
-import { Item, GroupedItem, ItemsBunch } from './items'
+import { ItemsBunch, GroupedItem, Item } from './items'
 
 export class Inventory {
   private bag: ItemsBunch = new ItemsBunch()

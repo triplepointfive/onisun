@@ -1,7 +1,7 @@
-import { Game } from '../game'
 import { PresenterType, Presenter } from './internal'
-import { Profession } from '../profession'
+import { Profession } from '../models/profession'
 import { TalentsTreePresenter } from './talents_tree_presenter'
+import { Game } from '../../engine'
 
 export class ProfessionPickingPresenter extends Presenter {
   public options: Profession[]

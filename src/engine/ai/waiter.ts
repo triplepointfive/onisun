@@ -1,5 +1,5 @@
 import { AI } from './internal'
-import { Creature } from '../creature'
+import { Creature } from '../models/creature'
 
 export class Waiter extends AI {
   act(actor: Creature): void {}

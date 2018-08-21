@@ -1,9 +1,9 @@
-import { Point, twoDimArray } from '../utils'
-import { Creature, Phantom, Clan } from '../creature'
+import { Point, twoDimArray } from '../utils/utils'
+import { Creature, Phantom, Clan } from '../models/creature'
 
 import { sample } from 'lodash'
 import { MetaAI } from './meta_ai'
-import { MemoryTile } from '../memory'
+import { MemoryTile } from '../models/memory'
 
 const FIRST_STEP: number = 1
 

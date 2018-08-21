@@ -1,4 +1,4 @@
-import { Rect, Point, rand, min, twoDimArray } from '../utils'
+import { Rect, Point, rand, min, twoDimArray } from '../utils/utils'
 
 const THICKNESS = 0
 const RAY_TURNS = 60

@@ -1,7 +1,7 @@
 import { LevelMap, Tile, Item } from '../../engine'
-import { Pool } from '../pool'
-import { Creature } from '../creature'
-import { Point, cycle } from '../utils'
+import { Pool } from '../lib/pool'
+import { Creature } from '../models/creature'
+import { Point, cycle } from '../utils/utils'
 
 import { random } from 'lodash'
 

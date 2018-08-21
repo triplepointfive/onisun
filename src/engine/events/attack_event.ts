@@ -1,28 +1,29 @@
 import { CreatureEvent } from './internal'
-import { Creature, Reaction } from '../creature'
+import { Creature, Reaction } from '../models/creature'
 import { AddExperienceEvent } from './add_experience_event'
+import { Game } from '../models/game'
 
 export class AttackEvent extends CreatureEvent {
-  constructor(public actor: Creature) {
+  constructor(public actor: Creature, private game: Game) {
     super()
   }
 
   public affectCreature(subject: Creature): Reaction {
     if (this.actor.characteristics.misses(subject.characteristics)) {
-      subject.currentLevel.game.logger.missMessage(this.actor, subject)
+      this.game.logger.missMessage(this.actor, subject)
       return Reaction.DODGE
     }
 
     const damage = this.actor.characteristics.damageTo(subject.characteristics)
 
     if (damage >= subject.characteristics.health.currentValue()) {
-      this.actor.on(new AddExperienceEvent(subject))
-      subject.currentLevel.game.logger.killMessage(damage, this.actor, subject)
+      this.actor.on(new AddExperienceEvent(subject, this.game))
+      this.game.logger.killMessage(damage, this.actor, subject)
       subject.die()
       return Reaction.DIE
     } else {
       subject.characteristics.health.decrease(damage)
-      subject.currentLevel.game.logger.hurtMessage(damage, this.actor, subject)
+      this.game.logger.hurtMessage(damage, this.actor, subject)
       return Reaction.HURT
     }
   }

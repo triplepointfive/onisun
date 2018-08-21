@@ -8,10 +8,10 @@ import {
   BodyArmor,
   Pool,
   Creature,
+  Boots,
+  ImpactType,
 } from '../engine'
 import { HealPotion } from './potions'
-import { Boots } from '../engine/items';
-import { ImpactType } from '../engine/lib/impact';
 
 class MissileRock extends Missile {
   public worksWith(item: Item): boolean {

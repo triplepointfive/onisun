@@ -1,7 +1,7 @@
 import { CreatureEvent } from './internal'
-import { Trap } from '../tile'
-import { Creature, Reaction, Player } from '../creature'
-import { Game } from '../game'
+import { Trap } from '../models/tile'
+import { Creature, Reaction, Player } from '../models/creature'
+import { Game } from '../models/game'
 
 export class TrapEvent extends CreatureEvent {
   constructor(private trap: Trap, private game: Game) {

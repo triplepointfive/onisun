@@ -1,7 +1,7 @@
 import { AI } from './internal'
-import { Creature, Ability, Phantom, Reaction } from '../creature'
-import { GroupedItem } from '../items/internal'
-import { Point, bresenham } from '../utils'
+import { Creature, Ability, Phantom, Reaction } from '../models/creature'
+import { GroupedItem } from '../models/items'
+import { Point, bresenham } from '../utils/utils'
 import { MissileAttackEvent } from '../../engine'
 
 export class Thrower extends AI {

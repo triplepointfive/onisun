@@ -9,10 +9,6 @@ import {
   addItems,
   drawn,
   addCreatures,
-} from '../../engine'
-import { weapons, itemsPool, LightSpeedBoots } from '../items'
-import { creaturesPool1 } from '../creatures'
-import {
   Tile,
   TileTypes,
   Door,
@@ -20,7 +16,9 @@ import {
   Floor,
   Corridor,
   Room,
-} from '../../engine/tile'
+} from '../../engine'
+import { weapons, itemsPool, LightSpeedBoots } from '../items'
+import { creaturesPool1 } from '../creatures'
 import { OnisunFireTrap, OnisunIceTrap } from '../tiles'
 
 const initId: number = -1

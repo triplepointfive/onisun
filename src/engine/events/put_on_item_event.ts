@@ -1,8 +1,6 @@
 import { CreatureEvent } from './internal'
-import { InventorySlot } from '../../engine'
-import { Item } from '../items'
-import { Game } from '../game'
-import { Creature, Reaction } from '../creature'
+import { InventorySlot, Item, Game } from '../../engine'
+import { Creature, Reaction } from '../models/creature'
 
 export class PutOnItemEvent extends CreatureEvent {
   constructor(

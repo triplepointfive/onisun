@@ -1,7 +1,7 @@
 import { AI } from './internal'
-import { Creature, Player } from '../creature'
-import { ItemsBunch, Item } from '../items/internal'
-import { Logger } from '../logger'
+import { Creature, Player } from '../models/creature'
+import { ItemsBunch, Item } from '../models/items'
+import { Logger } from '../models/logger'
 import { Game } from '../../engine'
 
 export abstract class AIEvent {

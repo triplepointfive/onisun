@@ -8,7 +8,7 @@ export class Stat {
     public base: number,
     public rate: number = 1,
     public extra: number = 0,
-    public extraRate: number = 1,
+    public extraRate: number = 1
   ) {}
 
   get current(): number {

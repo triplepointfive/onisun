@@ -1,6 +1,5 @@
-import { Item, GroupedItem } from './items'
 import { Creature } from './creature'
-import { Usage } from './items/internal'
+import { Usage, GroupedItem, Item } from './items'
 import { intersection } from 'lodash'
 import { Inventory } from './inventory'
 

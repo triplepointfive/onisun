@@ -1,5 +1,5 @@
 import { FollowTargetAI } from './internal'
-import { Phantom, Creature } from '../creature'
+import { Phantom, Creature } from '../models/creature'
 
 import { sumBy } from 'lodash'
 import { Point } from '../../engine'

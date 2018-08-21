@@ -1,5 +1,8 @@
-import { GoToTileAI, MetaAI } from '../ai'
-import { Ability, Creature, StairwayDown, TileTypes } from '../../engine'
+import { GoToTileAI } from './internal'
+
+import { MetaAI } from './meta_ai'
+
+import { TileTypes, Creature, Ability, StairwayDown } from '../../engine'
 
 export class Descender extends GoToTileAI {
   private canDescend: boolean = false

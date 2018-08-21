@@ -1,12 +1,12 @@
 import { AI } from './internal'
 
-import { Point, succ } from '../utils'
-import { Creature } from '../creature'
+import { Point, succ } from '../utils/utils'
+import { Creature } from '../models/creature'
 
 import * as graphlib from 'graphlib'
 import { Loiter } from './loiter'
 import { MetaAI } from './meta_ai'
-import { TileVisitor } from '../tile'
+import { TileVisitor } from '../models/tile'
 
 type NodeID = string
 

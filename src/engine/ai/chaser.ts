@@ -1,6 +1,6 @@
 import { FollowTargetAI } from './internal'
-import { Phantom, Creature, CreatureId } from '../creature'
-import { Point } from '../utils'
+import { Phantom, Creature, CreatureId } from '../models/creature'
+import { Point } from '../utils/utils'
 
 export class Chaser extends FollowTargetAI {
   private victimId?: CreatureId

@@ -1,5 +1,5 @@
-import { Item } from './items/internal'
-import { Point } from './utils'
+import { Item } from './items'
+import { Point } from '../utils/utils'
 import { Memory } from './memory'
 
 export abstract class TileEffect {

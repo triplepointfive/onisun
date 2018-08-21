@@ -1,8 +1,7 @@
-import { CreatureEvent } from './events/internal'
+import { CreatureEvent } from '../events/internal'
 
-import { Point } from './utils'
-import { MetaAI, PlayerAI } from './ai'
-import { Fov } from './fov'
+import { Point } from '../utils/utils'
+import { Fov } from '../utils/fov'
 
 import {
   Characteristics,
@@ -13,14 +12,16 @@ import {
   Inventory,
   Game,
   ImpactBunch,
-} from '../engine'
+  MetaAI,
+  PlayerAI,
+} from '../../engine'
 
-import { Level } from './level'
+import { Level } from '../lib/level'
 import { includes } from 'lodash'
 import { Profession } from './profession'
 import { TileVisitor, Door, Tile, Trap } from './tile'
-import { ImpactType } from './lib/impact';
-import { Stat } from './lib/stat';
+import { ImpactType } from '../lib/impact'
+import { Stat } from '../lib/stat'
 
 export enum Clan {
   Player,

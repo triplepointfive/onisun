@@ -1,4 +1,4 @@
-import { twoDimArray } from '../utils'
+import { twoDimArray } from '../utils/utils'
 
 export default function<T>(
   drawMap: string[],

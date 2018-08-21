@@ -1,8 +1,8 @@
-import { FollowTargetAI } from '../ai'
-import { Creature, Ability } from '../creature'
-import { Item, ItemId } from '../items'
-import { Point } from '../utils'
+import { Creature, Ability } from '../models/creature'
+import { Point } from '../utils/utils'
 import { AIItemPickedEvent } from './meta_ai'
+import { FollowTargetAI } from './internal'
+import { ItemId, Item } from '../../engine'
 
 export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId = null

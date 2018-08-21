@@ -1,9 +1,9 @@
 import { CreatureEvent } from './internal'
-import { Point } from '../utils'
-import { Game } from '../game'
-import { Creature, Reaction } from '../creature'
-import { ItemFlightTileEffect } from '../tile_effect'
+import { Point } from '../utils/utils'
+import { Creature, Reaction } from '../models/creature'
+import { ItemFlightTileEffect } from '../models/tile_effect'
 import { ThrowEvent } from './throw_event'
+import { Game } from '../models/game'
 
 export class MissileAttackEvent extends CreatureEvent {
   constructor(

@@ -1,7 +1,7 @@
 import { Tile, Wall, TileVisitor } from './tile'
-import { Creature, Phantom, twoDimArray } from '../engine'
-import { ItemsBunch } from './items/internal'
-import { Mapped } from './utils'
+import { Creature, Phantom, twoDimArray } from '../../engine'
+import { ItemsBunch } from './items'
+import { Mapped } from '../utils/utils'
 
 export class MemoryTile {
   public visible: boolean = false

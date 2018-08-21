@@ -1,4 +1,4 @@
-import { Pool } from '../../src/engine'
+import { Pool } from '../../../src/engine'
 
 it('Weight can not be 0', () => {
   expect(() => new Pool([[0, x => x]])).toThrowError(

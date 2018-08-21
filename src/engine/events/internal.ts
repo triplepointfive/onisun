@@ -1,4 +1,4 @@
-import { Creature, Reaction, Player } from '../creature'
+import { Creature, Reaction, Player } from '../models/creature'
 
 export abstract class CreatureEvent {
   public abstract affectCreature(subject: Creature): Reaction
