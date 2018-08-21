@@ -15,6 +15,8 @@ export class DropItemsEvent extends CreatureEvent {
     // TODO: Validate items are part of positions
     this.items.forEach(({ item, count }) => {
       subject.inventory.removeFromBag(item, count)
+      subject.stuffWeight.subtract(item.weight * count)
+
       this.game.logger.droppedItem(item, count)
       this.tile.addItem(item, count)
     })

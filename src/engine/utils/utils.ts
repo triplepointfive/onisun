@@ -39,14 +39,6 @@ export const twoDimArray = function<T>(
   return field
 }
 
-export const max = function(list: Array<number>): number {
-  return Math.max.apply(Math, list)
-}
-
-export const min = function(list: Array<number>): number {
-  return Math.min.apply(Math, list)
-}
-
 export class Point {
   constructor(public x: number, public y: number) {}
 

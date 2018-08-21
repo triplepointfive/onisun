@@ -218,15 +218,13 @@ export class Creature extends Phantom {
         .see(stage.at(x, y), degree)
     }
 
-    const visitor = new VisibilityTileVisitor(this, stage)
-
     new Fov(
       this.pos.x,
       this.pos.y,
       this.radius(),
       stage.width,
       stage.height,
-      visitor,
+      new VisibilityTileVisitor(this, stage),
       see
     ).calc()
   }

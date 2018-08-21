@@ -52,4 +52,10 @@ describe('Drop items event', () => {
     player.on(event)
     expect(game.logger.messages.length).toEqual(1)
   })
+
+  it('removes weights', () => {
+    const oldWeight = player.stuffWeight.current
+    player.on(event)
+    expect(player.stuffWeight.current).toEqual(oldWeight - 5 * item.weight)
+  })
 })

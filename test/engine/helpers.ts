@@ -43,6 +43,10 @@ testTiles.set('W', () => new Wall())
 testTiles.set('R', () => new Room())
 testTiles.set('D', () => new Door())
 
+class TestMissile extends Missile {
+
+}
+
 export const generateOneHandedWeapon = function(
   modifier: Modifier = new Modifier({})
 ): OneHandWeapon {
@@ -54,7 +58,7 @@ export const generateBodyArmor = function(): BodyArmor {
 }
 
 export const generateMissile = function(): Missile {
-  return new Missile('test missile', new Modifier({}))
+  return new TestMissile('test missile', new Modifier({}))
 }
 
 export const generatePlayerAI = function(): PlayerAI {

@@ -1,4 +1,5 @@
-import { Rect, Point, rand, min, twoDimArray } from '../utils/utils'
+import { Rect, Point, rand, twoDimArray } from '../utils/utils'
+import { min } from 'lodash'
 
 const THICKNESS = 0
 const RAY_TURNS = 60

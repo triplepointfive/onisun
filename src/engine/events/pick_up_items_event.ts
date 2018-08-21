@@ -11,16 +11,13 @@ export class PickUpItemsEvent extends CreatureEvent {
     super()
   }
 
-  public affectCreature(actor: Creature): Reaction {
-    // TODO: Ensure never happens
-    // if (!this.items.length) {
-    //   this.redirect(new IdlePresenter(this.game))
-    // }
-
+  public affectCreature(subject: Creature): Reaction {
     let tileItems = this.tile.items
 
     this.items.forEach(({ item, count }) => {
-      actor.inventory.putToBag(item, count)
+      subject.inventory.putToBag(item, count)
+      subject.stuffWeight.add(item.weight * count)
+
       this.game.logger.pickedUpItem(item, count)
       tileItems.remove(item, count)
     })

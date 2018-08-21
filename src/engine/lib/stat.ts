@@ -19,7 +19,7 @@ export class Stat {
     this.base += val
   }
 
-  public remove(val: number): void {
+  public subtract(val: number): void {
     this.base -= val
   }
 }
