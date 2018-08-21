@@ -3,7 +3,7 @@ import { Point } from '../utils/utils'
 import { AIItemPickedEvent } from './meta_ai'
 import { FollowTargetAI } from './internal'
 import { ItemId, Item } from '../../engine'
-import { Game } from '../models/game';
+import { Game } from '../models/game'
 
 export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId = null
@@ -21,9 +21,7 @@ export class Picker extends FollowTargetAI {
 
   protected onReach(actor: Creature, game: Game): void {
     const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
-    this.prevAI.pushEvent(
-      new AIItemPickedEvent(tile.items, game)
-    )
+    this.prevAI.pushEvent(new AIItemPickedEvent(tile.items, game))
 
     tile.items.bunch.forEach(groupedItem => {
       actor.inventory.putToBag(groupedItem.item, groupedItem.count)

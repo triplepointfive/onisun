@@ -1,7 +1,6 @@
 import { Creature, CreatureId } from './creature'
 import { Mapped, Point } from '../utils/utils'
 import { Timeline } from '../lib/timeline'
-import { Game } from './game'
 import { Tile, StairwayDown, StairwayUp } from './tile'
 
 import { remove } from 'lodash'
@@ -10,7 +9,6 @@ export type LevelMapId = number
 
 export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
-  public game: Game
   public timeline: Timeline<CreatureId>
   public name: string
 

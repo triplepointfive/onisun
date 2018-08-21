@@ -113,7 +113,6 @@ export class TutorialDungeon extends Dungeon {
       addDoors(map, tiles.get('D'))
     }
     centralize(map)
-    map.game = this.game
     map.name = `MP ${id}`
 
     for (let i = 0; i < 10; i++) {
