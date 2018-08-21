@@ -24,8 +24,6 @@ export abstract class Game {
     }
     this.running = true
 
-    // this.player.ai.runEvents()
-
     const effect = this.effect
     if (this.effect) {
       if (this.effect.done()) {

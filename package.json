@@ -20,7 +20,7 @@
     "pug-plain-loader": "^1.0.0",
     "ts-jest": "^22.4.6",
     "ts-node": "^6.0.0",
-    "typescript": "^2.8.1",
+    "typescript": "^3.0.1",
     "vue-loader": "^15.2.2",
     "vue-template-compiler-loader": "^1.0.4"
   },
