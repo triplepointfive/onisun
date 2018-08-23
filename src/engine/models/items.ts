@@ -1,8 +1,8 @@
 import { Specie, Creature, Player } from './creature'
-import { Modifier } from './characteristics'
 
 import { remove } from 'lodash'
 import { Game } from './game'
+import { Modifier } from '../lib/attribute'
 
 export enum Usage {
   WeaponOneHand,

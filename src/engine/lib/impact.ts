@@ -1,14 +1,17 @@
-import { remove } from 'lodash'
+import { remove, filter } from 'lodash'
 
 export enum ImpactType {
   Blind,
+  Stressed,
+  Loaded,
+  Overloaded
 }
 
 class Impact {
   private constEffects: string[] = []
   private tempEffects: number = 0
 
-  constructor(public readonly type: ImpactType) {}
+  constructor() {}
 
   public addTempEffect(turns: number): void {
     this.tempEffects += turns
@@ -39,12 +42,18 @@ class Impact {
 }
 
 export class ImpactBunch {
-  private blindness: Impact = new Impact(ImpactType.Blind)
+  private impacts: Map<ImpactType, Impact> = new Map()
 
   public activeImpacts(): ImpactType[] {
-    return this.impacts()
-      .filter(impact => impact.active())
-      .map(impact => impact.type)
+    let types: ImpactType[] = []
+
+    this.impacts.forEach((impact, type) => {
+      if (impact.active()) {
+        types.push(type)
+      }
+    })
+
+    return types
   }
 
   public addImpact(type: ImpactType, turns: number): void {
@@ -64,17 +73,16 @@ export class ImpactBunch {
   }
 
   public turn(): void {
-    this.impacts().forEach(impact => impact.turn())
+    this.impacts.forEach(impact => impact.turn())
   }
 
   protected impactByType(type: ImpactType): Impact {
-    switch (type) {
-      case ImpactType.Blind:
-        return this.blindness
+    if (this.impacts.has(type)) {
+      return this.impacts.get(type)
     }
-  }
 
-  private impacts(): Impact[] {
-    return [this.blindness]
+    let impact = new Impact()
+    this.impacts.set(type, impact)
+    return impact
   }
 }

@@ -21,7 +21,7 @@ import { includes } from 'lodash'
 import { Profession } from './profession'
 import { TileVisitor, Door, Tile } from './tile'
 import { ImpactType } from '../lib/impact'
-import { Stat } from '../lib/stat'
+import { Stat, CapacityLimitStat } from '../lib/stat'
 
 export enum Clan {
   Player,
@@ -131,7 +131,7 @@ export class Creature extends Phantom {
   private impactsBunch: ImpactBunch
 
   public stuffWeight: Stat
-  public carryingCapacity: Stat
+  public carryingCapacity: CapacityLimitStat
 
   constructor(
     public characteristics: Characteristics,
@@ -144,7 +144,7 @@ export class Creature extends Phantom {
     this.inventory = new Inventory()
 
     this.stuffWeight = new Stat(0)
-    this.carryingCapacity = new Stat(100)
+    this.carryingCapacity = new CapacityLimitStat(1, 4)
   }
 
   public addToMap(pos: Point, level: LevelMap) {

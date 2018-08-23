@@ -20,6 +20,9 @@ export class MissileAttackEvent extends CreatureEvent {
 
     slot.removeItem(actor, 1)
 
+    actor.stuffWeight.subtract(missile.weight)
+    this.onStuffWeightChange(actor)
+
     let flightPath: Point[] = [],
       victim: Creature
 

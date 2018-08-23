@@ -31,6 +31,7 @@ export * from './engine/generator/post'
 export { default as drawn } from './engine/generator/drawn'
 export { default as dungeon } from './engine/generator/dungeon'
 
+export * from './engine/lib/attribute'
 export * from './engine/lib/impact'
 export * from './engine/lib/level'
 export * from './engine/lib/pool'

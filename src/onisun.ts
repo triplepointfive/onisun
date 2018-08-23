@@ -82,6 +82,8 @@ export class Onisun extends Game {
 
     player.inventory.putToBag(new LightSpeedBoots(), 1)
 
+    player.addImpact(ImpactType.Overloaded, 'inventory')
+
     return player
   }
 }

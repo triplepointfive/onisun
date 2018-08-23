@@ -2,8 +2,7 @@
 .panel
   .impact-block(v-for='impact in impacts')
     img.icon(:src="'assets/impacts/' + icon(impact) + '.svg'")
-    .title
-      | Слепота
+    .title(v-text='title(impact)')
 </template>
 
 <script lang="ts">
@@ -19,6 +18,24 @@ export default Vue.extend({
       switch(type) {
         case ImpactType.Blind:
           return 'blind'
+        case ImpactType.Stressed:
+          return 'weight'
+        case ImpactType.Loaded:
+          return 'weight'
+        case ImpactType.Overloaded:
+          return 'weight'
+      }
+    },
+    title(type: ImpactType) {
+      switch(type) {
+        case ImpactType.Blind:
+          return 'Слепота'
+        case ImpactType.Stressed:
+          return 'Нагружен'
+        case ImpactType.Loaded:
+          return 'Груженый'
+        case ImpactType.Overloaded:
+          return 'Перегруженый'
       }
     }
   }
