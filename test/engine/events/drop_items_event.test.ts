@@ -9,7 +9,6 @@ import {
   Player,
   LevelMap,
   Point,
-  GroupedItem,
   Tile,
 } from '../../../src/engine'
 
@@ -29,7 +28,7 @@ describe('Drop items event', () => {
     player.inventory.putToBag(item, 10)
     tile = map.at(1, 1)
 
-    event = new DropItemsEvent(tile, [new GroupedItem(5, item)], game)
+    event = new DropItemsEvent(tile, [{ count: 5, item }], game)
   })
 
   it('adds items to floor', () => {

@@ -12,7 +12,7 @@ import {
   Player,
   Point,
 } from '../../../src/engine'
-import { DieEvent } from '../../../src/engine/events/die_event';
+import { DieEvent } from '../../../src/engine/events/die_event'
 
 class TestTrap extends Trap {
   protected affect(game: Game, actor: Creature): void {}

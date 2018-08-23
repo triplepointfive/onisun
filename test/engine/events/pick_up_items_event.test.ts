@@ -9,7 +9,6 @@ import {
   Player,
   LevelMap,
   Point,
-  GroupedItem,
   Tile,
 } from '../../../src/engine'
 
@@ -29,7 +28,7 @@ describe('Pick up items', () => {
     tile = map.at(1, 1)
     tile.addItem(item, 10)
 
-    event = new PickUpItemsEvent(tile, [new GroupedItem(5, item)], game)
+    event = new PickUpItemsEvent(tile, [{ count: 5, item }], game)
   })
 
   it('removes item from floor', () => {

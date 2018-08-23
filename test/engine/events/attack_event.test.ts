@@ -1,4 +1,9 @@
-import { generateGame, generatePlayer, generateCreature, generateLevelMap } from '../helpers'
+import {
+  generateGame,
+  generatePlayer,
+  generateCreature,
+  generateLevelMap,
+} from '../helpers'
 import {
   Game,
   Player,
@@ -9,7 +14,10 @@ import {
 } from '../../../src/engine'
 
 describe('AttackEvent', () => {
-  let game: Game, actor: Player, victim: Creature, event: AttackEvent,
+  let game: Game,
+    actor: Player,
+    victim: Creature,
+    event: AttackEvent,
     map = generateLevelMap()
 
   beforeEach(() => {

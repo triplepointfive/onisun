@@ -1,7 +1,7 @@
-import { Creature, CreatureId } from '../models/creature';
-import { Game } from '../models/game';
-import { Point } from '../utils/utils';
-import { FollowTargetAI } from './internal';
+import { Creature, CreatureId } from '../models/creature'
+import { Game } from '../models/game'
+import { Point } from '../utils/utils'
+import { FollowTargetAI } from './internal'
 
 export class Chaser extends FollowTargetAI {
   private victimId?: CreatureId

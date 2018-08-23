@@ -1,13 +1,23 @@
-import { includes } from 'lodash';
-import { Characteristics, Game, ImpactBunch, Inventory, LevelMap, LevelMapId, Memory, MetaAI, PlayerAI } from '../../engine';
-import { CreatureEvent } from '../events/internal';
-import { ImpactType } from '../lib/impact';
-import { Level } from '../lib/level';
-import { CapacityLimitStat, Stat } from '../lib/stat';
-import { Fov } from '../utils/fov';
-import { Point } from '../utils/utils';
-import { Profession } from './profession';
-import { Door, Tile, TileVisitor } from './tile';
+import { includes } from 'lodash'
+import {
+  Characteristics,
+  Game,
+  ImpactBunch,
+  Inventory,
+  LevelMap,
+  LevelMapId,
+  Memory,
+  MetaAI,
+  PlayerAI,
+} from '../../engine'
+import { CreatureEvent } from '../events/internal'
+import { ImpactType } from '../lib/impact'
+import { Level } from '../lib/level'
+import { CapacityLimitStat, Stat } from '../lib/stat'
+import { Fov } from '../utils/fov'
+import { Point } from '../utils/utils'
+import { Profession } from './profession'
+import { Door, Tile, TileVisitor } from './tile'
 
 export enum Clan {
   Player,
@@ -73,7 +83,7 @@ class VisibilityTileVisitor extends TileVisitor {
   }
 }
 
-export class Creature  {
+export class Creature {
   private static lastId: CreatureId = 0
   public static getId(): CreatureId {
     return this.lastId++

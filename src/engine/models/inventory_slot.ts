@@ -41,7 +41,7 @@ export abstract class InventorySlot {
       this.takeOff(actor)
     }
     const count = this.useSingleItem ? 1 : groupItem.count
-    this.equipment = new GroupedItem(count, item)
+    this.equipment = { count, item }
     inventory.removeFromBag(item, count)
     item.onPutOn(actor)
   }

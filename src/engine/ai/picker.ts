@@ -48,7 +48,7 @@ export class Picker extends FollowTargetAI {
         .bunch.find(groupedItem => condition(groupedItem.item))
 
       if (item && !result) {
-        this.desiredItemId = item.id
+        this.desiredItemId = item.item.id
         this.destination = new Point(x, y)
         result = true
       }

@@ -72,24 +72,16 @@ export class Item {
   }
 }
 
-let inventoryItemId = 1
-export class GroupedItem {
-  public id: number
-
-  constructor(public count: number, public item: Item) {
-    this.id = inventoryItemId++
-  }
-
-  public groupsWith(item: Item): boolean {
-    return this.item.groupsWith(item)
-  }
+export interface GroupedItem {
+  count: number
+  item: Item
 }
 
 export class ItemsBunch {
   public bunch: GroupedItem[] = []
 
   public find(item: Item): GroupedItem {
-    return this.bunch.find(invItem => invItem.groupsWith(item))
+    return this.bunch.find(invItem => invItem.item.groupsWith(item))
   }
 
   public remove(item: Item, count: number): void {
@@ -99,19 +91,19 @@ export class ItemsBunch {
       // TODO: Fail if removes item that's not in bunch yet?
       return
     } else if (invItem.count === count) {
-      remove(this.bunch, inventoryItem => inventoryItem.id === invItem.id)
+      remove(this.bunch, inventoryItem => inventoryItem.item.groupsWith(invItem.item))
     } else {
       invItem.count -= count
     }
   }
 
   public put(item: Item, count: number): void {
-    const invItem = this.bunch.find(inv => inv.groupsWith(item))
+    const invItem = this.bunch.find(inv => inv.item.groupsWith(item))
 
     if (invItem) {
       invItem.count += count
     } else {
-      this.bunch.push(new GroupedItem(count, item))
+      this.bunch.push({ count: count, item: item })
     }
   }
 
