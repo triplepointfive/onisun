@@ -42,6 +42,7 @@ export const allAbilities = [
 export class Specie {
   constructor(
     public readonly name: string,
+    public readonly weight: number,
     public readonly clan: Clan,
     public readonly abilities: Ability[]
   ) {}

@@ -37,18 +37,18 @@ export class Item {
   public static getId(): ItemId {
     return this.lastId++
   }
-  public weight: number = 100
 
   constructor(
     public group: ItemGroup,
     public name: string,
+    public weight: number,
     public readonly usages: Usage[] = [],
     public readonly modifier: Modifier = new Modifier({}),
     public id: ItemId = Item.getId()
   ) {}
 
   public clone(): Item {
-    return new Item(this.group, this.name)
+    return new Item(this.group, this.name, this.weight)
   }
 
   public onPutOn(creature: Creature): void {
@@ -91,7 +91,9 @@ export class ItemsBunch {
       // TODO: Fail if removes item that's not in bunch yet?
       return
     } else if (invItem.count === count) {
-      remove(this.bunch, inventoryItem => inventoryItem.item.groupsWith(invItem.item))
+      remove(this.bunch, inventoryItem =>
+        inventoryItem.item.groupsWith(invItem.item)
+      )
     } else {
       invItem.count -= count
     }
@@ -120,44 +122,50 @@ export class ItemsBunch {
 
 export class Corpse extends Item {
   constructor(public readonly specie: Specie) {
-    super(ItemGroup.Consumable, `${specie.name}'s corpse`)
+    super(ItemGroup.Consumable, `${specie.name}'s corpse`, specie.weight)
   }
 }
 
 export abstract class Potion extends Item {
   constructor(public name: string) {
-    super(ItemGroup.Potion, name)
+    super(ItemGroup.Potion, name, 0.2)
   }
 
   abstract onDrink(game: Game): void
 }
 
 export abstract class Missile extends Item {
-  constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.Missile, name, [], modifier)
+  constructor(name: string, weight: number, modifier: Modifier) {
+    super(ItemGroup.Missile, name, weight, [], modifier)
   }
 }
 
 export abstract class MissileWeapon extends Item {
-  constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.MissileWeapon, name, [Usage.Shoot], modifier)
+  constructor(name: string, weight: number, modifier: Modifier) {
+    super(ItemGroup.MissileWeapon, name, weight, [Usage.Shoot], modifier)
   }
 }
 
 export class BodyArmor extends Item {
-  constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.BodyArmor, name, [Usage.WearsOnBody], modifier)
+  constructor(name: string, weight: number, modifier: Modifier) {
+    super(ItemGroup.BodyArmor, name, weight, [Usage.WearsOnBody], modifier)
   }
 }
 
 export class OneHandWeapon extends Item {
-  constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.MissileWeapon, name, [Usage.WeaponOneHand], modifier)
+  constructor(name: string, weight: number, modifier: Modifier) {
+    super(
+      ItemGroup.MissileWeapon,
+      name,
+      weight,
+      [Usage.WeaponOneHand],
+      modifier
+    )
   }
 }
 
 export class Boots extends Item {
-  constructor(name: string, modifier: Modifier) {
-    super(ItemGroup.Boots, name, [Usage.Boots], modifier)
+  constructor(name: string, weight: number, modifier: Modifier) {
+    super(ItemGroup.Boots, name, weight, [Usage.Boots], modifier)
   }
 }

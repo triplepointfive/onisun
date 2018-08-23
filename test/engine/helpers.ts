@@ -1,35 +1,32 @@
+import { random, times } from 'lodash'
 import {
-  OneHandWeapon,
-  Modifier,
-  Creature,
-  Clan,
-  MetaAI,
-  Dispatcher,
   AI,
-  LevelMap,
-  Tile,
-  Characteristics,
-  Specie,
   allAbilities,
   BodyArmor,
-  Missile,
-  Profession,
-  Player,
-  Level,
+  Characteristics,
+  Clan,
+  Corridor,
+  Creature,
+  Dispatcher,
+  Door,
   drawn,
   Game,
-  TileTypes,
-  Corridor,
-  Wall,
-  Floor,
-  Door,
-  Room,
-  TileVisitor,
-  Dungeon,
+  Level,
+  LevelMap,
+  MetaAI,
+  Missile,
+  Modifier,
+  OneHandWeapon,
+  Player,
   PlayerAI,
+  Profession,
+  Room,
+  Specie,
+  Tile,
+  TileTypes,
+  TileVisitor,
+  Wall,
 } from '../../src/engine'
-
-import { times, random } from 'lodash'
 
 export const generateString = function(length: number = 7): string {
   return Math.random()
@@ -48,15 +45,15 @@ class TestMissile extends Missile {}
 export const generateOneHandedWeapon = function(
   modifier: Modifier = new Modifier({})
 ): OneHandWeapon {
-  return new OneHandWeapon(generateString(), modifier)
+  return new OneHandWeapon(generateString(), 1, modifier)
 }
 
 export const generateBodyArmor = function(): BodyArmor {
-  return new BodyArmor(generateString(), new Modifier({}))
+  return new BodyArmor(generateString(), 1, new Modifier({}))
 }
 
 export const generateMissile = function(): Missile {
-  return new TestMissile('test missile', new Modifier({}))
+  return new TestMissile('test missile', 1, new Modifier({}))
 }
 
 export const generatePlayerAI = function(): PlayerAI {
@@ -85,9 +82,9 @@ class AIWrapper extends MetaAI {
     return this.aiToRun.available(actor)
   }
 
-  public act(actor: Creature, firstTurn: boolean): void {
+  public act(actor: Creature, game: Game, firstTurn: boolean): void {
     if (this.available(actor)) {
-      return this.aiToRun.act(actor, firstTurn)
+      return this.aiToRun.act(actor, game, firstTurn)
     } else {
       throw 'aiToRun is not available!'
     }
@@ -98,7 +95,7 @@ const wrapAI = function(ai: AI): MetaAI {
   return new AIWrapper(ai)
 }
 
-const fakeSpecie = new Specie('Test specie', Clan.FreeForAll, allAbilities)
+const fakeSpecie = new Specie('Test specie', 10, Clan.FreeForAll, allAbilities)
 
 export const generateCreatureWithAI = function(ai: AI): Creature {
   return new TestCreature(generateCharacteristics(), wrapAI(ai), fakeSpecie)

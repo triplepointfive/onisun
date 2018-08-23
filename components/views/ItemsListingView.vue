@@ -10,7 +10,7 @@
       td.letter {{ indexLetter(index) }}
       td.separator &mdash;
       td.name {{ position.item.name }} ({{ position.count }})
-      td.weight &#91;{{ position.item.weight }}g&#93;
+      td.weight &#91;{{ position.item.weight }}kg&#93;
 </template>
 
 <script lang='ts'>
@@ -111,7 +111,7 @@ export default Vue.extend({
   }
 
   .weight {
-    width: 5%;
+    width: 10%;
     text-align: right;
   }
 }

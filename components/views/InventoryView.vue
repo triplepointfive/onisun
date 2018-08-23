@@ -1,7 +1,7 @@
 <template lang='pug'>
   .screen-modal
     .h4.title Инвентарь
-    .subtitle.my-3 Нагрузка {{ player.stuffWeight.current }} из {{ player.carryingCapacity.stressed }}
+    .subtitle.my-3(v-text='carryingWeight')
 
     table.content.inventory-list
       tr(v-for='(position, index) in screen.positions' :key='index' :class='availableStatus(position)')
@@ -42,6 +42,10 @@ export default Vue.extend({
   computed: {
     player() {
       return this.screen.player
+    },
+    carryingWeight() {
+      let weight = Math.round(this.player.stuffWeight.current * 100) / 100
+      return `Нагрузка ${weight} из ${this.player.carryingCapacity.stressed}`
     }
   },
   methods: {
@@ -97,7 +101,7 @@ export default Vue.extend({
     },
     itemWeight(position) {
       if (position.item) {
-        return `[${position.item.weight}g]`
+        return `[${position.item.weight}kg]`
       }
     },
     available(position) {
@@ -168,7 +172,6 @@ export default Vue.extend({
 
   .weight {
     text-align: right;
-    width: 5%;
     color: white;
   }
 }

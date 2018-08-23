@@ -43,30 +43,30 @@ class Bow extends MissileWeapon {
 
 const noMod = new Modifier({})
 
-export const commonBow = () => new Bow('Common bow', noMod)
+export const commonBow = () => new Bow('Обычный лук', 1, noMod)
 
-export const smallRock = () => new MissileRock('Small rock', noMod)
+export const smallRock = () => new MissileRock('Маленький камень', 0.3, noMod)
 
-export const woodenArrow = () => new Arrow('Wooden arrow', noMod)
-export const ironArrow = () => new Arrow('Iron arrow', noMod)
+export const woodenArrow = () => new Arrow('Деревянная стрела', 0.2, noMod)
+export const ironArrow = () => new Arrow('Железная стрела', 0.25, noMod)
 
 export const weapons = new Pool<null, Item>([
-  [1, () => new OneHandWeapon('Katana', new Modifier({ attack: 10 }))],
-  [3, () => new OneHandWeapon('Axe', new Modifier({ attack: 7 }))],
-  [7, () => new OneHandWeapon('Dagger', new Modifier({ attack: 3 }))],
-  [5, () => new OneHandWeapon('Hammer', new Modifier({ attack: 5 }))],
+  [1, () => new OneHandWeapon('Катана', 1, new Modifier({ attack: 10 }))],
+  [3, () => new OneHandWeapon('Топор', 1.5, new Modifier({ attack: 7 }))],
+  [7, () => new OneHandWeapon('Кинжал', 0.8, new Modifier({ attack: 3 }))],
+  [5, () => new OneHandWeapon('Молот', 5, new Modifier({ attack: 5 }))],
 ])
 
 export const itemsPool = new Pool<null, Item>([
-  [1, () => new BodyArmor('Кольчуга', new Modifier({ defense: 10 }))],
-  [5, () => new BodyArmor('Латы', new Modifier({ defense: 5 }))],
-  [10, () => new BodyArmor('Роба', new Modifier({ defense: 1 }))],
+  [1, () => new BodyArmor('Кольчуга', 5, new Modifier({ defense: 10 }))],
+  [5, () => new BodyArmor('Латы', 3, new Modifier({ defense: 5 }))],
+  [10, () => new BodyArmor('Роба', 1, new Modifier({ defense: 1 }))],
   [100, () => new HealPotion()],
 ])
 
 export class LightSpeedBoots extends Boots {
   constructor() {
-    super('Кроссовки скорости света', new Modifier({}))
+    super('Кроссовки скорости света', 0.1, new Modifier({}))
   }
 
   public onPutOn(creature: Creature): void {

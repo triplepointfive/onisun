@@ -11,7 +11,7 @@ const newCreature = (characteristics: Characteristics, name: string) => {
   return new Creature(
     characteristics,
     new Dispatcher(),
-    new Specie(name, Clan.PlayerOnlyEnemy, [])
+    new Specie(name, 10, Clan.PlayerOnlyEnemy, [])
   )
 }
 

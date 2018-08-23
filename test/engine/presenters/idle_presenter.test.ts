@@ -21,7 +21,7 @@ import {
   generateItem,
   generateMissile,
 } from '../helpers'
-import { MissilePresenter } from '../../../src/engine/presenters/missile_presenter';
+import { MissilePresenter } from '../../../src/engine/presenters/missile_presenter'
 
 const level0 = 0,
   level1 = 1,
@@ -119,7 +119,8 @@ describe('IdlePresenter', () => {
   })
 
   describe('on pick up', () => {
-    let map: LevelMap, pos = new Point(1, 1)
+    let map: LevelMap,
+      pos = new Point(1, 1)
 
     beforeEach(() => {
       map = generateLevelMap()
@@ -159,7 +160,7 @@ describe('IdlePresenter', () => {
   describe('for missiles', () => {
     let missile: Missile
 
-    beforeEach(() {
+    beforeEach(() => {
       missile = generateMissile()
     })
 
