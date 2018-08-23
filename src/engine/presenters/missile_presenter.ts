@@ -116,15 +116,14 @@ export class MissilePresenter extends Presenter {
     })
   }
 
-
   private findEnemies(): void {
     this.enemies = []
 
     this.player.stageMemory().each((tile, x, y) => {
       if (
         tile.visible &&
-        tile.creature() &&
-        tile.creature().id !== this.player.id
+        tile.creature &&
+        tile.creature.id !== this.player.id
       ) {
         this.enemies.push(new Point(x, y))
       }

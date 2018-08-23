@@ -9,14 +9,19 @@ type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
 
 export abstract class Game {
   public logger: Logger = new Logger()
-  public currentMap: LevelMap
-  public player: Player
-  public ai: PlayerAI = null
+  public currentMap: LevelMap | undefined
+  public ai: PlayerAI | null = null
   public running: boolean = false
-  public professionPicker: ProfessionPicker
-  public effect: TileEffect
+  public effect: TileEffect | null = null
 
   protected maps: Map<LevelMapId, LevelMap | MapGenerator> = new Map()
+
+  constructor(
+    public player: Player,
+    public professionPicker: ProfessionPicker
+  ) {
+
+  }
 
   public turn() {
     if (this.running || (this.ai && !this.effect)) {
@@ -24,15 +29,14 @@ export abstract class Game {
     }
     this.running = true
 
-    const effect = this.effect
     if (this.effect) {
+      this.player.rebuildVision()
+      this.effect.patchMemory(this.player.stageMemory())
+
       if (this.effect.done()) {
         this.effect.onDone()
         this.effect = null
       }
-
-      this.player.rebuildVision()
-      effect.patchMemory(this.player.stageMemory())
 
       this.running = false
     } else {
@@ -47,14 +51,18 @@ export abstract class Game {
   }
 
   public getMap(id: LevelMapId): LevelMap {
-    let levelMap: LevelMap | MapGenerator = this.maps.get(id)
+    const levelMap = this.maps.get(id)
+
+    if (!levelMap) {
+      throw `Map with id ${id} is not found`
+    }
 
     if (levelMap instanceof LevelMap) {
       return levelMap
     } else if (levelMap instanceof Function) {
-      levelMap = levelMap(id, this)
-      this.maps.set(id, levelMap)
-      return levelMap
+      const builtLevelMap = levelMap(id, this)
+      this.maps.set(id, builtLevelMap)
+      return builtLevelMap
     } else {
       throw `LevelMap with id ${id} is not found`
     }
@@ -66,6 +74,11 @@ export abstract class Game {
   }
 
   private levelMapTurn(): void {
+    // TODO: Remove!!!
+    if (!this.currentMap) {
+      throw 'levelMapTurn: Map is undefined'
+    }
+
     let timeline = this.currentMap.timeline,
       map = this.currentMap
 

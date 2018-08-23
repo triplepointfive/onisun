@@ -16,8 +16,9 @@ interface ItemsListingPosition {
 }
 
 abstract class ItemsListingPresenter extends Presenter {
-  public positions: ItemsListingPosition[]
-  public title: string
+  // TODO: Pass to constructor
+  public positions: ItemsListingPosition[] = []
+  public title: string = 'unnamed'
 
   constructor(game: Game) {
     super(PresenterType.ItemsListing, game)
@@ -39,6 +40,11 @@ export class PickUpPresenter extends ItemsListingPresenter {
       this.player.pos.x,
       this.player.pos.y
     ).items
+
+    if (items === undefined) {
+      throw `Failed to show pick up dialog - tile has no items`
+    }
+
     this.positions = items.bunch.map(itemGroup => {
       return { item: itemGroup.item, count: itemGroup.count }
     })

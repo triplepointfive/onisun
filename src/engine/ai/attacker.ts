@@ -60,7 +60,7 @@ export class Attacker extends AI {
     const memory = actor.stageMemory()
     return actor.pos
       .wrappers()
-      .map(({ x, y }) => memory.at(x, y).creature())
-      .find(creature => creature && condition(creature))
+      .map(({ x, y }) => memory.at(x, y).creature)
+      .find(creature => creature ? condition(creature) : false)
   }
 }

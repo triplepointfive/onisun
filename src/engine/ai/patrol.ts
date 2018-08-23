@@ -33,7 +33,7 @@ export class Patrol extends AI {
   private graph: graphlib.Graph
   private lastNodeVisit: { [key: string]: number }
   private currentNodeID: NodeID
-  private targetNodeID: NodeID
+  private targetNodeID: NodeID | undefined
   private path: Point[]
   private step: number = NEW_POINT_EVERY
 
@@ -45,6 +45,7 @@ export class Patrol extends AI {
 
     this.lastNodeVisit = {}
 
+    this.currentNodeID = 'a' // TODO: Check it, was undefined
     this.markNodeVisited(this.currentNodeID)
     this.path = []
   }
@@ -118,7 +119,7 @@ export class Patrol extends AI {
   }
 
   private moveToTarget(actor: Creature, game: Game, firstTurn: boolean): void {
-    const nextPoint: Point = this.path.shift()
+    const nextPoint: Point | undefined = this.path.shift()
 
     if (!nextPoint) {
       if (firstTurn) {

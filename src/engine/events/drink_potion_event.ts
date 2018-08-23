@@ -9,6 +9,7 @@ export class DrinkPotionEvent extends CreatureEvent {
 
   public affectCreature(actor: Creature): Reaction {
     actor.inventory.removeFromBag(this.potion, 1)
+    this.onStuffWeightChange(actor)
     this.potion.onDrink(this.game)
     // TODO: Different messages for player and creatures
     this.game.logger.drink(this.potion)

@@ -101,7 +101,7 @@ export default Vue.extend({
     },
     itemWeight(position) {
       if (position.item) {
-        return `[${position.item.weight}kg]`
+        return `[${position.item.weight * position.count}kg]`
       }
     },
     available(position) {

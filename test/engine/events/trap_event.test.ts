@@ -12,7 +12,6 @@ import {
   Player,
   Point,
 } from '../../../src/engine'
-import { DieEvent } from '../../../src/engine/events/die_event'
 
 class TestTrap extends Trap {
   protected affect(game: Game, actor: Creature): void {}
@@ -25,27 +24,25 @@ class TestTrap extends Trap {
 const testTrap = 0
 
 describe('Trap event', () => {
-  let player: Player, game, event, trap: TestTrap
+  let player: Player, game, event, map, trap: TestTrap
 
   beforeEach(() => {
-    player = generatePlayer()
     trap = new TestTrap(false, testTrap)
     game = generateGame()
     event = new TrapEvent(trap, game)
+
+    game.player = player = generatePlayer()
+    map = generateLevelMap()
+    player.addToMap(new Point(1, 1), map)
+    player.rebuildVision()
   })
 
   describe('for creature', () => {
-    let creature, map
+    let creature
 
     beforeEach(() => {
-      game.player = player
-      map = generateLevelMap()
-
       creature = generateCreature()
       creature.addToMap(new Point(1, 2), map)
-
-      player.addToMap(new Point(1, 1), map)
-      player.rebuildVision()
     })
 
     it('leaves trap hidden when player does not see', () => {
@@ -70,7 +67,7 @@ describe('Trap event', () => {
       expect(creature.characteristics.health.atMax()).toBeFalsy()
     })
 
-    fit('may even kill', () => {
+    it('may even kill', () => {
       creature.characteristics.health.decrease(
         player.characteristics.health.maximum() - 1
       )
@@ -102,8 +99,9 @@ describe('Trap event', () => {
       player.characteristics.health.decrease(
         player.characteristics.health.maximum() - 1
       )
-      creature.on(event)
-      expect(creature.dead).toBeTruthy()
+      player.addToMap(new Point(1, 1), map)
+      player.on(event)
+      expect(player.dead).toBeTruthy()
     })
 
     it('adds a message to log', () => {

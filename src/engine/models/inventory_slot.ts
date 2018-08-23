@@ -63,6 +63,12 @@ export abstract class InventorySlot {
   protected match(item: Item): boolean {
     return intersection(item.usages, this.usages).length > 0
   }
+
+  protected withPairItem(baseMatch: GroupedItem[], item: Item): GroupedItem[] {
+    return baseMatch.filter(groupedItem =>
+      groupedItem.item.worksWith(item)
+    )
+  }
 }
 
 export class RightHandSlot extends InventorySlot {
@@ -104,9 +110,7 @@ export class MissileWeaponSlot extends InventorySlot {
       missile = inventory.missileSlot.equipment
 
     if (missile) {
-      return baseMatch.filter(groupedItem =>
-        groupedItem.item.worksWith(missile.item)
-      )
+      return this.withPairItem(baseMatch, missile.item)
     }
 
     return baseMatch
@@ -123,10 +127,8 @@ export class MissileSlot extends InventorySlot {
     let baseMatch = inventory.cares(),
       missileWeapon = inventory.missileWeaponSlot.equipment
 
-    if (missileWeapon !== undefined) {
-      return baseMatch.filter(groupedItem =>
-        groupedItem.item.worksWith(missileWeapon.item)
-      )
+    if (missileWeapon) {
+      return this.withPairItem(baseMatch, missileWeapon.item)
     }
 
     return baseMatch

@@ -6,7 +6,7 @@ import { ItemId, Item } from '../../engine'
 import { Game } from '../models/game'
 
 export class Picker extends FollowTargetAI {
-  private desiredItemId: ItemId = null
+  private desiredItemId: ItemId | undefined
 
   public available(actor: Creature): boolean {
     return actor.can(Ability.Inventory) && super.available(actor)
@@ -21,7 +21,14 @@ export class Picker extends FollowTargetAI {
 
   protected onReach(actor: Creature, game: Game): void {
     const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
-    this.prevAI.pushEvent(new AIItemPickedEvent(tile.items, game))
+
+    if (!tile.items) {
+      throw 'Picker.act : nothing to pick up'
+    }
+
+    if (this.prevAI) {
+      this.prevAI.pushEvent(new AIItemPickedEvent(tile.items, game))
+    }
 
     tile.items.bunch.forEach(groupedItem => {
       actor.inventory.putToBag(groupedItem.item, groupedItem.count)
@@ -29,7 +36,7 @@ export class Picker extends FollowTargetAI {
 
     tile.items = undefined
 
-    this.desiredItemId = null
+    this.desiredItemId = undefined
   }
 
   private findItem(
@@ -39,12 +46,12 @@ export class Picker extends FollowTargetAI {
     let result: boolean = false
 
     this.withinView(actor, ({ x, y }, tile) => {
-      if (!tile.items()) {
+      if (!tile.items) {
         return
       }
 
       const item = tile
-        .items()
+        .items
         .bunch.find(groupedItem => condition(groupedItem.item))
 
       if (item && !result) {

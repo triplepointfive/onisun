@@ -49,7 +49,7 @@ export class Escaper extends FollowTargetAI {
     this.escapesFrom = []
 
     this.withinView(actor, (point, tile) => {
-      const creature = tile.creature()
+      const creature = tile.creature
 
       if (creature && this.enemies(actor, creature)) {
         this.escapesFrom.push([point, creature])

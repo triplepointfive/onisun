@@ -9,7 +9,15 @@ export class MemoryTile {
   public seen: boolean = false
   public effect?: string
 
-  constructor(public tile?: Tile) {}
+  constructor(public tile: Tile) {}
+
+  get items(): ItemsBunch | undefined {
+    return this.tile.items
+  }
+
+  get creature(): Creature | undefined {
+    return this.tile.creature
+  }
 
   public see(tile: Tile, degree: number) {
     this.visible = true
@@ -18,16 +26,8 @@ export class MemoryTile {
     this.tile = tile.clone()
   }
 
-  public items(): ItemsBunch {
-    return this.tile.items
-  }
-
   public tangible(actor?: Creature): boolean {
     return this.seen && !this.tile.passibleThrough(actor)
-  }
-
-  public creature(): Creature {
-    return this.tile && this.tile.creature
   }
 
   public reset(): void {

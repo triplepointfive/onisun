@@ -1,14 +1,14 @@
 import { AI } from './internal'
-import { Creature, Ability, Reaction } from '../models/creature'
+import { Creature, Ability, Reaction, CreatureId } from '../models/creature'
 import { GroupedItem } from '../models/items'
 import { Point, bresenham } from '../utils/utils'
 import { MissileAttackEvent } from '../../engine'
 import { Game } from '../models/game'
 
 export class Thrower extends AI {
-  public victim: Creature
-  public previousVictim: Creature
-  public missiles: GroupedItem
+  public victim: Creature | undefined
+  public previousVictim: Creature | undefined
+  public missiles: GroupedItem | undefined
 
   public available(actor: Creature): boolean {
     return (
@@ -20,6 +20,10 @@ export class Thrower extends AI {
 
   public act(actor: Creature, game: Game): void {
     let path: Point[] = []
+
+    if (!this.victim) {
+      throw 'Thrower.act called when there is no victim'
+    }
 
     bresenham(actor.pos, this.victim.pos, (x, y) => path.push(new Point(x, y)))
 
@@ -43,12 +47,7 @@ export class Thrower extends AI {
     this.victim = undefined
 
     if (this.previousVictim) {
-      if (
-        this.findCreature(
-          actor,
-          creature => this.previousVictim.id === creature.id
-        )
-      ) {
+      if (this.findWithId(actor, this.previousVictim.id)) {
         return true
       }
     }
@@ -56,12 +55,19 @@ export class Thrower extends AI {
     return this.findCreature(actor, creature => this.enemies(actor, creature))
   }
 
+  private findWithId(actor: Creature, victimId: CreatureId): boolean {
+    return this.findCreature(
+      actor,
+      creature => victimId === creature.id
+    )
+  }
+
   private findCreature(
     actor: Creature,
     condition: (creature: Creature) => boolean
   ): boolean {
     this.withinView(actor, (point, tile) => {
-      const creature = tile.creature()
+      const creature = tile.creature
 
       if (
         !this.victim &&

@@ -7,8 +7,12 @@ export class TakeOffItemEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
-    // TODO: assert slot is not empty
     const groupedItem = this.slot.equipment
+
+    if (groupedItem === undefined) {
+      throw `Can not take off item from ${this.slot.name} - nothing equipped`
+    }
+
     this.slot.takeOff(actor)
     this.game.logger.takeOff(groupedItem.item)
 

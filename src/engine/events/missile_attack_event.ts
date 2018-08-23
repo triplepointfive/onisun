@@ -15,8 +15,13 @@ export class MissileAttackEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
-    const slot = actor.inventory.missileSlot,
-      missile = slot.equipment.item
+    const slot = actor.inventory.missileSlot
+
+    if (slot.equipment === undefined) {
+      throw 'MissileAttackEvent: slot has no items'
+    }
+
+    const missile = slot.equipment.item
 
     slot.removeItem(actor, 1)
 
@@ -24,12 +29,12 @@ export class MissileAttackEvent extends CreatureEvent {
     this.onStuffWeightChange(actor)
 
     let flightPath: Point[] = [],
-      victim: Creature
+      victim: Creature | undefined
 
     this.path.forEach(point => {
       if (!victim) {
         const tile = actor.currentLevel.at(point.x, point.y)
-        victim = tile.creature && tile.creature
+        victim = tile.creature
         flightPath.push(point)
       }
     })
