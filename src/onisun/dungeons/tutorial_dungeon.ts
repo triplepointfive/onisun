@@ -1,24 +1,24 @@
 import {
-  Dungeon,
-  addOnTile,
-  Point,
-  LevelMap,
-  dungeon,
-  addDoors,
-  centralize,
-  addItems,
-  drawn,
   addCreatures,
+  addDoors,
+  addItems,
+  addOnTile,
+  centralize,
+  Corridor,
+  Door,
+  drawn,
+  Dungeon,
+  dungeon,
+  Floor,
+  LevelMap,
+  Point,
+  Room,
   Tile,
   TileTypes,
-  Door,
   Wall,
-  Floor,
-  Corridor,
-  Room,
 } from '../../engine'
-import { weapons, itemsPool, LightSpeedBoots } from '../items'
 import { creaturesPool1 } from '../creatures'
+import { itemsPool, weapons } from '../items'
 import { OnisunFireTrap, OnisunIceTrap } from '../tiles'
 
 const initId: number = -1
@@ -110,8 +110,14 @@ export class TutorialDungeon extends Dungeon {
     }
 
     if (config.addDoors) {
-      addDoors(map, tiles.get('D'))
+      const door = tiles.get('D')
+      if (door === undefined) {
+        throw 'Door is not found'
+      }
+
+      addDoors(map, door)
     }
+
     centralize(map)
     map.name = `MP ${id}`
 

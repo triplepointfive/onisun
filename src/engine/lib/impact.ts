@@ -77,11 +77,12 @@ export class ImpactBunch {
   }
 
   protected impactByType(type: ImpactType): Impact {
-    if (this.impacts.has(type)) {
-      return this.impacts.get(type)
+    let impact = this.impacts.get(type)
+    if (impact !== undefined) {
+      return impact
     }
 
-    let impact = new Impact()
+    impact = new Impact()
     this.impacts.set(type, impact)
     return impact
   }

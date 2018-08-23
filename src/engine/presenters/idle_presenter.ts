@@ -131,17 +131,13 @@ export class IdlePresenter extends Presenter {
     const tile = this.tile(),
       items = tile.items
 
-    switch ((items && items.bunch.length) || 0) {
-      case 0:
-        this.game.logger.noItemsToPickUp()
-        return
-      case 1:
-        this.player.on(new PickUpItemsEvent(tile, items.bunch, this.game))
-        this.endTurn()
-        return
-      default:
-        this.redirect(new PickUpPresenter(this.game))
-        return
+    if (items === undefined || items.bunch.length === 0) {
+      this.game.logger.noItemsToPickUp()
+    } else if (items.bunch.length === 1) {
+      this.player.on(new PickUpItemsEvent(tile, items.bunch, this.game))
+      this.endTurn()
+    } else {
+      this.redirect(new PickUpPresenter(this.game))
     }
   }
 

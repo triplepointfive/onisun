@@ -23,11 +23,7 @@ export class Timeline<T> {
   }
 
   public next(): T {
-    this.step = min(keys(this.turns).map(x => parseInt(x)))
-
-    if (!this.step) {
-      throw 'Timeline.next called when there is no ones turn'
-    }
+    this.step = this.nextStep()
 
     const [element] = pullAt(this.turns[this.step], 0)
 
@@ -43,11 +39,21 @@ export class Timeline<T> {
       return []
     }
 
-    this.step = min(keys(this.turns).map(x => parseInt(x)))
+    this.step = this.nextStep()
     const actors = this.turns[this.step]
 
     delete this.turns[this.step]
 
     return actors
+  }
+
+  private nextStep(): number {
+    let step = min(keys(this.turns).map(x => parseInt(x)))
+
+    if (step === undefined) {
+      throw 'Timeline.nextStep called when there is no ones turn'
+    }
+
+    return step
   }
 }

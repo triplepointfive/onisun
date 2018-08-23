@@ -17,7 +17,7 @@ export class MoveEvent extends CreatureEvent {
   constructor(
     private game: Game,
     private nextPoint: Point,
-    private nextLevel: LevelMap = undefined
+    private nextLevel: LevelMap | undefined = undefined
   ) {
     super()
   }

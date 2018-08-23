@@ -12,8 +12,8 @@ import { IdlePresenter } from './idle_presenter'
 
 interface InventoryPosition {
   inventorySlot: InventorySlot
-  item: Item
-  count: number
+  item: Item | undefined
+  count: number | undefined
   availableItems: GroupedItem[]
 }
 

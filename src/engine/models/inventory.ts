@@ -19,30 +19,6 @@ export class Inventory {
   public missileSlot = new MissileSlot()
   public bootsSlot = new BootsSlot()
 
-  // public inSlot(slot: InventorySlot): GroupedItem {
-  //   const wearing = this.matchingEquip(slot)
-  //   return wearing && wearing.equipment
-  // }
-
-  // public removeWearing(
-  //   actor: Creature,
-  //   slot: InventorySlot,
-  //   count: number
-  // ): void {
-  //   let wearing = this.matchingEquip(slot)
-
-  //   if (wearing && wearing.equipment) {
-  //     if (wearing.equipment.count === count) {
-  //       wearing.equipment.item.onTakeOff(actor)
-  //       wearing.equipment = undefined
-  //     } else {
-  //       wearing.equipment.count -= count
-  //     }
-  //   } else {
-  //     // TODO: fail here
-  //   }
-  // }
-
   public slots(): InventorySlot[] {
     return [
       this.rightHandSlot,
@@ -58,11 +34,7 @@ export class Inventory {
     return this.bag.bunch
   }
 
-  // public matchingEquip(slot: InventorySlot): Wearing {
-  //   return this.wearings.find(wearSlot => wearSlot.inventorySlot.id === slot.id)
-  // }
-
-  public findInBag(item: Item): GroupedItem {
+  public findInBag(item: Item): GroupedItem | undefined {
     return this.bag.find(item)
   }
 

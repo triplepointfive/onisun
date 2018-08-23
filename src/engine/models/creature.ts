@@ -99,7 +99,7 @@ export class Creature {
   public pos: Point
   public dead: boolean = false
 
-  private impactsBunch: ImpactBunch
+  private impactsBunch: ImpactBunch | undefined
 
   public stuffWeight: Stat
   public carryingCapacity: CapacityLimitStat
@@ -194,6 +194,10 @@ export class Creature {
 
   public removeImpact(type: ImpactType, effect: string): void {
     // TODO: Should never get here
+    if (!this.impactsBunch) {
+      this.impactsBunch = new ImpactBunch()
+    }
+
     this.impactsBunch.removeConstImpact(type, effect)
   }
 

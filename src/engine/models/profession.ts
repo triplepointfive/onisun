@@ -1,6 +1,6 @@
 import { Player } from './creature'
 
-import { includes, sample, compact } from 'lodash'
+import { includes, sample } from 'lodash'
 import { Game } from './game'
 
 export class Profession {
@@ -24,27 +24,35 @@ export class ProfessionPicker {
 
   public available(player: Player): Profession[] {
     let professions: Profession[] = []
+    let pickedProfession: Profession | undefined
 
     if (this.canUpdate(player)) {
-      professions.push(this.updatableProfession(player))
+      pickedProfession = this.updatableProfession(player)
     } else if (this.canTakeNewProfession(player)) {
-      professions.push(this.newFromPool(player))
+      pickedProfession = this.newFromPool(player)
+    }
+
+    if (pickedProfession !== undefined) {
+      professions.push(pickedProfession)
     }
 
     if (this.canTakeNewProfession(player)) {
-      professions.push(
-        this.newFromPool(player, professions.map(profession => profession.id))
+      pickedProfession = this.newFromPool(
+        player,
+        pickedProfession && pickedProfession.id
       )
     } else if (this.canUpdate(player)) {
-      professions.push(
-        this.updatableProfession(
-          player,
-          professions.map(profession => profession.id)
-        )
+      pickedProfession = this.updatableProfession(
+        player,
+        pickedProfession && pickedProfession.id
       )
     }
 
-    return compact(professions)
+    if (pickedProfession !== undefined) {
+      professions.push(pickedProfession)
+    }
+
+    return professions
   }
 
   protected canUpdate(player: Player): boolean {
@@ -55,12 +63,12 @@ export class ProfessionPicker {
 
   protected updatableProfession(
     player: Player,
-    excludeProfessions: number[] = []
-  ): Profession {
+    excludeId: number | undefined = undefined
+  ): Profession | undefined {
     return sample(
-      player.professions.filter(
-        profession => !includes(excludeProfessions, profession.id)
-      )
+      player.professions.filter(profession => {
+        return excludeId !== profession.id
+      })
     )
   }
 
@@ -73,11 +81,14 @@ export class ProfessionPicker {
 
   protected newFromPool(
     player: Player,
-    excludeProfessions: number[] = []
-  ): Profession {
-    const excluding = excludeProfessions.concat(
-      player.professions.map(profession => profession.id)
-    )
+    excludeId: number | undefined = undefined
+  ): Profession | undefined {
+    const excluding = player.professions.map(profession => profession.id)
+
+    if (excludeId !== undefined) {
+      excluding.push(excludeId)
+    }
+
     return sample(
       this.pool.filter(profession => !includes(excluding, profession.id))
     )

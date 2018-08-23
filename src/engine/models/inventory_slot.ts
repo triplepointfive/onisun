@@ -4,7 +4,7 @@ import { intersection } from 'lodash'
 import { Inventory } from './inventory'
 
 export abstract class InventorySlot {
-  public name: string
+  public name: string = 'InventorySlot'
 
   constructor(
     // What kind of items can be put in slot
@@ -34,7 +34,11 @@ export abstract class InventorySlot {
   public equip(actor: Creature, item: Item) {
     let inventory = actor.inventory,
       groupItem = inventory.findInBag(item)
-    // TODO: assert item in a bag?
+
+    if (groupItem === undefined) {
+      throw `Item ${item.name} can not be equipped - not found in inventory`
+    }
+
     // TODO: assert that can't equip more than have in inventory
     // TODO: assert can equip
     if (this.equipment) {
@@ -53,7 +57,7 @@ export abstract class InventorySlot {
 
     actor.inventory.putToBag(this.equipment.item, this.equipment.count)
     this.equipment.item.onTakeOff(actor)
-    this.equipment = null
+    this.equipment = undefined
   }
 
   protected match(item: Item): boolean {
@@ -119,7 +123,7 @@ export class MissileSlot extends InventorySlot {
     let baseMatch = inventory.cares(),
       missileWeapon = inventory.missileWeaponSlot.equipment
 
-    if (missileWeapon) {
+    if (missileWeapon !== undefined) {
       return baseMatch.filter(groupedItem =>
         groupedItem.item.worksWith(missileWeapon.item)
       )

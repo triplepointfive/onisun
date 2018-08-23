@@ -24,11 +24,17 @@ export class Pool<Input, Output> {
 
     let pick = random(this.totalWeight)
 
-    return this.items.find(([weight, item]) => {
+    const found = this.items.find(([weight, item]) => {
       pick -= weight
 
       return pick <= 0
-    })[1](input)
+    })
+
+    if (found !== undefined) {
+      return found[1](input)
+    }
+
+    throw 'Pool failed to pick anything'
   }
 
   public merge(pool: Pool<Input, Output>): Pool<Input, Output> {

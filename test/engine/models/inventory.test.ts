@@ -1,20 +1,14 @@
-import { Inventory, RightHandSlot, BodySlot } from '../../../src/engine'
-import {
-  generateOneHandedWeapon,
-  generateCreature,
-  generateBodyArmor,
-} from '../helpers'
-import { Creature, Item, GroupedItem } from '../../../src/engine'
+import { Creature, Inventory, Item } from '../../../src/engine'
+import { generateCreature, generateOneHandedWeapon } from '../helpers'
 
 let item1: Item = generateOneHandedWeapon()
-let item2: Item = generateOneHandedWeapon()
 const creature: Creature = generateCreature()
 
 describe('puts on and takes off', () => {
   let inventory: Inventory
 
   beforeEach(() => {
-    inventory = new Inventory()
+    creature.inventory = inventory = new Inventory()
   })
 
   it('empty slot', () => {
@@ -22,7 +16,7 @@ describe('puts on and takes off', () => {
     inventory.rightHandSlot.equip(creature, item1)
     expect(inventory.slots()[0].equipment.item).toEqual(item1)
     inventory.rightHandSlot.takeOff(creature)
-    expect(inventory.slots()[0].equipment).toBeNull()
+    expect(inventory.slots()[0].equipment).toBeUndefined()
     expect(inventory.cares().length).toEqual(1)
     expect(inventory.cares()[0].item).toEqual(item1)
   })

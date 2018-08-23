@@ -11,7 +11,7 @@ export class Level {
 
   public add(exp: number): number[] {
     if (this.doneLeveling) {
-      return
+      return []
     }
 
     this.currentExperience += exp

@@ -7,7 +7,7 @@ import { MissileAttackEvent, Game } from '../../engine'
 export class MissilePresenter extends Presenter {
   public targetPos: Point
   private memory: Memory
-  private targetEnemyIndex: number = undefined
+  private targetEnemyIndex: number | undefined = undefined
   private enemies: Point[] = []
   private path: Point[] = []
 
@@ -16,12 +16,13 @@ export class MissilePresenter extends Presenter {
 
     this.findEnemies()
     this.memory = this.player.stageMemory()
-    this.resetTargetId()
+    this.targetPos = this.resetTargetId()
   }
 
   public nextTarget(): void {
     if (this.targetEnemyIndex === undefined) {
-      return this.resetTargetId()
+      this.resetTargetId()
+      return
     }
 
     this.targetEnemyIndex += 1
@@ -35,7 +36,8 @@ export class MissilePresenter extends Presenter {
 
   public previousTarget(): void {
     if (this.targetEnemyIndex === undefined) {
-      return this.resetTargetId()
+      this.resetTargetId()
+      return
     }
 
     this.targetEnemyIndex -= 1
@@ -74,18 +76,29 @@ export class MissilePresenter extends Presenter {
     this.redirect(new IdlePresenter(this.game))
   }
 
-  private resetTargetId(): void {
+  private resetTargetId(): Point {
+    let point: Point
+
     if (this.enemies.length) {
       this.targetEnemyIndex = 0
-      this.updateTarget(this.enemies[this.targetEnemyIndex])
+      point = this.enemies[this.targetEnemyIndex]
     } else {
       this.targetEnemyIndex = undefined
-      this.updateTarget(this.player.pos)
+      point = this.player.pos
     }
+
+    this.updateTarget(point)
+    return point
   }
 
   private resetPath(): void {
     this.path.forEach(({ x, y }) => (this.memory.at(x, y).effect = undefined))
+  }
+
+  private updateTarget(newPos: Point): void {
+    this.resetPath()
+    this.targetPos = newPos.copy()
+    this.drawPath()
   }
 
   private drawPath(): void {
@@ -103,11 +116,6 @@ export class MissilePresenter extends Presenter {
     })
   }
 
-  private updateTarget(newPos: Point): void {
-    this.resetPath()
-    this.targetPos = newPos.copy()
-    this.drawPath()
-  }
 
   private findEnemies(): void {
     this.enemies = []

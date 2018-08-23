@@ -15,7 +15,7 @@ export enum TileTypes {
 
 export abstract class Tile {
   public creature?: Creature
-  public items: ItemsBunch
+  public items: ItemsBunch | undefined
 
   constructor(public key: string, public kind: TileTypes) {}
 
@@ -117,9 +117,16 @@ export class Wall extends Tile {
 }
 
 export abstract class Stairway extends Tile {
-  public currentMap: LevelMap
-  public adjacentMapId: LevelMapId
-  public enterPos: Point
+  public enterPos: Point | undefined
+
+  constructor(
+    key: string,
+    type: TileTypes,
+    public currentMap: LevelMap,
+    public adjacentMapId: LevelMapId
+  ) {
+    super(key, type)
+  }
 
   public visibleThrough(): boolean {
     return true
@@ -127,8 +134,8 @@ export abstract class Stairway extends Tile {
 }
 
 export class StairwayDown extends Stairway {
-  constructor(public currentMap: LevelMap, public adjacentMapId: LevelMapId) {
-    super('>', TileTypes.StairwayDown)
+  constructor(currentMap: LevelMap, adjacentMapId: LevelMapId) {
+    super('>', TileTypes.StairwayDown, currentMap, adjacentMapId)
   }
 
   public visit(tileVisitor: TileVisitor): void {
@@ -141,8 +148,8 @@ export class StairwayDown extends Stairway {
 }
 
 export class StairwayUp extends Stairway {
-  constructor(public currentMap: LevelMap, public adjacentMapId: LevelMapId) {
-    super('<', TileTypes.StairwayUp)
+  constructor(currentMap: LevelMap, adjacentMapId: LevelMapId) {
+    super('<', TileTypes.StairwayUp, currentMap, adjacentMapId)
   }
 
   public visit(tileVisitor: TileVisitor): void {

@@ -1,17 +1,17 @@
 <template lang='pug'>
-  .screen-modal
-    .h4.title Инвентарь
-    .subtitle.my-3(v-text='carryingWeight')
+.screen-modal
+  .h4.title Инвентарь
+  .subtitle.my-3(v-text='carryingWeight')
 
-    table.content.inventory-list
-      tr(v-for='(position, index) in screen.positions' :key='index' :class='availableStatus(position)')
-        td.slot
-          span.letter {{ indexLetter(index) }}
-          span.dash &#8212;
-          span.part {{ displayBodyPart(position.inventorySlot) }}
-          span.separator &#58;
-        td.name(:class='positionStatus(position)') {{ itemName(position) }}
-        td.weight {{ itemWeight(position) }}
+  table.content.inventory-list
+    tr(v-for='(position, index) in screen.positions' :key='index' :class='availableStatus(position)')
+      td.slot
+        span.letter {{ indexLetter(index) }}
+        span.dash &#8212;
+        span.part {{ displayBodyPart(position.inventorySlot) }}
+        span.separator &#58;
+      td.name(:class='positionStatus(position)') {{ itemName(position) }}
+      td.weight {{ itemWeight(position) }}
 </template>
 
 <script lang='ts'>

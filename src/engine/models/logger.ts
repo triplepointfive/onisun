@@ -13,7 +13,7 @@ export enum LogLevel {
 export interface LogMessage {
   level: LogLevel
   message: string
-  counter?: number
+  counter: number
 }
 
 export class Logger {
@@ -138,12 +138,12 @@ export class Logger {
   }
 
   protected addMessage(level: LogLevel, message: string): void {
-    const lastRow: LogMessage = last(this.messages)
+    const lastRow: LogMessage | undefined = last(this.messages)
 
     if (lastRow && lastRow.message === message) {
-      lastRow.counter = (lastRow.counter || 1) + 1
+      lastRow.counter += 1
     } else {
-      this.messages.push({ level, message, counter: null })
+      this.messages.push({ level, message, counter: 1 })
     }
   }
 }

@@ -10,7 +10,7 @@ import Vue from 'vue'
 
 import { takeRight } from 'lodash'
 
-import { LogLevel } from '../src/engine'
+import { LogLevel, LogMessage } from '../src/engine'
 
 export default Vue.extend({
   name: 'Logger',
@@ -26,12 +26,12 @@ export default Vue.extend({
     }
   },
   methods: {
-    counter(value) {
-      if (value) {
+    counter(value: number) {
+      if (value > 1) {
         return `x${value}`
       }
     },
-    rowClass(record) {
+    rowClass(record: LogMessage) {
       switch (record.level) {
         case LogLevel.DEBUG:
           return 'debug'

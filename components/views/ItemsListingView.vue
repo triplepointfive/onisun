@@ -1,7 +1,7 @@
 <template lang='pug'>
 .screen-modal
   span.title {{ screen.title }}
-  .subtitle.my-3 Нагрузка {{ player.stuffWeight.current }} из {{ player.carryingCapacity.current }}
+  .subtitle.my-3(v-text='carryingWeight')
 
   table.container.positions-list
     tr(v-for='(position, index) in screen.positions' :key='index' :class='positionStatus(position)')
@@ -31,6 +31,10 @@ export default Vue.extend({
   computed: {
     player() {
       return this.screen.player
+    },
+    carryingWeight() {
+      let weight = Math.round(this.player.stuffWeight.current * 100) / 100
+      return `Нагрузка ${weight} из ${this.player.carryingCapacity.stressed}`
     }
   },
   methods: {

@@ -30,10 +30,25 @@ export class TalentsTreePresenter extends Presenter {
   }
 
   public onInput(professionId: number, talentId: number) {
-    const profession = this.player.professions.find(
+    const profession: Profession | undefined = this.player.professions.find(
       profession => profession.id === professionId
     )
-    profession.talents.find(talent => talent.id === talentId).rank += 1
+
+    if (profession === undefined) {
+      throw `Profession with id ${professionId} is not found`
+    }
+
+    let talent: Talent | undefined = profession.talents.find(
+      talent => talent.id === talentId
+    )
+
+    if (talent === undefined) {
+      throw `Talent with id ${talentId} for profession ${
+        profession.name
+      } is not found`
+    }
+
+    talent.rank += 1
     profession.points += 1
 
     this.player.characteristics.levelUp(this.player.specie)

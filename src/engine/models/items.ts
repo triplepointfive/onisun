@@ -80,14 +80,14 @@ export interface GroupedItem {
 export class ItemsBunch {
   public bunch: GroupedItem[] = []
 
-  public find(item: Item): GroupedItem {
+  public find(item: Item): GroupedItem | undefined {
     return this.bunch.find(invItem => invItem.item.groupsWith(item))
   }
 
   public remove(item: Item, count: number): void {
-    const invItem: GroupedItem = this.find(item)
+    const invItem = this.find(item)
 
-    if (!invItem) {
+    if (invItem === undefined) {
       // TODO: Fail if removes item that's not in bunch yet?
       return
     } else if (invItem.count === count) {
