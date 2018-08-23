@@ -1,7 +1,7 @@
 <template lang='pug'>
   .screen-modal
     .h4.title Инвентарь
-    .subtitle.my-3 Нагрузка {{ player.stuffWeight.current }} из {{ player.carryingCapacity.current }}
+    .subtitle.my-3 Нагрузка {{ player.stuffWeight.current }} из {{ player.carryingCapacity.stressed }}
 
     table.content.inventory-list
       tr(v-for='(position, index) in screen.positions' :key='index' :class='availableStatus(position)')

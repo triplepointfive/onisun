@@ -1,5 +1,5 @@
 import { Tile, Wall, TileVisitor } from './tile'
-import { Creature, Phantom, twoDimArray } from '../../engine'
+import { Creature, twoDimArray } from '../../engine'
 import { ItemsBunch } from './items'
 import { Mapped } from '../utils/utils'
 
@@ -26,7 +26,7 @@ export class MemoryTile {
     return this.seen && !this.tile.passibleThrough(actor)
   }
 
-  public creature(): Phantom {
+  public creature(): Creature {
     return this.tile && this.tile.creature
   }
 

@@ -1,13 +1,13 @@
 import { FollowTargetAI } from './internal'
-import { Phantom, Creature } from '../models/creature'
+import { Creature } from '../models/creature'
+import { Point } from '../../engine'
 
 import { sumBy } from 'lodash'
-import { Point } from '../../engine'
 
 const STEP_DISTANCE = 2
 
 export class Escaper extends FollowTargetAI {
-  private escapesFrom: [Point, Phantom][] = []
+  private escapesFrom: [Point, Creature][] = []
 
   protected foundNewTarget(actor: Creature): boolean {
     return this.foundEnemies(actor) && this.buildPath(actor)

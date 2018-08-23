@@ -1,6 +1,6 @@
-import { AI } from './internal'
-import { Phantom, Creature, Reaction } from '../models/creature'
-import { AttackEvent, Game } from '../../engine'
+import { AttackEvent, Game } from '../../engine';
+import { Creature, Reaction } from '../models/creature';
+import { AI } from './internal';
 
 export class Attacker extends AI {
   public victim?: Creature
@@ -50,13 +50,13 @@ export class Attacker extends AI {
   private pickNewVictim(actor: Creature) {
     this.victim = this.findCreature(actor, creature =>
       this.enemies(actor, creature)
-    ).real()
+    )
   }
 
   private findCreature(
     actor: Creature,
-    condition: (creature: Phantom) => boolean
-  ): Phantom {
+    condition: (creature: Creature) => boolean
+  ): Creature {
     const memory = actor.stageMemory()
     return actor.pos
       .wrappers()

@@ -1,25 +1,13 @@
-import { CreatureEvent } from '../events/internal'
-import { Point } from '../utils/utils'
-import { Fov } from '../utils/fov'
-
-import {
-  Characteristics,
-  LevelMap,
-  LevelMapId,
-  Memory,
-  Inventory,
-  ImpactBunch,
-  MetaAI,
-  PlayerAI,
-  Game,
-} from '../../engine'
-
-import { Level } from '../lib/level'
-import { includes } from 'lodash'
-import { Profession } from './profession'
-import { TileVisitor, Door, Tile } from './tile'
-import { ImpactType } from '../lib/impact'
-import { Stat, CapacityLimitStat } from '../lib/stat'
+import { includes } from 'lodash';
+import { Characteristics, Game, ImpactBunch, Inventory, LevelMap, LevelMapId, Memory, MetaAI, PlayerAI } from '../../engine';
+import { CreatureEvent } from '../events/internal';
+import { ImpactType } from '../lib/impact';
+import { Level } from '../lib/level';
+import { CapacityLimitStat, Stat } from '../lib/stat';
+import { Fov } from '../utils/fov';
+import { Point } from '../utils/utils';
+import { Profession } from './profession';
+import { Door, Tile, TileVisitor } from './tile';
 
 export enum Clan {
   Player,
@@ -50,37 +38,6 @@ export class Specie {
 }
 
 export type CreatureId = number
-
-export class Phantom {
-  private static lastId: CreatureId = 0
-  public static getId(): CreatureId {
-    return this.lastId++
-  }
-
-  public refToReal?: Creature
-
-  constructor(public specie: Specie, public id: CreatureId = Phantom.getId()) {}
-
-  public name(): string {
-    return this.specie.name
-  }
-
-  public clan(): Clan {
-    return this.specie.clan
-  }
-
-  public clone(): Phantom {
-    return new Phantom(this.specie, this.id)
-  }
-
-  public real(): Creature {
-    return this.refToReal
-  }
-
-  public can(ability: Ability) {
-    return includes(this.specie.abilities, ability)
-  }
-}
 
 export enum Reaction {
   DIE,
@@ -116,7 +73,12 @@ class VisibilityTileVisitor extends TileVisitor {
   }
 }
 
-export class Creature extends Phantom {
+export class Creature  {
+  private static lastId: CreatureId = 0
+  public static getId(): CreatureId {
+    return this.lastId++
+  }
+
   public ai: MetaAI
   public stageMemories: { [key: string]: Memory } = {}
   public currentLevel: LevelMap
@@ -134,9 +96,9 @@ export class Creature extends Phantom {
   constructor(
     public characteristics: Characteristics,
     ai: MetaAI,
-    specie: Specie
+    public specie: Specie,
+    public id: CreatureId = Creature.getId()
   ) {
-    super(specie)
     this.ai = ai
 
     this.inventory = new Inventory()
@@ -153,12 +115,20 @@ export class Creature extends Phantom {
     this.visionMask(level)
   }
 
-  public on(event: CreatureEvent): Reaction {
-    return event.affectCreature(this)
+  public name(): string {
+    return this.specie.name
   }
 
-  public real(): Creature {
-    return this
+  public clan(): Clan {
+    return this.specie.clan
+  }
+
+  public can(ability: Ability) {
+    return includes(this.specie.abilities, ability)
+  }
+
+  public on(event: CreatureEvent): Reaction {
+    return event.affectCreature(this)
   }
 
   public speed(): number {
@@ -177,12 +147,6 @@ export class Creature extends Phantom {
     this.visionMask(stage)
     this.previousPos = this.pos.copy()
     this.ai.act(this, game, true)
-  }
-
-  public clone(): Phantom {
-    let phantom = new Phantom(this.specie, this.id)
-    phantom.refToReal = this
-    return phantom
   }
 
   public visionMask(stage: LevelMap): void {

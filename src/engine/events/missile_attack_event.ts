@@ -29,7 +29,7 @@ export class MissileAttackEvent extends CreatureEvent {
     this.path.forEach(point => {
       if (!victim) {
         const tile = actor.currentLevel.at(point.x, point.y)
-        victim = tile.creature && tile.creature.real()
+        victim = tile.creature && tile.creature
         flightPath.push(point)
       }
     })

@@ -119,7 +119,7 @@ export class IdlePresenter extends Presenter {
     if (tile.passibleThrough(this.player)) {
       this.player.on(new MoveEvent(this.game, dest))
     } else if (tile.creature) {
-      tile.creature.real().on(new AttackEvent(this.player, this.game))
+      tile.creature.on(new AttackEvent(this.player, this.game))
     } else {
       this.game.logger.ranIntoAnObstacle()
     }

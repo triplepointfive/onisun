@@ -1,5 +1,5 @@
 import { Point, twoDimArray } from '../utils/utils'
-import { Creature, Phantom, Clan } from '../models/creature'
+import { Creature, Clan } from '../models/creature'
 
 import { sample } from 'lodash'
 import { MetaAI } from './meta_ai'
@@ -172,7 +172,7 @@ export abstract class AI {
     }
   }
 
-  public enemies(actor: Phantom, enemy: Phantom): boolean {
+  public enemies(actor: Creature, enemy: Creature): boolean {
     if (actor.id === enemy.id) {
       return false
     }

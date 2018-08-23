@@ -9,7 +9,6 @@ import {
   Game,
   Level,
   PlayerAI,
-  ImpactType,
 } from './engine'
 
 import { OnisunProfessionPicker } from './onisun/professions'
@@ -81,8 +80,6 @@ export class Onisun extends Game {
     player.inventory.missileSlot.equip(player, wooden)
 
     player.inventory.putToBag(new LightSpeedBoots(), 1)
-
-    player.addImpact(ImpactType.Overloaded, 'inventory')
 
     return player
   }

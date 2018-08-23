@@ -1,4 +1,4 @@
-import { Phantom, Creature } from './creature'
+import { Creature } from './creature'
 import { Point } from '../utils/utils'
 import { LevelMap, LevelMapId } from './level_map'
 import { ItemsBunch, Item } from './items'
@@ -14,7 +14,7 @@ export enum TileTypes {
 }
 
 export abstract class Tile {
-  public creature?: Phantom
+  public creature?: Creature
   public items: ItemsBunch
 
   constructor(public key: string, public kind: TileTypes) {}
@@ -49,7 +49,7 @@ export abstract class Tile {
     let tile = this.buildNew()
 
     if (this.creature) {
-      tile.creature = this.creature.clone()
+      tile.creature = this.creature
     }
     tile.items = this.items && this.items.clone()
     return tile

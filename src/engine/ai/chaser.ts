@@ -1,7 +1,7 @@
-import { FollowTargetAI } from './internal'
-import { Phantom, Creature, CreatureId } from '../models/creature'
-import { Point } from '../utils/utils'
-import { Game } from '../models/game'
+import { Creature, CreatureId } from '../models/creature';
+import { Game } from '../models/game';
+import { Point } from '../utils/utils';
+import { FollowTargetAI } from './internal';
 
 export class Chaser extends FollowTargetAI {
   private victimId?: CreatureId
@@ -49,7 +49,7 @@ export class Chaser extends FollowTargetAI {
 
   private findCreature(
     actor: Creature,
-    condition: (creature: Phantom) => boolean
+    condition: (creature: Creature) => boolean
   ): boolean {
     let result: boolean = false
 

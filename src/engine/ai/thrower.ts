@@ -1,5 +1,5 @@
 import { AI } from './internal'
-import { Creature, Ability, Phantom, Reaction } from '../models/creature'
+import { Creature, Ability, Reaction } from '../models/creature'
 import { GroupedItem } from '../models/items'
 import { Point, bresenham } from '../utils/utils'
 import { MissileAttackEvent } from '../../engine'
@@ -58,7 +58,7 @@ export class Thrower extends AI {
 
   private findCreature(
     actor: Creature,
-    condition: (creature: Phantom) => boolean
+    condition: (creature: Creature) => boolean
   ): boolean {
     this.withinView(actor, (point, tile) => {
       const creature = tile.creature()
@@ -69,7 +69,7 @@ export class Thrower extends AI {
         condition(creature) &&
         !this.obstacles(actor, point)
       ) {
-        this.victim = actor.currentLevel.at(point.x, point.y).creature.real()
+        this.victim = actor.currentLevel.at(point.x, point.y).creature
       }
     })
 

@@ -21,6 +21,7 @@ export class PickUpItemsEvent extends CreatureEvent {
       this.game.logger.pickedUpItem(item, count)
       tileItems.remove(item, count)
     })
+    this.onStuffWeightChange(subject)
 
     return Reaction.NOTHING
   }
