@@ -2,7 +2,7 @@ export class Stat {
   constructor(
     public base: number,
     public rate: number = 1,
-    public extra: number = 0,
+    public extra: number = 0
   ) {}
 
   get current(): number {
@@ -23,8 +23,7 @@ export class CapacityLimitStat {
   private constitutionRatio: number = 3
   private base: number = 10
 
-  constructor(private strength: number, private constitution: number) {
-  }
+  constructor(private strength: number, private constitution: number) {}
 
   public recalculate(strength: number, constitution: number) {
     this.strength = strength
@@ -32,7 +31,11 @@ export class CapacityLimitStat {
   }
 
   get stressed(): number {
-    return this.base + this.strength * this.strengthRatio + this.constitution * this.constitutionRatio
+    return (
+      this.base +
+      this.strength * this.strengthRatio +
+      this.constitution * this.constitutionRatio
+    )
   }
 
   get loadedStart(): number {

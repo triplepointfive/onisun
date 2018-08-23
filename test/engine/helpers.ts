@@ -43,9 +43,7 @@ testTiles.set('W', () => new Wall())
 testTiles.set('R', () => new Room())
 testTiles.set('D', () => new Door())
 
-class TestMissile extends Missile {
-
-}
+class TestMissile extends Missile {}
 
 export const generateOneHandedWeapon = function(
   modifier: Modifier = new Modifier({})

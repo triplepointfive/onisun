@@ -1,11 +1,9 @@
 import { CreatureEvent } from '../events/internal'
-
 import { Point } from '../utils/utils'
 import { Fov } from '../utils/fov'
 
 import {
   Characteristics,
-  Corpse,
   LevelMap,
   LevelMapId,
   Memory,
@@ -155,24 +153,6 @@ export class Creature extends Phantom {
     this.visionMask(level)
   }
 
-  public die(): void {
-    this.currentLevel.removeCreature(this)
-    this.dead = true
-
-    let tile = this.currentLevel.at(this.pos.x, this.pos.y)
-    tile.addItem(new Corpse(this.specie), 1)
-
-    this.inventory.slots().forEach(({ equipment }) => {
-      if (equipment) {
-        tile.addItem(equipment.item, equipment.count)
-      }
-    })
-
-    this.inventory.cares().forEach(invItem => {
-      tile.addItem(invItem.item, invItem.count)
-    })
-  }
-
   public on(event: CreatureEvent): Reaction {
     return event.affectCreature(this)
   }
@@ -242,9 +222,9 @@ export class Creature extends Phantom {
     this.impactsBunch.removeConstImpact(type, effect)
   }
 
-  public impacts(): ImpactType[] {
+  get impacts(): ImpactType[] {
     if (this.impactsBunch) {
-      return this.impactsBunch.activeImpacts()
+      return this.impactsBunch.activeImpacts
     }
 
     return []

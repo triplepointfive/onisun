@@ -1,10 +1,10 @@
-import { remove, filter } from 'lodash'
+import { remove } from 'lodash'
 
 export enum ImpactType {
   Blind,
   Stressed,
   Loaded,
-  Overloaded
+  Overloaded,
 }
 
 class Impact {
@@ -44,7 +44,7 @@ class Impact {
 export class ImpactBunch {
   private impacts: Map<ImpactType, Impact> = new Map()
 
-  public activeImpacts(): ImpactType[] {
+  get activeImpacts(): ImpactType[] {
     let types: ImpactType[] = []
 
     this.impacts.forEach((impact, type) => {

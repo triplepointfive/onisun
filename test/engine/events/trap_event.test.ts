@@ -12,6 +12,7 @@ import {
   Player,
   Point,
 } from '../../../src/engine'
+import { DieEvent } from '../../../src/engine/events/die_event';
 
 class TestTrap extends Trap {
   protected affect(game: Game, actor: Creature): void {}
@@ -69,13 +70,12 @@ describe('Trap event', () => {
       expect(creature.characteristics.health.atMax()).toBeFalsy()
     })
 
-    it('may even kill', () => {
+    fit('may even kill', () => {
       creature.characteristics.health.decrease(
         player.characteristics.health.maximum() - 1
       )
-      creature.die = jest.fn()
       creature.on(event)
-      expect(creature.die.mock.calls.length).toEqual(1)
+      expect(creature.dead).toBeTruthy()
     })
 
     it('adds a message to log', () => {
@@ -102,9 +102,8 @@ describe('Trap event', () => {
       player.characteristics.health.decrease(
         player.characteristics.health.maximum() - 1
       )
-      player.die = jest.fn()
-      player.on(event)
-      expect(player.die.mock.calls.length).toEqual(1)
+      creature.on(event)
+      expect(creature.dead).toBeTruthy()
     })
 
     it('adds a message to log', () => {

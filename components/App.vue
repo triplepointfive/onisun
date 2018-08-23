@@ -15,7 +15,7 @@
     :logger='game.logger'
     )
   Impacts.effect-panel(
-    :impacts='game.player.impacts()'
+    :impacts='game.player.impacts'
   )
 
   div(v-if='game.player && game.player.dead')

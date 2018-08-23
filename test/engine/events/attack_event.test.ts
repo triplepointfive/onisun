@@ -1,19 +1,22 @@
-import { generateGame, generatePlayer, generateCreature } from '../helpers'
+import { generateGame, generatePlayer, generateCreature, generateLevelMap } from '../helpers'
 import {
   Game,
   Player,
   Creature,
   AttackEvent,
   Reaction,
+  Point,
 } from '../../../src/engine'
 
 describe('AttackEvent', () => {
-  let game: Game, actor: Player, victim: Creature, event: AttackEvent
+  let game: Game, actor: Player, victim: Creature, event: AttackEvent,
+    map = generateLevelMap()
 
   beforeEach(() => {
     game = generateGame()
     game.player = actor = generatePlayer()
     victim = generateCreature()
+    victim.addToMap(new Point(1, 1), map)
     event = new AttackEvent(actor, game)
   })
 
@@ -48,10 +51,9 @@ describe('AttackEvent', () => {
     it('victim can die', () => {
       actor.characteristics.damageTo = jest.fn()
       actor.characteristics.damageTo.mockReturnValueOnce(victimHealth)
-      victim.die = jest.fn()
 
       expect(victim.on(event)).toEqual(Reaction.DIE)
-      expect(victim.die.mock.calls.length).toEqual(1)
+      expect(victim.dead).toBeTruthy()
 
       expect(game.logger.messages.length).toEqual(1)
     })

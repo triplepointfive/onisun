@@ -3,6 +3,7 @@ import { Creature, Reaction } from '../models/creature'
 import { AddExperienceEvent } from './add_experience_event'
 import { Item } from '../models/items'
 import { Game } from '../models/game'
+import { DieEvent } from './die_event'
 
 export class ThrowEvent extends CreatureEvent {
   constructor(
@@ -32,7 +33,7 @@ export class ThrowEvent extends CreatureEvent {
         subject,
         this.missile
       )
-      subject.die()
+      subject.on(new DieEvent())
       return Reaction.DIE
     } else {
       subject.characteristics.health.decrease(damage)

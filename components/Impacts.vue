@@ -48,13 +48,11 @@ export default Vue.extend({
   color: white;
   width: 200px;
 
-  display: inline-block;
   padding: 0.3rem;
 
   > .icon {
     width: 50px;
     height: 50px;
-    display: inline;
     margin-right: 10px;
   }
 

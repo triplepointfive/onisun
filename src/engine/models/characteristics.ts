@@ -1,6 +1,11 @@
 import { Specie } from './creature'
 import { Item } from './items'
-import { AttributeSet, Attribute, PositiveAttribute, Modifier } from '../lib/attribute'
+import {
+  AttributeSet,
+  Attribute,
+  PositiveAttribute,
+  Modifier,
+} from '../lib/attribute'
 
 export class Characteristics extends AttributeSet<Attribute> {
   constructor({
