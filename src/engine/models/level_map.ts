@@ -22,18 +22,11 @@ export class LevelMap extends Mapped<Tile> {
     this.timeline = new Timeline()
   }
 
-  public leave(actor: Creature): void {
-    this.reset()
-    this.removeCreature(actor)
-  }
-
-  public enter(actor: Creature, enterPos: Point): void {
+  public enter(): void {
     this.reset()
     this.creatures.forEach(creature =>
       this.timeline.add(creature.id, creature.speed())
     )
-
-    this.addCreature(enterPos, actor)
   }
 
   public creatureTile(creature: Creature): Tile {

@@ -1,4 +1,4 @@
-import { forEach, keys, min, remove, size, pullAt, pickBy } from 'lodash'
+import { forEach, keys, min, remove, size, pullAt, pickBy, includes } from 'lodash'
 
 export class Timeline<T> {
   public step: number = 0
@@ -8,7 +8,9 @@ export class Timeline<T> {
     const ts = this.step + delta
 
     if (this.turns[ts]) {
-      this.turns[ts].push(item)
+      if (!includes(this.turns[ts], item)) {
+        this.turns[ts].push(item)
+      }
     } else {
       this.turns[ts] = [item]
     }
