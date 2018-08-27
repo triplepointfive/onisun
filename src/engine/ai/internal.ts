@@ -191,15 +191,15 @@ export abstract class AI {
       return false
     }
 
-    if (actor.clan() === Clan.FreeForAll || enemy.clan() === Clan.FreeForAll) {
+    if (actor.clan === Clan.FreeForAll || enemy.clan === Clan.FreeForAll) {
       return true
     }
 
-    if (actor.clan() === Clan.Player && enemy.clan() === Clan.PlayerOnlyEnemy) {
+    if (actor.clan === Clan.Player && enemy.clan === Clan.PlayerOnlyEnemy) {
       return true
     }
 
-    if (enemy.clan() === Clan.Player && actor.clan() === Clan.PlayerOnlyEnemy) {
+    if (enemy.clan === Clan.Player && actor.clan === Clan.PlayerOnlyEnemy) {
       return true
     }
 

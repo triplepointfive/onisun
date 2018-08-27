@@ -53,6 +53,7 @@ export * from './engine/models/profession'
 export * from './engine/models/tile'
 export * from './engine/models/tile_effect'
 
+export * from './engine/presenters/death_presenter'
 export * from './engine/presenters/internal'
 export * from './engine/presenters/idle_presenter'
 export * from './engine/presenters/inventory_presenter'

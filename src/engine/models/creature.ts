@@ -115,11 +115,11 @@ export class Creature {
     this.carryingCapacity = new CapacityLimitStat(1, 4)
   }
 
-  public name(): string {
+  get name(): string {
     return this.specie.name
   }
 
-  public clan(): Clan {
+  get clan(): Clan {
     return this.specie.clan
   }
 

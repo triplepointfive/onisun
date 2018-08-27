@@ -96,7 +96,7 @@ export default Vue.extend({
       return displayTile(tile)
     },
     creatureTile(creature) {
-      if (creature.name() == 'Rat') {
+      if (creature.name == 'Rat') {
         return RAT
       }
 

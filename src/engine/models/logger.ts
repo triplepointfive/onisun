@@ -20,22 +20,22 @@ export class Logger {
   public messages: LogMessage[] = []
 
   public hurtMessage(damage: number, actor: Creature, target: Creature) {
-    this.debug(`${target.name()} got ${damage} damage from ${actor.name()}`)
+    this.debug(`${target.name} got ${damage} damage from ${actor.name}`)
   }
 
   public killMessage(damage: number, actor: Creature, target: Creature) {
     this.warning(
-      `${target.name()} got ${damage} damage from ${actor.name()} causes them to die`
+      `${target.name} got ${damage} damage from ${actor.name} causes them to die`
     )
   }
 
   public missMessage(actor: Creature, target: Creature) {
-    this.debug(`${actor.name()} misses ${target.name()}!`)
+    this.debug(`${actor.name} misses ${target.name}!`)
   }
 
   public throwMissMessage(actor: Creature, target: Creature, missile: Item) {
     this.debug(
-      `${actor.name()} throws ${missile.name} in ${target.name()}, but misses!`
+      `${actor.name} throws ${missile.name} in ${target.name}, but misses!`
     )
   }
 
@@ -46,7 +46,7 @@ export class Logger {
     missile: Item
   ) {
     this.warning(
-      `${target.name()} got ${damage} damage from ${actor.name()} by ${
+      `${target.name} got ${damage} damage from ${actor.name} by ${
         missile.name
       } causes them to die`
     )
@@ -59,7 +59,7 @@ export class Logger {
     missile: Item
   ) {
     this.debug(
-      `${target.name()} got ${damage} damage from ${actor.name()} by ${
+      `${target.name} got ${damage} damage from ${actor.name} by ${
         missile.name
       }`
     )
@@ -102,7 +102,7 @@ export class Logger {
   }
 
   public creatureSteppedInTrap(creature: Creature): void {
-    this.addMessage(LogLevel.DANGER, `${creature.name()} наступил в ловушку`)
+    this.addMessage(LogLevel.DANGER, `${creature.name} наступил в ловушку`)
   }
 
   public pickedUpItem(item: Item, count: number): void {

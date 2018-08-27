@@ -8,6 +8,6 @@ export class DeathPresenter extends Presenter {
   }
 
   get playerName(): string {
-    return this.game.player.name()
+    return this.game.player.name
   }
 }
