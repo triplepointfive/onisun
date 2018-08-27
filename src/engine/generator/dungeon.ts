@@ -228,7 +228,7 @@ class DungeonGenerator<T> {
         throw 'Dungeon.buildRoads rooms array is empty'
       }
 
-      let currentPoint: Point =  maybePoint
+      let currentPoint: Point = maybePoint
 
       let pointToConnect = connectedPoints[0]
       let minDistance = distance(currentPoint, pointToConnect)

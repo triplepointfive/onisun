@@ -1,7 +1,7 @@
 import { AttackEvent, Game } from '../../engine'
 import { Creature, Reaction } from '../models/creature'
 import { AI } from './internal'
-import { LevelMap } from '../models/level_map';
+import { LevelMap } from '../models/level_map'
 
 export class Attacker extends AI {
   public victim?: Creature
@@ -41,7 +41,11 @@ export class Attacker extends AI {
     return !!creature
   }
 
-  private victimInAccess(actor: Creature, game: Game, victim: Creature | undefined): boolean {
+  private victimInAccess(
+    actor: Creature,
+    game: Game,
+    victim: Creature | undefined
+  ): boolean {
     if (victim === undefined) {
       return false
     }
@@ -67,9 +71,13 @@ export class Attacker extends AI {
   ): Creature | undefined {
     const memory = actor.stageMemory(levelMap.id)
 
-    return levelMap.creaturePos(actor)
+    return levelMap
+      .creaturePos(actor)
       .wrappers()
       .map(({ x, y }) => memory.at(x, y).creature)
-      .find((creature: Creature | undefined) => creature ? condition(creature) : false)
+      .find(
+        (creature: Creature | undefined) =>
+          creature ? condition(creature) : false
+      )
   }
 }

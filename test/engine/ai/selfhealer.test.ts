@@ -1,8 +1,13 @@
-import { generateCreatureWithAI, generateLevelMap, generateGame } from '../helpers'
+import {
+  generateCreatureWithAI,
+  generateLevelMap,
+  generateGame,
+} from '../helpers'
 import { SelfHealer, Point } from '../../../src/engine'
 
 let creature = generateCreatureWithAI(new SelfHealer())
-const map = generateLevelMap(), game = generateGame()
+const map = generateLevelMap(),
+  game = generateGame()
 
 beforeEach(() => {
   map.addCreature(new Point(1, 1), creature)

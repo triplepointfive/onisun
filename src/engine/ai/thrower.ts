@@ -4,8 +4,8 @@ import { GroupedItem } from '../models/items'
 import { Point, bresenham } from '../utils/utils'
 import { MissileAttackEvent } from '../../engine'
 import { Game } from '../models/game'
-import { LevelMap } from '../models/level_map';
-import { Memory } from '../models/memory';
+import { LevelMap } from '../models/level_map'
+import { Memory } from '../models/memory'
 
 export class Thrower extends AI {
   public victim: Creature | undefined
@@ -31,15 +31,20 @@ export class Thrower extends AI {
       game.currentMap.creaturePos(actor),
       game.currentMap.creaturePos(this.victim),
       (x, y) => path.push(new Point(x, y))
-      )
+    )
 
     actor.on(
-      new MissileAttackEvent(path, game, game.currentMap, (reaction: Reaction) => {
-        if (reaction === Reaction.DIE) {
-          this.victim = undefined
-          this.previousVictim = undefined
+      new MissileAttackEvent(
+        path,
+        game,
+        game.currentMap,
+        (reaction: Reaction) => {
+          if (reaction === Reaction.DIE) {
+            this.victim = undefined
+            this.previousVictim = undefined
+          }
         }
-      })
+      )
     )
   }
 
@@ -58,10 +63,16 @@ export class Thrower extends AI {
       }
     }
 
-    return this.findCreature(actor, game.currentMap, creature => this.enemies(actor, creature))
+    return this.findCreature(actor, game.currentMap, creature =>
+      this.enemies(actor, creature)
+    )
   }
 
-  private findWithId(actor: Creature, levelMap: LevelMap, victimId: CreatureId): boolean {
+  private findWithId(
+    actor: Creature,
+    levelMap: LevelMap,
+    victimId: CreatureId
+  ): boolean {
     return this.findCreature(
       actor,
       levelMap,
@@ -74,7 +85,8 @@ export class Thrower extends AI {
     levelMap: LevelMap,
     condition: (creature: Creature) => boolean
   ): boolean {
-    const memory = actor.stageMemory(levelMap.id), pos = levelMap.creaturePos(actor)
+    const memory = actor.stageMemory(levelMap.id),
+      pos = levelMap.creaturePos(actor)
 
     this.withinView(memory, levelMap.creaturePos(actor), (point, tile) => {
       const creature = tile.creature
@@ -92,13 +104,16 @@ export class Thrower extends AI {
     return !!this.victim
   }
 
-  private obstacles(actor: Creature, pos: Point, memory: Memory, target: Point): boolean {
+  private obstacles(
+    actor: Creature,
+    pos: Point,
+    memory: Memory,
+    target: Point
+  ): boolean {
     let obstacles = false
 
     bresenham(pos, target, (x, y) => {
-      obstacles =
-        obstacles ||
-        memory.at(x, y).tangible(actor)
+      obstacles = obstacles || memory.at(x, y).tangible(actor)
     })
 
     return obstacles

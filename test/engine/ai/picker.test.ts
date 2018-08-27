@@ -7,14 +7,13 @@ import {
 import { Picker, Point } from '../../../src/engine'
 
 let internalAI = new Picker(),
-    creature = generateCreatureWithAI(internalAI),
-    map
+  creature = generateCreatureWithAI(internalAI),
+  map
 const game = generateGame()
 
-
 beforeEach(() => {
-  game.currentMap = map = generateLevelMap(),
-  map.addCreature(new Point(1, 1), creature)
+  ;(game.currentMap = map = generateLevelMap()),
+    map.addCreature(new Point(1, 1), creature)
 })
 
 describe('When there are no items', () => {

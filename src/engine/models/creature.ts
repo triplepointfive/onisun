@@ -109,7 +109,7 @@ export class Creature {
     public specie: Specie,
     // public pos: Point,
     // public currentLevel: LevelMap,
-    public id: CreatureId = Creature.getId(),
+    public id: CreatureId = Creature.getId()
   ) {
     this.ai = ai
     // this.previousPos = this.pos.copy()
@@ -228,13 +228,13 @@ export class Player extends Creature {
     public level: Level,
     characteristics: Characteristics,
     ai: PlayerAI,
-    specie: Specie,
+    specie: Specie
   ) {
     super(characteristics, ai, specie)
   }
 
   public rebuildVision(levelMap: LevelMap): void {
-  this.visionMask(levelMap)
+    this.visionMask(levelMap)
   }
 
   public on(event: CreatureEvent): Reaction {

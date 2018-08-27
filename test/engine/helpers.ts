@@ -123,7 +123,7 @@ export const generatePlayer = function(): Player {
     generateLevel(),
     generateCharacteristics(),
     generatePlayerAI(),
-    fakeSpecie,
+    fakeSpecie
   )
 }
 

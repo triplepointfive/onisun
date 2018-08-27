@@ -50,8 +50,7 @@ export class MissilePresenter extends Presenter {
   }
 
   public moveTarget(direction: Direction): void {
-    const
-      dest = this.targetPos.add(direction),
+    const dest = this.targetPos.add(direction),
       tile = this.currentLevel.at(dest.x, dest.y)
 
     if (
@@ -104,7 +103,8 @@ export class MissilePresenter extends Presenter {
   private drawPath(): void {
     this.path = []
     let stop = false
-    const stage = this.currentLevel, pos = this.currentLevel.creaturePos(this.player)
+    const stage = this.currentLevel,
+      pos = this.currentLevel.creaturePos(this.player)
 
     bresenhamInclusion(pos, this.targetPos, (x, y) => {
       if (!stage.at(x, y).passibleThrough()) {

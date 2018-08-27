@@ -6,7 +6,7 @@ import { MetaAI } from './meta_ai'
 import { MemoryTile, Memory } from '../models/memory'
 import { MoveEvent } from '../events/move_event'
 import { Game } from '../models/game'
-import { LevelMap } from '../../engine';
+import { LevelMap } from '../../engine'
 
 const FIRST_STEP: number = 1
 
@@ -26,14 +26,24 @@ export abstract class AI {
 
   public reset(): void {}
 
-  protected moveTo(actor: Creature, destination: Point, levelMap: LevelMap, game: Game): boolean {
+  protected moveTo(
+    actor: Creature,
+    destination: Point,
+    levelMap: LevelMap,
+    game: Game
+  ): boolean {
     // TODO: Rethink of it
     const creature = levelMap.at(destination.x, destination.y).creature
     if (creature && creature.id === actor.id) {
       return true
     }
 
-    const path = this.leePath(actor, actor.stageMemory(levelMap.id), levelMap.creaturePos(actor), point => destination.eq(point))
+    const path = this.leePath(
+      actor,
+      actor.stageMemory(levelMap.id),
+      levelMap.creaturePos(actor),
+      point => destination.eq(point)
+    )
 
     if (path.length) {
       actor.on(new MoveEvent(game, path[0]))
@@ -42,8 +52,18 @@ export abstract class AI {
     return !!path.length
   }
 
-  protected followTo(actor: Creature, destination: Point, levelMap: LevelMap, game: Game): boolean {
-    const path = this.leePath(actor, actor.stageMemory(levelMap.id), levelMap.creaturePos(actor), point => destination.nextTo(point))
+  protected followTo(
+    actor: Creature,
+    destination: Point,
+    levelMap: LevelMap,
+    game: Game
+  ): boolean {
+    const path = this.leePath(
+      actor,
+      actor.stageMemory(levelMap.id),
+      levelMap.creaturePos(actor),
+      point => destination.nextTo(point)
+    )
 
     if (path.length) {
       actor.on(new MoveEvent(game, path[0]))
@@ -59,11 +79,7 @@ export abstract class AI {
     destination: (point: Point, tile: MemoryTile) => boolean,
     randomDestination: boolean = false
   ): Point[] {
-    let stageMemory: number[][] = twoDimArray(
-      map.width,
-      map.height,
-      () => -1
-    )
+    let stageMemory: number[][] = twoDimArray(map.width, map.height, () => -1)
     let pointsToVisit: Point[] = []
     let pointsToCheck: Point[] = [pos]
 
@@ -78,10 +94,7 @@ export abstract class AI {
 
         const tile = map.at(point.x, point.y)
         // TODO: Compare, current value might be lower
-        if (
-          tile.tangible(actor) ||
-          stageMemory[point.x][point.y] !== -1
-        ) {
+        if (tile.tangible(actor) || stageMemory[point.x][point.y] !== -1) {
           return
         }
 

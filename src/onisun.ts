@@ -56,10 +56,7 @@ export class Application {
 
 export class Onisun extends Game {
   constructor(player: Player) {
-    super(
-      player,
-      new OnisunProfessionPicker(player)
-    )
+    super(player, new OnisunProfessionPicker(player))
 
     const prof = this.professionPicker.available(this.player)[1]
     if (prof) {

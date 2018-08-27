@@ -30,12 +30,8 @@ const level0 = 0,
 
 class TestDungeon extends Dungeon {
   public register(game: Game): void {
-    game.addMap(level0, (id, game) =>
-      this.addStairDown(this.newMap(), level1)
-    )
-    game.addMap(level1, (id, game) =>
-      this.addStairUp(this.newMap(), level0)
-    )
+    game.addMap(level0, (id, game) => this.addStairDown(this.newMap(), level1))
+    game.addMap(level1, (id, game) => this.addStairUp(this.newMap(), level0))
   }
 
   public enter(game: Game, player: Player): void {

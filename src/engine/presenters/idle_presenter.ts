@@ -159,7 +159,9 @@ export class IdlePresenter extends Presenter {
 
   private handle(): void {
     this.tile.visit(
-      new HandleTileVisitor(this.game, this.game.currentMap, this.player, () => this.endTurn())
+      new HandleTileVisitor(this.game, this.game.currentMap, this.player, () =>
+        this.endTurn()
+      )
     )
   }
 }

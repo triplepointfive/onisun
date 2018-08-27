@@ -65,9 +65,7 @@ export abstract class InventorySlot {
   }
 
   protected withPairItem(baseMatch: GroupedItem[], item: Item): GroupedItem[] {
-    return baseMatch.filter(groupedItem =>
-      groupedItem.item.worksWith(item)
-    )
+    return baseMatch.filter(groupedItem => groupedItem.item.worksWith(item))
   }
 }
 

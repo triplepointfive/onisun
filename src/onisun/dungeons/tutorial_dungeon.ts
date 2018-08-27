@@ -39,8 +39,10 @@ tiles.set('R', () => new Floor('R', TileTypes.Floor))
 tiles.set('D', () => new Door())
 
 export class TutorialDungeon extends Dungeon {
-  public enter(initPlayer: (enterPoint: Point, levelMap: LevelMap) => Player): void {
-    const levelMap = game.currentMap = game.getMap(initId)
+  public enter(
+    initPlayer: (enterPoint: Point, levelMap: LevelMap) => Player
+  ): void {
+    const levelMap = (game.currentMap = game.getMap(initId))
 
     addOnTile(
       levelMap,

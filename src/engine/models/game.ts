@@ -19,9 +19,7 @@ export abstract class Game {
   constructor(
     public player: Player,
     public professionPicker: ProfessionPicker
-  ) {
-
-  }
+  ) {}
 
   public turn() {
     if (this.running || (this.ai && !this.effect)) {

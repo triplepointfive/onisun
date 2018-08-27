@@ -1,9 +1,9 @@
-import { Item, ItemId } from '../../engine';
-import { Ability, Creature } from '../models/creature';
-import { Game } from '../models/game';
-import { Point } from '../utils/utils';
-import { FollowTargetAI } from './internal';
-import { AIItemPickedEvent } from './meta_ai';
+import { Item, ItemId } from '../../engine'
+import { Ability, Creature } from '../models/creature'
+import { Game } from '../models/game'
+import { Point } from '../utils/utils'
+import { FollowTargetAI } from './internal'
+import { AIItemPickedEvent } from './meta_ai'
 import { GroupedItem } from '../models/items'
 
 export class Picker extends FollowTargetAI {
@@ -48,21 +48,25 @@ export class Picker extends FollowTargetAI {
     const memory = actor.stageMemory(game.currentMap.id)
     let result: boolean = false
 
-    this.withinView(memory, game.currentMap.creaturePos(actor), ({ x, y }, tile) => {
-      if (!tile.items) {
-        return
-      }
+    this.withinView(
+      memory,
+      game.currentMap.creaturePos(actor),
+      ({ x, y }, tile) => {
+        if (!tile.items) {
+          return
+        }
 
-      const item = tile
-        .items
-        .bunch.find(groupedItem => condition(groupedItem.item))
+        const item = tile.items.bunch.find(groupedItem =>
+          condition(groupedItem.item)
+        )
 
-      if (item && !result) {
-        this.desiredItemId = item.item.id
-        this.destination = new Point(x, y)
-        result = true
+        if (item && !result) {
+          this.desiredItemId = item.item.id
+          this.destination = new Point(x, y)
+          result = true
+        }
       }
-    })
+    )
 
     return result
   }
