@@ -27,18 +27,44 @@ export * from './onisun/talents'
 export * from './onisun/items'
 export * from './onisun/tiles'
 
-export class Onisun extends Game {
-  public professionPicker: OnisunProfessionPicker
-
+export class Application {
+  public game: Onisun
   constructor() {
-    super()
-    this.player = this.initPlayer()
-    this.professionPicker = new OnisunProfessionPicker(this.player)
-    this.player.professions.push(this.professionPicker.attacker)
+    this.game = new Onisun(this.initPlayer())
+  }
 
+  protected initPlayer(): Player {
     const dungeon = new TutorialDungeon(this)
     dungeon.build()
     dungeon.enter()
+
+    return new Player(
+      new Level([1, 3, 5, 10, 20]),
+      new Characteristics({
+        attack: 1,
+        defense: 4,
+        dexterity: 3,
+        health: 100,
+        radius: 10,
+        speed: 80,
+      }),
+      new PlayerAI(),
+      new Specie('Player', 80, Clan.Player, allAbilities)
+    )
+  }
+}
+
+export class Onisun extends Game {
+  constructor(player: Player) {
+    super(
+      player,
+      new OnisunProfessionPicker(player)
+    )
+
+    const prof = this.professionPicker.available(this.player)[1]
+    if (prof) {
+      this.player.professions.push(prof)
+    }
 
     const dagger = new OneHandWeapon('Dagger', 0.8, new Modifier({ attack: 3 }))
     const katana = new OneHandWeapon('Katana', 1, new Modifier({ attack: 10 }))
@@ -80,21 +106,5 @@ export class Onisun extends Game {
     this.player.inventory.missileSlot.equip(this.player, wooden)
 
     this.player.inventory.putToBag(new LightSpeedBoots(), 1)
-  }
-
-  protected initPlayer(): Player {
-    return new Player(
-      new Level([1, 3, 5, 10, 20]),
-      new Characteristics({
-        attack: 1,
-        defense: 4,
-        dexterity: 3,
-        health: 100,
-        radius: 10,
-        speed: 80,
-      }),
-      new PlayerAI(),
-      new Specie('Player', 80, Clan.Player, allAbilities)
-    )
   }
 }

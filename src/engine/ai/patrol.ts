@@ -95,6 +95,10 @@ export class Patrol extends AI {
   }
 
   private buildNewPath(actor: Creature): void {
+    // TODO: Remove this
+    if (!this.targetNodeID) {
+      throw 'Patrol has no next targetID'
+    }
     const pos: Point = this.graph.node(this.targetNodeID)
 
     this.path = this.leePath(actor, point => pos.eq(point))

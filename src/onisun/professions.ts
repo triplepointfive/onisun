@@ -17,6 +17,9 @@ export class OnisunAttackerProfession extends Profession {
 export class OnisunDefenderProfession extends Profession {
   constructor(level: number = 1) {
     super(OnisunProfessionId.Defender, 'Защитник', level)
+
+    // TODO: Tmp
+    this.talents.push(new AttackerTwoHandedWeapons())
   }
 }
 

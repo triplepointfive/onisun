@@ -5,17 +5,21 @@ import {
   Specie,
   Clan,
   Pool,
+  LevelMap,
 } from '../engine'
+import { Point } from '../engine/utils/utils';
 
-const newCreature = (characteristics: Characteristics, name: string) => {
+const newCreature = (characteristics: Characteristics, name: string, enterPoint: Point, levelMap: LevelMap) => {
   return new Creature(
     characteristics,
     new Dispatcher(),
-    new Specie(name, 10, Clan.PlayerOnlyEnemy, [])
+    new Specie(name, 10, Clan.PlayerOnlyEnemy, []),
+    enterPoint,
+    levelMap
   )
 }
 
-const floatingEye = () => {
+const floatingEye = ([enterPoint, levelMap]: [Point, LevelMap]) => {
   return newCreature(
     new Characteristics({
       attack: 1,
@@ -25,11 +29,13 @@ const floatingEye = () => {
       radius: 5,
       speed: 200,
     }),
-    'Floating eye'
+    'Floating eye',
+    enterPoint,
+    levelMap
   )
 }
 
-const rat = () => {
+const rat = ([enterPoint, levelMap]: [Point, LevelMap]) => {
   return newCreature(
     new Characteristics({
       attack: 1,
@@ -39,11 +45,13 @@ const rat = () => {
       radius: 5,
       speed: 90,
     }),
-    'Rat'
+    'Rat',
+    enterPoint,
+    levelMap
   )
 }
 
-const orc = () => {
+const orc = ([enterPoint, levelMap]: [Point, LevelMap]) => {
   return newCreature(
     new Characteristics({
       attack: 3,
@@ -53,11 +61,13 @@ const orc = () => {
       radius: 5,
       speed: 100,
     }),
-    'Orc'
+    'Orc',
+    enterPoint,
+    levelMap
   )
 }
 
-const undead = () => {
+const undead = ([enterPoint, levelMap]: [Point, LevelMap]) => {
   return newCreature(
     new Characteristics({
       attack: 2,
@@ -67,11 +77,13 @@ const undead = () => {
       radius: 5,
       speed: 120,
     }),
-    'Undead'
+    'Undead',
+    enterPoint,
+    levelMap
   )
 }
 
-const robot = () => {
+const robot = ([enterPoint, levelMap]: [Point, LevelMap]) => {
   return newCreature(
     new Characteristics({
       attack: 5,
@@ -81,11 +93,13 @@ const robot = () => {
       radius: 7,
       speed: 90,
     }),
-    'Robot'
+    'Robot',
+    enterPoint,
+    levelMap
   )
 }
 
-const dragon = () => {
+const dragon = ([enterPoint, levelMap]: [Point, LevelMap]) => {
   return newCreature(
     new Characteristics({
       attack: 7,
@@ -95,25 +109,27 @@ const dragon = () => {
       radius: 5,
       speed: 100,
     }),
-    'Dragon'
+    'Dragon',
+    enterPoint,
+    levelMap
   )
 }
 
-export const creaturesPool1 = new Pool<null, Creature>([
+export const creaturesPool1 = new Pool<[Point, LevelMap], Creature>([
   [10, rat],
   [1, floatingEye],
 ])
-export const creaturesPool2 = new Pool<null, Creature>([[1, rat], [2, orc]])
-export const creaturesPool3 = new Pool<null, Creature>([
+export const creaturesPool2 = new Pool<[Point, LevelMap], Creature>([[1, rat], [2, orc]])
+export const creaturesPool3 = new Pool<[Point, LevelMap], Creature>([
   [1, rat],
   [1, orc],
   [2, undead],
 ])
-export const creaturesPool4 = new Pool<null, Creature>([
+export const creaturesPool4 = new Pool<[Point, LevelMap], Creature>([
   [2, undead],
   [2, robot],
 ])
-export const creaturesPool5 = new Pool<null, Creature>([
+export const creaturesPool5 = new Pool<[Point, LevelMap], Creature>([
   [2, robot],
   [1, dragon],
 ])

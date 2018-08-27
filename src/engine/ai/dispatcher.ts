@@ -82,6 +82,11 @@ export class Dispatcher extends MetaAI {
     }
 
     this.resetEvents()
+
+    if (!this.aiToRun) {
+      throw 'Dispatcher: no AI picked'
+    }
+
     this.aiToRun.act(actor, game, firstTurn)
   }
 

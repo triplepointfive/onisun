@@ -1,4 +1,4 @@
-import { Rect, Point, rand, twoDimArray } from '../utils/utils'
+import { Rect, Point, rand, twoDimArray, minUnsafe } from '../utils/utils'
 import { min } from 'lodash'
 
 const THICKNESS = 0
@@ -186,13 +186,17 @@ class DungeonGenerator<T> {
   }
 
   private normalize(rooms: Room<T>[]): Room<T>[] {
-    const minX = min(rooms.map(room => room.x)) - 1
+    if (rooms.length === 0) {
+      return rooms
+    }
+
+    const minX = minUnsafe(rooms.map(room => room.x)) - 1
     rooms.forEach(room => {
       room.move(-minX, 0)
     })
     rooms = rooms.filter((room: Room<T>) => room.x + room.w < this.maxX)
 
-    const minY = min(rooms.map(room => room.y)) - 1
+    const minY = minUnsafe(rooms.map(room => room.y)) - 1
     rooms.forEach(room => {
       room.move(0, -minY)
     })
@@ -204,7 +208,13 @@ class DungeonGenerator<T> {
       return room.pointWithin()
     })
 
-    let connectedPoints: Point[] = [points.shift()]
+    const firstPoint = points.shift()
+
+    if (!firstPoint) {
+      throw 'Dungeon.buildRoads rooms array is empty'
+    }
+
+    let connectedPoints: Point[] = [firstPoint]
     let roads: Road<T>[] = []
 
     const distance = function(point1: Point, point2: Point): number {
@@ -213,7 +223,12 @@ class DungeonGenerator<T> {
     }
 
     while (points.length) {
-      let currentPoint = points.shift()
+      let maybePoint = points.shift()
+      if (!maybePoint) {
+        throw 'Dungeon.buildRoads rooms array is empty'
+      }
+
+      let currentPoint: Point =  maybePoint
 
       let pointToConnect = connectedPoints[0]
       let minDistance = distance(currentPoint, pointToConnect)

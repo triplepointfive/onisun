@@ -202,8 +202,10 @@ export default Vue.extend({
   letter-spacing: 0px;
   display: inline-block;
 
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 30%;
 
   div {
     float: left;

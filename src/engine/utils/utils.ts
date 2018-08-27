@@ -1,3 +1,5 @@
+import { min } from 'lodash'
+
 export class Rect {
   // TODO: Validate?
   constructor(
@@ -164,4 +166,13 @@ export class Direction extends Point {
   static readonly upRight = new Direction(1, -1)
   static readonly downLeft = new Direction(-1, 1)
   static readonly downRight = new Direction(1, 1)
+}
+
+export const minUnsafe = function<T>(list: T[]): T {
+  const elem = min(list)
+  if (elem !== undefined) {
+    return elem
+  }
+
+  throw 'minUnsafe got empty array'
 }

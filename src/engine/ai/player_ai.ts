@@ -14,6 +14,10 @@ export class AINewLevelEvent extends AIEvent {
   }
 
   public run(): void {
+    if (!this.game.ai) {
+      throw 'AINewLevelEvent.run: game.ai is undefined'
+    }
+
     if (this.level % 3 === 0) {
       this.game.ai.presenter = new ProfessionPickingPresenter(
         this.level,
@@ -30,13 +34,11 @@ export class AINewLevelEvent extends AIEvent {
 }
 
 export class PlayerAI extends MetaAI {
-  public presenter: Presenter = null
-  private player: Player
-  private game: Game
+  public presenter: Presenter | null = null
+  private game: Game | undefined
   public levelUps: number = 0
 
   public act(player: Player, game: Game): void {
-    this.player = player
     this.game = game
 
     this.presenter = new IdlePresenter(this.game)
@@ -47,7 +49,7 @@ export class PlayerAI extends MetaAI {
     let event = this.events.pop()
     if (event) {
       event.run()
-    } else {
+    } else if (this.game) {
       this.game.ai = null
       this.presenter = null
     }

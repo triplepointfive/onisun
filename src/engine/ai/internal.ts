@@ -60,7 +60,7 @@ export abstract class AI {
     let stageMemory: number[][] = twoDimArray(
       map.width,
       map.height,
-      () => undefined
+      () => -1
     )
     let pointsToVisit: Point[] = []
     let pointsToCheck: Point[] = [actor.pos]
@@ -78,7 +78,7 @@ export abstract class AI {
         // TODO: Compare, current value might be lower
         if (
           tile.tangible(actor) ||
-          stageMemory[point.x][point.y] !== undefined
+          stageMemory[point.x][point.y] !== -1
         ) {
           return
         }
@@ -96,8 +96,10 @@ export abstract class AI {
     }
 
     if (pointsToVisit.length) {
-      if (randomDestination) {
-        return this.buildRoad(sample(pointsToVisit), stageMemory)
+      // TODO: Remove this check
+      let randomPointToVisit = sample(pointsToVisit)
+      if (randomDestination && randomPointToVisit) {
+        return this.buildRoad(randomPointToVisit, stageMemory)
       } else {
         return this.buildRoad(pointsToVisit[0], stageMemory)
       }
@@ -110,7 +112,7 @@ export abstract class AI {
     let lastPoint = point
     let chain = [lastPoint]
 
-    let delta: Point = undefined
+    let delta: Point | undefined
 
     while (stageMemory[lastPoint.x][lastPoint.y] !== FIRST_STEP) {
       delta = Point.dxy.find(
@@ -123,7 +125,7 @@ export abstract class AI {
         }
       )
 
-      if (!delta) {
+      if (delta === undefined) {
         return []
       }
 
@@ -194,7 +196,7 @@ export abstract class AI {
 }
 
 export abstract class FollowTargetAI extends AI {
-  public destination: Point = undefined
+  public destination?: Point = undefined
 
   public available(actor: Creature): boolean {
     return this.foundNewTarget(actor) || !!this.destination
@@ -205,7 +207,7 @@ export abstract class FollowTargetAI extends AI {
       throw `FollowTargetAI's act got called when there is no destination!`
     }
 
-    if (this.goTo(actor, game)) {
+    if (this.goTo(actor, game, this.destination)) {
       this.onMove(actor)
       // If got the destination
       if (this.destination.eq(actor.pos)) {
@@ -223,8 +225,8 @@ export abstract class FollowTargetAI extends AI {
     this.destination = undefined
   }
 
-  protected goTo(actor: Creature, game: Game): boolean {
-    return this.moveTo(actor, this.destination, game)
+  protected goTo(actor: Creature, game: Game, point: Point): boolean {
+    return this.moveTo(actor, point, game)
   }
 
   protected abstract foundNewTarget(actor: Creature): boolean

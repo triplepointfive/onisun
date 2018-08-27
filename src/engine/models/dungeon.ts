@@ -1,14 +1,16 @@
-import { Game } from './game'
 import { addOnTile } from '../generator/post'
 import { StairwayDown, StairwayUp, Tile } from './tile'
 import { LevelMap, LevelMapId } from './level_map'
+import { Game } from './game';
+import { Point } from '../../engine';
+import { Player } from './creature';
 
 export abstract class Dungeon {
   protected levels: LevelMap[] = []
 
-  constructor(protected game: Game) {}
-  public abstract build(): void
-  public abstract enter(): void
+  constructor() {}
+  public abstract enter(initPlayer: (enterPoint: Point, levelMap: LevelMap) => Player): void
+  public abstract register(game: Game): void
 
   protected addStairDown(map: LevelMap, adjustMapId: LevelMapId): LevelMap {
     return this.addStairs(map, new StairwayDown(map, adjustMapId))

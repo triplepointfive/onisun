@@ -32,6 +32,9 @@ export class Chaser extends FollowTargetAI {
   }
 
   protected goTo(actor: Creature, game: Game): boolean {
+    if (!this.destination) {
+      throw 'Chaser.goTo: no destination'
+    }
     return this.followTo(actor, this.destination, game)
   }
 

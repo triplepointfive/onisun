@@ -26,6 +26,7 @@ import {
   TileTypes,
   TileVisitor,
   Wall,
+  Point,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -97,8 +98,9 @@ const wrapAI = function(ai: AI): MetaAI {
 
 const fakeSpecie = new Specie('Test specie', 10, Clan.FreeForAll, allAbilities)
 
+export class TestCreature extends Creature {}
 export const generateCreatureWithAI = function(ai: AI): Creature {
-  return new TestCreature(generateCharacteristics(), wrapAI(ai), fakeSpecie)
+  return new TestCreature(generateCharacteristics(), wrapAI(ai), fakeSpecie, new Point(1, 1), generateLevelMap())
 }
 
 export const generateCharacteristics = function(): Characteristics {
@@ -121,7 +123,8 @@ export const generatePlayer = function(): Player {
     generateLevel(),
     generateCharacteristics(),
     generatePlayerAI(),
-    fakeSpecie
+    fakeSpecie,
+    new Point(1, 1), generateLevelMap()
   )
 }
 
@@ -188,5 +191,3 @@ export const generateProfession = function(level: number = 1): Profession {
   const name = times(4, () => random(35).toString(36)).join('')
   return new Profession(professionId++, name, level)
 }
-
-export class TestCreature extends Creature {}

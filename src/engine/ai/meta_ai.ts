@@ -85,7 +85,7 @@ export class AIItemPickedEvent extends AIEvent {
 }
 
 export abstract class MetaAI extends AI {
-  constructor(public aiToRun: AI = null) {
+  constructor(public aiToRun: AI | undefined = undefined) {
     super()
   }
   protected events: AIEvent[] = []

@@ -48,14 +48,14 @@ import MissileView from './views/MissileView.vue'
 import { LevelMap, PresenterType } from '../src/engine'
 
 import {
-  Onisun,
+  Application,
 } from '../src/onisun'
 import { setInterval, clearInterval } from 'timers';
 
 export default Vue.extend({
   data() {
     return {
-      game: new Onisun(),
+      game: new Application().game,
       ts: Date.now(),
       loopIntervalId: undefined
     }
@@ -139,6 +139,7 @@ export default Vue.extend({
 #app {
   padding: 0;
   height: 100%;
+  background-color: black;
 
   .player-stats {
     position: fixed;

@@ -10,7 +10,7 @@ export class Attacker extends AI {
   }
 
   public act(actor: Creature, game: Game, firstTurn: boolean = true): void {
-    if (this.victimInAccess(actor)) {
+    if (this.victimInAccess(actor, this.victim)) {
       this.attack(actor, game)
     } else {
       if (!firstTurn) {
@@ -23,6 +23,11 @@ export class Attacker extends AI {
   }
 
   protected attack(actor: Creature, game: Game) {
+    // TODO: Remove it one day
+    if (!this.victim) {
+      throw 'Attacker.victim is not set'
+    }
+
     if (this.victim.on(new AttackEvent(actor, game)) === Reaction.DIE) {
       this.victim = undefined
     }
@@ -35,14 +40,14 @@ export class Attacker extends AI {
     return !!creature
   }
 
-  private victimInAccess(actor: Creature): boolean {
-    if (this.victim === undefined) {
+  private victimInAccess(actor: Creature, victim: Creature | undefined): boolean {
+    if (victim === undefined) {
       return false
     }
 
     const creature = this.findCreature(
       actor,
-      creature => creature.id === this.victim.id
+      creature => creature.id === victim.id
     )
     return !!creature
   }
@@ -56,7 +61,7 @@ export class Attacker extends AI {
   private findCreature(
     actor: Creature,
     condition: (creature: Creature) => boolean
-  ): Creature {
+  ): Creature | undefined {
     const memory = actor.stageMemory()
     return actor.pos
       .wrappers()
