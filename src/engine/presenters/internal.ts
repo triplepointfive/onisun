@@ -4,12 +4,13 @@ import { Tile } from '../models/tile'
 import { Game } from '../../engine'
 
 export enum PresenterType {
-  ProfessionPicking,
-  Idle,
   AbilitiesPicking,
+  Death,
+  Idle,
   Inventory,
   ItemsListing,
   Missile,
+  ProfessionPicking,
 }
 
 export abstract class Presenter {

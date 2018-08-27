@@ -16,6 +16,7 @@ export * from './engine/ai/thrower'
 
 export * from './engine/events/add_experience_event'
 export * from './engine/events/attack_event'
+export * from './engine/events/die_event'
 export * from './engine/events/drink_potion_event'
 export * from './engine/events/drop_items_event'
 export * from './engine/events/internal'

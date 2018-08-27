@@ -17,33 +17,33 @@ export class Thrower extends AI {
       actor.can(Ability.Throwing) &&
       this.hasMissile(actor) &&
       this.canAttack(actor, game)
-) {
-    let path: Point[] = []
+    ) {
+      let path: Point[] = []
 
-    if (!this.victim) {
-      throw 'Thrower.act called when there is no victim'
-    }
+      if (!this.victim) {
+        throw 'Thrower.act called when there is no victim'
+      }
 
-    bresenham(
-      game.currentMap.creaturePos(actor),
-      game.currentMap.creaturePos(this.victim),
-      (x, y) => path.push(new Point(x, y))
-    )
-
-    actor.on(
-      new MissileAttackEvent(
-        path,
-        game,
-        game.currentMap,
-        (reaction: Reaction) => {
-          if (reaction === Reaction.DIE) {
-            this.victim = undefined
-            this.previousVictim = undefined
-          }
-        }
+      bresenham(
+        game.currentMap.creaturePos(actor),
+        game.currentMap.creaturePos(this.victim),
+        (x, y) => path.push(new Point(x, y))
       )
-    )
-    return true
+
+      actor.on(
+        new MissileAttackEvent(
+          path,
+          game,
+          game.currentMap,
+          (reaction: Reaction) => {
+            if (reaction === Reaction.DIE) {
+              this.victim = undefined
+              this.previousVictim = undefined
+            }
+          }
+        )
+      )
+      return true
     }
 
     return false

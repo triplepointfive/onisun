@@ -2,7 +2,7 @@ import { CreatureEvent } from './internal'
 import { Trap } from '../models/tile'
 import { Creature, Reaction, Player } from '../models/creature'
 import { Game } from '../models/game'
-import { DieEvent } from './die_event'
+import { DieEvent, DieReason } from './die_event'
 
 export class TrapEvent extends CreatureEvent {
   constructor(private trap: Trap, private game: Game) {
@@ -34,7 +34,7 @@ export class TrapEvent extends CreatureEvent {
     const damage = 10
 
     if (damage >= actor.characteristics.health.currentValue()) {
-      actor.on(new DieEvent(this.game.currentMap))
+      actor.on(new DieEvent(this.game, this.game.currentMap, DieReason.Trap))
       return Reaction.DIE
     } else {
       actor.characteristics.health.decrease(damage)

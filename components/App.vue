@@ -32,7 +32,7 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue'
+import Vue,{ VueConstructor } from 'vue'
 import * as _ from 'lodash'
 
 import Logger from './Logger.vue'
@@ -46,13 +46,12 @@ import ItemsListingView from './views/ItemsListingView.vue'
 import TalentsTreeView from './views/TalentsTreeView.vue'
 import InventoryView from './views/InventoryView.vue'
 import MissileView from './views/MissileView.vue'
+import DeathView from './views/DeathView.vue'
 
 import { LevelMap, PresenterType } from '../src/engine'
 
-import {
-  Application,
-} from '../src/onisun'
-import { setInterval, clearInterval } from 'timers';
+import { Application } from '../src/onisun'
+import { setInterval, clearInterval } from 'timers'
 
 export default Vue.extend({
   data() {
@@ -69,8 +68,8 @@ export default Vue.extend({
     Stats,
   },
   computed: {
-    viewComponent() {
-      switch (this.game.ai && this.game.ai.presenter.type) {
+    viewComponent(): VueConstructor | undefined {
+      switch (this.game.ai && this.game.ai.presenter && this.game.ai.presenter.type) {
       case PresenterType.AbilitiesPicking:
         return TalentsTreeView
       case PresenterType.ProfessionPicking:
@@ -83,6 +82,8 @@ export default Vue.extend({
         return InventoryView
       case PresenterType.Missile:
         return MissileView
+      case PresenterType.Death:
+        return DeathView
       }
     }
   },
@@ -90,7 +91,7 @@ export default Vue.extend({
     loop() {
       this.game.turn()
     },
-    onEvent(event) {
+    onEvent(event: KeyboardEvent) {
       const view = this.$refs.viewComponent
       if (view) {
         view.onEvent(event)

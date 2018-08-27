@@ -2,9 +2,21 @@ import { CreatureEvent } from './internal'
 import { Creature, Reaction, Player } from '../models/creature'
 import { Corpse } from '../models/items'
 import { LevelMap } from '../models/level_map'
+import { Game } from '../models/game'
+import { AIDieEvent } from '../ai/player_ai'
+
+export enum DieReason {
+  Attack,
+  Missile,
+  Trap,
+}
 
 export class DieEvent extends CreatureEvent {
-  constructor(private levelMap: LevelMap) {
+  constructor(
+    private game: Game,
+    private levelMap: LevelMap,
+    private reason: DieReason
+  ) {
     super()
   }
 
@@ -30,6 +42,8 @@ export class DieEvent extends CreatureEvent {
   }
 
   public affectPlayer(player: Player): Reaction {
-    return this.affectCreature(player)
+    player.ai.pushEvent(new AIDieEvent(this.reason, this.game))
+
+    return Reaction.DIE
   }
 }

@@ -7,6 +7,8 @@ import {
   ProfessionPickingPresenter,
 } from '../../engine'
 import { Presenter } from '../presenters/internal'
+import { DieReason } from '../events/die_event'
+import { DeathPresenter } from '../presenters/death_presenter'
 
 export class AINewLevelEvent extends AIEvent {
   constructor(public level: number, game: Game) {
@@ -26,6 +28,24 @@ export class AINewLevelEvent extends AIEvent {
     } else {
       this.game.ai.presenter = new TalentsTreePresenter(this.level, this.game)
     }
+  }
+
+  public immediate(): boolean {
+    return true
+  }
+}
+
+export class AIDieEvent extends AIEvent {
+  constructor(private dieReason: DieReason, game: Game) {
+    super(game)
+  }
+
+  public run(): void {
+    if (!this.game.ai) {
+      throw 'AINewLevelEvent.run: game.ai is undefined'
+    }
+
+    this.game.ai.presenter = new DeathPresenter(this.dieReason, this.game)
   }
 
   public immediate(): boolean {

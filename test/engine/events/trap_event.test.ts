@@ -97,15 +97,6 @@ describe('Trap event', () => {
       expect(player.characteristics.health.atMax()).toBeFalsy()
     })
 
-    it('may even kill', () => {
-      player.characteristics.health.decrease(
-        player.characteristics.health.maximum() - 1
-      )
-      map.addCreature(new Point(1, 1), player)
-      player.on(event)
-      expect(player.dead).toBeTruthy()
-    })
-
     it('adds a message to log', () => {
       expect(game.logger.messages.length).toEqual(0)
       player.on(event)

@@ -88,7 +88,7 @@ export class Application {
         attack: 1,
         defense: 4,
         dexterity: 3,
-        health: 100,
+        health: 20,
         radius: 10,
         speed: 80,
       }),
