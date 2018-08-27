@@ -116,8 +116,8 @@ export class Patrol extends AI {
       actor,
       actor.stageMemory(game.currentMap),
       game.currentMap.creaturePos(actor),
-       point => pos.eq(point)
-      )
+      point => pos.eq(point)
+    )
   }
 
   private pickUpNewTarget(actor: Creature, game: Game): void {

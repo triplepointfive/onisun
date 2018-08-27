@@ -4,7 +4,8 @@ import { TileVisitor } from '../models/tile'
 import { Creature, Game, Trap, Point, Reaction } from '../../engine'
 import { Player } from '../models/creature'
 
-class SteppingTileVisitor extends TileVisitor { constructor(private creature: Creature, private game: Game) {
+class SteppingTileVisitor extends TileVisitor {
+  constructor(private creature: Creature, private game: Game) {
     super()
   }
 
@@ -36,7 +37,7 @@ export class MoveEvent extends CreatureEvent {
       this.currentLevel.at(this.nextPoint.x, this.nextPoint.y).creature = actor
     }
 
-    (this.nextLevel || this.currentLevel)
+    ;(this.nextLevel || this.currentLevel)
       .at(this.nextPoint.x, this.nextPoint.y)
       .visit(new SteppingTileVisitor(actor, this.game))
     return Reaction.NOTHING

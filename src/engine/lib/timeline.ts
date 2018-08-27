@@ -1,4 +1,13 @@
-import { forEach, keys, min, remove, size, pullAt, pickBy, includes } from 'lodash'
+import {
+  forEach,
+  keys,
+  min,
+  remove,
+  size,
+  pullAt,
+  pickBy,
+  includes,
+} from 'lodash'
 
 export class Timeline<T> {
   public step: number = 0

@@ -67,7 +67,10 @@ export class Dispatcher extends MetaAI {
       } else {
         this.explore(actor, game)
       }
-    } else if (this.healthCritical(actor) && this.escaper.available(actor, game)) {
+    } else if (
+      this.healthCritical(actor) &&
+      this.escaper.available(actor, game)
+    ) {
       this.setAi(this.escaper)
     } else if (this.attacker.available(actor, game)) {
       this.setAi(this.attacker)
@@ -108,7 +111,11 @@ export class Dispatcher extends MetaAI {
 
   private explore(actor: Creature, game: Game): void {
     if (this.explorer.available(actor, game)) {
-      this.patrol.trackMovement(actor, game.currentMap.creaturePos(actor), game.currentMap.creatureTile(actor))
+      this.patrol.trackMovement(
+        actor,
+        game.currentMap.creaturePos(actor),
+        game.currentMap.creatureTile(actor)
+      )
       this.setAi(this.explorer)
     } else if (this.descender.available(actor, game)) {
       this.setAi(this.descender)

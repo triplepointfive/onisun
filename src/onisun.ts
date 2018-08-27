@@ -37,7 +37,7 @@ export class Application {
     dungeon.enter(this.game, this.game.player)
 
     const player = this.game.player,
-    prof = this.game.professionPicker.available(player)[1]
+      prof = this.game.professionPicker.available(player)[1]
     if (prof) {
       player.professions.push(prof)
     }

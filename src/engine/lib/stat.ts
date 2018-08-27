@@ -39,7 +39,7 @@ export class CapacityLimitStat {
   }
 
   get loadedStart(): number {
-    return this.strength * 1.5
+    return this.stressed * 1.5
   }
 
   get overloadedStart(): number {

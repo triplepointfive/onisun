@@ -3,7 +3,7 @@ import { Creature } from '../models/creature'
 import { Point } from '../../engine'
 
 import { sumBy } from 'lodash'
-import { Game } from '../models/game';
+import { Game } from '../models/game'
 
 const STEP_DISTANCE = 2
 
@@ -56,12 +56,13 @@ export class Escaper extends FollowTargetAI {
       actor.stageMemory(game.currentMap),
       game.currentMap.creaturePos(actor),
       (point, tile) => {
-      const creature = tile.creature
+        const creature = tile.creature
 
-      if (creature && this.enemies(actor, creature)) {
-        this.escapesFrom.push([point, creature])
+        if (creature && this.enemies(actor, creature)) {
+          this.escapesFrom.push([point, creature])
+        }
       }
-    })
+    )
 
     return this.escapesFrom.length > 0
   }

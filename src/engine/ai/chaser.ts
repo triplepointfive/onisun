@@ -39,14 +39,19 @@ export class Chaser extends FollowTargetAI {
   }
 
   private buildVictimPath(actor: Creature, game: Game): boolean {
-    return this.findCreature(actor, game, creature => creature.id === this.victimId)
+    return this.findCreature(
+      actor,
+      game,
+      creature => creature.id === this.victimId
+    )
   }
 
   private foundNewVictim(actor: Creature, game: Game): boolean {
     // Found new victim and built path to it
     return (
-      this.findCreature(actor, game, creature => this.enemies(actor, creature)) &&
-      this.buildVictimPath(actor, game)
+      this.findCreature(actor, game, creature =>
+        this.enemies(actor, creature)
+      ) && this.buildVictimPath(actor, game)
     )
   }
 
@@ -61,14 +66,15 @@ export class Chaser extends FollowTargetAI {
       actor.stageMemory(game.currentMap),
       game.currentMap.creaturePos(actor),
       ({ x, y }, tile) => {
-      const creature = tile.creature
+        const creature = tile.creature
 
-      if (!result && creature && condition(creature)) {
-        this.destination = new Point(x, y)
-        this.victimId = creature.id
-        result = true
+        if (!result && creature && condition(creature)) {
+          this.destination = new Point(x, y)
+          this.victimId = creature.id
+          result = true
+        }
       }
-    })
+    )
 
     return result
   }
