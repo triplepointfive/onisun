@@ -33,7 +33,7 @@ export class LevelMap extends Mapped<Tile> {
       this.timeline.add(creature.id, creature.speed())
     )
 
-    actor.addToMap(enterPos, this)
+    this.addCreature(enterPos, actor)
   }
 
   public creatureTile(creature: Creature): Tile {

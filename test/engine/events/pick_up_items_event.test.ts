@@ -24,7 +24,7 @@ describe('Pick up items', () => {
     player = generatePlayer()
     game = generateGame()
     map = generateLevelMap()
-    player.addToMap(new Point(1, 1), map)
+    map.addCreature(new Point(1, 1), player)
     tile = map.at(1, 1)
     tile.addItem(item, 10)
 

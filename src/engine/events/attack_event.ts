@@ -20,7 +20,7 @@ export class AttackEvent extends CreatureEvent {
     if (damage >= subject.characteristics.health.currentValue()) {
       this.actor.on(new AddExperienceEvent(subject, this.game))
       this.game.logger.killMessage(damage, this.actor, subject)
-      subject.on(new DieEvent())
+      subject.on(new DieEvent(this.game.currentMap))
       return Reaction.DIE
     } else {
       subject.characteristics.health.decrease(damage)

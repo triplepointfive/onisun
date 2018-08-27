@@ -11,6 +11,7 @@ import {
   Creature,
   Player,
   Point,
+  LevelMap,
 } from '../../../src/engine'
 
 class TestTrap extends Trap {
@@ -24,7 +25,7 @@ class TestTrap extends Trap {
 const testTrap = 0
 
 describe('Trap event', () => {
-  let player: Player, game, event, map, trap: TestTrap
+  let player: Player, game, event, map: LevelMap, trap: TestTrap
 
   beforeEach(() => {
     trap = new TestTrap(false, testTrap)
@@ -32,23 +33,24 @@ describe('Trap event', () => {
     event = new TrapEvent(trap, game)
 
     game.player = player = generatePlayer()
-    map = generateLevelMap()
-    player.addToMap(new Point(1, 1), map)
-    player.rebuildVision()
+    game.currentMap = map = generateLevelMap()
+
+    map.addCreature(new Point(1, 1), player)
+    player.rebuildVision(map)
   })
 
   describe('for creature', () => {
-    let creature
+    let creature: Creature
 
     beforeEach(() => {
       creature = generateCreature()
-      creature.addToMap(new Point(1, 2), map)
+      map.addCreature(new Point(1, 2), creature)
     })
 
     it('leaves trap hidden when player does not see', () => {
-      creature.addToMap(new Point(1, 5), map)
+      map.addCreature(new Point(1, 5), creature)
       player.characteristics.radius.decrease(10)
-      player.rebuildVision()
+      player.rebuildVision(map)
 
       expect(trap.revealed).toBeFalsy()
       creature.on(event)
@@ -99,7 +101,7 @@ describe('Trap event', () => {
       player.characteristics.health.decrease(
         player.characteristics.health.maximum() - 1
       )
-      player.addToMap(new Point(1, 1), map)
+      map.addCreature(new Point(1, 1), player)
       player.on(event)
       expect(player.dead).toBeTruthy()
     })

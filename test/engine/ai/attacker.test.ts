@@ -13,38 +13,40 @@ let internalAI = new Attacker(),
   game: Game
 
 beforeEach(() => {
-  map = generateLevelMap()
   game = generateGame()
-  actor.addToMap(new Point(1, 1), map)
+  game.currentMap = map = generateLevelMap()
+
+  map.addCreature(new Point(1, 1), actor)
+
   actor.characteristics.dexterity.constantIncrease(10000)
 })
 
 describe('When there are no enemies', () => {
   it('Is not available', () => {
     expect(() => actor.act(map, game)).toThrow()
-    expect(internalAI.available(actor)).toBeFalsy()
+    expect(internalAI.available(actor, game)).toBeFalsy()
   })
 })
 
 describe('When enemy is too far away', () => {
   beforeEach(() => {
-    enemy.addToMap(new Point(3, 3), map)
+    map.addCreature(new Point(3, 3), enemy)
     expect(() => actor.act(map, game)).toThrow()
   })
 
   it('Is not available', () => {
-    expect(internalAI.available(actor)).toBeFalsy()
+    expect(internalAI.available(actor, game)).toBeFalsy()
   })
 })
 
 describe('When enemy is close enough', () => {
   beforeEach(() => {
-    enemy.addToMap(new Point(2, 2), map)
+    map.addCreature(new Point(2, 2), enemy)
     actor.act(map, game)
   })
 
   it('Is available', () => {
-    expect(internalAI.available(actor)).toBeTruthy()
+    expect(internalAI.available(actor, game)).toBeTruthy()
   })
 
   it('Victim is set', () => {

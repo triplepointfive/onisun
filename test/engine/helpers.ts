@@ -79,12 +79,12 @@ class AIWrapper extends MetaAI {
     aiToRun.prevAI = this
   }
 
-  public available(actor: Creature): boolean {
-    return this.aiToRun.available(actor)
+  public available(actor: Creature, game: Game): boolean {
+    return this.aiToRun.available(actor, game)
   }
 
   public act(actor: Creature, game: Game, firstTurn: boolean): void {
-    if (this.available(actor)) {
+    if (this.available(actor, game)) {
       return this.aiToRun.act(actor, game, firstTurn)
     } else {
       throw 'aiToRun is not available!'

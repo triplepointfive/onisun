@@ -6,19 +6,21 @@ import {
 } from '../helpers'
 import { Picker, Point } from '../../../src/engine'
 
-let internalAI = new Picker()
-let creature = generateCreatureWithAI(internalAI)
-const map = generateLevelMap(),
-  game = generateGame()
+let internalAI = new Picker(),
+    creature = generateCreatureWithAI(internalAI),
+    map
+const game = generateGame()
+
 
 beforeEach(() => {
-  creature.addToMap(new Point(1, 1), map)
-  map.game = game
+  game.currentMap = map = generateLevelMap(),
+  map.addCreature(new Point(1, 1), creature)
 })
 
 describe('When there are no items', () => {
   it('Not available', () => {
-    expect(creature.ai.available(creature)).toBeFalsy()
+    creature.visionMask(map) // TODO: Should be called manually?
+    expect(creature.ai.available(creature, game)).toBeFalsy()
   })
 })
 
@@ -29,7 +31,7 @@ describe('When there is only one item', () => {
   })
 
   it('AI is available', () => {
-    expect(internalAI.available(creature)).toBeTruthy()
+    expect(internalAI.available(creature, game)).toBeTruthy()
   })
 
   it('Destination is set to item position', () => {
@@ -46,7 +48,7 @@ describe('When there are multiple items', () => {
   })
 
   it('AI is available', () => {
-    expect(internalAI.available(creature)).toBeTruthy()
+    expect(internalAI.available(creature, game)).toBeTruthy()
   })
 
   it("Destination is set to the closest item's position", () => {
@@ -71,11 +73,13 @@ describe('When items on every single cell around', () => {
   })
 
   it('AI is available', () => {
-    expect(creature.ai.available(creature)).toBeTruthy()
+    expect(creature.ai.available(creature, game)).toBeTruthy()
   })
 
   it('Moves to adjacent cell', () => {
     creature.act(map, game)
-    expect(creature.pos.x === 2 || creature.pos.y === 2).toBeTruthy()
+    const pos = map.creaturePos(creature)
+
+    expect(pos.x === 2 || pos.y === 2).toBeTruthy()
   })
 })

@@ -1,26 +1,27 @@
-import { Creature, Ability } from '../models/creature'
-import { Point } from '../utils/utils'
-import { AIItemPickedEvent } from './meta_ai'
-import { FollowTargetAI } from './internal'
-import { ItemId, Item } from '../../engine'
-import { Game } from '../models/game'
+import { Item, ItemId } from '../../engine';
+import { Ability, Creature } from '../models/creature';
+import { Game } from '../models/game';
+import { Point } from '../utils/utils';
+import { FollowTargetAI } from './internal';
+import { AIItemPickedEvent } from './meta_ai';
+import { GroupedItem } from '../models/items'
 
 export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId | undefined
 
-  public available(actor: Creature): boolean {
-    return actor.can(Ability.Inventory) && super.available(actor)
+  public available(actor: Creature, game: Game): boolean {
+    return actor.can(Ability.Inventory) && super.available(actor, game)
   }
 
-  protected foundNewTarget(actor: Creature): boolean {
+  protected foundNewTarget(actor: Creature, game: Game): boolean {
     return (
-      this.findItem(actor, item => item.id === this.desiredItemId) ||
-      this.findItem(actor, item => true)
+      this.findItem(actor, game, item => item.id === this.desiredItemId) ||
+      this.findItem(actor, game, item => true)
     )
   }
 
   protected onReach(actor: Creature, game: Game): void {
-    const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
+    const tile = game.currentMap.creatureTile(actor)
 
     if (!tile.items) {
       throw 'Picker.act : nothing to pick up'
@@ -30,7 +31,7 @@ export class Picker extends FollowTargetAI {
       this.prevAI.pushEvent(new AIItemPickedEvent(tile.items, game))
     }
 
-    tile.items.bunch.forEach(groupedItem => {
+    tile.items.bunch.forEach((groupedItem: GroupedItem) => {
       actor.inventory.putToBag(groupedItem.item, groupedItem.count)
     })
 
@@ -41,11 +42,13 @@ export class Picker extends FollowTargetAI {
 
   private findItem(
     actor: Creature,
+    game: Game,
     condition: (item: Item) => boolean
   ): boolean {
+    const memory = actor.stageMemory(game.currentMap.id)
     let result: boolean = false
 
-    this.withinView(actor, ({ x, y }, tile) => {
+    this.withinView(memory, game.currentMap.creaturePos(actor), ({ x, y }, tile) => {
       if (!tile.items) {
         return
       }

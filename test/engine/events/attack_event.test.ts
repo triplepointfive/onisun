@@ -11,6 +11,7 @@ import {
   AttackEvent,
   Reaction,
   Point,
+  LevelMap,
 } from '../../../src/engine'
 
 describe('AttackEvent', () => {
@@ -18,13 +19,16 @@ describe('AttackEvent', () => {
     actor: Player,
     victim: Creature,
     event: AttackEvent,
-    map = generateLevelMap()
+    map: LevelMap
 
   beforeEach(() => {
     game = generateGame()
+    game.currentMap = map = generateLevelMap()
     game.player = actor = generatePlayer()
+
     victim = generateCreature()
-    victim.addToMap(new Point(1, 1), map)
+    map.addCreature(new Point(1, 1), victim)
+
     event = new AttackEvent(actor, game)
   })
 

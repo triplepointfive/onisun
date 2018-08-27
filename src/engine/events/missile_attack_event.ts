@@ -4,11 +4,13 @@ import { Creature, Reaction } from '../models/creature'
 import { ItemFlightTileEffect } from '../models/tile_effect'
 import { ThrowEvent } from './throw_event'
 import { Game } from '../models/game'
+import { LevelMap } from '../models/level_map'
 
 export class MissileAttackEvent extends CreatureEvent {
   constructor(
     private path: Point[],
     private game: Game,
+    private levelMap: LevelMap,
     private done: (reaction: Reaction) => void
   ) {
     super()
@@ -33,7 +35,7 @@ export class MissileAttackEvent extends CreatureEvent {
 
     this.path.forEach(point => {
       if (!victim) {
-        const tile = actor.currentLevel.at(point.x, point.y)
+        const tile = this.levelMap.at(point.x, point.y)
         victim = tile.creature
         flightPath.push(point)
       }

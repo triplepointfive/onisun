@@ -1,16 +1,16 @@
-import { generateCreatureWithAI, generateLevelMap } from '../helpers'
+import { generateCreatureWithAI, generateLevelMap, generateGame } from '../helpers'
 import { SelfHealer, Point } from '../../../src/engine'
 
 let creature = generateCreatureWithAI(new SelfHealer())
-const map = generateLevelMap()
+const map = generateLevelMap(), game = generateGame()
 
 beforeEach(() => {
-  creature.addToMap(new Point(1, 1), map)
+  map.addCreature(new Point(1, 1), creature)
 })
 
 describe('With full health', () => {
   it('Is not available', () => {
-    expect(creature.ai.available(creature)).toBeFalsy()
+    expect(creature.ai.available(creature, game)).toBeFalsy()
   })
 
   it('Does nothing', () => {
@@ -24,6 +24,6 @@ describe('When health is not full', () => {
   })
 
   it('Available', () => {
-    expect(creature.ai.available(creature)).toBeTruthy()
+    expect(creature.ai.available(creature, game)).toBeTruthy()
   })
 })

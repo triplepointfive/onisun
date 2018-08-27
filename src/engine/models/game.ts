@@ -9,7 +9,7 @@ type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
 
 export abstract class Game {
   public logger: Logger = new Logger()
-  public currentMap: LevelMap | undefined
+  public currentMap: LevelMap
   public ai: PlayerAI | null = null
   public running: boolean = false
   public effect: TileEffect | null = null

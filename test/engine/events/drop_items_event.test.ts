@@ -10,12 +10,13 @@ import {
   LevelMap,
   Point,
   Tile,
+  Game,
 } from '../../../src/engine'
 
 describe('Drop items event', () => {
   let item = generateOneHandedWeapon(),
     player: Player,
-    game,
+    game: Game,
     event,
     map: LevelMap,
     tile: Tile
@@ -23,8 +24,10 @@ describe('Drop items event', () => {
   beforeEach(() => {
     player = generatePlayer()
     game = generateGame()
-    map = generateLevelMap()
-    player.addToMap(new Point(1, 1), map)
+    game.currentMap = map = generateLevelMap()
+
+    map.addCreature(new Point(1, 1), player)
+
     player.inventory.putToBag(item, 10)
     tile = map.at(1, 1)
 

@@ -1,23 +1,24 @@
 import { AttackEvent, Game } from '../../engine'
 import { Creature, Reaction } from '../models/creature'
 import { AI } from './internal'
+import { LevelMap } from '../models/level_map';
 
 export class Attacker extends AI {
   public victim?: Creature
 
-  public available(actor: Creature): boolean {
-    return this.canAttack(actor)
+  public available(actor: Creature, game: Game): boolean {
+    return this.canAttack(actor, game)
   }
 
   public act(actor: Creature, game: Game, firstTurn: boolean = true): void {
-    if (this.victimInAccess(actor, this.victim)) {
+    if (this.victimInAccess(actor, game, this.victim)) {
       this.attack(actor, game)
     } else {
       if (!firstTurn) {
         throw 'Attacker got called twice'
       }
 
-      this.pickNewVictim(actor)
+      this.pickNewVictim(actor, game)
       this.act(actor, game, false)
     }
   }
@@ -33,39 +34,42 @@ export class Attacker extends AI {
     }
   }
 
-  private canAttack(actor: Creature): boolean {
-    const creature = this.findCreature(actor, creature =>
+  private canAttack(actor: Creature, game: Game): boolean {
+    const creature = this.findCreature(actor, game.currentMap, creature =>
       this.enemies(actor, creature)
     )
     return !!creature
   }
 
-  private victimInAccess(actor: Creature, victim: Creature | undefined): boolean {
+  private victimInAccess(actor: Creature, game: Game, victim: Creature | undefined): boolean {
     if (victim === undefined) {
       return false
     }
 
     const creature = this.findCreature(
       actor,
-      creature => creature.id === victim.id
+      game.currentMap,
+      (creature: Creature) => creature.id === victim.id
     )
     return !!creature
   }
 
-  private pickNewVictim(actor: Creature) {
-    this.victim = this.findCreature(actor, creature =>
+  private pickNewVictim(actor: Creature, game) {
+    this.victim = this.findCreature(actor, game.currentMap, creature =>
       this.enemies(actor, creature)
     )
   }
 
   private findCreature(
     actor: Creature,
+    levelMap: LevelMap,
     condition: (creature: Creature) => boolean
   ): Creature | undefined {
-    const memory = actor.stageMemory()
-    return actor.pos
+    const memory = actor.stageMemory(levelMap.id)
+
+    return levelMap.creaturePos(actor)
       .wrappers()
       .map(({ x, y }) => memory.at(x, y).creature)
-      .find(creature => creature ? condition(creature) : false)
+      .find((creature: Creature | undefined) => creature ? condition(creature) : false)
   }
 }

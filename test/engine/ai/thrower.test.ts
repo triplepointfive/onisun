@@ -13,11 +13,10 @@ let actor: Creature, enemy: Creature, map: LevelMap, game
 beforeEach(() => {
   actor = generateCreatureWithAI(internalAI)
   enemy = generateCreature()
-  map = generateLevelMap()
   game = generateGame()
-  map.game = game
+  game.currentMap = map = generateLevelMap()
 
-  actor.addToMap(new Point(1, 1), map)
+  map.addCreature(new Point(1, 1), actor)
   actor.characteristics.dexterity.constantIncrease(10000)
 })
 
@@ -34,7 +33,7 @@ describe('Throwing at enemy', () => {
     actor.inventory.putToBag(item, 1)
     actor.inventory.missileSlot.equip(actor, item)
 
-    enemy.addToMap(new Point(1, 4), map)
+    map.addCreature(new Point(1, 4), enemy)
 
     actor.act(map, game)
   })
@@ -62,8 +61,8 @@ describe('When there is someone else', () => {
   })
 
   it('Changes victim to the available one on a throw line', () => {
-    enemy2.addToMap(new Point(1, 3), map)
-    enemy.addToMap(new Point(1, 4), map)
+    map.addCreature(new Point(1, 4), enemy)
+    map.addCreature(new Point(1, 3), enemy2)
 
     actor.act(map, game)
 
@@ -71,8 +70,8 @@ describe('When there is someone else', () => {
   })
 
   it('Attacks the same victim if possible', () => {
-    enemy.addToMap(new Point(1, 3), map)
-    enemy2.addToMap(new Point(3, 1), map)
+    map.addCreature(new Point(1, 3), enemy)
+    map.addCreature(new Point(3, 1), enemy2)
 
     actor.act(map, game)
 
@@ -80,8 +79,8 @@ describe('When there is someone else', () => {
   })
 
   it("Changes target when can't see victim anymore", () => {
-    enemy2.addToMap(new Point(3, 1), map)
-    enemy.addToMap(new Point(1, 7), map)
+    map.addCreature(new Point(1, 7), enemy)
+    map.addCreature(new Point(3, 1), enemy2)
 
     actor.act(map, game)
 

@@ -92,7 +92,7 @@ export class Creature {
   }
 
   public ai: MetaAI
-  public stageMemories: { [key: string]: Memory } = {}
+  protected stageMemories: { [key: string]: Memory } = {}
   public inventory: Inventory
 
   // public previousPos: Point

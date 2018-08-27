@@ -1,17 +1,16 @@
-import { generateCreatureWithAI, generateLevelMap } from '../helpers'
+import { generateCreatureWithAI, generateLevelMap, generateGame } from '../helpers'
 import { Waiter, Point } from '../../../src/engine'
 
 let creature = generateCreatureWithAI(new Waiter())
-const map = generateLevelMap()
+const map = generateLevelMap(), game = generateGame()
 
 beforeEach(() => {
-  creature.addToMap(new Point(1, 1), map)
-  creature.act(map)
+  map.addCreature(new Point(1, 1), creature)
+  creature.act(map, game)
 })
 
 it('Does not move', () => {
-  const oldPos = creature.pos
-  expect(creature.pos).toEqual(oldPos)
+  expect(map.creaturePos(creature)).toEqual(new Point(1, 1))
 })
 
 it('Always available', () => {

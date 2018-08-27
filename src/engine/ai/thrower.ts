@@ -4,17 +4,19 @@ import { GroupedItem } from '../models/items'
 import { Point, bresenham } from '../utils/utils'
 import { MissileAttackEvent } from '../../engine'
 import { Game } from '../models/game'
+import { LevelMap } from '../models/level_map';
+import { Memory } from '../models/memory';
 
 export class Thrower extends AI {
   public victim: Creature | undefined
   public previousVictim: Creature | undefined
   public missiles: GroupedItem | undefined
 
-  public available(actor: Creature): boolean {
+  public available(actor: Creature, game: Game): boolean {
     return (
       actor.can(Ability.Throwing) &&
       this.hasMissile(actor) &&
-      this.canAttack(actor)
+      this.canAttack(actor, game)
     )
   }
 
@@ -25,10 +27,14 @@ export class Thrower extends AI {
       throw 'Thrower.act called when there is no victim'
     }
 
-    bresenham(actor.pos, this.victim.pos, (x, y) => path.push(new Point(x, y)))
+    bresenham(
+      game.currentMap.creaturePos(actor),
+      game.currentMap.creaturePos(this.victim),
+      (x, y) => path.push(new Point(x, y))
+      )
 
     actor.on(
-      new MissileAttackEvent(path, game, (reaction: Reaction) => {
+      new MissileAttackEvent(path, game, game.currentMap, (reaction: Reaction) => {
         if (reaction === Reaction.DIE) {
           this.victim = undefined
           this.previousVictim = undefined
@@ -42,56 +48,57 @@ export class Thrower extends AI {
     return this.missiles !== undefined
   }
 
-  private canAttack(actor: Creature): boolean {
+  private canAttack(actor: Creature, game: Game): boolean {
     this.previousVictim = this.victim
     this.victim = undefined
 
     if (this.previousVictim) {
-      if (this.findWithId(actor, this.previousVictim.id)) {
+      if (this.findWithId(actor, game.currentMap, this.previousVictim.id)) {
         return true
       }
     }
 
-    return this.findCreature(actor, creature => this.enemies(actor, creature))
+    return this.findCreature(actor, game.currentMap, creature => this.enemies(actor, creature))
   }
 
-  private findWithId(actor: Creature, victimId: CreatureId): boolean {
+  private findWithId(actor: Creature, levelMap: LevelMap, victimId: CreatureId): boolean {
     return this.findCreature(
       actor,
+      levelMap,
       creature => victimId === creature.id
     )
   }
 
   private findCreature(
     actor: Creature,
+    levelMap: LevelMap,
     condition: (creature: Creature) => boolean
   ): boolean {
-    this.withinView(actor, (point, tile) => {
+    const memory = actor.stageMemory(levelMap.id), pos = levelMap.creaturePos(actor)
+
+    this.withinView(memory, levelMap.creaturePos(actor), (point, tile) => {
       const creature = tile.creature
 
       if (
         !this.victim &&
         creature &&
         condition(creature) &&
-        !this.obstacles(actor, point)
+        !this.obstacles(actor, pos, memory, point)
       ) {
-        this.victim = actor.currentLevel.at(point.x, point.y).creature
+        this.victim = levelMap.at(point.x, point.y).creature
       }
     })
 
     return !!this.victim
   }
 
-  private obstacles(actor: Creature, target: Point): boolean {
+  private obstacles(actor: Creature, pos: Point, memory: Memory, target: Point): boolean {
     let obstacles = false
 
-    bresenham(actor.pos, target, (x, y) => {
+    bresenham(pos, target, (x, y) => {
       obstacles =
         obstacles ||
-        actor
-          .stageMemory()
-          .at(x, y)
-          .tangible(actor)
+        memory.at(x, y).tangible(actor)
     })
 
     return obstacles
