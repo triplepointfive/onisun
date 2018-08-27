@@ -2,7 +2,7 @@ import { GoToTileAI } from './internal'
 
 import { MetaAI } from './meta_ai'
 
-import { TileTypes, Creature, Ability, StairwayDown } from '../../engine'
+import { TileTypes, Creature, Ability, StairwayDown, Game } from '../../engine'
 
 export class Descender extends GoToTileAI {
   private canDescend: boolean = false
@@ -11,8 +11,8 @@ export class Descender extends GoToTileAI {
     super(metaAI, tile => tile.tile.kind === TileTypes.StairwayDown)
   }
 
-  public available(actor: Creature): boolean {
-    return actor.can(Ability.GoStairwayDown) && super.available(actor)
+  public available(actor: Creature, game: Game): boolean {
+    return actor.can(Ability.GoStairwayDown) && super.available(actor, game)
   }
 
   public reset(): void {
@@ -20,23 +20,24 @@ export class Descender extends GoToTileAI {
     this.canDescend = false
   }
 
-  protected foundNewTarget(actor: Creature): boolean {
+  protected foundNewTarget(actor: Creature, game: Game): boolean {
+    const pos = game.currentMap.creaturePos(actor)
     // When we are on a stairway
     this.canDescend = this.matcher(
-      actor.stageMemory().at(actor.pos.x, actor.pos.y)
+      actor.stageMemory(game.currentMap).at(pos.x, pos.y)
     )
 
     if (this.canDescend) {
-      this.destination = actor.pos
+      this.destination = pos
       return true
     } else {
-      return super.foundNewTarget(actor)
+      return super.foundNewTarget(actor, game)
     }
   }
 
-  protected onReach(actor: Creature) {
+  protected onReach(actor: Creature, game: Game) {
     // Should stay here at least for a turn
-    const tile = actor.currentLevel.at(actor.pos.x, actor.pos.y)
+    const tile = game.currentMap.creatureTile(actor)
     if (this.canDescend && tile instanceof StairwayDown) {
       // tile.go(actor)
     }

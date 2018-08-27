@@ -25,8 +25,6 @@ export class Dispatcher extends MetaAI {
 
   private descender: Descender
 
-  private firstCallPatrol: boolean = true
-
   private step: number = 0
 
   constructor() {
@@ -58,24 +56,24 @@ export class Dispatcher extends MetaAI {
     this.runEvents()
 
     if (this.feelsGood(actor)) {
-      if (this.attacker.available(actor)) {
+      if (this.attacker.available(actor, game)) {
         this.setAi(this.attacker)
-      } else if (this.thrower.available(actor)) {
+      } else if (this.thrower.available(actor, game)) {
         this.setAi(this.thrower)
-      } else if (this.chaser.available(actor)) {
+      } else if (this.chaser.available(actor, game)) {
         this.setAi(this.chaser)
-      } else if (this.seesItems(actor)) {
+      } else if (this.picker.available(actor, game)) {
         this.pickItem(actor)
       } else {
-        this.explore(actor)
+        this.explore(actor, game)
       }
-    } else if (this.healthCritical(actor) && this.escaper.available(actor)) {
+    } else if (this.healthCritical(actor) && this.escaper.available(actor, game)) {
       this.setAi(this.escaper)
-    } else if (this.attacker.available(actor)) {
+    } else if (this.attacker.available(actor, game)) {
       this.setAi(this.attacker)
-    } else if (this.thrower.available(actor)) {
+    } else if (this.thrower.available(actor, game)) {
       this.setAi(this.thrower)
-    } else if (this.chaser.available(actor)) {
+    } else if (this.chaser.available(actor, game)) {
       this.setAi(this.chaser)
     } else {
       this.rest(actor)
@@ -104,25 +102,17 @@ export class Dispatcher extends MetaAI {
     )
   }
 
-  private seesItems(actor: Creature): boolean {
-    return this.picker.available(actor)
-  }
-
   private pickItem(actor: Creature): void {
     this.setAi(this.picker)
   }
 
-  private explore(actor: Creature): void {
-    if (this.explorer.available(actor)) {
-      this.patrol.trackMovement(actor)
+  private explore(actor: Creature, game: Game): void {
+    if (this.explorer.available(actor, game)) {
+      this.patrol.trackMovement(actor, game.currentMap.creaturePos(actor), game.currentMap.creatureTile(actor))
       this.setAi(this.explorer)
-    } else if (this.descender.available(actor)) {
+    } else if (this.descender.available(actor, game)) {
       this.setAi(this.descender)
     } else if (this.patrol.available(actor)) {
-      if (this.firstCallPatrol) {
-        this.firstCallPatrol = false
-        this.patrol.addNode(actor.pos.x, actor.pos.y)
-      }
       this.setAi(this.patrol)
     } else {
       this.setAi(this.loiter)

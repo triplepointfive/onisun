@@ -36,7 +36,7 @@
     )
   .cell
     .value
-      | {{ creature.currentLevel.name }}
+      | {{ levelMap.name }}
 </template>
 
 <script lang="ts">
@@ -46,7 +46,7 @@ import PrimaryAttribute from './PrimaryAttribute.vue'
 
 export default Vue.extend({
   name: 'Stats',
-  props: ['creature'],
+  props: ['creature', 'levelMap'],
   components: {
     PrimaryAttribute
   },

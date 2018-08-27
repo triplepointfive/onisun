@@ -15,7 +15,7 @@ export class MissilePresenter extends Presenter {
     super(PresenterType.Missile, game)
 
     this.findEnemies()
-    this.memory = this.player.stageMemory(this.currentLevel.id)
+    this.memory = this.player.stageMemory(this.currentLevel)
     this.targetPos = this.resetTargetId()
   }
 
@@ -55,7 +55,7 @@ export class MissilePresenter extends Presenter {
 
     if (
       tile.visibleThrough() &&
-      this.player.stageMemory(this.currentLevel.id).at(dest.x, dest.y).visible
+      this.player.stageMemory(this.currentLevel).at(dest.x, dest.y).visible
     ) {
       this.updateTarget(dest)
       this.targetEnemyIndex = undefined
@@ -121,7 +121,7 @@ export class MissilePresenter extends Presenter {
   private findEnemies(): void {
     this.enemies = []
 
-    this.player.stageMemory(this.currentLevel.id).each((tile, x, y) => {
+    this.player.stageMemory(this.currentLevel).each((tile, x, y) => {
       if (
         tile.visible &&
         tile.creature &&

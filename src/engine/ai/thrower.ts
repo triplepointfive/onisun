@@ -85,7 +85,7 @@ export class Thrower extends AI {
     levelMap: LevelMap,
     condition: (creature: Creature) => boolean
   ): boolean {
-    const memory = actor.stageMemory(levelMap.id),
+    const memory = actor.stageMemory(levelMap),
       pos = levelMap.creaturePos(actor)
 
     this.withinView(memory, levelMap.creaturePos(actor), (point, tile) => {

@@ -40,7 +40,7 @@ const nextItemAnimation = [
 ]
 
 export default Vue.extend({
-  props: ['level', 'player'],
+  props: ['level', 'player', 'pos'],
   data() {
     return {
       wholeMap: false,
@@ -146,7 +146,7 @@ export default Vue.extend({
         this.ts = ts
       }
 
-      this.eng.update(this.player.pos.x, this.player.pos.y);
+      this.eng.update(this.pos.x, this.pos.y);
       // this.eng.update(this.term.cx, this.term.cy);
       this.term.render();
 
@@ -167,7 +167,7 @@ export default Vue.extend({
   },
   computed: {
     stage() {
-      return this.wholeMap ? this.level : this.player.stageMemory(this.level.id)
+      return this.wholeMap ? this.level : this.player.stageMemory(this.level)
     },
     animationFps() {
       return 1000 / this.interval

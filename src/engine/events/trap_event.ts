@@ -13,7 +13,7 @@ export class TrapEvent extends CreatureEvent {
     // TODO: Special messages for dying.
     let pos = this.game.currentMap.creaturePos(actor)
     if (
-      this.game.player.stageMemory(this.game.currentMap.id).at(pos.x, pos.y)
+      this.game.player.stageMemory(this.game.currentMap).at(pos.x, pos.y)
         .visible
     ) {
       this.trap.revealed = true

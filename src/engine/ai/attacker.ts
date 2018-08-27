@@ -69,7 +69,7 @@ export class Attacker extends AI {
     levelMap: LevelMap,
     condition: (creature: Creature) => boolean
   ): Creature | undefined {
-    const memory = actor.stageMemory(levelMap.id)
+    const memory = actor.stageMemory(levelMap)
 
     return levelMap
       .creaturePos(actor)

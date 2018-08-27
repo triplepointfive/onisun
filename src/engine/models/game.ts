@@ -29,7 +29,7 @@ export abstract class Game {
 
     if (this.effect) {
       this.player.rebuildVision(this.currentMap)
-      this.effect.patchMemory(this.player.stageMemory(this.currentMap.id))
+      this.effect.patchMemory(this.player.stageMemory(this.currentMap))
 
       if (this.effect.done()) {
         this.effect.onDone()

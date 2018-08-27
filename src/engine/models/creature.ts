@@ -139,8 +139,8 @@ export class Creature {
     return this.characteristics.radius.currentValue()
   }
 
-  public stageMemory(levelId: LevelMapId): Memory {
-    return this.stageMemories[levelId]
+  public stageMemory(levelMap: LevelMap): Memory {
+    return this.stageMemories[levelMap.id]
   }
 
   public act(stage: LevelMap, game: Game) {
@@ -152,11 +152,11 @@ export class Creature {
     if (!this.stageMemories[stage.id]) {
       this.stageMemories[stage.id] = new Memory(stage.width, stage.height)
     } else {
-      this.stageMemory(stage.id).resetVisible()
+      this.stageMemory(stage).resetVisible()
     }
 
     const see = (x: number, y: number, degree: number): void => {
-      this.stageMemory(stage.id)
+      this.stageMemory(stage)
         .at(x, y)
         .see(stage.at(x, y), degree)
     }

@@ -3,18 +3,20 @@ import { Creature } from '../models/creature'
 import { Point } from '../../engine'
 
 import { sumBy } from 'lodash'
+import { Game } from '../models/game';
 
 const STEP_DISTANCE = 2
 
 export class Escaper extends FollowTargetAI {
   private escapesFrom: [Point, Creature][] = []
 
-  protected foundNewTarget(actor: Creature): boolean {
-    return this.foundEnemies(actor) && this.buildPath(actor)
+  protected foundNewTarget(actor: Creature, game: Game): boolean {
+    return this.foundEnemies(actor, game) && this.buildPath(actor, game)
   }
 
   private buildPath(
     actor: Creature,
+    game: Game,
     minDistance: number = actor.radius() / 2
   ): boolean {
     if (minDistance <= 1) {
@@ -24,6 +26,8 @@ export class Escaper extends FollowTargetAI {
 
     const path = this.leePath(
       actor,
+      actor.stageMemory(game.currentMap),
+      game.currentMap.creaturePos(actor),
       ({ x, y }) => {
         const score = sumBy(this.escapesFrom, ([pos, enemy]) => {
           // I don't use pathfinding since it should try
@@ -41,14 +45,17 @@ export class Escaper extends FollowTargetAI {
       this.destination = path.pop()
       return true
     } else {
-      return this.buildPath(actor, minDistance - STEP_DISTANCE)
+      return this.buildPath(actor, game, minDistance - STEP_DISTANCE)
     }
   }
 
-  private foundEnemies(actor: Creature): boolean {
+  private foundEnemies(actor: Creature, game: Game): boolean {
     this.escapesFrom = []
 
-    this.withinView(actor, (point, tile) => {
+    this.withinView(
+      actor.stageMemory(game.currentMap),
+      game.currentMap.creaturePos(actor),
+      (point, tile) => {
       const creature = tile.creature
 
       if (creature && this.enemies(actor, creature)) {

@@ -4,11 +4,13 @@ import { AddExperienceEvent } from './add_experience_event'
 import { Item } from '../models/items'
 import { Game } from '../models/game'
 import { DieEvent } from './die_event'
+import { LevelMap } from '../../engine'
 
 export class ThrowEvent extends CreatureEvent {
   constructor(
     public actor: Creature,
     public missile: Item,
+    private levelMap: LevelMap,
     private game: Game
   ) {
     super()
@@ -33,7 +35,7 @@ export class ThrowEvent extends CreatureEvent {
         subject,
         this.missile
       )
-      subject.on(new DieEvent())
+      subject.on(new DieEvent(this.levelMap))
       return Reaction.DIE
     } else {
       subject.characteristics.health.decrease(damage)

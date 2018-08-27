@@ -17,7 +17,7 @@ export class Loiter extends AI {
     const pos = game.currentMap.creaturePos(actor),
       path = this.leePath(
         actor,
-        actor.stageMemory(game.currentMap.id),
+        actor.stageMemory(game.currentMap),
         pos,
         (point: Point) => !pos.eq(point),
         true

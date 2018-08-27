@@ -45,7 +45,7 @@ export class Picker extends FollowTargetAI {
     game: Game,
     condition: (item: Item) => boolean
   ): boolean {
-    const memory = actor.stageMemory(game.currentMap.id)
+    const memory = actor.stageMemory(game.currentMap)
     let result: boolean = false
 
     this.withinView(

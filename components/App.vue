@@ -3,11 +3,13 @@
   Scene.scene(
     :level='game.currentMap'
     :player='game.player'
+    :pos='game.currentMap.creaturePos(game.player)'
     v-if='game.player && !game.player.dead'
     )
 
   Stats.player-stats(
     :creature='game.player'
+    :level-map='game.currentMap'
     v-if='game.player && !game.player.dead'
     )
 

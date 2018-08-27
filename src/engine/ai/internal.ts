@@ -40,7 +40,7 @@ export abstract class AI {
 
     const path = this.leePath(
       actor,
-      actor.stageMemory(levelMap.id),
+      actor.stageMemory(levelMap),
       levelMap.creaturePos(actor),
       point => destination.eq(point)
     )
@@ -60,7 +60,7 @@ export abstract class AI {
   ): boolean {
     const path = this.leePath(
       actor,
-      actor.stageMemory(levelMap.id),
+      actor.stageMemory(levelMap),
       levelMap.creaturePos(actor),
       point => destination.nextTo(point)
     )
@@ -259,7 +259,13 @@ export abstract class GoToTileAI extends FollowTargetAI {
   }
 
   protected foundNewTarget(actor: Creature, game: Game): boolean {
-    const path = this.leePath(actor, (point, tile) => this.matcher(tile), true)
+    const path = this.leePath(
+      actor,
+      actor.stageMemory(game.currentMap),
+      game.currentMap.creaturePos(actor),
+      (point, tile) => this.matcher(tile),
+      true
+    )
 
     if (path.length) {
       this.destination = path.pop()
