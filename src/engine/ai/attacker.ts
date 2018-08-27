@@ -58,7 +58,7 @@ export class Attacker extends AI {
     return !!creature
   }
 
-  private pickNewVictim(actor: Creature, game) {
+  private pickNewVictim(actor: Creature, game: Game) {
     this.victim = this.findCreature(actor, game.currentMap, creature =>
       this.enemies(actor, creature)
     )

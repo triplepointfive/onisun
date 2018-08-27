@@ -95,7 +95,6 @@ export class Creature {
   protected stageMemories: { [key: string]: Memory } = {}
   public inventory: Inventory
 
-  // public previousPos: Point
   public dead: boolean = false
 
   private impactsBunch: ImpactBunch | undefined
@@ -107,20 +106,13 @@ export class Creature {
     public characteristics: Characteristics,
     ai: MetaAI,
     public specie: Specie,
-    // public pos: Point,
-    // public currentLevel: LevelMap,
     public id: CreatureId = Creature.getId()
   ) {
     this.ai = ai
-    // this.previousPos = this.pos.copy()
-
     this.inventory = new Inventory()
 
     this.stuffWeight = new Stat(0)
     this.carryingCapacity = new CapacityLimitStat(1, 4)
-
-    // currentLevel.addCreature(this)
-    // this.visionMask(currentLevel)
   }
 
   public name(): string {
@@ -153,20 +145,8 @@ export class Creature {
 
   public act(stage: LevelMap, game: Game) {
     this.visionMask(stage)
-    // this.previousPos = this.pos.copy()
     this.ai.act(this, game, true)
   }
-
-  // // TODO: Remove this
-  // public addToMap(pos: Point, level: LevelMap) {
-  //   // this.pos = pos
-  //   // this.previousPos = this.pos.copy()
-  //   // this.currentLevel = level
-  //   level.addCreature(this)
-  //   this.visionMask(level)
-  //   level.addCreature(this)
-  //   this.visionMask(level)
-  // }
 
   public visionMask(stage: LevelMap): void {
     if (!this.stageMemories[stage.id]) {

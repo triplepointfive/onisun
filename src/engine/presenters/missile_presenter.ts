@@ -65,7 +65,9 @@ export class MissilePresenter extends Presenter {
   public attack(): void {
     if (!this.targetPos.eq(this.currentLevel.creaturePos(this.player))) {
       this.player.on(
-        new MissileAttackEvent(this.path, this.game, () => this.endTurn())
+        new MissileAttackEvent(this.path, this.game, this.game.currentMap, () =>
+          this.endTurn()
+        )
       )
     }
   }

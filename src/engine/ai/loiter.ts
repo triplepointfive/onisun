@@ -2,6 +2,7 @@ import { AI } from './internal'
 import { Creature } from '../models/creature'
 import { MoveEvent } from '../events/move_event'
 import { Game } from '../models/game'
+import { Point } from '../../engine'
 
 export class Loiter extends AI {
   // private turns: number = 0
@@ -13,7 +14,14 @@ export class Loiter extends AI {
     //   return
     // }
 
-    const path = this.leePath(actor, point => !actor.pos.eq(point), true)
+    const pos = game.currentMap.creaturePos(actor),
+      path = this.leePath(
+        actor,
+        actor.stageMemory(game.currentMap.id),
+        pos,
+        (point: Point) => !pos.eq(point),
+        true
+      )
 
     if (path.length) {
       // this.turns += 1

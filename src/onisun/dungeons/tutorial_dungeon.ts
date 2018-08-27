@@ -17,6 +17,7 @@ import {
   TileTypes,
   Wall,
   Game,
+  Player,
 } from '../../engine'
 import { creaturesPool1 } from '../creatures'
 import { itemsPool, weapons } from '../items'
@@ -39,17 +40,14 @@ tiles.set('R', () => new Floor('R', TileTypes.Floor))
 tiles.set('D', () => new Door())
 
 export class TutorialDungeon extends Dungeon {
-  public enter(
-    initPlayer: (enterPoint: Point, levelMap: LevelMap) => Player
-  ): void {
+  public enter(game: Game, player: Player): void {
     const levelMap = (game.currentMap = game.getMap(initId))
 
     addOnTile(
       levelMap,
       tile => tile.isFloor() && tile.passibleThrough(),
       (x, y) => {
-        // this.game.player.addToMap(new Point(x, y), this.game.currentMap)
-        game.player.addToMap(new Point(1, 2), levelMap)
+        levelMap.addCreature(new Point(x, y), player)
       }
     )
   }

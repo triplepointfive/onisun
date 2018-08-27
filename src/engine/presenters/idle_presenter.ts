@@ -114,9 +114,9 @@ export class IdlePresenter extends Presenter {
   }
 
   private move(direction: Direction): void {
-    const stage = this.player.currentLevel,
-      dest = this.player.pos.add(direction),
-      tile = stage.at(dest.x, dest.y)
+    const pos = this.currentLevel.creaturePos(this.player),
+      dest = pos.add(direction),
+      tile = this.currentLevel.at(dest.x, dest.y)
 
     if (tile.passibleThrough(this.player)) {
       this.player.on(new MoveEvent(this.game, dest))

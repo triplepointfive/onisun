@@ -30,8 +30,8 @@ export class MoveEvent extends CreatureEvent {
       currentLevel.leave(actor)
 
       this.nextLevel.enter(actor, this.nextPoint)
+      // TODO: Affect for player only
       this.game.currentMap = this.nextLevel
-      this.game.currentLevel = this.nextLevel
     } else {
       currentLevel.at(pos.x, pos.y).creature = undefined
     }

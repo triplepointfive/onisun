@@ -28,8 +28,8 @@ export abstract class Game {
     this.running = true
 
     if (this.effect) {
-      this.player.rebuildVision()
-      this.effect.patchMemory(this.player.stageMemory())
+      this.player.rebuildVision(this.currentMap)
+      this.effect.patchMemory(this.player.stageMemory(this.currentMap.id))
 
       if (this.effect.done()) {
         this.effect.onDone()
@@ -42,7 +42,7 @@ export abstract class Game {
         this.levelMapTurn()
       }
 
-      this.player.rebuildVision()
+      this.player.rebuildVision(this.currentMap)
     }
 
     this.running = false
