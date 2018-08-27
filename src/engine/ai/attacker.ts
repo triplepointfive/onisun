@@ -6,11 +6,11 @@ import { LevelMap } from '../models/level_map'
 export class Attacker extends AI {
   public victim?: Creature
 
-  public available(actor: Creature, game: Game): boolean {
-    return this.canAttack(actor, game)
-  }
+  public act(actor: Creature, game: Game, firstTurn: boolean = true): boolean {
+    if (!this.canAttack(actor, game)) {
+      return false
+    }
 
-  public act(actor: Creature, game: Game, firstTurn: boolean = true): void {
     if (this.victimInAccess(actor, game, this.victim)) {
       this.attack(actor, game)
     } else {
@@ -21,6 +21,8 @@ export class Attacker extends AI {
       this.pickNewVictim(actor, game)
       this.act(actor, game, false)
     }
+
+    return true
   }
 
   protected attack(actor: Creature, game: Game) {

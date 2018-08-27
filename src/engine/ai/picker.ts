@@ -9,8 +9,12 @@ import { GroupedItem } from '../models/items'
 export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId | undefined
 
-  public available(actor: Creature, game: Game): boolean {
-    return actor.can(Ability.Inventory) && super.available(actor, game)
+  public act(actor: Creature, game: Game): boolean {
+    if (actor.can(Ability.Inventory)) {
+      return super.act(actor, game)
+    }
+
+    return false
   }
 
   protected foundNewTarget(actor: Creature, game: Game): boolean {

@@ -11,8 +11,12 @@ export class Descender extends GoToTileAI {
     super(metaAI, tile => tile.tile.kind === TileTypes.StairwayDown)
   }
 
-  public available(actor: Creature, game: Game): boolean {
-    return actor.can(Ability.GoStairwayDown) && super.available(actor, game)
+  public act(actor: Creature, game: Game): boolean {
+    if (actor.can(Ability.GoStairwayDown)) {
+      return super.act(actor, game)
+    }
+
+    return false
   }
 
   public reset(): void {

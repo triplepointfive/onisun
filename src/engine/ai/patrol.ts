@@ -55,11 +55,11 @@ export class Patrol extends AI {
     this.path = []
   }
 
-  public available(actor: Creature): boolean {
-    return this.graph.nodes().length > 1
-  }
+  public act(actor: Creature, game: Game, firstTurn: boolean = true): boolean {
+    if (this.graph.nodes().length === 1) {
+      return false
+    }
 
-  public act(actor: Creature, game: Game, firstTurn: boolean = true): void {
     if (this.firstCallPatrol) {
       const pos = game.currentMap.creaturePos(actor)
       this.addNode(pos.x, pos.y)
@@ -78,6 +78,8 @@ export class Patrol extends AI {
       this.moveToTarget(actor, game, firstTurn)
     }
     this.step += 1
+
+    return true
   }
 
   public reset(): void {
@@ -146,7 +148,7 @@ export class Patrol extends AI {
         this.path = []
         this.act(actor, game, false)
       } else {
-        new Loiter(this.prevAI).act(actor, game, firstTurn)
+        new Loiter(this.prevAI).act(actor, game)
       }
     } else if (
       actor
@@ -157,7 +159,7 @@ export class Patrol extends AI {
       this.buildNewPath(actor, game)
 
       if (this.path.length) {
-        return this.act(actor, game, false)
+        this.act(actor, game, false)
       }
     } else {
       actor.on(new MoveEvent(game, nextPoint))

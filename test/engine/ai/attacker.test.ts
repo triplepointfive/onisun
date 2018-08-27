@@ -23,30 +23,25 @@ beforeEach(() => {
 
 describe('When there are no enemies', () => {
   it('Is not available', () => {
-    expect(() => actor.act(map, game)).toThrow()
-    expect(internalAI.available(actor, game)).toBeFalsy()
+    expect(actor.act(map, game)).toBeFalsy()
   })
 })
 
 describe('When enemy is too far away', () => {
   beforeEach(() => {
     map.addCreature(new Point(3, 3), enemy)
-    expect(() => actor.act(map, game)).toThrow()
+    expect(actor.act(map, game)).toBeFalsy()
   })
 
   it('Is not available', () => {
-    expect(internalAI.available(actor, game)).toBeFalsy()
+    expect(internalAI.act(actor, game)).toBeFalsy()
   })
 })
 
 describe('When enemy is close enough', () => {
   beforeEach(() => {
     map.addCreature(new Point(2, 2), enemy)
-    actor.act(map, game)
-  })
-
-  it('Is available', () => {
-    expect(internalAI.available(actor, game)).toBeTruthy()
+    expect(actor.act(map, game)).toBeTruthy()
   })
 
   it('Victim is set', () => {

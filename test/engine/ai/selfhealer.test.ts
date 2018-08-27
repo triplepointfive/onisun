@@ -15,7 +15,7 @@ beforeEach(() => {
 
 describe('With full health', () => {
   it('Is not available', () => {
-    expect(creature.ai.available(creature, game)).toBeFalsy()
+    expect(creature.ai.act(creature, game)).toBeFalsy()
   })
 
   it('Does nothing', () => {
@@ -29,6 +29,6 @@ describe('When health is not full', () => {
   })
 
   it('Available', () => {
-    expect(creature.ai.available(creature, game)).toBeTruthy()
+    expect(creature.ai.act(creature, game)).toBeTruthy()
   })
 })

@@ -5,15 +5,7 @@ import { Game } from '../models/game'
 import { Point } from '../../engine'
 
 export class Loiter extends AI {
-  // private turns: number = 0
-
-  act(actor: Creature, game: Game, firstTurn: boolean = true): void {
-    // if (this.turns > 1) {
-    //   actor.ai = this.prevAI
-    //   this.prevAI.act(actor, false)
-    //   return
-    // }
-
+  public act(actor: Creature, game: Game): boolean {
     const pos = game.currentMap.creaturePos(actor),
       path = this.leePath(
         actor,
@@ -24,12 +16,9 @@ export class Loiter extends AI {
       )
 
     if (path.length) {
-      // this.turns += 1
       actor.on(new MoveEvent(game, path[0]))
     }
-  }
 
-  public available(actor: Creature): boolean {
     return true
   }
 }

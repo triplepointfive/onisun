@@ -11,13 +11,9 @@ const map = generateLevelMap(),
 
 beforeEach(() => {
   map.addCreature(new Point(1, 1), creature)
-  creature.act(map, game)
 })
 
 it('Does not move', () => {
+  expect(creature.ai.act(creature, game)).toBeTruthy()
   expect(map.creaturePos(creature)).toEqual(new Point(1, 1))
-})
-
-it('Always available', () => {
-  expect(creature.ai.available(creature)).toBeTruthy()
 })

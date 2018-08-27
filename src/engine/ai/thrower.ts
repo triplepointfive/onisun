@@ -12,15 +12,12 @@ export class Thrower extends AI {
   public previousVictim: Creature | undefined
   public missiles: GroupedItem | undefined
 
-  public available(actor: Creature, game: Game): boolean {
-    return (
+  public act(actor: Creature, game: Game): boolean {
+    if (
       actor.can(Ability.Throwing) &&
       this.hasMissile(actor) &&
       this.canAttack(actor, game)
-    )
-  }
-
-  public act(actor: Creature, game: Game): void {
+) {
     let path: Point[] = []
 
     if (!this.victim) {
@@ -46,6 +43,10 @@ export class Thrower extends AI {
         }
       )
     )
+    return true
+    }
+
+    return false
   }
 
   private hasMissile(actor: Creature): boolean {

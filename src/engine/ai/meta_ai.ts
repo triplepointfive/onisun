@@ -90,10 +90,6 @@ export abstract class MetaAI extends AI {
   }
   protected events: AIEvent[] = []
 
-  public available(actor: Creature, game: Game): boolean {
-    return true
-  }
-
   public pushEvent(event: AIEvent) {
     this.events.push(event)
   }

@@ -38,11 +38,13 @@ export class PlayerAI extends MetaAI {
   private game: Game | undefined
   public levelUps: number = 0
 
-  public act(player: Player, game: Game): void {
+  public act(player: Player, game: Game): boolean {
     this.game = game
 
     this.presenter = new IdlePresenter(this.game)
     this.game.ai = this
+
+    return true
   }
 
   public endTurn(): void {

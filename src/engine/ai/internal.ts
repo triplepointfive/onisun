@@ -20,9 +20,7 @@ export abstract class AI {
 
   constructor(public prevAI?: MetaAI, public id: AIId = AI.getId()) {}
 
-  public abstract act(actor: Creature, game: Game, firstTurn: boolean): void
-
-  public abstract available(actor: Creature, game: Game): boolean
+  public abstract act(actor: Creature, game: Game): boolean
 
   public reset(): void {}
 
@@ -212,11 +210,11 @@ export abstract class AI {
 export abstract class FollowTargetAI extends AI {
   public destination?: Point = undefined
 
-  public available(actor: Creature, game: Game): boolean {
-    return this.foundNewTarget(actor, game) || !!this.destination
-  }
+  public act(actor: Creature, game: Game): boolean {
+    if (!(this.foundNewTarget(actor, game) || !!this.destination)) {
+      return false
+    }
 
-  public act(actor: Creature, game: Game): void {
     if (!this.destination) {
       throw `FollowTargetAI's act got called when there is no destination!`
     }
@@ -234,6 +232,8 @@ export abstract class FollowTargetAI extends AI {
       this.destination = undefined
       this.onCantMove(actor)
     }
+
+    return true
   }
 
   public reset(): void {

@@ -10,7 +10,6 @@ import { Loiter } from './loiter'
 import { Thrower } from './thrower'
 import { Descender } from './descender'
 import { SelfHealer } from './selfhealer'
-import { AI } from './internal'
 import { Game } from '../models/game'
 
 export class Dispatcher extends MetaAI {
@@ -41,12 +40,7 @@ export class Dispatcher extends MetaAI {
     this.descender = new Descender(this)
   }
 
-  public act(actor: Creature, game: Game, firstTurn: boolean = true): void {
-    // Never dispatch twice
-    if (!firstTurn) {
-      throw 'Meta AI called recursively'
-    }
-
+  public act(actor: Creature, game: Game): boolean {
     this.step += 1
 
     if (this.step % actor.characteristics.regenerateEvery() === 0) {
@@ -56,39 +50,27 @@ export class Dispatcher extends MetaAI {
     this.runEvents()
 
     if (this.feelsGood(actor)) {
-      if (this.attacker.available(actor, game)) {
-        this.setAi(this.attacker)
-      } else if (this.thrower.available(actor, game)) {
-        this.setAi(this.thrower)
-      } else if (this.chaser.available(actor, game)) {
-        this.setAi(this.chaser)
-      } else if (this.picker.available(actor, game)) {
-        this.pickItem(actor)
+      if (this.attacker.act(actor, game)) {
+      } else if (this.thrower.act(actor, game)) {
+      } else if (this.chaser.act(actor, game)) {
+      } else if (this.picker.act(actor, game)) {
       } else {
         this.explore(actor, game)
       }
     } else if (
       this.healthCritical(actor) &&
-      this.escaper.available(actor, game)
+      this.escaper.act(actor, game)
     ) {
-      this.setAi(this.escaper)
-    } else if (this.attacker.available(actor, game)) {
-      this.setAi(this.attacker)
-    } else if (this.thrower.available(actor, game)) {
-      this.setAi(this.thrower)
-    } else if (this.chaser.available(actor, game)) {
-      this.setAi(this.chaser)
+    } else if (this.attacker.act(actor, game)) {
+    } else if (this.thrower.act(actor, game)) {
+    } else if (this.chaser.act(actor, game)) {
     } else {
-      this.rest(actor)
+      new SelfHealer(this).act(actor, game)
     }
 
     this.resetEvents()
 
-    if (!this.aiToRun) {
-      throw 'Dispatcher: no AI picked'
-    }
-
-    this.aiToRun.act(actor, game, firstTurn)
+    return true
   }
 
   private feelsGood(actor: Creature): boolean {
@@ -105,36 +87,19 @@ export class Dispatcher extends MetaAI {
     )
   }
 
-  private pickItem(actor: Creature): void {
-    this.setAi(this.picker)
-  }
-
   private explore(actor: Creature, game: Game): void {
-    if (this.explorer.available(actor, game)) {
-      this.patrol.trackMovement(
-        actor,
-        game.currentMap.creaturePos(actor),
-        game.currentMap.creatureTile(actor)
-      )
-      this.setAi(this.explorer)
-    } else if (this.descender.available(actor, game)) {
-      this.setAi(this.descender)
-    } else if (this.patrol.available(actor)) {
-      this.setAi(this.patrol)
+    if (this.explorer.act(actor, game)) {
+      if (!actor.dead) {
+        this.patrol.trackMovement(
+          actor,
+          game.currentMap.creaturePos(actor),
+          game.currentMap.creatureTile(actor)
+        )
+      }
+    } else if (this.descender.act(actor, game)) {
+    } else if (this.patrol.act(actor, game)) {
     } else {
-      this.setAi(this.loiter)
+      this.loiter.act(actor, game)
     }
-  }
-
-  private rest(actor: Creature): void {
-    this.setAi(new SelfHealer(this))
-  }
-
-  private setAi(ai: AI): void {
-    if (this.aiToRun && this.aiToRun.id !== ai.id) {
-      this.aiToRun.reset()
-    }
-
-    this.aiToRun = ai
   }
 }

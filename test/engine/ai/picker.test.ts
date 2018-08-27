@@ -19,18 +19,15 @@ beforeEach(() => {
 describe('When there are no items', () => {
   it('Not available', () => {
     creature.visionMask(map) // TODO: Should be called manually?
-    expect(creature.ai.available(creature, game)).toBeFalsy()
+    expect(creature.ai.act(creature, game)).toBeFalsy()
   })
 })
 
 describe('When there is only one item', () => {
   beforeEach(() => {
     map.at(3, 3).addItem(generateItem(), 1)
-    creature.act(map, game)
-  })
-
-  it('AI is available', () => {
-    expect(internalAI.available(creature, game)).toBeTruthy()
+    creature.visionMask(map)
+    expect(internalAI.act(creature, game)).toBeTruthy()
   })
 
   it('Destination is set to item position', () => {
@@ -43,11 +40,10 @@ describe('When there are multiple items', () => {
   beforeEach(() => {
     map.at(3, 3).addItem(generateItem(), 1)
     map.at(3, 5).addItem(generateItem(), 1)
-    creature.act(map, game)
-  })
 
-  it('AI is available', () => {
-    expect(internalAI.available(creature, game)).toBeTruthy()
+    creature.visionMask(map)
+
+    expect(internalAI.act(creature, game)).toBeTruthy()
   })
 
   it("Destination is set to the closest item's position", () => {
@@ -69,14 +65,11 @@ describe('When items on every single cell around', () => {
     map.at(1, 2).addItem(generateItem(), 1)
     map.at(2, 2).addItem(generateItem(), 1)
     map.at(2, 1).addItem(generateItem(), 1)
-  })
-
-  it('AI is available', () => {
-    expect(creature.ai.available(creature, game)).toBeTruthy()
+    creature.visionMask(map)
   })
 
   it('Moves to adjacent cell', () => {
-    creature.act(map, game)
+    expect(creature.ai.act(creature, game)).toBeTruthy()
     const pos = map.creaturePos(creature)
 
     expect(pos.x === 2 || pos.y === 2).toBeTruthy()

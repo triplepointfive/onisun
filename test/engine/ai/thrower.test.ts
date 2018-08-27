@@ -22,8 +22,7 @@ beforeEach(() => {
 
 describe('When there is nothing to throw', () => {
   it('Is not available', () => {
-    expect(() => actor.act(map, game)).toThrow()
-    expect(internalAI.available(actor, game)).toBeFalsy()
+    expect(actor.act(map, game)).toBeFalsy()
   })
 })
 
