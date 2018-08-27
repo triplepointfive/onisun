@@ -11,6 +11,7 @@ import {
   TileVisitor,
   Player,
   Stairway,
+  LevelMap,
 } from '../../engine'
 import { InventoryPresenter } from './inventory_presenter'
 import { MissilePresenter } from './missile_presenter'
@@ -40,6 +41,7 @@ export enum IdleInputKey {
 class HandleTileVisitor extends TileVisitor {
   constructor(
     private game: Game,
+    private map: LevelMap,
     private player: Player,
     private done: () => void
   ) {
@@ -50,8 +52,8 @@ class HandleTileVisitor extends TileVisitor {
     // TODO: Do not do this if already connected
     const adjacentMap = this.game.getMap(stairway.adjacentMapId)
     stairway.enterPos = adjacentMap.matchStairs(
-      this.player.currentLevel.id,
-      this.player.pos
+      this.map.id,
+      this.map.creaturePos(this.player)
     )
     this.player.on(new MoveEvent(this.game, stairway.enterPos, adjacentMap))
 
@@ -128,7 +130,7 @@ export class IdlePresenter extends Presenter {
   }
 
   private pickUpDialog(): void {
-    const tile = this.tile(),
+    const tile = this.tile,
       items = tile.items
 
     if (items === undefined || items.bunch.length === 0) {
@@ -156,8 +158,8 @@ export class IdlePresenter extends Presenter {
   }
 
   private handle(): void {
-    this.tile().visit(
-      new HandleTileVisitor(this.game, this.player, () => this.endTurn())
+    this.tile.visit(
+      new HandleTileVisitor(this.game, this.game.currentMap, this.player, () => this.endTurn())
     )
   }
 }

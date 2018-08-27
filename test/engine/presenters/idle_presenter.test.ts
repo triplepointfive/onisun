@@ -11,6 +11,7 @@ import {
   DropItemsPresenter,
   PickUpItemsEvent,
   Missile,
+  Game,
 } from '../../../src/engine'
 
 import {
@@ -28,17 +29,18 @@ const level0 = 0,
   fakeStairPos = new Point(1, 1)
 
 class TestDungeon extends Dungeon {
-  public build(): void {
-    this.game.addMap(level0, (id, game) =>
+  public register(game: Game): void {
+    game.addMap(level0, (id, game) =>
       this.addStairDown(this.newMap(), level1)
     )
-    this.game.addMap(level1, (id, game) =>
+    game.addMap(level1, (id, game) =>
       this.addStairUp(this.newMap(), level0)
     )
   }
 
-  public enter(): void {
-    this.game.currentMap = this.game.getMap(0)
+  public enter(game: Game, player: Player): void {
+    game.currentMap = game.getMap(0)
+    game.currentMap.addCreature(new Point(1, 1), player)
   }
 
   private newMap(): LevelMap {
@@ -87,15 +89,16 @@ describe('IdlePresenter', () => {
     let dungeon: TestDungeon, stairPos: Point
 
     beforeEach(() => {
-      dungeon = new TestDungeon(game)
-      dungeon.build()
-      dungeon.enter()
+      dungeon = new TestDungeon()
+      dungeon.register(game)
+      dungeon.enter(game, player)
 
       stairPos = game.getMap(level0).matchStairs(level1, fakeStairPos)
     })
 
     it('failed to handle common tile', () => {
-      player.addToMap(stairPos.add(fakeStairPos), game.getMap(level0))
+      game.getMap(level0).addCreature(stairPos.add(fakeStairPos), player)
+
       game.ai.act(player, game)
 
       expect(game.logger.messages.length).toEqual(0)
@@ -107,7 +110,7 @@ describe('IdlePresenter', () => {
     })
 
     it('handles stairs', () => {
-      player.addToMap(stairPos, game.getMap(level0))
+      game.getMap(level0).addCreature(stairPos, player)
       game.ai.act(player, game)
 
       screen.onInput(IdleInputKey.Handle)
@@ -123,8 +126,8 @@ describe('IdlePresenter', () => {
       pos = new Point(1, 1)
 
     beforeEach(() => {
-      map = generateLevelMap()
-      player.addToMap(pos, map)
+      game.currentMap = map = generateLevelMap()
+      map.addCreature(pos, player)
     })
 
     it('logs when there is nothing to pick up', () => {
@@ -162,6 +165,8 @@ describe('IdlePresenter', () => {
 
     beforeEach(() => {
       missile = generateMissile()
+      game.currentMap = generateLevelMap()
+      game.currentMap.addCreature(fakeStairPos, player)
     })
 
     it('complains when no missile equipped', () => {
@@ -189,8 +194,8 @@ describe('IdlePresenter', () => {
     it('opens missile screen', () => {
       player.inventory.putToBag(missile, 5)
       player.inventory.missileSlot.equip(player, missile)
-      player.addToMap(new Point(1, 1), generateLevelMap())
-      player.rebuildVision()
+      generateLevelMap().addCreature(new Point(1, 1), player)
+      player.rebuildVision(game.currentMap)
 
       screen.onInput(IdleInputKey.Missile)
 

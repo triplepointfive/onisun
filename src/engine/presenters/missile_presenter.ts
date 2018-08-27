@@ -15,7 +15,7 @@ export class MissilePresenter extends Presenter {
     super(PresenterType.Missile, game)
 
     this.findEnemies()
-    this.memory = this.player.stageMemory()
+    this.memory = this.player.stageMemory(this.currentLevel.id)
     this.targetPos = this.resetTargetId()
   }
 
@@ -50,13 +50,13 @@ export class MissilePresenter extends Presenter {
   }
 
   public moveTarget(direction: Direction): void {
-    const stage = this.player.currentLevel,
+    const
       dest = this.targetPos.add(direction),
-      tile = stage.at(dest.x, dest.y)
+      tile = this.currentLevel.at(dest.x, dest.y)
 
     if (
       tile.visibleThrough() &&
-      this.player.stageMemory().at(dest.x, dest.y).visible
+      this.player.stageMemory(this.currentLevel.id).at(dest.x, dest.y).visible
     ) {
       this.updateTarget(dest)
       this.targetEnemyIndex = undefined
@@ -64,7 +64,7 @@ export class MissilePresenter extends Presenter {
   }
 
   public attack(): void {
-    if (!this.targetPos.eq(this.player.pos)) {
+    if (!this.targetPos.eq(this.currentLevel.creaturePos(this.player))) {
       this.player.on(
         new MissileAttackEvent(this.path, this.game, () => this.endTurn())
       )
@@ -84,7 +84,7 @@ export class MissilePresenter extends Presenter {
       point = this.enemies[this.targetEnemyIndex]
     } else {
       this.targetEnemyIndex = undefined
-      point = this.player.pos
+      point = this.currentLevel.creaturePos(this.player)
     }
 
     this.updateTarget(point)
@@ -104,9 +104,9 @@ export class MissilePresenter extends Presenter {
   private drawPath(): void {
     this.path = []
     let stop = false
-    const stage = this.player.currentLevel
+    const stage = this.currentLevel, pos = this.currentLevel.creaturePos(this.player)
 
-    bresenhamInclusion(this.player.pos, this.targetPos, (x, y) => {
+    bresenhamInclusion(pos, this.targetPos, (x, y) => {
       if (!stage.at(x, y).passibleThrough()) {
         stop = true
       }
@@ -119,7 +119,7 @@ export class MissilePresenter extends Presenter {
   private findEnemies(): void {
     this.enemies = []
 
-    this.player.stageMemory().each((tile, x, y) => {
+    this.player.stageMemory(this.currentLevel.id).each((tile, x, y) => {
       if (
         tile.visible &&
         tile.creature &&

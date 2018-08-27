@@ -36,10 +36,7 @@ export class PickUpPresenter extends ItemsListingPresenter {
   public title: string = 'Что поднять?'
 
   protected initPositions(): void {
-    const items = this.player.currentLevel.at(
-      this.player.pos.x,
-      this.player.pos.y
-    ).items
+    const items = this.tile.items
 
     if (items === undefined) {
       throw `Failed to show pick up dialog - tile has no items`
@@ -52,7 +49,7 @@ export class PickUpPresenter extends ItemsListingPresenter {
 
   public pickUpItems(items: GroupedItem[]): void {
     // TODO: Validate items are part of positions
-    this.player.on(new PickUpItemsEvent(this.tile(), items, this.game))
+    this.player.on(new PickUpItemsEvent(this.tile, items, this.game))
     this.endTurn()
   }
 }
@@ -66,7 +63,7 @@ export class DropItemsPresenter extends ItemsListingPresenter {
 
   public pickUpItems(items: GroupedItem[]): void {
     if (items.length) {
-      this.player.on(new DropItemsEvent(this.tile(), items, this.game))
+      this.player.on(new DropItemsEvent(this.tile, items, this.game))
       this.endTurn()
     } else {
       this.redirect(new IdlePresenter(this.game))

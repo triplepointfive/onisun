@@ -9,7 +9,7 @@ export abstract class Dungeon {
   protected levels: LevelMap[] = []
 
   constructor() {}
-  public abstract enter(initPlayer: (enterPoint: Point, levelMap: LevelMap) => Player): void
+  public abstract enter(game: Game, player: Player): void
   public abstract register(game: Game): void
 
   protected addStairDown(map: LevelMap, adjustMapId: LevelMapId): LevelMap {

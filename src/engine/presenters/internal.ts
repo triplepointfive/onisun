@@ -21,12 +21,12 @@ export abstract class Presenter {
 
   public build() {}
 
-  protected currentLevel(): LevelMap {
-    return this.player.currentLevel
+  get currentLevel(): LevelMap {
+    return this.game.currentMap
   }
 
-  protected tile(): Tile {
-    return this.currentLevel().at(this.player.pos.x, this.player.pos.y)
+  get tile(): Tile {
+    return this.currentLevel.creatureTile(this.player)
   }
 
   protected endTurn(): void {

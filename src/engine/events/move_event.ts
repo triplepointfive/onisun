@@ -23,22 +23,23 @@ export class MoveEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
-    if (this.nextLevel && this.nextLevel.id !== actor.currentLevel.id) {
-      actor.currentLevel.leave(actor)
+    const currentLevel = this.game.currentMap,
+      pos = currentLevel.creaturePos(actor)
+
+    if (this.nextLevel && this.nextLevel.id !== currentLevel.id) {
+      currentLevel.leave(actor)
 
       this.nextLevel.enter(actor, this.nextPoint)
       this.game.currentMap = this.nextLevel
-      actor.currentLevel = this.nextLevel
+      currentLevel = this.nextLevel
     } else {
-      actor.currentLevel.at(actor.pos.x, actor.pos.y).creature = undefined
+      currentLevel.at(pos.x, pos.y).creature = undefined
     }
 
-    actor.pos = this.nextPoint.copy()
+    currentLevel.addCreature(this.nextPoint, actor)
 
-    actor.currentLevel.at(actor.pos.x, actor.pos.y).creature = actor
-
-    actor.currentLevel
-      .at(actor.pos.x, actor.pos.y)
+    currentLevel
+      .at(this.nextPoint.x, this.nextPoint.y)
       .visit(new SteppingTileVisitor(actor, this.game))
 
     return Reaction.NOTHING

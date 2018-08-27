@@ -100,7 +100,7 @@ const fakeSpecie = new Specie('Test specie', 10, Clan.FreeForAll, allAbilities)
 
 export class TestCreature extends Creature {}
 export const generateCreatureWithAI = function(ai: AI): Creature {
-  return new TestCreature(generateCharacteristics(), wrapAI(ai), fakeSpecie, new Point(1, 1), generateLevelMap())
+  return new TestCreature(generateCharacteristics(), wrapAI(ai), fakeSpecie)
 }
 
 export const generateCharacteristics = function(): Characteristics {
@@ -124,7 +124,6 @@ export const generatePlayer = function(): Player {
     generateCharacteristics(),
     generatePlayerAI(),
     fakeSpecie,
-    new Point(1, 1), generateLevelMap()
   )
 }
 

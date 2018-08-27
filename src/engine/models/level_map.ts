@@ -36,15 +36,49 @@ export class LevelMap extends Mapped<Tile> {
     actor.addToMap(enterPos, this)
   }
 
-  public addCreature(creature: Creature) {
+  public creatureTile(creature: Creature): Tile {
+    let tile: Tile | undefined
+
+    this.each(t => {
+      if (t.creature && t.creature.id === creature.id) {
+        tile = t
+      }
+    })
+
+    if (!tile) {
+      throw `Creature ${creature.id} is not found on map ${this.id}`
+    }
+
+    return tile
+  }
+
+  public creaturePos(creature: Creature): Point {
+    let pos: Point | undefined
+
+    this.each((tile, x, y) => {
+      if (tile.creature && tile.creature.id === creature.id) {
+        pos = new Point(x, y)
+      }
+    })
+
+    if (!pos) {
+      throw `Creature ${creature.id} is not found on map ${this.id}`
+    }
+
+    return pos
+  }
+
+  public addCreature(pos: Point, creature: Creature) {
     this.creatures.push(creature)
     // TODO fail if taken
-    this.at(creature.pos.x, creature.pos.y).creature = creature
+    this.at(pos.x, pos.y).creature = creature
     this.timeline.add(creature.id, creature.speed())
   }
 
   public removeCreature(creature: Creature) {
-    let tile = this.at(creature.pos.x, creature.pos.y)
+    let pos = this.creaturePos(creature),
+      tile = this.at(pos.x, pos.y)
+
     tile.creature = undefined
     remove(this.creatures, c => c.id === creature.id)
     this.timeline.remove(creature.id)

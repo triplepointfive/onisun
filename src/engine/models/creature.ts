@@ -63,7 +63,7 @@ class VisibilityTileVisitor extends TileVisitor {
   private x: number | undefined
   private y: number | undefined
 
-  constructor(private creature: Creature, private stage: LevelMap) {
+  constructor(private stage: LevelMap, private pos: Point) {
     super()
   }
 
@@ -75,8 +75,7 @@ class VisibilityTileVisitor extends TileVisitor {
   }
 
   public onDoor(door: Door) {
-    this.visible =
-      this.creature.pos.x === this.x && this.creature.pos.y === this.y
+    this.visible = this.pos.x === this.x && this.pos.y === this.y
   }
 
   protected default(tile: Tile) {
@@ -96,7 +95,7 @@ export class Creature {
   public stageMemories: { [key: string]: Memory } = {}
   public inventory: Inventory
 
-  public previousPos: Point
+  // public previousPos: Point
   public dead: boolean = false
 
   private impactsBunch: ImpactBunch | undefined
@@ -108,20 +107,20 @@ export class Creature {
     public characteristics: Characteristics,
     ai: MetaAI,
     public specie: Specie,
-    public pos: Point,
-    public currentLevel: LevelMap,
+    // public pos: Point,
+    // public currentLevel: LevelMap,
     public id: CreatureId = Creature.getId(),
   ) {
     this.ai = ai
-    this.previousPos = this.pos.copy()
+    // this.previousPos = this.pos.copy()
 
     this.inventory = new Inventory()
 
     this.stuffWeight = new Stat(0)
     this.carryingCapacity = new CapacityLimitStat(1, 4)
 
-    currentLevel.addCreature(this)
-    this.visionMask(currentLevel)
+    // currentLevel.addCreature(this)
+    // this.visionMask(currentLevel)
   }
 
   public name(): string {
@@ -148,47 +147,49 @@ export class Creature {
     return this.characteristics.radius.currentValue()
   }
 
-  public stageMemory(levelId: LevelMapId = this.currentLevel.id): Memory {
+  public stageMemory(levelId: LevelMapId): Memory {
     return this.stageMemories[levelId]
   }
 
   public act(stage: LevelMap, game: Game) {
     this.visionMask(stage)
-    this.previousPos = this.pos.copy()
+    // this.previousPos = this.pos.copy()
     this.ai.act(this, game, true)
   }
 
-  // TODO: Remove this
-  public addToMap(pos: Point, level: LevelMap) {
-    this.pos = pos
-    this.previousPos = this.pos.copy()
-    this.currentLevel = level
-    level.addCreature(this)
-    this.visionMask(level)
-    level.addCreature(this)
-    this.visionMask(level)
-  }
+  // // TODO: Remove this
+  // public addToMap(pos: Point, level: LevelMap) {
+  //   // this.pos = pos
+  //   // this.previousPos = this.pos.copy()
+  //   // this.currentLevel = level
+  //   level.addCreature(this)
+  //   this.visionMask(level)
+  //   level.addCreature(this)
+  //   this.visionMask(level)
+  // }
 
   public visionMask(stage: LevelMap): void {
     if (!this.stageMemories[stage.id]) {
       this.stageMemories[stage.id] = new Memory(stage.width, stage.height)
     } else {
-      this.stageMemory().resetVisible()
+      this.stageMemory(stage.id).resetVisible()
     }
 
     const see = (x: number, y: number, degree: number): void => {
-      this.stageMemory()
+      this.stageMemory(stage.id)
         .at(x, y)
         .see(stage.at(x, y), degree)
     }
 
+    const pos = stage.creaturePos(this)
+
     new Fov(
-      this.pos.x,
-      this.pos.y,
+      pos.x,
+      pos.y,
       this.radius(),
       stage.width,
       stage.height,
-      new VisibilityTileVisitor(this, stage),
+      new VisibilityTileVisitor(stage, pos),
       see
     ).calc()
   }
@@ -228,14 +229,12 @@ export class Player extends Creature {
     characteristics: Characteristics,
     ai: PlayerAI,
     specie: Specie,
-    pos: Point,
-    currentLevel: LevelMap,
   ) {
-    super(characteristics, ai, specie, pos, currentLevel)
+    super(characteristics, ai, specie)
   }
 
-  public rebuildVision(): void {
-    this.visionMask(this.currentLevel)
+  public rebuildVision(levelMap: LevelMap): void {
+  this.visionMask(levelMap)
   }
 
   public on(event: CreatureEvent): Reaction {
