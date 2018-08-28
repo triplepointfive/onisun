@@ -35,6 +35,7 @@ export { default as dungeon } from './engine/generator/dungeon'
 
 export * from './engine/lib/attribute'
 export * from './engine/lib/bunch'
+export * from './engine/lib/calculator'
 export * from './engine/lib/impact'
 export * from './engine/lib/level'
 export * from './engine/lib/pool'

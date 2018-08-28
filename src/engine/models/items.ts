@@ -103,6 +103,22 @@ export class BodyArmor extends Item {
   }
 }
 
+export enum DamageType {
+  Melee,
+  Pierce,
+  Blunt,
+  Magic,
+  Pure,
+}
+
+export enum ArmorType {
+  Light,
+  Medium,
+  Heavy,
+  Solid,
+  Unarmored,
+}
+
 export class OneHandWeapon extends Item {
   constructor(name: string, weight: number, modifier: Modifier) {
     super(
