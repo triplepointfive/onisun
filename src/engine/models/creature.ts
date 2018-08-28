@@ -5,7 +5,6 @@ import {
   ImpactBunch,
   Inventory,
   LevelMap,
-  LevelMapId,
   Memory,
   MetaAI,
   PlayerAI,
@@ -91,7 +90,6 @@ export class Creature {
     return this.lastId++
   }
 
-  public ai: MetaAI
   protected stageMemories: { [key: string]: Memory } = {}
   public inventory: Inventory
 
@@ -104,7 +102,7 @@ export class Creature {
 
   constructor(
     public characteristics: Characteristics,
-    ai: MetaAI,
+    public ai: MetaAI,
     public specie: Specie,
     public id: CreatureId = Creature.getId()
   ) {

@@ -1,14 +1,11 @@
 import { GoToTileAI } from './internal'
-
-import { MetaAI } from './meta_ai'
-
 import { TileTypes, Creature, Ability, StairwayDown, Game } from '../../engine'
 
 export class Descender extends GoToTileAI {
   private canDescend: boolean = false
 
-  constructor(metaAI: MetaAI) {
-    super(metaAI, tile => tile.tile.kind === TileTypes.StairwayDown)
+  constructor() {
+    super(tile => tile.tile.kind === TileTypes.StairwayDown)
   }
 
   public act(actor: Creature, game: Game): boolean {

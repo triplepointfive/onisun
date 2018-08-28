@@ -10,16 +10,7 @@ import { LevelMap } from '../../engine'
 
 const FIRST_STEP: number = 1
 
-type AIId = number
-
 export abstract class AI {
-  private static lastId: AIId = 0
-  public static getId(): AIId {
-    return this.lastId++
-  }
-
-  constructor(public prevAI?: MetaAI, public id: AIId = AI.getId()) {}
-
   public abstract act(actor: Creature, game: Game): boolean
 
   public reset(): void {}
@@ -252,10 +243,9 @@ export abstract class FollowTargetAI extends AI {
 
 export abstract class GoToTileAI extends FollowTargetAI {
   constructor(
-    metaAI: MetaAI,
     protected matcher: (tile: MemoryTile) => boolean
   ) {
-    super(metaAI)
+    super()
   }
 
   protected foundNewTarget(actor: Creature, game: Game): boolean {

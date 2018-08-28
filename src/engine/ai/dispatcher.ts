@@ -28,16 +28,16 @@ export class Dispatcher extends MetaAI {
 
   constructor() {
     super()
-    this.escaper = new Escaper(this)
-    this.explorer = new Explorer(this)
-    this.chaser = new Chaser(this)
-    this.attacker = new Attacker(this)
-    this.picker = new Picker(this)
-    this.patrol = new Patrol(this)
-    this.loiter = new Loiter(this)
-    this.thrower = new Thrower(this)
+    this.escaper = new Escaper()
+    this.explorer = new Explorer()
+    this.chaser = new Chaser()
+    this.attacker = new Attacker()
+    this.picker = new Picker()
+    this.patrol = new Patrol()
+    this.loiter = new Loiter()
+    this.thrower = new Thrower()
 
-    this.descender = new Descender(this)
+    this.descender = new Descender()
   }
 
   public act(actor: Creature, game: Game): boolean {
@@ -62,7 +62,7 @@ export class Dispatcher extends MetaAI {
     } else if (this.thrower.act(actor, game)) {
     } else if (this.chaser.act(actor, game)) {
     } else {
-      new SelfHealer(this).act(actor, game)
+      new SelfHealer().act(actor, game)
     }
 
     this.resetEvents()

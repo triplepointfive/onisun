@@ -42,8 +42,8 @@ export class Patrol extends AI {
   private step: number = NEW_POINT_EVERY
   private firstCallPatrol: boolean = true
 
-  constructor(ai: MetaAI) {
-    super(ai)
+  constructor() {
+    super()
     this.i = 'a'
 
     this.graph = new graphlib.Graph()
@@ -148,7 +148,7 @@ export class Patrol extends AI {
         this.path = []
         this.act(actor, game, false)
       } else {
-        new Loiter(this.prevAI).act(actor, game)
+        new Loiter().act(actor, game)
       }
     } else if (
       actor

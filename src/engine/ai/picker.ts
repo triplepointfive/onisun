@@ -31,9 +31,7 @@ export class Picker extends FollowTargetAI {
       throw 'Picker.act : nothing to pick up'
     }
 
-    if (this.prevAI) {
-      this.prevAI.pushEvent(new AIItemPickedEvent(tile.items, game))
-    }
+    actor.ai.pushEvent(new AIItemPickedEvent(tile.items, game))
 
     tile.items.bunch.forEach((groupedItem: GroupedItem) => {
       actor.inventory.putToBag(groupedItem.item, groupedItem.count)
