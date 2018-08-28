@@ -1,10 +1,10 @@
-import { generateGame, generatePlayer } from '../helpers'
+import { generateGame, generatePlayer, generateLevelMap } from '../helpers'
 import { Game, DieReason, DeathPresenter } from '../../../src/engine'
 
 describe('DeathPresenter', () => {
   const game: Game = generateGame(),
     player = generatePlayer(),
-    presenter = new DeathPresenter(DieReason.Attack, game)
+    presenter = new DeathPresenter(DieReason.Attack, generateLevelMap(), game)
 
   beforeAll(() => {
     game.player = player

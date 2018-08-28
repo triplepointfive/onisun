@@ -1,6 +1,11 @@
 import { Player, InventoryPresenter, IdlePresenter } from '../../../src/engine'
 
-import { generateGame, TestGame, generatePlayer } from '../helpers'
+import {
+  generateGame,
+  TestGame,
+  generatePlayer,
+  generateLevelMap,
+} from '../helpers'
 
 describe('puts on and takes off', () => {
   let game: TestGame = generateGame(),
@@ -9,7 +14,7 @@ describe('puts on and takes off', () => {
 
   beforeEach(() => {
     game.player = player = generatePlayer()
-    screen = new InventoryPresenter(game)
+    screen = new InventoryPresenter(generateLevelMap(), game)
     screen.redirect = jest.fn()
   })
 

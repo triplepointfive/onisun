@@ -10,13 +10,8 @@ export class Loiter extends AI {
     levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {
-    const pos = game.currentMap.creaturePos(actor)
+    const pos = levelMap.creaturePos(actor)
 
-    return this.move(
-      actor,
-      game.currentMap,
-      game,
-      (point: Point) => !pos.eq(point)
-    )
+    return this.move(actor, levelMap, game, (point: Point) => !pos.eq(point))
   }
 }

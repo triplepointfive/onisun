@@ -1,22 +1,24 @@
 import { FollowTargetAI } from './internal'
 import { Creature } from '../models/creature'
-import { Point } from '../../engine'
+import { Point, LevelMap } from '../../engine'
 
 import { sumBy } from 'lodash'
-import { Game } from '../models/game'
 
 const STEP_DISTANCE = 2
 
 export class Escaper extends FollowTargetAI {
   private escapesFrom: [Point, Creature][] = []
 
-  protected foundNewTarget(actor: Creature, game: Game): boolean {
-    return this.foundEnemies(actor, game) && this.buildEscapePath(actor, game)
+  protected foundNewTarget(actor: Creature, levelMap: LevelMap): boolean {
+    return (
+      this.foundEnemies(actor, levelMap) &&
+      this.buildEscapePath(actor, levelMap)
+    )
   }
 
   private buildEscapePath(
     actor: Creature,
-    game: Game,
+    levelMap: LevelMap,
     minDistance: number = actor.radius() / 2
   ): boolean {
     if (minDistance <= 1) {
@@ -24,7 +26,7 @@ export class Escaper extends FollowTargetAI {
       return false
     }
 
-    const path = this.buildPath(actor, game.currentMap, ({ x, y }) => {
+    const path = this.buildPath(actor, levelMap, ({ x, y }) => {
       const score = sumBy(this.escapesFrom, ([pos, enemy]) => {
         // I don't use pathfinding since it should try
         // to run away from those who are visible, so the path
@@ -39,16 +41,16 @@ export class Escaper extends FollowTargetAI {
       this.destination = path.pop()
       return true
     } else {
-      return this.buildEscapePath(actor, game, minDistance - STEP_DISTANCE)
+      return this.buildEscapePath(actor, levelMap, minDistance - STEP_DISTANCE)
     }
   }
 
-  private foundEnemies(actor: Creature, game: Game): boolean {
+  private foundEnemies(actor: Creature, levelMap: LevelMap): boolean {
     this.escapesFrom = []
 
     this.withinView(
-      actor.stageMemory(game.currentMap),
-      game.currentMap.creaturePos(actor),
+      actor.stageMemory(levelMap),
+      levelMap.creaturePos(actor),
       (point, tile) => {
         const creature = tile.creature
 

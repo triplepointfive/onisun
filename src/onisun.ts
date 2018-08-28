@@ -38,6 +38,7 @@ export class Application {
 
     const player = this.game.player,
       prof = this.game.professionPicker.available(player)[1]
+
     if (prof) {
       player.professions.push(prof)
     }
@@ -51,36 +52,38 @@ export class Application {
 
     const bow = commonBow()
 
-    const tile = this.game.currentMap.creatureTile(player)
+    if (this.game.currentMap) {
+      const tile = this.game.currentMap.creatureTile(player)
 
-    tile.addItem(dagger, 2)
-    tile.addItem(katana, 1)
-    tile.addItem(wooden, 5)
-    tile.addItem(iron, 5)
-    tile.addItem(rock, 5)
-    tile.addItem(bow, 2)
+      tile.addItem(dagger, 2)
+      tile.addItem(katana, 1)
+      tile.addItem(wooden, 5)
+      tile.addItem(iron, 5)
+      tile.addItem(rock, 5)
+      tile.addItem(bow, 2)
 
-    player.on(
-      new PickUpItemsEvent(
-        tile,
-        [
-          { item: dagger, count: 2 },
-          { item: katana, count: 1 },
-          { item: wooden, count: 5 },
-          { item: iron, count: 5 },
-          { item: rock, count: 5 },
-          { item: bow, count: 2 },
-        ],
-        this.game
+      player.on(
+        new PickUpItemsEvent(
+          tile,
+          [
+            { item: dagger, count: 2 },
+            { item: katana, count: 1 },
+            { item: wooden, count: 5 },
+            { item: iron, count: 5 },
+            { item: rock, count: 5 },
+            { item: bow, count: 2 },
+          ],
+          this.game
+        )
       )
-    )
 
-    player.inventory.missileWeaponSlot.equip(player, bow)
-    player.inventory.missileSlot.equip(player, wooden)
+      player.inventory.missileWeaponSlot.equip(player, bow)
+      player.inventory.missileSlot.equip(player, wooden)
 
-    player.inventory.putToBag(new LightSpeedBoots(), 1)
+      player.inventory.putToBag(new LightSpeedBoots(), 1)
 
-    this.game.logger.reset()
+      this.game.logger.reset()
+    }
   }
 
   protected initPlayer(): Player {

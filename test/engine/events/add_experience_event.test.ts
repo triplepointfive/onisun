@@ -1,4 +1,9 @@
-import { generatePlayer, generateCreature, generateGame } from '../helpers'
+import {
+  generatePlayer,
+  generateCreature,
+  generateGame,
+  generateLevelMap,
+} from '../helpers'
 import {
   Reaction,
   AddExperienceEvent,
@@ -7,7 +12,10 @@ import {
 } from '../../../src/engine'
 
 describe('Drink potion event', () => {
-  let actor, event, game: Game
+  let actor,
+    event,
+    game: Game,
+    map = generateLevelMap()
 
   beforeEach(() => {
     game = generateGame()
@@ -16,7 +24,7 @@ describe('Drink potion event', () => {
   describe('on common creatures', () => {
     beforeEach(() => {
       actor = generateCreature()
-      event = new AddExperienceEvent(actor, game)
+      event = new AddExperienceEvent(actor, map, game)
     })
 
     it('does nothing', () => {
@@ -27,7 +35,7 @@ describe('Drink potion event', () => {
   describe('on player', () => {
     beforeEach(() => {
       game.player = actor = generatePlayer()
-      event = new AddExperienceEvent(actor, game)
+      event = new AddExperienceEvent(actor, map, game)
     })
 
     it('creates level up event', () => {

@@ -113,11 +113,11 @@ export abstract class FollowTargetAI extends AI {
     levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {
-    if (!this.foundNewTarget(actor, game) || !this.destination) {
-      return this.checkCurrentTile(actor, game)
+    if (!this.foundNewTarget(actor, levelMap) || !this.destination) {
+      return this.checkCurrentTile(actor, levelMap, game)
     }
 
-    const event = this.goTo(actor, game, this.destination)
+    const event = this.goTo(actor, levelMap, game, this.destination)
     if (event) {
       return event
     }
@@ -130,28 +130,34 @@ export abstract class FollowTargetAI extends AI {
 
   protected goTo(
     actor: Creature,
+    levelMap: LevelMap,
     game: Game,
     point: Point
   ): CreatureEvent | undefined {
-    return this.moveTo(actor, point, game.currentMap, game)
+    return this.moveTo(actor, point, levelMap, game)
   }
 
   protected checkCurrentTile(
     actor: Creature,
+    levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {
-    if (
-      this.destination &&
-      game.currentMap.creaturePos(actor).eq(this.destination)
-    ) {
+    if (this.destination && levelMap.creaturePos(actor).eq(this.destination)) {
       this.destination = undefined
-      return this.onReach(actor, game)
+      return this.onReach(actor, levelMap, game)
     }
   }
 
-  protected abstract foundNewTarget(actor: Creature, game: Game): boolean
+  protected abstract foundNewTarget(
+    actor: Creature,
+    levelMap: LevelMap
+  ): boolean
   protected onMove(actor: Creature): void {}
-  protected onReach(actor: Creature, game: Game): CreatureEvent | undefined {
+  protected onReach(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
     return
   }
   protected onCantMove(actor: Creature): void {}
@@ -164,30 +170,30 @@ export abstract class GoToTileAI extends FollowTargetAI {
 
   protected checkCurrentTile(
     actor: Creature,
+    levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {
-    let event = super.checkCurrentTile(actor, game)
+    let event = super.checkCurrentTile(actor, levelMap, game)
 
     if (event) {
       return event
     }
 
-    const pos = game.currentMap.creaturePos(actor)
-    if (this.matcher(actor.stageMemory(game.currentMap).at(pos.x, pos.y))) {
+    const pos = levelMap.creaturePos(actor)
+    if (this.matcher(actor.stageMemory(levelMap).at(pos.x, pos.y))) {
       this.destination = undefined
-      return this.onReach(actor, game)
+      return this.onReach(actor, levelMap, game)
     }
   }
 
-  protected foundNewTarget(actor: Creature, game: Game): boolean {
-    const levelMap = game.currentMap,
-      path = leePath(
-        actor.stageMemory(levelMap),
-        levelMap.creaturePos(actor),
-        tile => tile.tangible(actor),
-        (point, tile) => this.matcher(tile),
-        true
-      )
+  protected foundNewTarget(actor: Creature, levelMap: LevelMap): boolean {
+    const path = leePath(
+      actor.stageMemory(levelMap),
+      levelMap.creaturePos(actor),
+      tile => tile.tangible(actor),
+      (point, tile) => this.matcher(tile),
+      true
+    )
 
     if (path.length) {
       this.destination = path.pop()

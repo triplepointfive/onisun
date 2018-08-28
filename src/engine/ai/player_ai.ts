@@ -1,5 +1,5 @@
 import { MetaAI, AIEvent } from './meta_ai'
-import { Player, Creature } from '../models/creature'
+import { Player } from '../models/creature'
 import {
   IdlePresenter,
   Game,
@@ -13,7 +13,7 @@ import { DeathPresenter } from '../presenters/death_presenter'
 import { CreatureEvent } from '../events/internal'
 
 export class AINewLevelEvent extends AIEvent {
-  constructor(public level: number, game: Game) {
+  constructor(public level: number, private levelMap: LevelMap, game: Game) {
     super(game)
   }
 
@@ -25,10 +25,15 @@ export class AINewLevelEvent extends AIEvent {
     if (this.level % 3 === 0) {
       this.game.ai.presenter = new ProfessionPickingPresenter(
         this.level,
+        this.levelMap,
         this.game
       )
     } else {
-      this.game.ai.presenter = new TalentsTreePresenter(this.level, this.game)
+      this.game.ai.presenter = new TalentsTreePresenter(
+        this.level,
+        this.levelMap,
+        this.game
+      )
     }
   }
 
@@ -38,7 +43,11 @@ export class AINewLevelEvent extends AIEvent {
 }
 
 export class AIDieEvent extends AIEvent {
-  constructor(private dieReason: DieReason, game: Game) {
+  constructor(
+    private dieReason: DieReason,
+    private levelMap: LevelMap,
+    game: Game
+  ) {
     super(game)
   }
 
@@ -47,7 +56,11 @@ export class AIDieEvent extends AIEvent {
       throw 'AINewLevelEvent.run: game.ai is undefined'
     }
 
-    this.game.ai.presenter = new DeathPresenter(this.dieReason, this.game)
+    this.game.ai.presenter = new DeathPresenter(
+      this.dieReason,
+      this.levelMap,
+      this.game
+    )
   }
 
   public immediate(): boolean {
@@ -67,7 +80,7 @@ export class PlayerAI extends MetaAI {
   ): CreatureEvent | undefined {
     this.game = game
 
-    this.presenter = new IdlePresenter(this.game)
+    this.presenter = new IdlePresenter(levelMap, this.game)
     this.game.ai = this
 
     return

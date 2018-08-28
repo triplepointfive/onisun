@@ -21,8 +21,12 @@ export class Picker extends GoToTileAI {
     }
   }
 
-  protected onReach(actor: Creature, game: Game): CreatureEvent | undefined {
-    const tile = game.currentMap.creatureTile(actor)
+  protected onReach(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
+    const tile = levelMap.creatureTile(actor)
 
     if (!tile.items) {
       throw 'Picker.act : nothing to pick up'

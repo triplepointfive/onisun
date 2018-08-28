@@ -16,18 +16,18 @@ export enum PresenterType {
 export abstract class Presenter {
   public player: Player
 
-  constructor(public readonly type: PresenterType, protected game: Game) {
+  constructor(
+    public readonly type: PresenterType,
+    protected levelMap: LevelMap,
+    protected game: Game
+  ) {
     this.player = this.game.player
   }
 
   public build() {}
 
-  get currentLevel(): LevelMap {
-    return this.game.currentMap
-  }
-
   get tile(): Tile {
-    return this.currentLevel.creatureTile(this.player)
+    return this.levelMap.creatureTile(this.player)
   }
 
   protected endTurn(): void {

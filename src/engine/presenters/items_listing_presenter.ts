@@ -6,6 +6,7 @@ import {
   DrinkPotionEvent,
   DropItemsEvent,
   GroupedItem,
+  LevelMap,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
 import { ItemGroup, Potion } from '../models/items'
@@ -21,15 +22,15 @@ abstract class ItemsListingPresenter extends Presenter {
   public positions: ItemsListingPosition[] = []
   public title: string = 'unnamed'
 
-  constructor(game: Game) {
-    super(PresenterType.ItemsListing, game)
+  constructor(levelMap: LevelMap, game: Game) {
+    super(PresenterType.ItemsListing, levelMap, game)
     this.initPositions()
   }
 
   protected abstract initPositions(): void
 
   public close(): void {
-    this.redirect(new IdlePresenter(this.game))
+    this.redirect(new IdlePresenter(this.levelMap, this.game))
   }
 }
 
@@ -67,7 +68,7 @@ export class DropItemsPresenter extends ItemsListingPresenter {
       this.player.on(new DropItemsEvent(this.tile, items, this.game))
       this.endTurn()
     } else {
-      this.redirect(new IdlePresenter(this.game))
+      this.redirect(new IdlePresenter(this.levelMap, this.game))
     }
   }
 }
@@ -79,9 +80,10 @@ export class PutOnItemsPresenter extends ItemsListingPresenter {
   constructor(
     private onWithItem: (itemGroup: ItemsListingPosition) => void,
     public positions: ItemsListingPosition[],
+    levelMap: LevelMap,
     game: Game
   ) {
-    super(game)
+    super(levelMap, game)
   }
 
   protected initPositions(): void {}
@@ -96,7 +98,7 @@ export class PutOnItemsPresenter extends ItemsListingPresenter {
   }
 
   public close(): void {
-    this.redirect(new InventoryPresenter(this.game))
+    this.redirect(new InventoryPresenter(this.levelMap, this.game))
   }
 }
 

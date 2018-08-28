@@ -67,7 +67,7 @@ export class Patrol extends AI {
     }
 
     if (this.firstCallPatrol) {
-      const pos = game.currentMap.creaturePos(actor)
+      const pos = levelMap.creaturePos(actor)
       this.addNode(pos)
       this.firstCallPatrol = false
     }
@@ -82,7 +82,7 @@ export class Patrol extends AI {
         this.currentNodeID = this.targetNodeID
       }
 
-      this.pickUpNewTarget(actor, game)
+      this.pickUpNewTarget(actor, levelMap)
       return this.moveToTarget(actor, levelMap, game, firstTurn)
     }
   }
@@ -109,17 +109,17 @@ export class Patrol extends AI {
     this.step = 0
   }
 
-  private buildNewPath(actor: Creature, game: Game): void {
+  private buildNewPath(actor: Creature, levelMap: LevelMap): void {
     // TODO: Remove this
     if (!this.targetNodeID) {
       throw 'Patrol has no next targetID'
     }
     const pos: Point = this.graph.node(this.targetNodeID)
 
-    this.path = this.buildPath(actor, game.currentMap, point => pos.eq(point))
+    this.path = this.buildPath(actor, levelMap, point => pos.eq(point))
   }
 
-  private pickUpNewTarget(actor: Creature, game: Game): void {
+  private pickUpNewTarget(actor: Creature, levelMap: LevelMap): void {
     let seenLastID: NodeID = this.graph.nodes()[0],
       seenLastStep: number = this.lastNodeVisit[seenLastID],
       nodes = this.graph.neighbors(this.currentNodeID)
@@ -134,7 +134,7 @@ export class Patrol extends AI {
     }
 
     this.targetNodeID = seenLastID
-    this.buildNewPath(actor, game)
+    this.buildNewPath(actor, levelMap)
   }
 
   private moveToTarget(
@@ -154,11 +154,11 @@ export class Patrol extends AI {
       }
     } else if (
       actor
-        .stageMemory(game.currentMap)
+        .stageMemory(levelMap)
         .at(nextPoint.x, nextPoint.y)
         .tangible()
     ) {
-      this.buildNewPath(actor, game)
+      this.buildNewPath(actor, levelMap)
 
       if (this.path.length) {
         return this.act(actor, levelMap, game, false)

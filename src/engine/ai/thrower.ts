@@ -21,7 +21,7 @@ export class Thrower extends AI {
     if (
       !actor.can(Ability.Throwing) ||
       !this.hasMissile(actor) ||
-      !this.canAttack(actor, game)
+      !this.canAttack(actor, levelMap, game)
     ) {
       return
     }
@@ -33,15 +33,15 @@ export class Thrower extends AI {
     }
 
     bresenham(
-      game.currentMap.creaturePos(actor),
-      game.currentMap.creaturePos(this.victim),
+      levelMap.creaturePos(actor),
+      levelMap.creaturePos(this.victim),
       (x, y) => path.push(new Point(x, y))
     )
 
     return new MissileAttackEvent(
       path,
       game,
-      game.currentMap,
+      levelMap,
       (reaction: Reaction) => {
         if (reaction === Reaction.DIE) {
           this.victim = undefined
@@ -56,17 +56,17 @@ export class Thrower extends AI {
     return this.missiles !== undefined
   }
 
-  private canAttack(actor: Creature, game: Game): boolean {
+  private canAttack(actor: Creature, levelMap: LevelMap, game: Game): boolean {
     this.previousVictim = this.victim
     this.victim = undefined
 
     if (this.previousVictim) {
-      if (this.findWithId(actor, game.currentMap, this.previousVictim.id)) {
+      if (this.findWithId(actor, levelMap, this.previousVictim.id)) {
         return true
       }
     }
 
-    return this.findCreature(actor, game.currentMap, creature =>
+    return this.findCreature(actor, levelMap, creature =>
       this.enemies(actor, creature)
     )
   }

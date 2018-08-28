@@ -47,17 +47,17 @@ class TestDungeon extends Dungeon {
 }
 
 describe('IdlePresenter', () => {
-  let game: TestGame,
-    player: Player,
-    screen: IdlePresenter,
-    map = generateLevelMap()
+  let game: TestGame, player: Player, screen: IdlePresenter, map: LevelMap
 
   beforeEach(() => {
     game = generateGame()
+    game.currentMap = map = generateLevelMap()
+
     game.player = player = generatePlayer()
     game.ai = player.ai
+    map.addCreature(fakeStairPos, player)
 
-    screen = new IdlePresenter(game)
+    screen = new IdlePresenter(map, game)
     screen.redirect = jest.fn()
     screen.endTurn = jest.fn()
   })
@@ -111,6 +111,11 @@ describe('IdlePresenter', () => {
     })
 
     it('handles stairs', () => {
+      // TODO: Remove
+      screen = new IdlePresenter(game.currentMap, game)
+      screen.redirect = jest.fn()
+      screen.endTurn = jest.fn()
+
       game.getMap(level0).addCreature(stairPos, player)
       game.ai.act(player, map, game)
 
@@ -123,14 +128,6 @@ describe('IdlePresenter', () => {
   })
 
   describe('on pick up', () => {
-    let map: LevelMap,
-      pos = new Point(1, 1)
-
-    beforeEach(() => {
-      game.currentMap = map = generateLevelMap()
-      map.addCreature(pos, player)
-    })
-
     it('logs when there is nothing to pick up', () => {
       screen.onInput(IdleInputKey.PickUp)
 
@@ -166,8 +163,6 @@ describe('IdlePresenter', () => {
 
     beforeEach(() => {
       missile = generateMissile()
-      game.currentMap = generateLevelMap()
-      game.currentMap.addCreature(fakeStairPos, player)
     })
 
     it('complains when no missile equipped', () => {
@@ -195,7 +190,7 @@ describe('IdlePresenter', () => {
     it('opens missile screen', () => {
       player.inventory.putToBag(missile, 5)
       player.inventory.missileSlot.equip(player, missile)
-      generateLevelMap().addCreature(new Point(1, 1), player)
+      map.addCreature(new Point(1, 1), player)
       player.rebuildVision(game.currentMap)
 
       screen.onInput(IdleInputKey.Missile)

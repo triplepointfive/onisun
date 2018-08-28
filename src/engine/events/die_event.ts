@@ -42,7 +42,7 @@ export class DieEvent extends CreatureEvent {
   }
 
   public affectPlayer(player: Player): Reaction {
-    player.ai.pushEvent(new AIDieEvent(this.reason, this.game))
+    player.ai.pushEvent(new AIDieEvent(this.reason, this.levelMap, this.game))
 
     return Reaction.DIE
   }

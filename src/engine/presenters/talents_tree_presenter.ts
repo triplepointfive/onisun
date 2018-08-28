@@ -1,5 +1,5 @@
 import { Presenter, PresenterType } from './internal'
-import { Game } from '../../engine'
+import { Game, LevelMap } from '../../engine'
 import { Profession, Talent, TalentStatus } from '../models/profession'
 
 interface TalentWithStatus extends Talent {
@@ -14,8 +14,8 @@ interface TalentsTreePresenterProfession {
 export class TalentsTreePresenter extends Presenter {
   public options: TalentsTreePresenterProfession[] = []
 
-  constructor(public readonly level: number, game: Game) {
-    super(PresenterType.AbilitiesPicking, game)
+  constructor(public readonly level: number, levelMap: LevelMap, game: Game) {
+    super(PresenterType.AbilitiesPicking, levelMap, game)
 
     this.options = this.player.professions.map(profession => {
       return {

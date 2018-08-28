@@ -104,8 +104,8 @@ export class Dispatcher extends MetaAI {
     if ((event = this.explorer.act(actor, levelMap, game))) {
       if (!actor.dead) {
         this.patrol.trackMovement(
-          game.currentMap.creaturePos(actor),
-          game.currentMap.creatureTile(actor)
+          levelMap.creaturePos(actor),
+          levelMap.creatureTile(actor)
         )
       }
     } else if ((event = this.descender.act(actor, levelMap, game))) {

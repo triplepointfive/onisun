@@ -13,24 +13,24 @@ export class Attacker extends AI {
     game: Game,
     firstTurn: boolean = true
   ): CreatureEvent | undefined {
-    if (!this.canAttack(actor, game)) {
+    if (!this.canAttack(actor, levelMap)) {
       return
     }
 
-    if (this.victim && this.victimInAccess(actor, game, this.victim)) {
+    if (this.victim && this.victimInAccess(actor, levelMap, this.victim)) {
       return new AttackEvent(this.victim, levelMap, game)
     } else {
       if (!firstTurn) {
         throw 'Attacker got called twice'
       }
 
-      this.pickNewVictim(actor, game)
+      this.pickNewVictim(actor, levelMap)
       return this.act(actor, levelMap, game, false)
     }
   }
 
-  private canAttack(actor: Creature, game: Game): boolean {
-    const creature = this.findCreature(actor, game.currentMap, creature =>
+  private canAttack(actor: Creature, levelMap: LevelMap): boolean {
+    const creature = this.findCreature(actor, levelMap, creature =>
       this.enemies(actor, creature)
     )
     return !!creature
@@ -38,7 +38,7 @@ export class Attacker extends AI {
 
   private victimInAccess(
     actor: Creature,
-    game: Game,
+    levelMap: LevelMap,
     victim: Creature | undefined
   ): boolean {
     if (victim === undefined) {
@@ -47,14 +47,14 @@ export class Attacker extends AI {
 
     const creature = this.findCreature(
       actor,
-      game.currentMap,
+      levelMap,
       (creature: Creature) => creature.id === victim.id
     )
     return !!creature
   }
 
-  private pickNewVictim(actor: Creature, game: Game) {
-    this.victim = this.findCreature(actor, game.currentMap, creature =>
+  private pickNewVictim(actor: Creature, levelMap: LevelMap) {
+    this.victim = this.findCreature(actor, levelMap, creature =>
       this.enemies(actor, creature)
     )
   }

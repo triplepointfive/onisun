@@ -2,7 +2,7 @@ import { Presenter, PresenterType } from './internal'
 import { Point, bresenhamInclusion, Direction } from '../utils/utils'
 import { Memory } from '../models/memory'
 import { IdlePresenter } from './idle_presenter'
-import { MissileAttackEvent, Game } from '../../engine'
+import { MissileAttackEvent, Game, LevelMap } from '../../engine'
 
 export class MissilePresenter extends Presenter {
   public targetPos: Point
@@ -11,11 +11,11 @@ export class MissilePresenter extends Presenter {
   private enemies: Point[] = []
   private path: Point[] = []
 
-  constructor(game: Game) {
-    super(PresenterType.Missile, game)
+  constructor(levelMap: LevelMap, game: Game) {
+    super(PresenterType.Missile, levelMap, game)
 
     this.findEnemies()
-    this.memory = this.player.stageMemory(this.currentLevel)
+    this.memory = this.player.stageMemory(this.levelMap)
     this.targetPos = this.resetTargetId()
   }
 
@@ -51,11 +51,11 @@ export class MissilePresenter extends Presenter {
 
   public moveTarget(direction: Direction): void {
     const dest = this.targetPos.add(direction),
-      tile = this.currentLevel.at(dest.x, dest.y)
+      tile = this.levelMap.at(dest.x, dest.y)
 
     if (
       tile.visibleThrough() &&
-      this.player.stageMemory(this.currentLevel).at(dest.x, dest.y).visible
+      this.player.stageMemory(this.levelMap).at(dest.x, dest.y).visible
     ) {
       this.updateTarget(dest)
       this.targetEnemyIndex = undefined
@@ -63,9 +63,9 @@ export class MissilePresenter extends Presenter {
   }
 
   public attack(): void {
-    if (!this.targetPos.eq(this.currentLevel.creaturePos(this.player))) {
+    if (!this.targetPos.eq(this.levelMap.creaturePos(this.player))) {
       this.player.on(
-        new MissileAttackEvent(this.path, this.game, this.game.currentMap, () =>
+        new MissileAttackEvent(this.path, this.game, this.levelMap, () =>
           this.endTurn()
         )
       )
@@ -74,7 +74,7 @@ export class MissilePresenter extends Presenter {
 
   public close(): void {
     this.resetPath()
-    this.redirect(new IdlePresenter(this.game))
+    this.redirect(new IdlePresenter(this.levelMap, this.game))
   }
 
   private resetTargetId(): Point {
@@ -85,7 +85,7 @@ export class MissilePresenter extends Presenter {
       point = this.enemies[this.targetEnemyIndex]
     } else {
       this.targetEnemyIndex = undefined
-      point = this.currentLevel.creaturePos(this.player)
+      point = this.levelMap.creaturePos(this.player)
     }
 
     this.updateTarget(point)
@@ -105,8 +105,8 @@ export class MissilePresenter extends Presenter {
   private drawPath(): void {
     this.path = []
     let stop = false
-    const stage = this.currentLevel,
-      pos = this.currentLevel.creaturePos(this.player)
+    const stage = this.levelMap,
+      pos = this.levelMap.creaturePos(this.player)
 
     bresenhamInclusion(pos, this.targetPos, (x, y) => {
       if (!stage.at(x, y).passibleThrough()) {
@@ -121,7 +121,7 @@ export class MissilePresenter extends Presenter {
   private findEnemies(): void {
     this.enemies = []
 
-    this.player.stageMemory(this.currentLevel).each((tile, x, y) => {
+    this.player.stageMemory(this.levelMap).each((tile, x, y) => {
       if (
         tile.visible &&
         tile.creature &&

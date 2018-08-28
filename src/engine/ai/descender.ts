@@ -65,14 +65,14 @@ export class Descender extends GoToTileAI {
     }
   }
 
-  protected onReach(actor: Creature, game: Game): CreatureEvent | undefined {
+  protected onReach(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
     // Should stay here at least for a turn
-    const visitor = new StairwayDownTileMoverVisitor(
-        actor,
-        game,
-        game.currentMap
-      ),
-      tile = game.currentMap.creatureTile(actor)
+    const visitor = new StairwayDownTileMoverVisitor(actor, game, levelMap),
+      tile = levelMap.creatureTile(actor)
 
     tile.visit(visitor)
     return visitor.event

@@ -7,6 +7,7 @@ import {
   PutOnItemsPresenter,
   PutOnItemEvent,
   TakeOffItemEvent,
+  LevelMap,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
 
@@ -21,8 +22,8 @@ export class InventoryPresenter extends Presenter {
   public positions: InventoryPosition[] = []
   private takeTime: boolean = false
 
-  constructor(game: Game) {
-    super(PresenterType.Inventory, game)
+  constructor(levelMap: LevelMap, game: Game) {
+    super(PresenterType.Inventory, levelMap, game)
     this.rebuildPositions()
   }
 
@@ -49,6 +50,7 @@ export class InventoryPresenter extends Presenter {
           this.redirect(this)
         },
         position.availableItems,
+        this.levelMap,
         this.game
       )
     )
@@ -58,7 +60,7 @@ export class InventoryPresenter extends Presenter {
     if (this.takeTime) {
       this.endTurn()
     } else {
-      this.redirect(new IdlePresenter(this.game))
+      this.redirect(new IdlePresenter(this.levelMap, this.game))
     }
   }
 

@@ -69,8 +69,8 @@ class HandleTileVisitor extends TileVisitor {
 }
 
 export class IdlePresenter extends Presenter {
-  constructor(game: Game) {
-    super(PresenterType.Idle, game)
+  constructor(levelMap: LevelMap, game: Game) {
+    super(PresenterType.Idle, levelMap, game)
   }
 
   public onInput(key: IdleInputKey) {
@@ -102,31 +102,29 @@ export class IdlePresenter extends Presenter {
         return this.missileDialog()
 
       case IdleInputKey.Drop:
-        this.redirect(new DropItemsPresenter(this.game))
+        this.redirect(new DropItemsPresenter(this.levelMap, this.game))
         return
       case IdleInputKey.Drink:
-        this.redirect(new DrinkPresenter(this.game))
+        this.redirect(new DrinkPresenter(this.levelMap, this.game))
         return
       case IdleInputKey.Inventory:
-        this.redirect(new InventoryPresenter(this.game))
+        this.redirect(new InventoryPresenter(this.levelMap, this.game))
         return
       case IdleInputKey.Bag:
-        this.redirect(new BagPresenter(this.game))
+        this.redirect(new BagPresenter(this.levelMap, this.game))
         return
     }
   }
 
   private move(direction: Direction): void {
-    const pos = this.currentLevel.creaturePos(this.player),
+    const pos = this.levelMap.creaturePos(this.player),
       dest = pos.add(direction),
-      tile = this.currentLevel.at(dest.x, dest.y)
+      tile = this.levelMap.at(dest.x, dest.y)
 
     if (tile.passibleThrough(this.player)) {
-      this.player.on(new MoveEvent(this.game, this.currentLevel, dest))
+      this.player.on(new MoveEvent(this.game, this.levelMap, dest))
     } else if (tile.creature) {
-      this.player.on(
-        new AttackEvent(tile.creature, this.currentLevel, this.game)
-      )
+      this.player.on(new AttackEvent(tile.creature, this.levelMap, this.game))
     } else {
       this.game.logger.ranIntoAnObstacle()
     }
@@ -144,7 +142,7 @@ export class IdlePresenter extends Presenter {
       this.player.on(new PickUpItemsEvent(tile, items.bunch, this.game))
       this.endTurn()
     } else {
-      this.redirect(new PickUpPresenter(this.game))
+      this.redirect(new PickUpPresenter(this.levelMap, this.game))
     }
   }
 
@@ -153,7 +151,7 @@ export class IdlePresenter extends Presenter {
 
     if (missile && missile.item) {
       if (missile.item.canThrow(this.player)) {
-        this.redirect(new MissilePresenter(this.game))
+        this.redirect(new MissilePresenter(this.levelMap, this.game))
       } else {
         this.game.logger.needMissileWeapon()
       }
@@ -164,7 +162,7 @@ export class IdlePresenter extends Presenter {
 
   private handle(): void {
     this.tile.visit(
-      new HandleTileVisitor(this.game, this.game.currentMap, this.player, () =>
+      new HandleTileVisitor(this.game, this.levelMap, this.player, () =>
         this.endTurn()
       )
     )

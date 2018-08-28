@@ -1,14 +1,14 @@
 import { PresenterType, Presenter } from './internal'
 import { Profession } from '../models/profession'
 import { TalentsTreePresenter } from './talents_tree_presenter'
-import { Game } from '../../engine'
+import { Game, LevelMap } from '../../engine'
 
 export class ProfessionPickingPresenter extends Presenter {
   public options: Profession[]
   public title: string
 
-  constructor(public readonly level: number, game: Game) {
-    super(PresenterType.ProfessionPicking, game)
+  constructor(public readonly level: number, levelMap: LevelMap, game: Game) {
+    super(PresenterType.ProfessionPicking, levelMap, game)
     this.options = this.game.professionPicker.available(this.player)
 
     this.title = `Gained ${level} level`
@@ -24,6 +24,8 @@ export class ProfessionPickingPresenter extends Presenter {
       this.player.professions.push(pickedProfession)
     }
 
-    this.redirect(new TalentsTreePresenter(this.level, this.game))
+    this.redirect(
+      new TalentsTreePresenter(this.level, this.levelMap, this.game)
+    )
   }
 }
