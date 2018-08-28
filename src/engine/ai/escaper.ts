@@ -11,10 +11,10 @@ export class Escaper extends FollowTargetAI {
   private escapesFrom: [Point, Creature][] = []
 
   protected foundNewTarget(actor: Creature, game: Game): boolean {
-    return this.foundEnemies(actor, game) && this.buildPath(actor, game)
+    return this.foundEnemies(actor, game) && this.buildEscapePath(actor, game)
   }
 
-  private buildPath(
+  private buildEscapePath(
     actor: Creature,
     game: Game,
     minDistance: number = actor.radius() / 2
@@ -24,10 +24,9 @@ export class Escaper extends FollowTargetAI {
       return false
     }
 
-    const path = this.leePath(
+    const path = this.buildPath(
       actor,
-      actor.stageMemory(game.currentMap),
-      game.currentMap.creaturePos(actor),
+      game.currentMap,
       ({ x, y }) => {
         const score = sumBy(this.escapesFrom, ([pos, enemy]) => {
           // I don't use pathfinding since it should try
@@ -37,15 +36,13 @@ export class Escaper extends FollowTargetAI {
         })
 
         return score >= minDistance
-      },
-      true
-    )
+      })
 
     if (path.length) {
       this.destination = path.pop()
       return true
     } else {
-      return this.buildPath(actor, game, minDistance - STEP_DISTANCE)
+      return this.buildEscapePath(actor, game, minDistance - STEP_DISTANCE)
     }
   }
 

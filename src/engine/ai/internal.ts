@@ -1,14 +1,11 @@
 import { Point, twoDimArray } from '../utils/utils'
 import { Creature, Clan } from '../models/creature'
 
-import { sample } from 'lodash'
 import { MemoryTile, Memory } from '../models/memory'
 import { MoveEvent } from '../events/move_event'
 import { Game } from '../models/game'
-import { LevelMap, CreatureEvent } from '../../engine'
+import { LevelMap, CreatureEvent, leePath } from '../../engine'
 import { StayEvent } from '../events/stay_event'
-
-const FIRST_STEP: number = 1
 
 export abstract class AI {
   public abstract act(actor: Creature, game: Game): CreatureEvent | undefined
@@ -27,114 +24,35 @@ export abstract class AI {
       return new StayEvent()
     }
 
-    const path = this.leePath(
-      actor,
-      actor.stageMemory(levelMap),
-      levelMap.creaturePos(actor),
-      point => destination.eq(point)
+    return this.move(actor, game.currentMap, game, point =>
+      destination.eq(point)
     )
-
-    if (path.length) {
-      return new MoveEvent(game, path[0])
-    }
   }
 
-  protected followTo(
+  protected move(
     actor: Creature,
-    destination: Point,
     levelMap: LevelMap,
-    game: Game
+    game: Game,
+    dest: (point: Point, tile: MemoryTile) => boolean
   ): CreatureEvent | undefined {
-    const path = this.leePath(
-      actor,
+    const [point] = this.buildPath(actor, levelMap, dest)
+
+    if (point) {
+      return new MoveEvent(game, point)
+    }
+  }
+
+  protected buildPath(
+    actor: Creature,
+    levelMap: LevelMap,
+    dest: (point: Point, tile: MemoryTile) => boolean
+  ): Point[] {
+    return leePath(
       actor.stageMemory(levelMap),
       levelMap.creaturePos(actor),
-      point => destination.nextTo(point)
+      tile => tile.tangible(actor),
+      dest
     )
-
-    if (path.length) {
-      return new MoveEvent(game, path[0])
-    }
-  }
-
-  protected leePath(
-    actor: Creature,
-    map: Memory,
-    pos: Point,
-    destination: (point: Point, tile: MemoryTile) => boolean,
-    randomDestination: boolean = false
-  ): Point[] {
-    let stageMemory: number[][] = twoDimArray(map.width, map.height, () => -1)
-    let pointsToVisit: Point[] = []
-    let pointsToCheck: Point[] = [pos]
-
-    let step = 0
-    while (pointsToCheck.length && !pointsToVisit.length) {
-      let wavePoints: Array<Point> = []
-
-      pointsToCheck.forEach((point: Point) => {
-        if (!map.inRange(point)) {
-          return
-        }
-
-        const tile = map.at(point.x, point.y)
-        // TODO: Compare, current value might be lower
-        if (tile.tangible(actor) || stageMemory[point.x][point.y] !== -1) {
-          return
-        }
-
-        stageMemory[point.x][point.y] = step
-        if (destination(point, tile)) {
-          pointsToVisit.push(point)
-        } else {
-          point.wrappers().forEach(dist => wavePoints.push(dist))
-        }
-      })
-      step++
-
-      pointsToCheck = wavePoints
-    }
-
-    if (pointsToVisit.length) {
-      // TODO: Remove this check
-      let randomPointToVisit = sample(pointsToVisit)
-      if (randomDestination && randomPointToVisit) {
-        return this.buildRoad(randomPointToVisit, stageMemory)
-      } else {
-        return this.buildRoad(pointsToVisit[0], stageMemory)
-      }
-    } else {
-      return []
-    }
-  }
-
-  private buildRoad(point: Point, stageMemory: number[][]): Point[] {
-    let lastPoint = point
-    let chain = [lastPoint]
-
-    let delta: Point | undefined
-
-    while (stageMemory[lastPoint.x][lastPoint.y] !== FIRST_STEP) {
-      delta = Point.dxy.find(
-        (dp): boolean => {
-          return (
-            stageMemory[lastPoint.x + dp.x] &&
-            stageMemory[lastPoint.x + dp.x][lastPoint.y + dp.y] ===
-              stageMemory[lastPoint.x][lastPoint.y] - 1
-          )
-        }
-      )
-
-      if (delta === undefined) {
-        return []
-      }
-
-      lastPoint = lastPoint.add(delta)
-
-      chain.unshift(lastPoint)
-    }
-
-    return chain
   }
 
   protected withinView(
@@ -254,13 +172,14 @@ export abstract class GoToTileAI extends FollowTargetAI {
   }
 
   protected foundNewTarget(actor: Creature, game: Game): boolean {
-    const path = this.leePath(
-      actor,
-      actor.stageMemory(game.currentMap),
-      game.currentMap.creaturePos(actor),
-      (point, tile) => this.matcher(tile),
-      true
-    )
+    const levelMap = game.currentMap,
+      path = leePath(
+        actor.stageMemory(levelMap),
+        levelMap.creaturePos(actor),
+        tile => tile.tangible(actor),
+        (point, tile) => this.matcher(tile),
+        true
+      )
 
     if (path.length) {
       this.destination = path.pop()

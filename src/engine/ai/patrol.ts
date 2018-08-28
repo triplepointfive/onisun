@@ -117,10 +117,9 @@ export class Patrol extends AI {
     }
     const pos: Point = this.graph.node(this.targetNodeID)
 
-    this.path = this.leePath(
+    this.path = this.buildPath(
       actor,
-      actor.stageMemory(game.currentMap),
-      game.currentMap.creaturePos(actor),
+      game.currentMap,
       point => pos.eq(point)
     )
   }

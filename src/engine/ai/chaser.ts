@@ -3,6 +3,7 @@ import { Game } from '../models/game'
 import { Point } from '../utils/utils'
 import { FollowTargetAI } from './internal'
 import { CreatureEvent } from '../events/internal'
+import { LevelMap } from '../models/level_map';
 
 export class Chaser extends FollowTargetAI {
   private victimId?: CreatureId
@@ -79,5 +80,14 @@ export class Chaser extends FollowTargetAI {
     )
 
     return result
+  }
+
+  protected followTo(
+    actor: Creature,
+    destination: Point,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
+    return this.move(actor, levelMap, game, point => destination.nextTo(point))
   }
 }

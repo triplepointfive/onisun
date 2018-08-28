@@ -62,4 +62,6 @@ export * from './engine/presenters/items_listing_presenter'
 export * from './engine/presenters/talents_tree_presenter'
 export * from './engine/presenters/profession_picking_presenter'
 
+export * from './engine/utils/fov'
+export * from './engine/utils/lee_path'
 export * from './engine/utils/utils'
