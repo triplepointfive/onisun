@@ -15,11 +15,11 @@ beforeEach(() => {
 
 describe('With full health', () => {
   it('Is not available', () => {
-    expect(creature.ai.act(creature, game)).toBeFalsy()
+    expect(creature.ai.act(creature, map, game)).toBeFalsy()
   })
 
   it('Does nothing', () => {
-    expect(creature.characteristics.health.atMax()).toBeTruthy()
+    expect(creature.characteristics.health.atMax).toBeTruthy()
   })
 })
 
@@ -29,6 +29,6 @@ describe('When health is not full', () => {
   })
 
   it('Available', () => {
-    expect(creature.ai.act(creature, game)).toBeTruthy()
+    expect(creature.ai.act(creature, map, game)).toBeTruthy()
   })
 })

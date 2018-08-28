@@ -37,14 +37,14 @@ describe('AttackEvent', () => {
     actor.characteristics.misses.mockReturnValueOnce(true)
 
     expect(actor.on(event)).toEqual(Reaction.DODGE)
-    expect(victim.characteristics.health.atMax()).toBeTruthy()
+    expect(victim.characteristics.health.atMax).toBeTruthy()
   })
 
   describe('on success', () => {
     let victimHealth: number
 
     beforeEach(() => {
-      victimHealth = victim.characteristics.health.maximum()
+      victimHealth = victim.characteristics.health.maximum
 
       actor.characteristics.misses = jest.fn()
       actor.characteristics.misses.mockReturnValueOnce(false)
@@ -55,7 +55,7 @@ describe('AttackEvent', () => {
       actor.characteristics.damageTo.mockReturnValueOnce(victimHealth / 2)
 
       expect(actor.on(event)).toEqual(Reaction.HURT)
-      expect(victim.characteristics.health.atMax()).toBeFalsy()
+      expect(victim.characteristics.health.atMax).toBeFalsy()
 
       expect(game.logger.messages.length).toEqual(1)
     })

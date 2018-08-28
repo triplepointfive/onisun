@@ -130,11 +130,11 @@ export class Creature {
   }
 
   public speed(): number {
-    return this.characteristics.speed.currentValue()
+    return this.characteristics.speed.currentValue
   }
 
   public radius(): number {
-    return this.characteristics.radius.currentValue()
+    return this.characteristics.radius.currentValue
   }
 
   public stageMemory(levelMap: LevelMap): Memory {

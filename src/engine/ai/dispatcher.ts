@@ -82,15 +82,15 @@ export class Dispatcher extends MetaAI {
 
   private feelsGood(actor: Creature): boolean {
     return (
-      actor.characteristics.health.currentValue() >
-      actor.characteristics.health.maximum() * 0.9
+      actor.characteristics.health.currentValue >
+      actor.characteristics.health.maximum * 0.9
     )
   }
 
   private healthCritical(actor: Creature): boolean {
     return (
-      actor.characteristics.health.currentValue() <
-      actor.characteristics.health.maximum() / 4
+      actor.characteristics.health.currentValue <
+      actor.characteristics.health.maximum / 4
     )
   }
 

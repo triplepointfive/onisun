@@ -43,6 +43,7 @@
 import Vue from 'vue'
 
 import PrimaryAttribute from './PrimaryAttribute.vue'
+import { Attribute, Level } from 'src/engine'
 
 export default Vue.extend({
   name: 'Stats',
@@ -51,21 +52,21 @@ export default Vue.extend({
     PrimaryAttribute
   },
   computed: {
-    levelProgress() {
-      const level = this.creature.level
+    levelProgress(): string {
+      const level: Level = this.creature.level
       return `${level.currentExperience  / level.requiredExperience * 100}%`
     },
-    healthLevel() {
-      const attribute = this.creature.characteristics.health
-      return `${attribute.currentValue() / (attribute.maximum() || 0) * 100}%`
+    healthLevel(): string {
+      const attribute: Attribute = this.creature.characteristics.health
+      return `${attribute.currentValue / (attribute.maximum || 0) * 100}%`
     }
   },
   methods: {
-    displayAttribute(attribute) {
-      if (attribute.currentValue() != attribute.maximum()) {
-        return `${attribute.currentValue()} / ${attribute.maximum()}`
+    displayAttribute(attribute: Attribute) {
+      if (attribute.currentValue != attribute.maximum) {
+        return `${attribute.currentValue} / ${attribute.maximum}`
       } else {
-        return attribute.currentValue()
+        return attribute.currentValue
       }
     },
   }

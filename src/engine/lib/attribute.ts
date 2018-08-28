@@ -5,11 +5,11 @@ export class Attribute {
 
   constructor(protected max: number, public current: number = max) {}
 
-  public maximum(): number {
+  get maximum(): number {
     return this.max
   }
 
-  public atMax(): boolean {
+  get atMax(): boolean {
     return this.max === this.current
   }
 
@@ -39,14 +39,14 @@ export class Attribute {
     remove(this.modifiers, val => val === modifier)
   }
 
-  public currentValue(): number {
+  get currentValue(): number {
     return this.current + sum(this.modifiers)
   }
 }
 
 export class PositiveAttribute extends Attribute {
-  public currentValue(): number {
-    const value = super.currentValue()
+  get currentValue(): number {
+    const value = super.currentValue
     return value >= 1 ? value : 1
   }
 

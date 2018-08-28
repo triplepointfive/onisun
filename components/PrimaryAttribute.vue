@@ -1,7 +1,7 @@
 <template lang='pug'>
 .simple-popover(:id="id")
   .title {{ name }}
-  .value {{ attr.currentValue() }}
+  .value {{ attr.currentValue }}
   b-popover(
     :target='id'
     triggers='hover'
@@ -31,10 +31,10 @@ export default Vue.extend({
   name: 'PrimaryAttribute',
   props: ['name', 'slug', 'attr', 'fullName'],
   computed: {
-    id() {
+    id(): string {
       return `${this.slug}-container`
     },
-    modifier() {
+    modifier(): number {
       return sum(this.attr.modifiers)
     }
   }

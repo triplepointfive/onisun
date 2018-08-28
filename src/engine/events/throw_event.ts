@@ -27,7 +27,7 @@ export class ThrowEvent extends CreatureEvent {
       this.missile
     )
 
-    if (damage >= actor.characteristics.health.currentValue()) {
+    if (damage >= actor.characteristics.health.currentValue) {
       this.subject.on(new AddExperienceEvent(actor, this.game))
       this.game.logger.throwKillMessage(
         damage,
