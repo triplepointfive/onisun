@@ -7,7 +7,11 @@ import { Game } from '../models/game'
 import { LevelMap, CreatureEvent, leePath } from '../../engine'
 
 export abstract class AI {
-  public abstract act(actor: Creature, game: Game): CreatureEvent | undefined
+  public abstract act(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined
 
   protected moveTo(
     actor: Creature,
@@ -27,7 +31,7 @@ export abstract class AI {
     const [point] = this.buildPath(actor, levelMap, dest)
 
     if (point) {
-      return new MoveEvent(game, point)
+      return new MoveEvent(game, levelMap, point)
     }
   }
 
@@ -104,7 +108,11 @@ export abstract class AI {
 export abstract class FollowTargetAI extends AI {
   public destination?: Point = undefined
 
-  public act(actor: Creature, game: Game): CreatureEvent | undefined {
+  public act(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
     if (!this.foundNewTarget(actor, game) || !this.destination) {
       return this.checkCurrentTile(actor, game)
     }

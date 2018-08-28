@@ -170,11 +170,15 @@ export abstract class Trap extends Tile {
     tileVisitor.onTrap(this)
   }
 
-  public activate(game: Game, actor: Creature): void {
-    this.affect(game, actor)
+  public activate(game: Game, levelMap: LevelMap, actor: Creature): void {
+    this.affect(game, levelMap, actor)
   }
 
-  protected abstract affect(game: Game, actor: Creature): void
+  protected abstract affect(
+    game: Game,
+    levelMap: LevelMap,
+    actor: Creature
+  ): void
 }
 
 // TODO: Add return type?

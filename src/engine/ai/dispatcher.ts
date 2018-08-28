@@ -12,6 +12,7 @@ import { Descender } from './descender'
 import { SelfHealer } from './selfhealer'
 import { Game } from '../models/game'
 import { CreatureEvent } from '../events/internal'
+import { LevelMap } from '../models/level_map'
 
 export class Dispatcher extends MetaAI {
   private escaper: Escaper
@@ -41,7 +42,11 @@ export class Dispatcher extends MetaAI {
     this.descender = new Descender()
   }
 
-  public act(actor: Creature, game: Game): CreatureEvent | undefined {
+  public act(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
     this.step += 1
 
     if (this.step % actor.characteristics.regenerateEvery() === 0) {
@@ -52,22 +57,22 @@ export class Dispatcher extends MetaAI {
     let event: CreatureEvent | undefined
 
     if (this.feelsGood(actor)) {
-      if ((event = this.attacker.act(actor, game))) {
-      } else if ((event = this.thrower.act(actor, game))) {
-      } else if ((event = this.chaser.act(actor, game))) {
-      } else if ((event = this.picker.act(actor, game))) {
+      if ((event = this.attacker.act(actor, levelMap, game))) {
+      } else if ((event = this.thrower.act(actor, levelMap, game))) {
+      } else if ((event = this.chaser.act(actor, levelMap, game))) {
+      } else if ((event = this.picker.act(actor, levelMap, game))) {
       } else {
-        event = this.explore(actor, game)
+        event = this.explore(actor, levelMap, game)
       }
     } else if (
       this.healthCritical(actor) &&
-      (event = this.escaper.act(actor, game))
+      (event = this.escaper.act(actor, levelMap, game))
     ) {
-    } else if ((event = this.attacker.act(actor, game))) {
-    } else if ((event = this.thrower.act(actor, game))) {
-    } else if ((event = this.chaser.act(actor, game))) {
+    } else if ((event = this.attacker.act(actor, levelMap, game))) {
+    } else if ((event = this.thrower.act(actor, levelMap, game))) {
+    } else if ((event = this.chaser.act(actor, levelMap, game))) {
     } else {
-      event = new SelfHealer().act(actor, game)
+      event = new SelfHealer().act(actor, levelMap, game)
     }
 
     this.resetEvents()
@@ -89,20 +94,24 @@ export class Dispatcher extends MetaAI {
     )
   }
 
-  private explore(actor: Creature, game: Game): CreatureEvent | undefined {
+  private explore(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
     let event: CreatureEvent | undefined
 
-    if ((event = this.explorer.act(actor, game))) {
+    if ((event = this.explorer.act(actor, levelMap, game))) {
       if (!actor.dead) {
         this.patrol.trackMovement(
           game.currentMap.creaturePos(actor),
           game.currentMap.creatureTile(actor)
         )
       }
-    } else if ((event = this.descender.act(actor, game))) {
-    } else if ((event = this.patrol.act(actor, game))) {
+    } else if ((event = this.descender.act(actor, levelMap, game))) {
+    } else if ((event = this.patrol.act(actor, levelMap, game))) {
     } else {
-      event = this.loiter.act(actor, game)
+      event = this.loiter.act(actor, levelMap, game)
     }
 
     return event

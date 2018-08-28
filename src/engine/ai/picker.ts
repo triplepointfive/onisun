@@ -1,4 +1,4 @@
-import { PickUpItemsEvent } from '../../engine'
+import { PickUpItemsEvent, LevelMap } from '../../engine'
 import { Ability, Creature } from '../models/creature'
 import { Game } from '../models/game'
 import { GoToTileAI } from './internal'
@@ -11,9 +11,13 @@ export class Picker extends GoToTileAI {
     super((tile: MemoryTile) => !!tile.items)
   }
 
-  public act(actor: Creature, game: Game): CreatureEvent | undefined {
+  public act(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
     if (actor.can(Ability.Inventory)) {
-      return super.act(actor, game)
+      return super.act(actor, levelMap, game)
     }
   }
 

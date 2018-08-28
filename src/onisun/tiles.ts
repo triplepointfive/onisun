@@ -1,4 +1,4 @@
-import { TrapEvent, Creature, Tile, Trap, Game } from '../engine'
+import { TrapEvent, Creature, Tile, Trap, Game, LevelMap } from '../engine'
 
 export enum OnisunTrapType {
   Fire,
@@ -14,8 +14,8 @@ export class OnisunFireTrap extends Trap {
     return new OnisunFireTrap(this.revealed)
   }
 
-  protected affect(game: Game, creature: Creature): void {
-    creature.on(new TrapEvent(this, game))
+  protected affect(game: Game, levelMap: LevelMap, creature: Creature): void {
+    creature.on(new TrapEvent(this, levelMap, game))
   }
 }
 
@@ -28,7 +28,7 @@ export class OnisunIceTrap extends Trap {
     return new OnisunIceTrap(this.revealed)
   }
 
-  protected affect(game: Game, creature: Creature): void {
-    creature.on(new TrapEvent(this, game))
+  protected affect(game: Game, levelMap: LevelMap, creature: Creature): void {
+    creature.on(new TrapEvent(this, levelMap, game))
   }
 }

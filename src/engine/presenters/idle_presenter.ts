@@ -41,7 +41,7 @@ export enum IdleInputKey {
 class HandleTileVisitor extends TileVisitor {
   constructor(
     private game: Game,
-    private map: LevelMap,
+    private levelMap: LevelMap,
     private player: Player,
     private done: () => void
   ) {
@@ -53,10 +53,12 @@ class HandleTileVisitor extends TileVisitor {
     // TODO: Remove duplicity!!! descender.ts
     const adjacentMap = this.game.getMap(stairway.adjacentMapId)
     stairway.enterPos = adjacentMap.matchStairs(
-      this.map.id,
-      this.map.creaturePos(this.player)
+      this.levelMap.id,
+      this.levelMap.creaturePos(this.player)
     )
-    this.player.on(new MoveEvent(this.game, stairway.enterPos, adjacentMap))
+    this.player.on(
+      new MoveEvent(this.game, this.levelMap, stairway.enterPos, adjacentMap)
+    )
 
     this.done()
   }
@@ -120,9 +122,11 @@ export class IdlePresenter extends Presenter {
       tile = this.currentLevel.at(dest.x, dest.y)
 
     if (tile.passibleThrough(this.player)) {
-      this.player.on(new MoveEvent(this.game, dest))
+      this.player.on(new MoveEvent(this.game, this.currentLevel, dest))
     } else if (tile.creature) {
-      this.player.on(new AttackEvent(tile.creature, this.game))
+      this.player.on(
+        new AttackEvent(tile.creature, this.currentLevel, this.game)
+      )
     } else {
       this.game.logger.ranIntoAnObstacle()
     }

@@ -15,7 +15,7 @@ import {
 } from '../../../src/engine'
 
 class TestTrap extends Trap {
-  protected affect(game: Game, actor: Creature): void {}
+  protected affect(game: Game, levelMap: LevelMap, actor: Creature): void {}
 
   public buildNew(): TestTrap {
     return this
@@ -30,13 +30,13 @@ describe('Trap event', () => {
   beforeEach(() => {
     trap = new TestTrap(false, testTrap)
     game = generateGame()
-    event = new TrapEvent(trap, game)
 
     game.player = player = generatePlayer()
     game.currentMap = map = generateLevelMap()
 
     map.addCreature(new Point(1, 1), player)
     player.rebuildVision(map)
+    event = new TrapEvent(trap, map, game)
   })
 
   describe('for creature', () => {

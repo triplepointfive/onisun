@@ -9,6 +9,7 @@ import { TileVisitor, Tile } from '../models/tile'
 import { MoveEvent } from '../events/move_event'
 import { Game } from '../models/game'
 import { CreatureEvent } from '../events/internal'
+import { LevelMap } from '../models/level_map'
 
 type NodeID = string
 
@@ -57,6 +58,7 @@ export class Patrol extends AI {
 
   public act(
     actor: Creature,
+    levelMap: LevelMap,
     game: Game,
     firstTurn: boolean = true
   ): CreatureEvent | undefined {
@@ -73,7 +75,7 @@ export class Patrol extends AI {
     this.step += 1
 
     if (this.path.length) {
-      return this.moveToTarget(actor, game, firstTurn)
+      return this.moveToTarget(actor, levelMap, game, firstTurn)
     } else {
       if (this.targetNodeID) {
         this.markNodeVisited(this.targetNodeID)
@@ -81,7 +83,7 @@ export class Patrol extends AI {
       }
 
       this.pickUpNewTarget(actor, game)
-      return this.moveToTarget(actor, game, firstTurn)
+      return this.moveToTarget(actor, levelMap, game, firstTurn)
     }
   }
 
@@ -137,6 +139,7 @@ export class Patrol extends AI {
 
   private moveToTarget(
     actor: Creature,
+    levelMap: LevelMap,
     game: Game,
     firstTurn: boolean
   ): CreatureEvent | undefined {
@@ -145,9 +148,9 @@ export class Patrol extends AI {
     if (!nextPoint) {
       if (firstTurn) {
         this.path = []
-        return this.act(actor, game, false)
+        return this.act(actor, levelMap, game, false)
       } else {
-        return new Loiter().act(actor, game)
+        return new Loiter().act(actor, levelMap, game)
       }
     } else if (
       actor
@@ -158,10 +161,10 @@ export class Patrol extends AI {
       this.buildNewPath(actor, game)
 
       if (this.path.length) {
-        return this.act(actor, game, false)
+        return this.act(actor, levelMap, game, false)
       }
     } else {
-      return new MoveEvent(game, nextPoint)
+      return new MoveEvent(game, levelMap, nextPoint)
     }
   }
 

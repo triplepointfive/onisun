@@ -76,8 +76,12 @@ export const generateCreature = function(): Creature {
 }
 
 class AIWrapper extends MetaAI {
-  public act(actor: Creature, game: Game): CreatureEvent | undefined {
-    return this.aiToRun.act(actor, game)
+  public act(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
+    return this.aiToRun.act(actor, levelMap, game)
   }
 }
 

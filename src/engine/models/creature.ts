@@ -144,7 +144,7 @@ export class Creature {
   public act(levelMap: LevelMap, game: Game): void {
     this.visionMask(levelMap)
 
-    const command = this.ai.act(this, game)
+    const command = this.ai.act(this, levelMap, game)
     if (command) {
       this.on(command)
     }

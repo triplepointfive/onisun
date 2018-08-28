@@ -40,7 +40,7 @@ describe('When enemy is too far away', () => {
   })
 
   it('Is not available', () => {
-    expect(internalAI.act(actor, game)).toBeFalsy()
+    expect(actor.act(map, game)).toBeFalsy()
   })
 })
 

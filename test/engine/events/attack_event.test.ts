@@ -29,7 +29,7 @@ describe('AttackEvent', () => {
     victim = generateCreature()
     map.addCreature(new Point(1, 1), victim)
 
-    event = new AttackEvent(victim, game)
+    event = new AttackEvent(victim, map, game)
   })
 
   it('victim can dodge', () => {

@@ -9,7 +9,7 @@ type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
 
 export abstract class Game {
   public logger: Logger = new Logger()
-  public currentMap: LevelMap
+  public currentMap: LevelMap //| undefined
   public ai: PlayerAI | null = null
   public running: boolean = false
   public effect: TileEffect | null = null
@@ -26,6 +26,10 @@ export abstract class Game {
       return
     }
     this.running = true
+
+    if (!this.currentMap) {
+      throw 'levelMapTurn: Map is undefined'
+    }
 
     if (this.effect) {
       this.player.rebuildVision(this.currentMap)

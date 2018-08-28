@@ -13,7 +13,11 @@ export class Thrower extends AI {
   public previousVictim: Creature | undefined
   public missiles: GroupedItem | undefined
 
-  public act(actor: Creature, game: Game): CreatureEvent | undefined {
+  public act(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
     if (
       !actor.can(Ability.Throwing) ||
       !this.hasMissile(actor) ||

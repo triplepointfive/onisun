@@ -5,6 +5,7 @@ import {
   Game,
   TalentsTreePresenter,
   ProfessionPickingPresenter,
+  LevelMap,
 } from '../../engine'
 import { Presenter } from '../presenters/internal'
 import { DieReason } from '../events/die_event'
@@ -59,7 +60,11 @@ export class PlayerAI extends MetaAI {
   private game: Game | undefined
   public levelUps: number = 0
 
-  public act(player: Player, game: Game): CreatureEvent | undefined {
+  public act(
+    player: Player,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
     this.game = game
 
     this.presenter = new IdlePresenter(this.game)

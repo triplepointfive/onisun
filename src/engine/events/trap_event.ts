@@ -3,19 +3,21 @@ import { Trap } from '../models/tile'
 import { Creature, Reaction, Player } from '../models/creature'
 import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'
+import { LevelMap } from '../models/level_map'
 
 export class TrapEvent extends CreatureEvent {
-  constructor(private trap: Trap, private game: Game) {
+  constructor(
+    private trap: Trap,
+    private levelMap: LevelMap,
+    private game: Game
+  ) {
     super()
   }
 
   public affectCreature(actor: Creature): Reaction {
     // TODO: Special messages for dying.
-    let pos = this.game.currentMap.creaturePos(actor)
-    if (
-      this.game.player.stageMemory(this.game.currentMap).at(pos.x, pos.y)
-        .visible
-    ) {
+    let pos = this.levelMap.creaturePos(actor)
+    if (this.game.player.stageMemory(this.levelMap).at(pos.x, pos.y).visible) {
       this.trap.revealed = true
       this.game.logger.creatureSteppedInTrap(actor)
     }
@@ -34,7 +36,7 @@ export class TrapEvent extends CreatureEvent {
     const damage = 10
 
     if (damage >= actor.characteristics.health.currentValue()) {
-      actor.on(new DieEvent(this.game, this.game.currentMap, DieReason.Trap))
+      actor.on(new DieEvent(this.game, this.levelMap, DieReason.Trap))
       return Reaction.DIE
     } else {
       actor.characteristics.health.decrease(damage)

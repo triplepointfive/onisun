@@ -9,6 +9,7 @@ export class Attacker extends AI {
 
   public act(
     actor: Creature,
+    levelMap: LevelMap,
     game: Game,
     firstTurn: boolean = true
   ): CreatureEvent | undefined {
@@ -16,25 +17,16 @@ export class Attacker extends AI {
       return
     }
 
-    if (this.victimInAccess(actor, game, this.victim)) {
-      return this.attack(actor, game)
+    if (this.victim && this.victimInAccess(actor, game, this.victim)) {
+      return new AttackEvent(this.victim, levelMap, game)
     } else {
       if (!firstTurn) {
         throw 'Attacker got called twice'
       }
 
       this.pickNewVictim(actor, game)
-      return this.act(actor, game, false)
+      return this.act(actor, levelMap, game, false)
     }
-  }
-
-  protected attack(actor: Creature, game: Game): CreatureEvent {
-    // TODO: Remove it one day
-    if (!this.victim) {
-      throw 'Attacker.victim is not set'
-    }
-
-    return new AttackEvent(this.victim, game)
   }
 
   private canAttack(actor: Creature, game: Game): boolean {

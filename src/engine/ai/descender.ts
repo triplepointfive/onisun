@@ -37,7 +37,12 @@ class StairwayDownTileMoverVisitor extends TileVisitor {
       this.levelMap.creaturePos(this.actor)
     )
 
-    this.event = new MoveEvent(this.game, stairway.enterPos, adjacentMap)
+    this.event = new MoveEvent(
+      this.game,
+      this.levelMap,
+      stairway.enterPos,
+      adjacentMap
+    )
   }
 }
 
@@ -50,9 +55,13 @@ export class Descender extends GoToTileAI {
     })
   }
 
-  public act(actor: Creature, game: Game): CreatureEvent | undefined {
+  public act(
+    actor: Creature,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
     if (actor.can(Ability.GoStairwayDown)) {
-      return super.act(actor, game)
+      return super.act(actor, levelMap, game)
     }
   }
 

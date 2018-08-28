@@ -47,7 +47,10 @@ class TestDungeon extends Dungeon {
 }
 
 describe('IdlePresenter', () => {
-  let game: TestGame, player: Player, screen: IdlePresenter
+  let game: TestGame,
+    player: Player,
+    screen: IdlePresenter,
+    map = generateLevelMap()
 
   beforeEach(() => {
     game = generateGame()
@@ -97,7 +100,7 @@ describe('IdlePresenter', () => {
     it('failed to handle common tile', () => {
       game.getMap(level0).addCreature(stairPos.add(fakeStairPos), player)
 
-      game.ai.act(player, game)
+      game.ai.act(player, map, game)
 
       expect(game.logger.messages.length).toEqual(0)
       screen.onInput(IdleInputKey.Handle)
@@ -109,7 +112,7 @@ describe('IdlePresenter', () => {
 
     it('handles stairs', () => {
       game.getMap(level0).addCreature(stairPos, player)
-      game.ai.act(player, game)
+      game.ai.act(player, map, game)
 
       screen.onInput(IdleInputKey.Handle)
       expect(game.logger.messages.length).toEqual(0)
