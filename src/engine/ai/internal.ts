@@ -2,16 +2,16 @@ import { Point, twoDimArray } from '../utils/utils'
 import { Creature, Clan } from '../models/creature'
 
 import { sample } from 'lodash'
-import { MetaAI } from './meta_ai'
 import { MemoryTile, Memory } from '../models/memory'
 import { MoveEvent } from '../events/move_event'
 import { Game } from '../models/game'
-import { LevelMap } from '../../engine'
+import { LevelMap, CreatureEvent } from '../../engine'
+import { StayEvent } from '../events/stay_event'
 
 const FIRST_STEP: number = 1
 
 export abstract class AI {
-  public abstract act(actor: Creature, game: Game): boolean
+  public abstract act(actor: Creature, game: Game): CreatureEvent | undefined
 
   public reset(): void {}
 
@@ -20,11 +20,11 @@ export abstract class AI {
     destination: Point,
     levelMap: LevelMap,
     game: Game
-  ): boolean {
+  ): CreatureEvent | undefined {
     // TODO: Rethink of it
     const creature = levelMap.at(destination.x, destination.y).creature
     if (creature && creature.id === actor.id) {
-      return true
+      return new StayEvent()
     }
 
     const path = this.leePath(
@@ -35,10 +35,8 @@ export abstract class AI {
     )
 
     if (path.length) {
-      actor.on(new MoveEvent(game, path[0]))
+      return new MoveEvent(game, path[0])
     }
-
-    return !!path.length
   }
 
   protected followTo(
@@ -46,7 +44,7 @@ export abstract class AI {
     destination: Point,
     levelMap: LevelMap,
     game: Game
-  ): boolean {
+  ): CreatureEvent | undefined {
     const path = this.leePath(
       actor,
       actor.stageMemory(levelMap),
@@ -55,10 +53,8 @@ export abstract class AI {
     )
 
     if (path.length) {
-      actor.on(new MoveEvent(game, path[0]))
+      return new MoveEvent(game, path[0])
     }
-
-    return !!path.length
   }
 
   protected leePath(
@@ -201,9 +197,9 @@ export abstract class AI {
 export abstract class FollowTargetAI extends AI {
   public destination?: Point = undefined
 
-  public act(actor: Creature, game: Game): boolean {
+  public act(actor: Creature, game: Game): CreatureEvent | undefined {
     if (!(this.foundNewTarget(actor, game) || !!this.destination)) {
-      return false
+      return
     }
 
     if (!this.destination) {
@@ -211,40 +207,49 @@ export abstract class FollowTargetAI extends AI {
     }
     const pos = game.currentMap.creaturePos(actor)
 
-    if (this.goTo(actor, game, this.destination)) {
-      this.onMove(actor)
-      // If got the destination
-      if (this.destination.eq(pos)) {
-        this.destination = undefined
-        this.onReach(actor, game)
-      }
-    } else {
-      // If can not move
-      this.destination = undefined
-      this.onCantMove(actor)
+    const event = this.goTo(actor, game, this.destination)
+    if (event) {
+      return event
     }
 
-    return true
+    // if (event) {
+    //   this.onMove(actor)
+    //   // If got the destination
+    //   if (this.destination.eq(pos)) {
+    //     this.destination = undefined
+    //     return this.onReach(actor, game)
+    //   }
+    // } else {
+    // If can not move
+    this.destination = undefined
+    this.onCantMove(actor)
+    // }
+
+    return
   }
 
   public reset(): void {
     this.destination = undefined
   }
 
-  protected goTo(actor: Creature, game: Game, point: Point): boolean {
+  protected goTo(
+    actor: Creature,
+    game: Game,
+    point: Point
+  ): CreatureEvent | undefined {
     return this.moveTo(actor, point, game.currentMap, game)
   }
 
   protected abstract foundNewTarget(actor: Creature, game: Game): boolean
   protected onMove(actor: Creature): void {}
-  protected onReach(actor: Creature, game: Game): void {}
+  protected onReach(actor: Creature, game: Game): CreatureEvent | undefined {
+    return
+  }
   protected onCantMove(actor: Creature): void {}
 }
 
 export abstract class GoToTileAI extends FollowTargetAI {
-  constructor(
-    protected matcher: (tile: MemoryTile) => boolean
-  ) {
+  constructor(protected matcher: (tile: MemoryTile) => boolean) {
     super()
   }
 

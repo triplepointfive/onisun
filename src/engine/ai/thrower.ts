@@ -6,47 +6,45 @@ import { MissileAttackEvent } from '../../engine'
 import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
 import { Memory } from '../models/memory'
+import { CreatureEvent } from '../events/internal'
 
 export class Thrower extends AI {
   public victim: Creature | undefined
   public previousVictim: Creature | undefined
   public missiles: GroupedItem | undefined
 
-  public act(actor: Creature, game: Game): boolean {
+  public act(actor: Creature, game: Game): CreatureEvent | undefined {
     if (
-      actor.can(Ability.Throwing) &&
-      this.hasMissile(actor) &&
-      this.canAttack(actor, game)
+      !actor.can(Ability.Throwing) ||
+      !this.hasMissile(actor) ||
+      !this.canAttack(actor, game)
     ) {
-      let path: Point[] = []
-
-      if (!this.victim) {
-        throw 'Thrower.act called when there is no victim'
-      }
-
-      bresenham(
-        game.currentMap.creaturePos(actor),
-        game.currentMap.creaturePos(this.victim),
-        (x, y) => path.push(new Point(x, y))
-      )
-
-      actor.on(
-        new MissileAttackEvent(
-          path,
-          game,
-          game.currentMap,
-          (reaction: Reaction) => {
-            if (reaction === Reaction.DIE) {
-              this.victim = undefined
-              this.previousVictim = undefined
-            }
-          }
-        )
-      )
-      return true
+      return
     }
 
-    return false
+    let path: Point[] = []
+
+    if (!this.victim) {
+      throw 'Thrower.act called when there is no victim'
+    }
+
+    bresenham(
+      game.currentMap.creaturePos(actor),
+      game.currentMap.creaturePos(this.victim),
+      (x, y) => path.push(new Point(x, y))
+    )
+
+    return new MissileAttackEvent(
+      path,
+      game,
+      game.currentMap,
+      (reaction: Reaction) => {
+        if (reaction === Reaction.DIE) {
+          this.victim = undefined
+          this.previousVictim = undefined
+        }
+      }
+    )
   }
 
   private hasMissile(actor: Creature): boolean {

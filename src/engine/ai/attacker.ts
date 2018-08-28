@@ -1,39 +1,40 @@
 import { AttackEvent, Game } from '../../engine'
-import { Creature, Reaction } from '../models/creature'
+import { Creature } from '../models/creature'
 import { AI } from './internal'
 import { LevelMap } from '../models/level_map'
+import { CreatureEvent } from '../events/internal'
 
 export class Attacker extends AI {
   public victim?: Creature
 
-  public act(actor: Creature, game: Game, firstTurn: boolean = true): boolean {
+  public act(
+    actor: Creature,
+    game: Game,
+    firstTurn: boolean = true
+  ): CreatureEvent | undefined {
     if (!this.canAttack(actor, game)) {
-      return false
+      return
     }
 
     if (this.victimInAccess(actor, game, this.victim)) {
-      this.attack(actor, game)
+      return this.attack(actor, game)
     } else {
       if (!firstTurn) {
         throw 'Attacker got called twice'
       }
 
       this.pickNewVictim(actor, game)
-      this.act(actor, game, false)
+      return this.act(actor, game, false)
     }
-
-    return true
   }
 
-  protected attack(actor: Creature, game: Game) {
+  protected attack(actor: Creature, game: Game): CreatureEvent {
     // TODO: Remove it one day
     if (!this.victim) {
       throw 'Attacker.victim is not set'
     }
 
-    if (this.victim.on(new AttackEvent(actor, game)) === Reaction.DIE) {
-      this.victim = undefined
-    }
+    return new AttackEvent(this.victim, game)
   }
 
   private canAttack(actor: Creature, game: Game): boolean {

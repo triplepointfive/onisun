@@ -29,14 +29,14 @@ describe('AttackEvent', () => {
     victim = generateCreature()
     map.addCreature(new Point(1, 1), victim)
 
-    event = new AttackEvent(actor, game)
+    event = new AttackEvent(victim, game)
   })
 
   it('victim can dodge', () => {
     actor.characteristics.misses = jest.fn()
     actor.characteristics.misses.mockReturnValueOnce(true)
 
-    expect(victim.on(event)).toEqual(Reaction.DODGE)
+    expect(actor.on(event)).toEqual(Reaction.DODGE)
     expect(victim.characteristics.health.atMax()).toBeTruthy()
   })
 
@@ -54,7 +54,7 @@ describe('AttackEvent', () => {
       actor.characteristics.damageTo = jest.fn()
       actor.characteristics.damageTo.mockReturnValueOnce(victimHealth / 2)
 
-      expect(victim.on(event)).toEqual(Reaction.HURT)
+      expect(actor.on(event)).toEqual(Reaction.HURT)
       expect(victim.characteristics.health.atMax()).toBeFalsy()
 
       expect(game.logger.messages.length).toEqual(1)
@@ -64,7 +64,7 @@ describe('AttackEvent', () => {
       actor.characteristics.damageTo = jest.fn()
       actor.characteristics.damageTo.mockReturnValueOnce(victimHealth)
 
-      expect(victim.on(event)).toEqual(Reaction.DIE)
+      expect(actor.on(event)).toEqual(Reaction.DIE)
       expect(victim.dead).toBeTruthy()
 
       expect(game.logger.messages.length).toEqual(1)

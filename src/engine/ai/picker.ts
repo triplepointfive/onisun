@@ -1,20 +1,20 @@
-import { Item, ItemId } from '../../engine'
+import { Item, ItemId, PickUpItemsEvent } from '../../engine'
 import { Ability, Creature } from '../models/creature'
 import { Game } from '../models/game'
 import { Point } from '../utils/utils'
 import { FollowTargetAI } from './internal'
 import { AIItemPickedEvent } from './meta_ai'
-import { GroupedItem } from '../models/items'
+import { CreatureEvent } from '../events/internal'
 
 export class Picker extends FollowTargetAI {
   private desiredItemId: ItemId | undefined
 
-  public act(actor: Creature, game: Game): boolean {
+  public act(actor: Creature, game: Game): CreatureEvent | undefined {
     if (actor.can(Ability.Inventory)) {
       return super.act(actor, game)
     }
 
-    return false
+    return
   }
 
   protected foundNewTarget(actor: Creature, game: Game): boolean {
@@ -24,7 +24,7 @@ export class Picker extends FollowTargetAI {
     )
   }
 
-  protected onReach(actor: Creature, game: Game): void {
+  protected onReach(actor: Creature, game: Game): CreatureEvent | undefined {
     const tile = game.currentMap.creatureTile(actor)
 
     if (!tile.items) {
@@ -32,14 +32,9 @@ export class Picker extends FollowTargetAI {
     }
 
     actor.ai.pushEvent(new AIItemPickedEvent(tile.items, game))
-
-    tile.items.bunch.forEach((groupedItem: GroupedItem) => {
-      actor.inventory.putToBag(groupedItem.item, groupedItem.count)
-    })
-
-    tile.items = undefined
-
     this.desiredItemId = undefined
+
+    return new PickUpItemsEvent(tile, tile.items.bunch, game)
   }
 
   private findItem(

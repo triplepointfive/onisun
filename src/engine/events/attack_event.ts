@@ -5,28 +5,28 @@ import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'
 
 export class AttackEvent extends CreatureEvent {
-  constructor(public actor: Creature, private game: Game) {
+  constructor(private subject: Creature, private game: Game) {
     super()
   }
 
-  public affectCreature(subject: Creature): Reaction {
-    if (this.actor.characteristics.misses(subject.characteristics)) {
-      this.game.logger.missMessage(this.actor, subject)
+  public affectCreature(actor: Creature): Reaction {
+    if (actor.characteristics.misses(this.subject.characteristics)) {
+      this.game.logger.missMessage(actor, this.subject)
       return Reaction.DODGE
     }
 
-    const damage = this.actor.characteristics.damageTo(subject.characteristics)
+    const damage = actor.characteristics.damageTo(this.subject.characteristics)
 
-    if (damage >= subject.characteristics.health.currentValue()) {
-      this.actor.on(new AddExperienceEvent(subject, this.game))
-      this.game.logger.killMessage(damage, this.actor, subject)
-      subject.on(
+    if (damage >= this.subject.characteristics.health.currentValue()) {
+      actor.on(new AddExperienceEvent(this.subject, this.game))
+      this.game.logger.killMessage(damage, actor, this.subject)
+      this.subject.on(
         new DieEvent(this.game, this.game.currentMap, DieReason.Attack)
       )
       return Reaction.DIE
     } else {
-      subject.characteristics.health.decrease(damage)
-      this.game.logger.hurtMessage(damage, this.actor, subject)
+      this.subject.characteristics.health.decrease(damage)
+      this.game.logger.hurtMessage(damage, actor, this.subject)
       return Reaction.HURT
     }
   }

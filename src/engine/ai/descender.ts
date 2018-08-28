@@ -1,5 +1,6 @@
 import { GoToTileAI } from './internal'
 import { TileTypes, Creature, Ability, StairwayDown, Game } from '../../engine'
+import { CreatureEvent } from '../events/internal'
 
 export class Descender extends GoToTileAI {
   private canDescend: boolean = false
@@ -8,12 +9,12 @@ export class Descender extends GoToTileAI {
     super(tile => tile.tile.kind === TileTypes.StairwayDown)
   }
 
-  public act(actor: Creature, game: Game): boolean {
+  public act(actor: Creature, game: Game): CreatureEvent | undefined {
     if (actor.can(Ability.GoStairwayDown)) {
       return super.act(actor, game)
     }
 
-    return false
+    return
   }
 
   public reset(): void {

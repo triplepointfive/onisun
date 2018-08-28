@@ -1,8 +1,9 @@
 import { AI } from './internal'
-import { Creature } from '../models/creature'
+import { CreatureEvent } from '../events/internal'
+import { StayEvent } from '../events/stay_event'
 
 export class Waiter extends AI {
-  act(actor: Creature): boolean {
-    return true
+  act(): CreatureEvent | undefined {
+    return new StayEvent()
   }
 }

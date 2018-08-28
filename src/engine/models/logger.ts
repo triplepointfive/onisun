@@ -19,13 +19,19 @@ export interface LogMessage {
 export class Logger {
   public messages: LogMessage[] = []
 
+  public reset() {
+    this.messages = []
+  }
+
   public hurtMessage(damage: number, actor: Creature, target: Creature) {
     this.debug(`${target.name} got ${damage} damage from ${actor.name}`)
   }
 
   public killMessage(damage: number, actor: Creature, target: Creature) {
     this.warning(
-      `${target.name} got ${damage} damage from ${actor.name} causes them to die`
+      `${target.name} got ${damage} damage from ${
+        actor.name
+      } causes them to die`
     )
   }
 

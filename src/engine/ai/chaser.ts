@@ -2,6 +2,7 @@ import { Creature, CreatureId } from '../models/creature'
 import { Game } from '../models/game'
 import { Point } from '../utils/utils'
 import { FollowTargetAI } from './internal'
+import { CreatureEvent } from '../events/internal'
 
 export class Chaser extends FollowTargetAI {
   private victimId?: CreatureId
@@ -23,15 +24,16 @@ export class Chaser extends FollowTargetAI {
     this.victimId = undefined
   }
 
-  protected onReach(): void {
+  protected onReach(): CreatureEvent | undefined {
     this.victimId = undefined
+    return
   }
 
   private victimSet(): boolean {
     return !!this.victimId
   }
 
-  protected goTo(actor: Creature, game: Game): boolean {
+  protected goTo(actor: Creature, game: Game): CreatureEvent | undefined {
     if (!this.destination) {
       throw 'Chaser.goTo: no destination'
     }

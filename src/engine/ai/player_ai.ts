@@ -1,5 +1,5 @@
 import { MetaAI, AIEvent } from './meta_ai'
-import { Player } from '../models/creature'
+import { Player, Creature } from '../models/creature'
 import {
   IdlePresenter,
   Game,
@@ -9,6 +9,7 @@ import {
 import { Presenter } from '../presenters/internal'
 import { DieReason } from '../events/die_event'
 import { DeathPresenter } from '../presenters/death_presenter'
+import { CreatureEvent } from '../events/internal'
 
 export class AINewLevelEvent extends AIEvent {
   constructor(public level: number, game: Game) {
@@ -58,13 +59,13 @@ export class PlayerAI extends MetaAI {
   private game: Game | undefined
   public levelUps: number = 0
 
-  public act(player: Player, game: Game): boolean {
+  public act(player: Player, game: Game): CreatureEvent | undefined {
     this.game = game
 
     this.presenter = new IdlePresenter(this.game)
     this.game.ai = this
 
-    return true
+    return
   }
 
   public endTurn(): void {

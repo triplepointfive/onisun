@@ -4,7 +4,13 @@ import {
   generateLevelMap,
   generateGame,
 } from '../helpers'
-import { Point, LevelMap, Attacker, Game } from '../../../src/engine'
+import {
+  Point,
+  LevelMap,
+  Attacker,
+  Game,
+  AttackEvent,
+} from '../../../src/engine'
 
 let internalAI = new Attacker(),
   actor = generateCreatureWithAI(internalAI),
@@ -41,16 +47,12 @@ describe('When enemy is too far away', () => {
 describe('When enemy is close enough', () => {
   beforeEach(() => {
     map.addCreature(new Point(2, 2), enemy)
-    expect(actor.act(map, game)).toBeTruthy()
-  })
-
-  it('Victim is set', () => {
-    expect(internalAI.victim).toBeTruthy()
-  })
-
-  it('Resets victim on their death', () => {
-    enemy.characteristics.health.decrease(50)
+    actor.on = jest.fn()
     actor.act(map, game)
-    expect(internalAI.victim).toBeUndefined()
+  })
+
+  it('Builds command', () => {
+    expect(actor.on.mock.calls.length).toEqual(1)
+    expect(actor.on.mock.calls[0][0]).toBeInstanceOf(AttackEvent)
   })
 })

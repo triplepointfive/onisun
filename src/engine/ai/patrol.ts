@@ -5,10 +5,10 @@ import { Creature } from '../models/creature'
 
 import * as graphlib from 'graphlib'
 import { Loiter } from './loiter'
-import { MetaAI } from './meta_ai'
 import { TileVisitor, Tile } from '../models/tile'
 import { MoveEvent } from '../events/move_event'
 import { Game } from '../models/game'
+import { CreatureEvent } from '../events/internal'
 
 type NodeID = string
 
@@ -55,9 +55,13 @@ export class Patrol extends AI {
     this.path = []
   }
 
-  public act(actor: Creature, game: Game, firstTurn: boolean = true): boolean {
+  public act(
+    actor: Creature,
+    game: Game,
+    firstTurn: boolean = true
+  ): CreatureEvent | undefined {
     if (this.graph.nodes().length === 1) {
-      return false
+      return
     }
 
     if (this.firstCallPatrol) {
@@ -66,8 +70,10 @@ export class Patrol extends AI {
       this.firstCallPatrol = false
     }
 
+    this.step += 1
+
     if (this.path.length) {
-      this.moveToTarget(actor, game, firstTurn)
+      return this.moveToTarget(actor, game, firstTurn)
     } else {
       if (this.targetNodeID) {
         this.markNodeVisited(this.targetNodeID)
@@ -75,11 +81,8 @@ export class Patrol extends AI {
       }
 
       this.pickUpNewTarget(actor, game)
-      this.moveToTarget(actor, game, firstTurn)
+      return this.moveToTarget(actor, game, firstTurn)
     }
-    this.step += 1
-
-    return true
   }
 
   public reset(): void {
@@ -140,15 +143,19 @@ export class Patrol extends AI {
     this.buildNewPath(actor, game)
   }
 
-  private moveToTarget(actor: Creature, game: Game, firstTurn: boolean): void {
+  private moveToTarget(
+    actor: Creature,
+    game: Game,
+    firstTurn: boolean
+  ): CreatureEvent | undefined {
     const nextPoint: Point | undefined = this.path.shift()
 
     if (!nextPoint) {
       if (firstTurn) {
         this.path = []
-        this.act(actor, game, false)
+        return this.act(actor, game, false)
       } else {
-        new Loiter().act(actor, game)
+        return new Loiter().act(actor, game)
       }
     } else if (
       actor
@@ -159,10 +166,10 @@ export class Patrol extends AI {
       this.buildNewPath(actor, game)
 
       if (this.path.length) {
-        this.act(actor, game, false)
+        return this.act(actor, game, false)
       }
     } else {
-      actor.on(new MoveEvent(game, nextPoint))
+      return new MoveEvent(game, nextPoint)
     }
   }
 

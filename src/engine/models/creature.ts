@@ -141,9 +141,12 @@ export class Creature {
     return this.stageMemories[levelMap.id]
   }
 
-  public act(stage: LevelMap, game: Game): boolean {
+  public act(stage: LevelMap, game: Game): void {
     this.visionMask(stage)
-    return this.ai.act(this, game)
+    const command = this.ai.act(this, game)
+    if (command) {
+      this.on(command)
+    }
   }
 
   public visionMask(stage: LevelMap): void {

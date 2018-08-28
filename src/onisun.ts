@@ -79,6 +79,8 @@ export class Application {
     player.inventory.missileSlot.equip(player, wooden)
 
     player.inventory.putToBag(new LightSpeedBoots(), 1)
+
+    this.game.logger.reset()
   }
 
   protected initPlayer(): Player {
@@ -88,7 +90,7 @@ export class Application {
         attack: 1,
         defense: 4,
         dexterity: 3,
-        health: 20,
+        health: 100,
         radius: 10,
         speed: 80,
       }),

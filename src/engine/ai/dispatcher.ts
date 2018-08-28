@@ -11,6 +11,7 @@ import { Thrower } from './thrower'
 import { Descender } from './descender'
 import { SelfHealer } from './selfhealer'
 import { Game } from '../models/game'
+import { CreatureEvent } from '../events/internal'
 
 export class Dispatcher extends MetaAI {
   private escaper: Escaper
@@ -40,7 +41,7 @@ export class Dispatcher extends MetaAI {
     this.descender = new Descender()
   }
 
-  public act(actor: Creature, game: Game): boolean {
+  public act(actor: Creature, game: Game): CreatureEvent | undefined {
     this.step += 1
 
     if (this.step % actor.characteristics.regenerateEvery() === 0) {
@@ -48,26 +49,30 @@ export class Dispatcher extends MetaAI {
     }
 
     this.runEvents()
+    let event: CreatureEvent | undefined
 
     if (this.feelsGood(actor)) {
-      if (this.attacker.act(actor, game)) {
-      } else if (this.thrower.act(actor, game)) {
-      } else if (this.chaser.act(actor, game)) {
-      } else if (this.picker.act(actor, game)) {
+      if ((event = this.attacker.act(actor, game))) {
+      } else if ((event = this.thrower.act(actor, game))) {
+      } else if ((event = this.chaser.act(actor, game))) {
+      } else if ((event = this.picker.act(actor, game))) {
       } else {
-        this.explore(actor, game)
+        event = this.explore(actor, game)
       }
-    } else if (this.healthCritical(actor) && this.escaper.act(actor, game)) {
-    } else if (this.attacker.act(actor, game)) {
-    } else if (this.thrower.act(actor, game)) {
-    } else if (this.chaser.act(actor, game)) {
+    } else if (
+      this.healthCritical(actor) &&
+      (event = this.escaper.act(actor, game))
+    ) {
+    } else if ((event = this.attacker.act(actor, game))) {
+    } else if ((event = this.thrower.act(actor, game))) {
+    } else if ((event = this.chaser.act(actor, game))) {
     } else {
-      new SelfHealer().act(actor, game)
+      event = new SelfHealer().act(actor, game)
     }
 
     this.resetEvents()
 
-    return true
+    return event
   }
 
   private feelsGood(actor: Creature): boolean {
@@ -84,8 +89,10 @@ export class Dispatcher extends MetaAI {
     )
   }
 
-  private explore(actor: Creature, game: Game): void {
-    if (this.explorer.act(actor, game)) {
+  private explore(actor: Creature, game: Game): CreatureEvent | undefined {
+    let event: CreatureEvent | undefined
+
+    if ((event = this.explorer.act(actor, game))) {
       if (!actor.dead) {
         this.patrol.trackMovement(
           actor,
@@ -93,10 +100,12 @@ export class Dispatcher extends MetaAI {
           game.currentMap.creatureTile(actor)
         )
       }
-    } else if (this.descender.act(actor, game)) {
-    } else if (this.patrol.act(actor, game)) {
+    } else if ((event = this.descender.act(actor, game))) {
+    } else if ((event = this.patrol.act(actor, game))) {
     } else {
-      this.loiter.act(actor, game)
+      event = this.loiter.act(actor, game)
     }
+
+    return event
   }
 }

@@ -3,9 +3,10 @@ import { Creature } from '../models/creature'
 import { MoveEvent } from '../events/move_event'
 import { Game } from '../models/game'
 import { Point } from '../../engine'
+import { CreatureEvent } from '../events/internal'
 
 export class Loiter extends AI {
-  public act(actor: Creature, game: Game): boolean {
+  public act(actor: Creature, game: Game): CreatureEvent | undefined {
     const pos = game.currentMap.creaturePos(actor),
       path = this.leePath(
         actor,
@@ -16,9 +17,9 @@ export class Loiter extends AI {
       )
 
     if (path.length) {
-      actor.on(new MoveEvent(game, path[0]))
+      return new MoveEvent(game, path[0])
     }
 
-    return true
+    return
   }
 }
