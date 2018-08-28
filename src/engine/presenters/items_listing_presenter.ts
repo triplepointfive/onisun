@@ -5,9 +5,10 @@ import {
   PickUpItemsEvent,
   DrinkPotionEvent,
   DropItemsEvent,
+  GroupedItem,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
-import { GroupedItem, ItemGroup, Potion } from '../models/items'
+import { ItemGroup, Potion } from '../models/items'
 import { InventoryPresenter } from './inventory_presenter'
 
 interface ItemsListingPosition {
@@ -47,7 +48,7 @@ export class PickUpPresenter extends ItemsListingPresenter {
     })
   }
 
-  public pickUpItems(items: GroupedItem[]): void {
+  public pickUpItems(items: GroupedItem<Item>[]): void {
     // TODO: Validate items are part of positions
     this.player.on(new PickUpItemsEvent(this.tile, items, this.game))
     this.endTurn()
@@ -61,7 +62,7 @@ export class DropItemsPresenter extends ItemsListingPresenter {
     this.positions = this.player.inventory.cares()
   }
 
-  public pickUpItems(items: GroupedItem[]): void {
+  public pickUpItems(items: GroupedItem<Item>[]): void {
     if (items.length) {
       this.player.on(new DropItemsEvent(this.tile, items, this.game))
       this.endTurn()

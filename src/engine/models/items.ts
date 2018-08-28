@@ -1,6 +1,5 @@
 import { Specie, Creature, Player } from './creature'
 
-import { remove } from 'lodash'
 import { Game } from './game'
 import { Modifier } from '../lib/attribute'
 
@@ -72,54 +71,6 @@ export class Item {
   }
 }
 
-export interface GroupedItem {
-  count: number
-  item: Item
-}
-
-export class ItemsBunch {
-  public bunch: GroupedItem[] = []
-
-  public find(item: Item): GroupedItem | undefined {
-    return this.bunch.find(invItem => invItem.item.groupsWith(item))
-  }
-
-  public remove(item: Item, count: number): void {
-    const invItem = this.find(item)
-
-    if (invItem === undefined) {
-      // TODO: Fail if removes item that's not in bunch yet?
-      return
-    } else if (invItem.count === count) {
-      remove(this.bunch, inventoryItem =>
-        inventoryItem.item.groupsWith(invItem.item)
-      )
-    } else {
-      invItem.count -= count
-    }
-  }
-
-  public put(item: Item, count: number): void {
-    const invItem = this.bunch.find(inv => inv.item.groupsWith(item))
-
-    if (invItem) {
-      invItem.count += count
-    } else {
-      this.bunch.push({ count: count, item: item })
-    }
-  }
-
-  public clone(): ItemsBunch {
-    let bunch = new ItemsBunch()
-
-    this.bunch.forEach(groupedItem => {
-      bunch.put(groupedItem.item, groupedItem.count)
-    })
-
-    return bunch
-  }
-}
-
 export class Corpse extends Item {
   constructor(public readonly specie: Specie) {
     super(ItemGroup.Consumable, `${specie.name}'s corpse`, specie.weight)
@@ -155,7 +106,7 @@ export class BodyArmor extends Item {
 export class OneHandWeapon extends Item {
   constructor(name: string, weight: number, modifier: Modifier) {
     super(
-      ItemGroup.MissileWeapon,
+      ItemGroup.OneHandWeapon,
       name,
       weight,
       [Usage.WeaponOneHand],

@@ -1,8 +1,9 @@
 import { Creature } from './creature'
 import { Point } from '../utils/utils'
 import { LevelMap, LevelMapId } from './level_map'
-import { ItemsBunch, Item } from './items'
+import { Item } from './items'
 import { Game } from './game'
+import { ItemsBunch } from '../lib/bunch'
 
 export enum TileTypes {
   Wall,
@@ -15,7 +16,7 @@ export enum TileTypes {
 
 export abstract class Tile {
   public creature?: Creature
-  public items: ItemsBunch | undefined
+  public items: ItemsBunch<Item> | undefined
 
   constructor(public key: string, public kind: TileTypes) {}
 

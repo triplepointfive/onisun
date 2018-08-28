@@ -1,7 +1,7 @@
 import { Tile, Wall, TileVisitor } from './tile'
-import { Creature, twoDimArray } from '../../engine'
-import { ItemsBunch } from './items'
+import { Creature, twoDimArray, ItemsBunch } from '../../engine'
 import { Mapped } from '../utils/utils'
+import { Item } from './items'
 
 export class MemoryTile {
   public visible: boolean = false
@@ -11,7 +11,7 @@ export class MemoryTile {
 
   constructor(public tile: Tile) {}
 
-  get items(): ItemsBunch | undefined {
+  get items(): ItemsBunch<Item> | undefined {
     return this.tile.items
   }
 

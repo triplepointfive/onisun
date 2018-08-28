@@ -1,7 +1,8 @@
 import { Creature } from './creature'
-import { Usage, GroupedItem, Item } from './items'
+import { Usage, Item } from './items'
 import { intersection } from 'lodash'
 import { Inventory } from './inventory'
+import { GroupedItem } from '../lib/bunch'
 
 export abstract class InventorySlot {
   public name: string = 'InventorySlot'
@@ -11,10 +12,10 @@ export abstract class InventorySlot {
     public readonly usages: Usage[],
     // Has to put only a single item or can put a bunch of them
     public readonly useSingleItem: boolean,
-    public equipment?: GroupedItem
+    public equipment?: GroupedItem<Item>
   ) {}
 
-  public matchingItems(inventory: Inventory): GroupedItem[] {
+  public matchingItems(inventory: Inventory): GroupedItem<Item>[] {
     return inventory.cares().filter(itemGroup => this.match(itemGroup.item))
   }
 
@@ -64,7 +65,10 @@ export abstract class InventorySlot {
     return intersection(item.usages, this.usages).length > 0
   }
 
-  protected withPairItem(baseMatch: GroupedItem[], item: Item): GroupedItem[] {
+  protected withPairItem(
+    baseMatch: GroupedItem<Item>[],
+    item: Item
+  ): GroupedItem<Item>[] {
     return baseMatch.filter(groupedItem => groupedItem.item.worksWith(item))
   }
 }
@@ -103,7 +107,7 @@ export class MissileWeaponSlot extends InventorySlot {
     super([Usage.Shoot], true)
   }
 
-  public matchingItems(inventory: Inventory): GroupedItem[] {
+  public matchingItems(inventory: Inventory): GroupedItem<Item>[] {
     let baseMatch = super.matchingItems(inventory),
       missile = inventory.missileSlot.equipment
 
@@ -121,7 +125,7 @@ export class MissileSlot extends InventorySlot {
     super([Usage.Throw], false)
   }
 
-  public matchingItems(inventory: Inventory): GroupedItem[] {
+  public matchingItems(inventory: Inventory): GroupedItem<Item>[] {
     let baseMatch = inventory.cares(),
       missileWeapon = inventory.missileWeaponSlot.equipment
 

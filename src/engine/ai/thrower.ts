@@ -1,17 +1,17 @@
 import { AI } from './internal'
 import { Creature, Ability, Reaction, CreatureId } from '../models/creature'
-import { GroupedItem } from '../models/items'
 import { Point, bresenham } from '../utils/utils'
-import { MissileAttackEvent } from '../../engine'
+import { MissileAttackEvent, GroupedItem } from '../../engine'
 import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
 import { Memory } from '../models/memory'
 import { CreatureEvent } from '../events/internal'
+import { Item } from '../models/items'
 
 export class Thrower extends AI {
   public victim: Creature | undefined
   public previousVictim: Creature | undefined
-  public missiles: GroupedItem | undefined
+  public missiles: GroupedItem<Item> | undefined
 
   public act(
     actor: Creature,

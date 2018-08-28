@@ -7,10 +7,11 @@ import {
   MissileSlot,
   BootsSlot,
 } from './inventory_slot'
-import { ItemsBunch, GroupedItem, Item } from './items'
+import { Item } from './items'
+import { ItemsBunch, GroupedItem } from '../lib/bunch'
 
 export class Inventory {
-  private bag: ItemsBunch = new ItemsBunch()
+  private bag: ItemsBunch<Item> = new ItemsBunch()
 
   public rightHandSlot = new RightHandSlot()
   public leftHandSlot = new LeftHandSlot()
@@ -30,11 +31,11 @@ export class Inventory {
     ]
   }
 
-  public cares(): GroupedItem[] {
+  public cares(): GroupedItem<Item>[] {
     return this.bag.bunch
   }
 
-  public findInBag(item: Item): GroupedItem | undefined {
+  public findInBag(item: Item): GroupedItem<Item> | undefined {
     return this.bag.find(item)
   }
 

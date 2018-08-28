@@ -14,7 +14,7 @@ interface InventoryPosition {
   inventorySlot: InventorySlot
   item: Item | undefined
   count: number | undefined
-  availableItems: GroupedItem[]
+  availableItems: GroupedItem<Item>[]
 }
 
 export class InventoryPresenter extends Presenter {

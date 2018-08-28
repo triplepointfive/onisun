@@ -1,8 +1,7 @@
 import { AI } from './internal'
-import { Creature, Player } from '../models/creature'
-import { ItemsBunch, Item } from '../models/items'
+import { Player } from '../models/creature'
 import { Logger } from '../models/logger'
-import { Game } from '../../engine'
+import { Game, ItemsBunch, Item } from '../../engine'
 
 export abstract class AIEvent {
   protected logger: Logger
@@ -18,7 +17,7 @@ export abstract class AIEvent {
 }
 
 export class AIItemPickedEvent extends AIEvent {
-  constructor(public items: ItemsBunch, game: Game) {
+  constructor(public items: ItemsBunch<Item>, game: Game) {
     super(game)
   }
 
