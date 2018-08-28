@@ -10,6 +10,7 @@ import {
   Creature,
   Boots,
   ImpactType,
+  DamageType,
 } from '../engine'
 import { HealPotion } from './potions'
 
@@ -51,10 +52,10 @@ export const woodenArrow = () => new Arrow('Деревянная стрела', 
 export const ironArrow = () => new Arrow('Железная стрела', 0.25, noMod)
 
 export const weapons = new Pool<null, Item>([
-  [1, () => new OneHandWeapon('Катана', 1, new Modifier({ attack: 10 }))],
-  [3, () => new OneHandWeapon('Топор', 1.5, new Modifier({ attack: 7 }))],
-  [7, () => new OneHandWeapon('Кинжал', 0.8, new Modifier({ attack: 3 }))],
-  [5, () => new OneHandWeapon('Молот', 5, new Modifier({ attack: 5 }))],
+  [1, () => new OneHandWeapon('Катана', 1, [{ type: DamageType.Melee, value: 10 }])],
+  [3, () => new OneHandWeapon('Топор', 1.5, [{ type: DamageType.Melee, value: 7 }])],
+  [7, () => new OneHandWeapon('Кинжал', 0.8, [{ type: DamageType.Melee, value: 3 }])],
+  [5, () => new OneHandWeapon('Молот', 5, [{ type: DamageType.Melee, value: 5 }])],
 ])
 
 export const itemsPool = new Pool<null, Item>([

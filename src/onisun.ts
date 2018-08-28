@@ -4,7 +4,6 @@ import {
   Specie,
   allAbilities,
   OneHandWeapon,
-  Modifier,
   Characteristics,
   Game,
   Level,
@@ -21,6 +20,7 @@ import {
 } from './onisun/items'
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
 import { PickUpItemsEvent } from './engine/events/pick_up_items_event'
+import { DamageType } from './engine/models/items';
 
 export * from './onisun/professions'
 export * from './onisun/talents'
@@ -43,8 +43,8 @@ export class Application {
       player.professions.push(prof)
     }
 
-    const dagger = new OneHandWeapon('Dagger', 0.8, new Modifier({ attack: 3 }))
-    const katana = new OneHandWeapon('Katana', 1, new Modifier({ attack: 10 }))
+    const dagger = new OneHandWeapon('Dagger', 0.8, [{ type: DamageType.Melee, value: 3 }])
+    const katana = new OneHandWeapon('Katana', 1, [{ type: DamageType.Melee, value: 10 }])
 
     const wooden = woodenArrow()
     const iron = ironArrow()

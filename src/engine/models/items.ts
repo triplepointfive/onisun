@@ -119,14 +119,33 @@ export enum ArmorType {
   Unarmored,
 }
 
-export class OneHandWeapon extends Item {
-  constructor(name: string, weight: number, modifier: Modifier) {
+export type Damage = {
+  value: number
+  type: DamageType
+}
+
+export abstract class Weapon extends Item {
+  constructor(
+    group: ItemGroup,
+    name: string, weight: number, public readonly damages: Damage[], usage: Usage) {
+    super(
+      group,
+      name,
+      weight,
+      [usage],
+    )
+  }
+}
+
+export class OneHandWeapon extends Weapon {
+  constructor(
+    name: string, weight: number, damages: Damage[]) {
     super(
       ItemGroup.OneHandWeapon,
       name,
       weight,
-      [Usage.WeaponOneHand],
-      modifier
+      damages,
+      Usage.WeaponOneHand,
     )
   }
 }

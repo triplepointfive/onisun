@@ -22,14 +22,10 @@ import {
   displayItem,
   displayTile,
 } from './scene_tiles'
+import { Creature } from 'src/engine';
 
-const HUMAN  = new CreatureTile('俺', 0, 255, 0)
-const HUMAN2 = new CreatureTile('俺', 255, 0, 0)
-const HUMAN3 = new CreatureTile('俺', 0, 0, 255)
-const HUMAN4 = new CreatureTile('俺', 255, 0, 255)
-const HUMAN5 = new CreatureTile('俺', 0, 255, 255)
-
-const RAT = new CreatureTile('ｄ', 197, 65, 38)
+const HUMAN  = new CreatureTile('＠', 0, 255, 0)
+const RAT = new CreatureTile('r', 197, 65, 38)
 const NULL_TILE = new DisplayTile('　', 0, 0, 0)
 
 const nextItemAnimation = [
@@ -53,7 +49,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    getTile(x, y) {
+    getTile(x: number, y: number) {
       const effect = this.stage.at(x, y).effect
       const tile = this.wholeMap ? this.stage.at(x, y) : this.stage.at(x, y).tile
 
@@ -95,23 +91,12 @@ export default Vue.extend({
 
       return displayTile(tile)
     },
-    creatureTile(creature) {
+    creatureTile(creature: Creature) {
       if (creature.name == 'Rat') {
         return RAT
       }
 
-      switch (creature.id % 5) {
-        case 0:
-          return HUMAN5
-        case 1:
-          return HUMAN4
-        case 2:
-          return HUMAN3
-        case 3:
-          return HUMAN2
-        case 4:
-          return HUMAN
-      }
+      return HUMAN
     },
     initViewport() {
       this.term = new Viewport(
@@ -124,7 +109,7 @@ export default Vue.extend({
 
       this.eng = new Engine(
         this.term,
-        (x, y) => this.getTile(x, y),
+        (x: number, y: number) => this.getTile(x, y),
         this.level.width,
         this.level.height,
       )
@@ -169,7 +154,7 @@ export default Vue.extend({
     stage() {
       return this.wholeMap ? this.level : this.player.stageMemory(this.level)
     },
-    animationFps() {
+    animationFps(): number {
       return 1000 / this.interval
     },
     tileItems() {
