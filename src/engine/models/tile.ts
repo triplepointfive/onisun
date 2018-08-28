@@ -177,6 +177,7 @@ export abstract class Trap extends Tile {
   protected abstract affect(game: Game, actor: Creature): void
 }
 
+// TODO: Add return type?
 export abstract class TileVisitor {
   public onWall(wall: Wall): void {
     this.default(wall)

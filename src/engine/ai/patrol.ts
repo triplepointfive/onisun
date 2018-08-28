@@ -21,7 +21,7 @@ class PatrolTileVisitor extends TileVisitor {
     super()
   }
 
-  public addNode(actor: Creature): boolean {
+  public addNode(): boolean {
     this.status = false
     this.tile.visit(this)
     return this.status
@@ -60,13 +60,13 @@ export class Patrol extends AI {
     game: Game,
     firstTurn: boolean = true
   ): CreatureEvent | undefined {
-    if (this.graph.nodes().length === 1) {
+    if (this.graph.nodes().length <= 1) {
       return
     }
 
     if (this.firstCallPatrol) {
       const pos = game.currentMap.creaturePos(actor)
-      this.addNode(pos.x, pos.y)
+      this.addNode(pos)
       this.firstCallPatrol = false
     }
 
@@ -89,19 +89,16 @@ export class Patrol extends AI {
     this.path = []
   }
 
-  public trackMovement(actor: Creature, pos: Point, tile: Tile): void {
-    if (
-      this.step >= NEW_POINT_EVERY ||
-      new PatrolTileVisitor(tile).addNode(actor)
-    ) {
-      this.addNode(pos.x, pos.y)
+  public trackMovement(pos: Point, tile: Tile): void {
+    if (this.step >= NEW_POINT_EVERY || new PatrolTileVisitor(tile).addNode()) {
+      this.addNode(pos)
     }
     this.step += 1
   }
 
   // TODO: If close enough to another node, use it instead.
-  public addNode(x: number, y: number): void {
-    this.graph.setNode(this.i, new Point(x, y))
+  public addNode(point: Point): void {
+    this.graph.setNode(this.i, point)
     if (this.currentNodeID && this.currentNodeID !== this.i) {
       this.graph.setEdge(this.currentNodeID, this.i)
     }
@@ -117,11 +114,7 @@ export class Patrol extends AI {
     }
     const pos: Point = this.graph.node(this.targetNodeID)
 
-    this.path = this.buildPath(
-      actor,
-      game.currentMap,
-      point => pos.eq(point)
-    )
+    this.path = this.buildPath(actor, game.currentMap, point => pos.eq(point))
   }
 
   private pickUpNewTarget(actor: Creature, game: Game): void {

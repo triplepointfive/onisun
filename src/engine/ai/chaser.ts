@@ -3,15 +3,10 @@ import { Game } from '../models/game'
 import { Point } from '../utils/utils'
 import { FollowTargetAI } from './internal'
 import { CreatureEvent } from '../events/internal'
-import { LevelMap } from '../models/level_map';
+import { LevelMap } from '../models/level_map'
 
 export class Chaser extends FollowTargetAI {
   private victimId?: CreatureId
-
-  public reset(): void {
-    super.reset()
-    this.victimId = undefined
-  }
 
   protected foundNewTarget(actor: Creature, game: Game): boolean {
     // Is there a victim and a path to it?

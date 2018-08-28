@@ -27,6 +27,8 @@ import {
   TileVisitor,
   Wall,
   Point,
+  CreatureEvent,
+  LevelMapId,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -74,12 +76,7 @@ export const generateCreature = function(): Creature {
 }
 
 class AIWrapper extends MetaAI {
-  constructor(aiToRun: AI = null) {
-    super(aiToRun)
-    aiToRun.prevAI = this
-  }
-
-  public act(actor: Creature, game: Game): boolean {
+  public act(actor: Creature, game: Game): CreatureEvent | undefined {
     return this.aiToRun.act(actor, game)
   }
 }
@@ -121,9 +118,12 @@ export const generatePlayer = function(): Player {
 
 export class TestGame extends Game {}
 
-export const generateLevelMap = function(): LevelMap {
+let levelMapId = 0
+export const generateLevelMap = function(
+  id: LevelMapId = levelMapId++
+): LevelMap {
   let map = new LevelMap(
-    0,
+    id,
     drawn(
       [
         'WWWWW',

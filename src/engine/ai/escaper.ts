@@ -24,19 +24,16 @@ export class Escaper extends FollowTargetAI {
       return false
     }
 
-    const path = this.buildPath(
-      actor,
-      game.currentMap,
-      ({ x, y }) => {
-        const score = sumBy(this.escapesFrom, ([pos, enemy]) => {
-          // I don't use pathfinding since it should try
-          // to run away from those who are visible, so the path
-          // to them should be straightforward.
-          return Math.max(Math.abs(x - pos.x), Math.abs(y - pos.y))
-        })
-
-        return score >= minDistance
+    const path = this.buildPath(actor, game.currentMap, ({ x, y }) => {
+      const score = sumBy(this.escapesFrom, ([pos, enemy]) => {
+        // I don't use pathfinding since it should try
+        // to run away from those who are visible, so the path
+        // to them should be straightforward.
+        return Math.max(Math.abs(x - pos.x), Math.abs(y - pos.y))
       })
+
+      return score >= minDistance
+    })
 
     if (path.length) {
       this.destination = path.pop()

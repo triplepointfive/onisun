@@ -4,7 +4,13 @@ import {
   generateItem,
   generateGame,
 } from '../helpers'
-import { Picker, Point, MoveEvent, LevelMap } from '../../../src/engine'
+import {
+  Picker,
+  Point,
+  MoveEvent,
+  LevelMap,
+  PickUpItemsEvent,
+} from '../../../src/engine'
 
 describe('Picker', () => {
   let internalAI = new Picker(),
@@ -21,7 +27,6 @@ describe('Picker', () => {
 
   describe('When there are no items', () => {
     it('Not available', () => {
-      creature.visionMask(map) // TODO: Should be called manually?
       creature.act(map, game)
       expect(creature.on.mock.calls.length).toEqual(0)
     })
@@ -30,7 +35,6 @@ describe('Picker', () => {
   describe('When there is only one item', () => {
     beforeEach(() => {
       map.at(3, 3).addItem(generateItem(), 1)
-      creature.visionMask(map)
       creature.act(map, game)
     })
 
@@ -49,8 +53,6 @@ describe('Picker', () => {
     beforeEach(() => {
       map.at(3, 3).addItem(generateItem(), 1)
       map.at(3, 5).addItem(generateItem(), 1)
-
-      creature.visionMask(map)
       creature.act(map, game)
     })
 
@@ -60,12 +62,16 @@ describe('Picker', () => {
     })
   })
 
-  describe('When an item is on an adjacent cell', () => {
-    // TODO
-  })
-
   describe('When an item is on the same cell as a player', () => {
-    // TODO
+    beforeEach(() => {
+      map.at(1, 1).addItem(generateItem(), 1)
+      creature.act(map, game)
+    })
+
+    it('Got pick up command', () => {
+      expect(creature.on.mock.calls.length).toEqual(1)
+      expect(creature.on.mock.calls[0][0]).toBeInstanceOf(PickUpItemsEvent)
+    })
   })
 
   describe('When items on every single cell around', () => {
@@ -73,8 +79,6 @@ describe('Picker', () => {
       map.at(1, 2).addItem(generateItem(), 1)
       map.at(2, 2).addItem(generateItem(), 1)
       map.at(2, 1).addItem(generateItem(), 1)
-      creature.visionMask(map)
-
       creature.act(map, game)
     })
 
