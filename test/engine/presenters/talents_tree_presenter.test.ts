@@ -22,8 +22,10 @@ describe('TalentsTreePresenter', () => {
     talent: Talent
 
   beforeEach(() => {
-    profession = generateProfession()
     talent = generateTalent()
+    talent.onObtain = jest.fn()
+
+    profession = generateProfession()
     profession.talents.push(talent)
 
     player = generatePlayer()
@@ -96,7 +98,11 @@ describe('TalentsTreePresenter', () => {
     })
 
     it('updating its level', () => {
-      expect(player.professions[0].talents[0].rank).toEqual(2)
+      expect(player.professions[0].talents[0].rank).toEqual(1)
+    })
+
+    it('calls talents onObtain', () => {
+      expect(talent.onObtain.mock.calls.length).toEqual(1)
     })
 
     it('ends turn', () => {

@@ -49,12 +49,6 @@ export class Characteristics extends AttributeSet<Attribute> {
     })
   }
 
-  public damageTo(victim: Characteristics): number {
-    return Math.round(
-      (10 * this.attack.currentValue) / victim.defense.currentValue
-    )
-  }
-
   public misses(victim: Characteristics): boolean {
     let dex = this.dexterity.currentValue
 

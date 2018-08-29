@@ -18,6 +18,7 @@ import { Profession } from './profession'
 import { Door, Tile, TileVisitor } from './tile'
 import { AfterEvent } from '../events/after_event'
 import { MetaAI } from '../ai/meta_ai'
+import { Protection, Damage, DamageType } from './items'
 
 export enum Clan {
   Player,
@@ -44,7 +45,8 @@ export class Specie {
     public readonly name: string,
     public readonly weight: number,
     public readonly clan: Clan,
-    public readonly abilities: Ability[]
+    public readonly abilities: Ability[],
+    public protections: Protection[]
   ) {}
 }
 
@@ -118,6 +120,14 @@ export abstract class Creature {
 
   get clan(): Clan {
     return this.specie.clan
+  }
+
+  get protections(): Protection[] {
+    return this.specie.protections
+  }
+
+  get damages(): Damage[] {
+    return [{ extra: 0, dice: { times: 4, max: 3 }, type: DamageType.Melee }]
   }
 
   public can(ability: Ability) {
@@ -245,5 +255,10 @@ export class Player extends Creature {
 
   public on(event: CreatureEvent): Reaction {
     return event.affectPlayer(this)
+  }
+
+  get protections(): Protection[] {
+    // TODO: Add inventors protection
+    return this.specie.protections
   }
 }

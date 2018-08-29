@@ -91,7 +91,13 @@ const wrapAI = function(ai: AI): MetaAI {
   return new AIWrapper(ai)
 }
 
-const fakeSpecie = new Specie('Test specie', 10, Clan.FreeForAll, allAbilities)
+const fakeSpecie = new Specie(
+  'Test specie',
+  10,
+  Clan.FreeForAll,
+  allAbilities,
+  []
+)
 
 export class TestCreature extends AICreature {}
 export const generateCreatureWithAI = function(ai: AI): Creature {
@@ -204,7 +210,7 @@ export const generateTalent = function({ depth } = { depth: 0 }): Talent {
     talentId++,
     generateString(),
     depth,
-    1,
+    0,
     3,
     generateString()
   )

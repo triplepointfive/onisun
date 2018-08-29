@@ -26,6 +26,7 @@ import { Creature } from 'src/engine';
 
 const HUMAN  = new CreatureTile('＠', 0, 255, 0)
 const RAT = new CreatureTile('r', 197, 65, 38)
+const GOLEM = new CreatureTile('G', 120, 120, 120)
 const NULL_TILE = new DisplayTile('　', 0, 0, 0)
 
 const nextItemAnimation = [
@@ -94,6 +95,10 @@ export default Vue.extend({
     creatureTile(creature: Creature) {
       if (creature.name == 'Rat') {
         return RAT
+      }
+
+      if (creature.name == 'Golem') {
+        return GOLEM
       }
 
       return HUMAN

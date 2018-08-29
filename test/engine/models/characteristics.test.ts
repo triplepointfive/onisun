@@ -15,19 +15,6 @@ describe('Characteristics', () => {
     })
   })
 
-  it('damageTo', () => {
-    const opponent = new Characteristics({
-      attack: 10,
-      defense: 1,
-      dexterity: 0,
-      health: maxHealth,
-      radius: 10,
-      speed: 100,
-    })
-
-    expect(characteristics.damageTo(opponent)).toBeGreaterThan(0)
-  })
-
   describe('regenerate', () => {
     it('health over its maximum', () => {
       characteristics.regenerate()

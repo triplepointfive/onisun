@@ -7,12 +7,17 @@ import {
   Pool,
   AICreature,
 } from '../engine'
+import { Protection, ProtectionType } from '../engine/models/items'
 
-const newCreature = (characteristics: Characteristics, name: string) => {
+const newCreature = (
+  characteristics: Characteristics,
+  name: string,
+  protections: Protection[] = []
+) => {
   return new AICreature(
     characteristics,
     new Dispatcher(),
-    new Specie(name, 10, Clan.PlayerOnlyEnemy, [])
+    new Specie(name, 10, Clan.PlayerOnlyEnemy, [], protections)
   )
 }
 
@@ -41,6 +46,21 @@ const rat = () => {
       speed: 90,
     }),
     'Rat'
+  )
+}
+
+const golem = () => {
+  return newCreature(
+    new Characteristics({
+      attack: 1,
+      defense: 1,
+      dexterity: 1,
+      health: 10,
+      radius: 5,
+      speed: 90,
+    }),
+    'Golem',
+    [{ type: ProtectionType.Solid, value: 5 }]
   )
 }
 
@@ -102,6 +122,7 @@ const dragon = () => {
 
 export const creaturesPool1 = new Pool<null, Creature>([
   [10, rat],
+  [30, golem],
   [1, floatingEye],
 ])
 export const creaturesPool2 = new Pool<null, Creature>([[1, rat], [2, orc]])

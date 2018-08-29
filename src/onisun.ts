@@ -110,7 +110,7 @@ export class Application {
         speed: 80,
       }),
       new PlayerAI(),
-      new Specie('Player', 80, Clan.Player, allAbilities)
+      new Specie('Player', 80, Clan.Player, allAbilities, [])
     )
   }
 }

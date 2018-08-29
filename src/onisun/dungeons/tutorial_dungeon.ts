@@ -31,6 +31,7 @@ const config = {
   maxSize: 10,
   roomsCount: 10,
   simple: true,
+  addTraps: false,
 }
 
 const tiles: Map<string, () => Tile> = new Map()
@@ -53,7 +54,7 @@ export class TutorialDungeon extends Dungeon {
   }
 
   public register(game: Game): void {
-    game.addMap(-1, (id, game) =>
+    game.addMap(initId, (id, game) =>
       addCreatures(
         0.1,
         this.addStairDown(this.generateMap(id), 0),
@@ -61,7 +62,7 @@ export class TutorialDungeon extends Dungeon {
       )
     )
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = initId + 1; i < initId + 6; i++) {
       game.addMap(i, (id, game) => {
         return addCreatures(
           i * 0.01,
@@ -122,22 +123,24 @@ export class TutorialDungeon extends Dungeon {
     centralize(map)
     map.name = `MP ${id}`
 
-    for (let i = 0; i < 10; i++) {
-      addOnTile(
-        map,
-        tile => tile.isFloor() && tile.passibleThrough(),
-        (x, y) => {
-          map.setTile(x, y, new OnisunFireTrap())
-        }
-      )
+    if (config.addTraps) {
+      for (let i = 0; i < 10; i++) {
+        addOnTile(
+          map,
+          tile => tile.isFloor() && tile.passibleThrough(),
+          (x, y) => {
+            map.setTile(x, y, new OnisunFireTrap())
+          }
+        )
 
-      addOnTile(
-        map,
-        tile => tile.isFloor() && tile.passibleThrough(),
-        (x, y) => {
-          map.setTile(x, y, new OnisunIceTrap())
-        }
-      )
+        addOnTile(
+          map,
+          tile => tile.isFloor() && tile.passibleThrough(),
+          (x, y) => {
+            map.setTile(x, y, new OnisunIceTrap())
+          }
+        )
+      }
     }
 
     addItems(0.05, map, weapons.merge(itemsPool))

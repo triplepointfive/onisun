@@ -59,6 +59,10 @@ export class TalentsTreePresenter extends Presenter {
     }
 
     talent.rank += 1
+    if (talent.rank === 1) {
+      talent.onObtain(this.game)
+    }
+
     profession.points += 1
 
     this.player.characteristics.levelUp(this.player.specie)

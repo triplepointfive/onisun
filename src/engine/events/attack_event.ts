@@ -4,6 +4,7 @@ import { AddExperienceEvent } from './add_experience_event'
 import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'
 import { LevelMap } from '../models/level_map'
+import { Calculator } from '../lib/calculator'
 
 export class AttackEvent extends CreatureEvent {
   constructor(
@@ -20,7 +21,7 @@ export class AttackEvent extends CreatureEvent {
       return Reaction.DODGE
     }
 
-    const damage = actor.characteristics.damageTo(this.subject.characteristics)
+    const damage = Calculator.damage(actor.damages, this.subject.protections)
 
     if (damage >= this.subject.characteristics.health.currentValue) {
       actor.on(new AddExperienceEvent(this.subject, this.levelMap, this.game))

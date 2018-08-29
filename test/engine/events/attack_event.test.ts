@@ -12,6 +12,7 @@ import {
   Reaction,
   Point,
   LevelMap,
+  Calculator,
 } from '../../../src/engine'
 
 describe('AttackEvent', () => {
@@ -51,8 +52,8 @@ describe('AttackEvent', () => {
     })
 
     it('victim can got hurt', () => {
-      actor.characteristics.damageTo = jest.fn()
-      actor.characteristics.damageTo.mockReturnValueOnce(victimHealth / 2)
+      Calculator.damage = jest.fn()
+      Calculator.damage.mockReturnValueOnce(victimHealth / 2)
 
       expect(actor.on(event)).toEqual(Reaction.HURT)
       expect(victim.characteristics.health.atMax).toBeFalsy()
@@ -61,8 +62,8 @@ describe('AttackEvent', () => {
     })
 
     it('victim can die', () => {
-      actor.characteristics.damageTo = jest.fn()
-      actor.characteristics.damageTo.mockReturnValueOnce(victimHealth)
+      Calculator.damage = jest.fn()
+      Calculator.damage.mockReturnValueOnce(victimHealth)
 
       expect(actor.on(event)).toEqual(Reaction.DIE)
       expect(victim.dead).toBeTruthy()
