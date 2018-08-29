@@ -13,7 +13,7 @@ import {
   DamageType,
 } from '../engine'
 import { HealPotion } from './potions'
-import { ProtectionType } from '../engine/models/items';
+import { ProtectionType } from '../engine/models/items'
 
 class MissileRock extends Missile {
   public worksWith(item: Item): boolean {
@@ -70,9 +70,20 @@ export const weapons = new Pool<null, Item>([
 ])
 
 export const itemsPool = new Pool<null, Item>([
-  [1, () => new BodyArmor('Кольчуга', 5, [{ type: ProtectionType.Medium, value: 3 }])],
-  [5, () => new BodyArmor('Латы', 3, [{ type: ProtectionType.Heavy, value: 5 }])],
-  [10, () => new BodyArmor('Роба', 1, [{ type: ProtectionType.Unarmored, value: 1 }])],
+  [
+    1,
+    () =>
+      new BodyArmor('Кольчуга', 5, [{ type: ProtectionType.Medium, value: 3 }]),
+  ],
+  [
+    5,
+    () => new BodyArmor('Латы', 3, [{ type: ProtectionType.Heavy, value: 5 }]),
+  ],
+  [
+    10,
+    () =>
+      new BodyArmor('Роба', 1, [{ type: ProtectionType.Unarmored, value: 1 }]),
+  ],
   [100, () => new HealPotion()],
 ])
 

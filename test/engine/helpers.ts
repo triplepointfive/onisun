@@ -46,7 +46,9 @@ testTiles.set('D', () => new Door())
 class TestMissile extends Missile {}
 
 export const generateOneHandedWeapon = function(): OneHandWeapon {
-  return new OneHandWeapon(generateString(), 1, [{ type: DamageType.Melee, dice: { max: 10, times: 3 }, extra: 4 }])
+  return new OneHandWeapon(generateString(), 1, [
+    { type: DamageType.Melee, dice: { max: 10, times: 3 }, extra: 4 },
+  ])
 }
 
 export const generateBodyArmor = function(): BodyArmor {

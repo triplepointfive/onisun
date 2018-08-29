@@ -49,7 +49,9 @@ export class Application {
     const katana = new OneHandWeapon('Katana', 1, [
       { type: DamageType.Melee, dice: { times: 5, max: 2 }, extra: 0 },
     ])
-    const plateArmor = new BodyArmor('Латы', 1, [ { type: ProtectionType.Heavy, value: 5 }])
+    const plateArmor = new BodyArmor('Латы', 1, [
+      { type: ProtectionType.Heavy, value: 5 },
+    ])
 
     const wooden = woodenArrow()
     const iron = ironArrow()
@@ -74,7 +76,7 @@ export class Application {
           [
             { item: dagger, count: 2 },
             { item: katana, count: 1 },
-            { item: plateArmor, count: 1},
+            { item: plateArmor, count: 1 },
             { item: wooden, count: 5 },
             { item: iron, count: 5 },
             { item: rock, count: 5 },

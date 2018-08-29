@@ -17,7 +17,7 @@ import { Fov } from '../utils/fov'
 import { Point } from '../utils/utils'
 import { Profession } from './profession'
 import { Door, Tile, TileVisitor } from './tile'
-import { AfterEvent } from '../events/after_event';
+import { AfterEvent } from '../events/after_event'
 
 export enum Clan {
   Player,

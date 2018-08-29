@@ -3,10 +3,7 @@ import { Reaction, Creature } from '../models/creature'
 import { LevelMap, Game, ImpactType, DieEvent, DieReason } from '../../engine'
 
 export class AfterEvent extends CreatureEvent {
-  constructor(
-    private levelMap: LevelMap,
-    private game: Game,
-  ) {
+  constructor(private levelMap: LevelMap, private game: Game) {
     super()
   }
 
@@ -18,7 +15,9 @@ export class AfterEvent extends CreatureEvent {
     if (
       creature.stuffWeight.current > creature.carryingCapacity.flattenedStart
     ) {
-      return creature.on(new DieEvent(this.game, this.levelMap, DieReason.Overloaded))
+      return creature.on(
+        new DieEvent(this.game, this.levelMap, DieReason.Overloaded)
+      )
     }
 
     if (

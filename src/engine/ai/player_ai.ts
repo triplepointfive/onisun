@@ -6,11 +6,13 @@ import {
   TalentsTreePresenter,
   ProfessionPickingPresenter,
   LevelMap,
+  AfterEvent,
 } from '../../engine'
 import { Presenter } from '../presenters/internal'
 import { DieReason } from '../events/die_event'
 import { DeathPresenter } from '../presenters/death_presenter'
 import { CreatureEvent } from '../events/internal'
+import { Level } from '../lib/level'
 
 export class AINewLevelEvent extends AIEvent {
   constructor(public level: number, private levelMap: LevelMap, game: Game) {
@@ -71,6 +73,7 @@ export class AIDieEvent extends AIEvent {
 export class PlayerAI extends MetaAI {
   public presenter: Presenter | null = null
   private game: Game | undefined
+  private levelMap: LevelMap | undefined
   public levelUps: number = 0
 
   public act(
@@ -79,6 +82,7 @@ export class PlayerAI extends MetaAI {
     game: Game
   ): CreatureEvent | undefined {
     this.game = game
+    this.levelMap = levelMap
 
     this.presenter = new IdlePresenter(levelMap, this.game)
     this.game.ai = this
@@ -90,9 +94,17 @@ export class PlayerAI extends MetaAI {
     let event = this.events.pop()
     if (event) {
       event.run()
-    } else if (this.game) {
-      this.game.ai = null
-      this.presenter = null
+    } else if (this.game && this.levelMap) {
+      this.game.player.on(new AfterEvent(this.levelMap, this.game))
+
+      let event = this.events.pop()
+      if (event) {
+        event.run()
+      } else {
+        this.game.player.ai.runEvents()
+        this.game.ai = null
+        this.presenter = null
+      }
     }
   }
 
