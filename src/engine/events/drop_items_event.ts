@@ -21,7 +21,6 @@ export class DropItemsEvent extends CreatureEvent {
       this.game.logger.droppedItem(item, count)
       this.tile.addItem(item, count)
     })
-    this.onStuffWeightChange(subject)
 
     return Reaction.NOTHING
   }

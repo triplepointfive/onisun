@@ -52,7 +52,7 @@ describe('When enemy is close enough', () => {
   })
 
   it('Builds command', () => {
-    expect(actor.on.mock.calls.length).toEqual(1)
+    expect(actor.on.mock.calls.length).toEqual(2)
     expect(actor.on.mock.calls[0][0]).toBeInstanceOf(AttackEvent)
   })
 })

@@ -26,9 +26,9 @@ import {
   TileTypes,
   TileVisitor,
   Wall,
-  Point,
   CreatureEvent,
   LevelMapId,
+  DamageType,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -45,14 +45,12 @@ testTiles.set('D', () => new Door())
 
 class TestMissile extends Missile {}
 
-export const generateOneHandedWeapon = function(
-  modifier: Modifier = new Modifier({})
-): OneHandWeapon {
-  return new OneHandWeapon(generateString(), 1, modifier)
+export const generateOneHandedWeapon = function(): OneHandWeapon {
+  return new OneHandWeapon(generateString(), 1, [{ type: DamageType.Melee, dice: { max: 10, times: 3 }, extra: 4 }])
 }
 
 export const generateBodyArmor = function(): BodyArmor {
-  return new BodyArmor(generateString(), 1, new Modifier({}))
+  return new BodyArmor(generateString(), 1, [])
 }
 
 export const generateMissile = function(): Missile {

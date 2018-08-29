@@ -16,7 +16,7 @@ export default Vue.extend({
   name: 'DeathView',
   props: ['screen'],
   computed: {
-    message() {
+    message(): string {
       switch (this.screen.dieReason) {
       case DieReason.Attack:
         return 'Смерть в бою честь для героя. Но жить мне все-таки нравилось больше'
@@ -24,11 +24,13 @@ export default Vue.extend({
         return 'Раньше меня вела дорога приключений, но теперь и мне прострелили колено'
       case DieReason.Trap:
         return 'Я так и не научился смотреть под ноги'
+      case DieReason.Overloaded:
+        return 'Тяжко уйти от бремени, которое сам себе навязываешь.'
       default:
         return 'Скучная смерть, которая даже не заслужила отдельного сообщения'
       }
     },
-    signature() {
+    signature(): string {
       return `Признался ${this.screen.playerName} перед смертью`
     }
   },

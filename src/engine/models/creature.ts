@@ -17,6 +17,7 @@ import { Fov } from '../utils/fov'
 import { Point } from '../utils/utils'
 import { Profession } from './profession'
 import { Door, Tile, TileVisitor } from './tile'
+import { AfterEvent } from '../events/after_event';
 
 export enum Clan {
   Player,
@@ -148,6 +149,8 @@ export class Creature {
     if (command) {
       this.on(command)
     }
+
+    this.on(new AfterEvent(levelMap, game))
   }
 
   public visionMask(stage: LevelMap): void {

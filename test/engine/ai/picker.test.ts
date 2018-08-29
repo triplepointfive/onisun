@@ -28,7 +28,7 @@ describe('Picker', () => {
   describe('When there are no items', () => {
     it('Not available', () => {
       creature.act(map, game)
-      expect(creature.on.mock.calls.length).toEqual(0)
+      expect(creature.on.mock.calls.length).toEqual(1)
     })
   })
 
@@ -39,7 +39,7 @@ describe('Picker', () => {
     })
 
     it('Got move command', () => {
-      expect(creature.on.mock.calls.length).toEqual(1)
+      expect(creature.on.mock.calls.length).toEqual(2)
       expect(creature.on.mock.calls[0][0]).toBeInstanceOf(MoveEvent)
     })
 
@@ -69,7 +69,7 @@ describe('Picker', () => {
     })
 
     it('Got pick up command', () => {
-      expect(creature.on.mock.calls.length).toEqual(1)
+      expect(creature.on.mock.calls.length).toEqual(2)
       expect(creature.on.mock.calls[0][0]).toBeInstanceOf(PickUpItemsEvent)
     })
   })
@@ -83,7 +83,7 @@ describe('Picker', () => {
     })
 
     it('Got move command', () => {
-      expect(creature.on.mock.calls.length).toEqual(1)
+      expect(creature.on.mock.calls.length).toEqual(2)
       expect(creature.on.mock.calls[0][0]).toBeInstanceOf(MoveEvent)
     })
   })

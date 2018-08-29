@@ -25,7 +25,7 @@ describe('Escaper', () => {
     })
 
     it('does nothing', () => {
-      expect(actor.on.mock.calls.length).toEqual(0)
+      expect(actor.on.mock.calls.length).toEqual(1)
     })
   })
 

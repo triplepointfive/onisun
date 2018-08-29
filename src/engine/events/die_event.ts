@@ -9,6 +9,7 @@ export enum DieReason {
   Attack,
   Missile,
   Trap,
+  Overloaded,
 }
 
 export class DieEvent extends CreatureEvent {
