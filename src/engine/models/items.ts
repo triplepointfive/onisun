@@ -46,6 +46,10 @@ export class Item {
     public id: ItemId = Item.getId()
   ) {}
 
+  get canSeeDetails(): boolean {
+    return true
+  }
+
   public clone(): Item {
     return new Item(this.group, this.name, this.weight)
   }
@@ -97,12 +101,6 @@ export abstract class MissileWeapon extends Item {
   }
 }
 
-export class BodyArmor extends Item {
-  constructor(name: string, weight: number, modifier: Modifier) {
-    super(ItemGroup.BodyArmor, name, weight, [Usage.WearsOnBody], modifier)
-  }
-}
-
 export enum DamageType {
   Melee,
   Pierce,
@@ -111,7 +109,36 @@ export enum DamageType {
   Pure,
 }
 
-export enum ArmorType {
+export type Dice = {
+  times: number
+  max: number
+}
+
+export type Damage = {
+  extra: number
+  dice: Dice
+  type: DamageType
+}
+
+export abstract class Weapon extends Item {
+  constructor(
+    group: ItemGroup,
+    name: string,
+    weight: number,
+    public readonly damages: Damage[],
+    usage: Usage
+  ) {
+    super(group, name, weight, [usage])
+  }
+}
+
+export class OneHandWeapon extends Weapon {
+  constructor(name: string, weight: number, damages: Damage[]) {
+    super(ItemGroup.OneHandWeapon, name, weight, damages, Usage.WeaponOneHand)
+  }
+}
+
+export enum ProtectionType {
   Light,
   Medium,
   Heavy,
@@ -119,39 +146,31 @@ export enum ArmorType {
   Unarmored,
 }
 
-export type Damage = {
+export type Protection = {
+  type: ProtectionType
   value: number
-  type: DamageType
 }
 
-export abstract class Weapon extends Item {
+export abstract class Armor extends Item {
   constructor(
     group: ItemGroup,
-    name: string, weight: number, public readonly damages: Damage[], usage: Usage) {
-    super(
-      group,
-      name,
-      weight,
-      [usage],
-    )
+    name: string,
+    weight: number,
+    public readonly protections: Protection[],
+    usage: Usage
+  ) {
+    super(group, name, weight, [usage])
   }
 }
 
-export class OneHandWeapon extends Weapon {
-  constructor(
-    name: string, weight: number, damages: Damage[]) {
-    super(
-      ItemGroup.OneHandWeapon,
-      name,
-      weight,
-      damages,
-      Usage.WeaponOneHand,
-    )
+export class BodyArmor extends Armor {
+  constructor(name: string, weight: number, protections: Protection[]) {
+    super(ItemGroup.BodyArmor, name, weight, protections, Usage.WearsOnBody)
   }
 }
 
-export class Boots extends Item {
-  constructor(name: string, weight: number, modifier: Modifier) {
-    super(ItemGroup.Boots, name, weight, [Usage.Boots], modifier)
+export class Boots extends Armor {
+  constructor(name: string, weight: number, protections: Protection[]) {
+    super(ItemGroup.Boots, name, weight, protections, Usage.Boots)
   }
 }

@@ -11,7 +11,7 @@ import {
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
 
-interface InventoryPosition {
+export interface InventoryPresenterPosition {
   inventorySlot: InventorySlot
   item: Item | undefined
   count: number | undefined
@@ -19,7 +19,7 @@ interface InventoryPosition {
 }
 
 export class InventoryPresenter extends Presenter {
-  public positions: InventoryPosition[] = []
+  public positions: InventoryPresenterPosition[] = []
   private takeTime: boolean = false
 
   constructor(levelMap: LevelMap, game: Game) {
@@ -27,13 +27,13 @@ export class InventoryPresenter extends Presenter {
     this.rebuildPositions()
   }
 
-  public takeOff(position: InventoryPosition) {
+  public takeOff(position: InventoryPresenterPosition) {
     this.player.on(new TakeOffItemEvent(position.inventorySlot, this.game))
     this.takeTime = true
     this.rebuildPositions()
   }
 
-  public putOn(position: InventoryPosition) {
+  public putOn(position: InventoryPresenterPosition) {
     this.redirect(
       new PutOnItemsPresenter(
         itemGroup => {

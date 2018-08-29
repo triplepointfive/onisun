@@ -20,7 +20,7 @@ import {
 } from './onisun/items'
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
 import { PickUpItemsEvent } from './engine/events/pick_up_items_event'
-import { DamageType } from './engine/models/items';
+import { DamageType, BodyArmor, ProtectionType } from './engine/models/items'
 
 export * from './onisun/professions'
 export * from './onisun/talents'
@@ -43,8 +43,13 @@ export class Application {
       player.professions.push(prof)
     }
 
-    const dagger = new OneHandWeapon('Dagger', 0.8, [{ type: DamageType.Melee, value: 3 }])
-    const katana = new OneHandWeapon('Katana', 1, [{ type: DamageType.Melee, value: 10 }])
+    const dagger = new OneHandWeapon('Dagger', 0.8, [
+      { type: DamageType.Melee, dice: { times: 1, max: 3 }, extra: 2 },
+    ])
+    const katana = new OneHandWeapon('Katana', 1, [
+      { type: DamageType.Melee, dice: { times: 5, max: 2 }, extra: 0 },
+    ])
+    const plateArmor = new BodyArmor('Латы', 1, [ { type: ProtectionType.Heavy, value: 5 }])
 
     const wooden = woodenArrow()
     const iron = ironArrow()
@@ -57,6 +62,7 @@ export class Application {
 
       tile.addItem(dagger, 2)
       tile.addItem(katana, 1)
+      tile.addItem(plateArmor, 1)
       tile.addItem(wooden, 5)
       tile.addItem(iron, 5)
       tile.addItem(rock, 5)
@@ -68,6 +74,7 @@ export class Application {
           [
             { item: dagger, count: 2 },
             { item: katana, count: 1 },
+            { item: plateArmor, count: 1},
             { item: wooden, count: 5 },
             { item: iron, count: 5 },
             { item: rock, count: 5 },
@@ -79,6 +86,9 @@ export class Application {
 
       player.inventory.missileWeaponSlot.equip(player, bow)
       player.inventory.missileSlot.equip(player, wooden)
+      player.inventory.rightHandSlot.equip(player, katana)
+
+      player.inventory.bodySlot.equip(player, plateArmor)
 
       player.inventory.putToBag(new LightSpeedBoots(), 1)
 

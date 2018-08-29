@@ -10,7 +10,9 @@
         span.dash &#8212;
         span.part {{ displayBodyPart(position.inventorySlot) }}
         span.separator &#58;
-      td.name(:class='positionStatus(position)') {{ itemName(position) }}
+      td.name-slot
+        .name(:class='positionStatus(position)') {{ itemName(position) }}
+        small.details(v-text='positionDetails(position)')
       td.weight {{ itemWeight(position) }}
 </template>
 
@@ -22,6 +24,15 @@ import {
   BodySlot,
   MissileSlot,
   MissileWeaponSlot,
+  InventoryPresenterPosition,
+  Item,
+  Player,
+  Weapon,
+  Armor,
+  Damage,
+  DamageType,
+  Protection,
+  ProtectionType,
 } from '../../src/engine'
 
 import {
@@ -40,7 +51,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    player() {
+    player(): Player {
       return this.screen.player
     },
     carryingWeight() {
@@ -49,14 +60,11 @@ export default Vue.extend({
     }
   },
   methods: {
-    onEvent(event) {
+    onEvent(event: KeyboardEvent): void {
       switch (event.key) {
       case ' ':
       case 'Escape':
         return this.screen.close()
-      case 'Enter':
-      case ',':
-        return this.screen.pickUpItems(this.selected.map(index => this.screen.positions[index]))
       default:
         return this.selectAt(event.key.charCodeAt(0) - LETTER_OFFSET)
       }
@@ -74,40 +82,92 @@ export default Vue.extend({
     indexLetter(i: number): string {
       return String.fromCharCode(LETTER_OFFSET + i)
     },
-    positionSelected(index) {
-      return this.selected.indexOf(index) >= 0
-    },
-    positionStatus(position) {
+    positionStatus(position: InventoryPresenterPosition) {
       if (!position.item) {
         return ''
       } else {
         return 'text-success'
       }
     },
-    displayBodyPart(bodyPart) {
+    // TODO: Move this to module
+    positionDetails(position: InventoryPresenterPosition): string  | undefined {
+      if (!position.item || !position.item.canSeeDetails) {
+        return
+      }
+
+      if (position.item instanceof Weapon) {
+        return position.item.damages.map(this.showDamage).join(',')
+      } else if (position.item instanceof Armor) {
+        return position.item.protections.map(this.showProtection).join(',')
+      }
+
+      return
+    },
+    showDamage({ extra, dice: { times, max }, type }: Damage): string {
+      let base = `${this.showDamageType(type)} ${times}d${max}`
+
+      if (extra) {
+        base += `+${extra}`
+      }
+
+      return base
+    },
+    showDamageType(damageType: DamageType): string {
+      switch (damageType) {
+      case DamageType.Melee:
+        return 'Me'
+      case DamageType.Pierce:
+        return 'Pi'
+      case DamageType.Blunt:
+        return 'B'
+      case DamageType.Magic:
+        return 'Mg'
+      case DamageType.Pure:
+        return 'Pu'
+      default:
+        return 'unknown damage type'
+      }
+    },
+    showProtection({ type, value } : Protection): string {
+      switch (type) {
+      case ProtectionType.Light:
+        return `L${value}`
+      case ProtectionType.Medium:
+        return `M${value}`
+      case ProtectionType.Heavy:
+        return `H${value}`
+      case ProtectionType.Solid:
+        return `S${value}`
+      case ProtectionType.Unarmored:
+        return `U${value}`
+      default:
+        return 'unknown protection type'
+      }
+    },
+    displayBodyPart(bodyPart: BodySlot): string {
       return bodyPart.name
     },
-    displayItem(item) {
+    displayItem(item: Item): string | undefined {
       if (item) {
         return `${displayItem(item).getChar()} ${item.name}`
       }
     },
-    itemName(position) {
-      if (position.item) {
+    itemName(position: InventoryPresenterPosition) {
+      if (position.item && position.count) {
         return `${position.item.name} ${position.count > 1 ? `(${position.count})` : ''}`
       } else {
         return '-'
       }
     },
-    itemWeight(position) {
-      if (position.item) {
+    itemWeight(position: InventoryPresenterPosition) {
+      if (position.item && position.count) {
         return `[${position.item.weight * position.count}kg]`
       }
     },
-    available(position) {
+    available(position: InventoryPresenterPosition) {
       return position.item || position.availableItems.length
     },
-    availableStatus(position) {
+    availableStatus(position: InventoryPresenterPosition) {
       return this.available(position) ? '-available' : '-unavailable'
     }
   }
@@ -152,6 +212,8 @@ export default Vue.extend({
     padding-right: 0.5rem;
     position: relative;
 
+    vertical-align: top;
+
     .separator {
       position: absolute;
       right: 0;
@@ -162,12 +224,16 @@ export default Vue.extend({
     }
   }
 
-  .name {
+  .name-slot {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 
     width: 70%;
+
+    > .details {
+      color: grey;
+    }
   }
 
   .weight {
