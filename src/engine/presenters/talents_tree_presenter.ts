@@ -1,6 +1,6 @@
 import { Presenter, PresenterType } from './internal'
-import { Game, LevelMap } from '../../engine'
-import { Profession, Talent, TalentStatus } from '../models/profession'
+import { Game, LevelMap, Talent, TalentStatus } from '../../engine'
+import { Profession } from '../models/profession'
 
 interface TalentWithStatus extends Talent {
   status: TalentStatus
@@ -12,7 +12,7 @@ interface TalentsTreePresenterProfession {
 }
 
 export class TalentsTreePresenter extends Presenter {
-  public options: TalentsTreePresenterProfession[] = []
+  public readonly options: TalentsTreePresenterProfession[] = []
 
   constructor(public readonly level: number, levelMap: LevelMap, game: Game) {
     super(PresenterType.AbilitiesPicking, levelMap, game)
@@ -29,7 +29,11 @@ export class TalentsTreePresenter extends Presenter {
     })
   }
 
-  public onInput(professionId: number, talentId: number) {
+  get title(): string {
+    return 'Pick new talent'
+  }
+
+  public pickTalent(professionId: number, talentId: number): void {
     const profession: Profession | undefined = this.player.professions.find(
       profession => profession.id === professionId
     )
@@ -46,6 +50,12 @@ export class TalentsTreePresenter extends Presenter {
       throw `Talent with id ${talentId} for profession ${
         profession.name
       } is not found`
+    }
+
+    if (this.status(talent, profession) !== TalentStatus.Available) {
+      throw `Talent with id ${talentId} for profession ${
+        profession.name
+      } can not be upgraded`
     }
 
     talent.rank += 1

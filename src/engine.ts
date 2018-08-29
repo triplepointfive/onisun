@@ -54,6 +54,7 @@ export * from './engine/models/level_map'
 export * from './engine/models/logger'
 export * from './engine/models/memory'
 export * from './engine/models/profession'
+export * from './engine/models/talent'
 export * from './engine/models/tile'
 export * from './engine/models/tile_effect'
 

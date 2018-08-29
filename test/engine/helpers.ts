@@ -30,6 +30,7 @@ import {
   LevelMapId,
   DamageType,
   AICreature,
+  Talent,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -148,8 +149,13 @@ export const generateLevelMap = function(
   return map
 }
 
-export const generateGame = function(): Game {
-  return new TestGame()
+export const generateGame = function(
+  { player, professionPicker } = {
+    player: undefined,
+    professionPicker: undefined,
+  }
+): Game {
+  return new TestGame(player, professionPicker)
 }
 
 class TileCharVisitor extends TileVisitor {
@@ -186,4 +192,20 @@ let professionId = 0
 export const generateProfession = function(level: number = 1): Profession {
   const name = times(4, () => random(35).toString(36)).join('')
   return new Profession(professionId++, name, level)
+}
+
+class TestTalent extends Talent {
+  public onObtain(game: Game): void {}
+}
+
+let talentId = 0
+export const generateTalent = function({ depth } = { depth: 0 }): Talent {
+  return new TestTalent(
+    talentId++,
+    generateString(),
+    depth,
+    1,
+    3,
+    generateString()
+  )
 }

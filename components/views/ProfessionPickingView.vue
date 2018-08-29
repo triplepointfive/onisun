@@ -29,7 +29,7 @@ export default Vue.extend({
     close(doubleClickOption) {
       const option = doubleClickOption || this.picked
       if (option) {
-        this.screen.onInput(option)
+        this.screen.pickProfession(option)
       }
     },
     onEvent(event) {

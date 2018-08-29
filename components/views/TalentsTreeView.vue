@@ -1,5 +1,7 @@
 <template lang='pug'>
 #talents-tree-container.simple-popover.screen-modal.text-center
+  .title {{ screen.title }}
+
   b-tabs.tabs-list(card v-model='professionIndex')
     b-tab(
       v-for='profession in screen.player.professions'
@@ -36,7 +38,7 @@
 <script lang='ts'>
 import Vue from 'vue'
 import { OnisunTalentId } from 'src/onisun'
-import { TalentStatus } from 'src/engine';
+import { TalentStatus, Profession } from 'src/engine';
 
 const LETTER_OFFSET = 97
 
@@ -52,7 +54,7 @@ export default Vue.extend({
     option() {
       return this.screen.options[this.professionIndex]
     },
-    profession() {
+    profession(): Profession {
       return this.option.profession
     },
     groupedTalents() {
@@ -77,14 +79,14 @@ export default Vue.extend({
     }
   },
   methods: {
-    close(doubleClickOption) {
+    close(doubleClickOption = undefined) {
       const talent = doubleClickOption || this.picked
 
       if (!talent || talent.status !== TalentStatus.Available) {
         return
       }
 
-      this.screen.onInput(this.profession.id, talent.id)
+      this.screen.pickTalent(this.profession.id, talent.id)
       this.picked = null
     },
     pickTalent(talent) {
@@ -92,7 +94,7 @@ export default Vue.extend({
         this.picked = talent
       }
     },
-    onEvent(event) {
+    onEvent(event: KeyboardEvent): void {
       switch(event.key) {
       case ' ':
       case 'Enter':
@@ -118,7 +120,7 @@ export default Vue.extend({
         return `${talent.letter} ${tip}`
       }
     },
-    talentStatus(talent) {
+    talentStatus(talent): string | undefined {
       if (this.picked && this.picked.id === talent.id) {
         return '-selected'
       }
@@ -131,7 +133,7 @@ export default Vue.extend({
         return '-completed'
       }
     },
-    iconPath(talentId) {
+    iconPath(talentId: OnisunTalentId): string {
       switch(talentId) {
         case OnisunTalentId.AttackerTwoHandedWeapons:
           return 'AttackerTwoHandedWeapons.svg'
