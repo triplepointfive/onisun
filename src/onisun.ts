@@ -43,10 +43,10 @@ export class Application {
       player.professions.push(prof)
     }
 
-    const dagger = new OneHandWeapon('Dagger', 0.8, [
+    const dagger = new OneHandWeapon('Кинжал', 0.8, [
       { type: DamageType.Melee, dice: { times: 1, max: 3 }, extra: 2 },
     ])
-    const katana = new OneHandWeapon('Katana', 1, [
+    const katana = new OneHandWeapon('Катана', 1, [
       { type: DamageType.Melee, dice: { times: 5, max: 2 }, extra: 0 },
     ])
     const plateArmor = new BodyArmor('Латы', 1, [
@@ -90,7 +90,7 @@ export class Application {
       player.inventory.missileSlot.equip(player, wooden)
       player.inventory.rightHandSlot.equip(player, katana)
 
-      player.inventory.bodySlot.equip(player, plateArmor)
+      player.inventory.chestSlot.equip(player, plateArmor)
 
       player.inventory.putToBag(new LightSpeedBoots(), 1)
 

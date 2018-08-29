@@ -5,10 +5,18 @@ import { Modifier } from '../lib/attribute'
 
 export enum Usage {
   WeaponOneHand,
+  WearsOnHead,
   WearsOnBody,
+  Ring,
+  Amulet,
   Throw,
   Shoot,
   Boots,
+  Tool,
+  Belt,
+  Gloves,
+  Gauntlets,
+  Cloak,
 }
 
 export enum ItemGroup {

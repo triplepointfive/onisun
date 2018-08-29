@@ -14,9 +14,9 @@ describe('puts on and takes off', () => {
   it('empty slot', () => {
     inventory.putToBag(item1, 1)
     inventory.rightHandSlot.equip(creature, item1)
-    expect(inventory.slots()[0].equipment.item).toEqual(item1)
+    expect(inventory.rightHandSlot.equipment.item).toEqual(item1)
     inventory.rightHandSlot.takeOff(creature)
-    expect(inventory.slots()[0].equipment).toBeUndefined()
+    expect(inventory.rightHandSlot.equipment).toBeUndefined()
     expect(inventory.cares().length).toEqual(1)
     expect(inventory.cares()[0].item).toEqual(item1)
   })

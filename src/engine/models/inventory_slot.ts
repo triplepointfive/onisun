@@ -87,10 +87,38 @@ export class LeftHandSlot extends InventorySlot {
   }
 }
 
-export class BodySlot extends InventorySlot {
+export class HeadSlot extends InventorySlot {
+  public name: string = 'Голова'
+  constructor() {
+    super([Usage.WearsOnHead], true)
+  }
+}
+
+export class ChestSlot extends InventorySlot {
   public name: string = 'Корпус'
   constructor() {
     super([Usage.WearsOnBody], true)
+  }
+}
+
+export class GlovesSlot extends InventorySlot {
+  public name: string = 'Перчатки'
+  constructor() {
+    super([Usage.Gloves], true)
+  }
+}
+
+export class GauntletsSlot extends InventorySlot {
+  public name: string = 'Наручи'
+  constructor() {
+    super([Usage.Gauntlets], true)
+  }
+}
+
+export class BeltSlot extends InventorySlot {
+  public name: string = 'Пояс'
+  constructor() {
+    super([Usage.Belt], true)
   }
 }
 
@@ -98,6 +126,34 @@ export class BootsSlot extends InventorySlot {
   public name: string = 'Ботинки'
   constructor() {
     super([Usage.Boots], true)
+  }
+}
+
+export class AmuletSlot extends InventorySlot {
+  public name: string = 'Амулет'
+  constructor() {
+    super([Usage.Amulet], true)
+  }
+}
+
+export class LeftFingerSlot extends InventorySlot {
+  public name: string = 'Левый палец'
+  constructor() {
+    super([Usage.Ring], true)
+  }
+}
+
+export class RightFingerSlot extends InventorySlot {
+  public name: string = 'Правый палец'
+  constructor() {
+    super([Usage.Ring], true)
+  }
+}
+
+export class CloakSlot extends InventorySlot {
+  public name: string = 'Плащ'
+  constructor() {
+    super([Usage.Cloak], true)
   }
 }
 
@@ -134,5 +190,12 @@ export class MissileSlot extends InventorySlot {
     }
 
     return baseMatch
+  }
+}
+
+export class ToolsSlot extends InventorySlot {
+  public name: string = 'Инструмент'
+  constructor() {
+    super([Usage.Tool], true)
   }
 }

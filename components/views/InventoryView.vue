@@ -11,7 +11,7 @@
         span.part {{ displayBodyPart(position.inventorySlot) }}
         span.separator &#58;
       td.name-slot
-        .name(:class='positionStatus(position)') {{ itemName(position) }}
+        span.name(:class='positionStatus(position)') {{ itemName(position) }}
         small.details(v-text='positionDetails(position)')
       td.weight {{ itemWeight(position) }}
 </template>
@@ -21,7 +21,7 @@ import Vue from 'vue'
 import {
   LeftHandSlot,
   RightHandSlot,
-  BodySlot,
+  ChestSlot,
   MissileSlot,
   MissileWeaponSlot,
   InventoryPresenterPosition,
@@ -144,7 +144,7 @@ export default Vue.extend({
         return 'unknown protection type'
       }
     },
-    displayBodyPart(bodyPart: BodySlot): string {
+    displayBodyPart(bodyPart: ChestSlot): string {
       return bodyPart.name
     },
     displayItem(item: Item): string | undefined {
