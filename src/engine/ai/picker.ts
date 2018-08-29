@@ -1,5 +1,5 @@
 import { PickUpItemsEvent, LevelMap } from '../../engine'
-import { Ability, Creature } from '../models/creature'
+import { Ability, Creature, AICreature } from '../models/creature'
 import { Game } from '../models/game'
 import { GoToTileAI } from './internal'
 import { AIItemPickedEvent } from './meta_ai'
@@ -22,7 +22,7 @@ export class Picker extends GoToTileAI {
   }
 
   protected onReach(
-    actor: Creature,
+    actor: AICreature,
     levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {

@@ -29,6 +29,7 @@ import {
   CreatureEvent,
   LevelMapId,
   DamageType,
+  AICreature,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -91,7 +92,7 @@ const wrapAI = function(ai: AI): MetaAI {
 
 const fakeSpecie = new Specie('Test specie', 10, Clan.FreeForAll, allAbilities)
 
-export class TestCreature extends Creature {}
+export class TestCreature extends AICreature {}
 export const generateCreatureWithAI = function(ai: AI): Creature {
   return new TestCreature(generateCharacteristics(), wrapAI(ai), fakeSpecie)
 }

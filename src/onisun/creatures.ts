@@ -5,10 +5,11 @@ import {
   Specie,
   Clan,
   Pool,
+  AICreature,
 } from '../engine'
 
 const newCreature = (characteristics: Characteristics, name: string) => {
-  return new Creature(
+  return new AICreature(
     characteristics,
     new Dispatcher(),
     new Specie(name, 10, Clan.PlayerOnlyEnemy, [])

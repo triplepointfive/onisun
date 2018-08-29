@@ -6,7 +6,6 @@ import {
   Inventory,
   LevelMap,
   Memory,
-  MetaAI,
   PlayerAI,
 } from '../../engine'
 import { CreatureEvent } from '../events/internal'
@@ -18,6 +17,7 @@ import { Point } from '../utils/utils'
 import { Profession } from './profession'
 import { Door, Tile, TileVisitor } from './tile'
 import { AfterEvent } from '../events/after_event'
+import { MetaAI } from '../ai/meta_ai'
 
 export enum Clan {
   Player,
@@ -85,7 +85,7 @@ class VisibilityTileVisitor extends TileVisitor {
   }
 }
 
-export class Creature {
+export abstract class Creature {
   private static lastId: CreatureId = 0
   public static getId(): CreatureId {
     return this.lastId++
@@ -103,11 +103,9 @@ export class Creature {
 
   constructor(
     public characteristics: Characteristics,
-    public ai: MetaAI,
     public specie: Specie,
     public id: CreatureId = Creature.getId()
   ) {
-    this.ai = ai
     this.inventory = new Inventory()
 
     this.stuffWeight = new Stat(0)
@@ -142,16 +140,7 @@ export class Creature {
     return this.stageMemories[levelMap.id]
   }
 
-  public act(levelMap: LevelMap, game: Game): void {
-    this.visionMask(levelMap)
-
-    const command = this.ai.act(this, levelMap, game)
-    if (command) {
-      this.on(command)
-    }
-
-    this.on(new AfterEvent(levelMap, game))
-  }
+  public abstract act(levelMap: LevelMap, game: Game): void
 
   public visionMask(stage: LevelMap): void {
     if (!this.stageMemories[stage.id]) {
@@ -205,17 +194,49 @@ export class Creature {
   }
 }
 
+export class AICreature extends Creature {
+  constructor(
+    characteristics: Characteristics,
+    public ai: MetaAI,
+    specie: Specie,
+    id: CreatureId = Creature.getId()
+  ) {
+    super(characteristics, specie, id)
+  }
+
+  public act(levelMap: LevelMap, game: Game): void {
+    this.visionMask(levelMap)
+
+    const command = this.ai.act(this, levelMap, game)
+    if (command) {
+      this.on(command)
+    }
+
+    this.on(new AfterEvent(levelMap, game))
+  }
+}
+
 export class Player extends Creature {
-  public ai: PlayerAI
   public professions: Profession[] = []
 
   constructor(
     public level: Level,
     characteristics: Characteristics,
-    ai: PlayerAI,
+    public ai: PlayerAI,
     specie: Specie
   ) {
-    super(characteristics, ai, specie)
+    super(characteristics, specie)
+  }
+
+  public act(levelMap: LevelMap, game: Game): void {
+    this.visionMask(levelMap)
+
+    const command = this.ai.act(this, levelMap, game)
+    if (command) {
+      this.on(command)
+    }
+
+    this.on(new AfterEvent(levelMap, game))
   }
 
   public rebuildVision(levelMap: LevelMap): void {

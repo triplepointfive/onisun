@@ -47,6 +47,6 @@ export class CapacityLimitStat {
   }
 
   get flattenedStart(): number {
-    return this.overloadedStart * 1.5
+    return this.overloadedStart * 3
   }
 }
