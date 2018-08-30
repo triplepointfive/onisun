@@ -36,7 +36,7 @@ export class Calculator {
     return sum(
       protections.map(
         ({ type, value }: Protection): number =>
-          value / this.armorToDamageRatio(damageType, type)
+          value * this.armorToDamageRatio(damageType, type)
       )
     )
   }
@@ -47,9 +47,9 @@ export class Calculator {
   ): number => {
     //         Light  Medium   Heavy  Solid  Unarmored
     // Melee       1     2/3       1    4/3          1
-    // Pierce   200%     75%    100%    35%       150%
-    // Blunt    100%     50%    100%   150%       150%
-    // Magic    125%     75%     1/2      3       100%
+    // Pierce    1/2     4/3       1      3        3/4
+    // Blunt       1       2       1    1/2        1/2
+    // Magic     5/4     3/4     1/2      3          1
     // Pure        0       0       0      0          0
     switch (damageType) {
       case DamageType.Melee:
@@ -64,35 +64,35 @@ export class Calculator {
       case DamageType.Pierce:
         switch (armorType) {
           case ProtectionType.Light:
-            return 2.0
+            return 1 / 2
           case ProtectionType.Medium:
-            return 0.75
+            return 4 / 3
           case ProtectionType.Solid:
-            return 0.35
+            return 3
           case ProtectionType.Unarmored:
-            return 1.5
+            return 3 / 4
           default:
             return 1
         }
       case DamageType.Blunt:
         switch (armorType) {
           case ProtectionType.Medium:
-            return 0.5
+            return 2
           case ProtectionType.Solid:
-            return 1.5
+            return 1 / 2
           case ProtectionType.Unarmored:
-            return 1.5
+            return 1 / 2
           default:
             return 1
         }
       case DamageType.Magic:
         switch (armorType) {
           case ProtectionType.Light:
-            return 1.25
+            return 5 / 4
           case ProtectionType.Medium:
-            return 0.75
+            return 3 / 4
           case ProtectionType.Heavy:
-            return 0.5
+            return 1 / 2
           case ProtectionType.Solid:
             return 3
           default:
