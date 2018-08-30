@@ -1,4 +1,4 @@
-import { includes } from 'lodash'
+import { includes, concat } from 'lodash'
 import {
   Characteristics,
   Game,
@@ -19,7 +19,7 @@ import { Profession } from './profession'
 import { Door, Tile, TileVisitor } from './tile'
 import { AfterEvent } from '../events/after_event'
 import { MetaAI } from '../ai/meta_ai'
-import { Protection, Damage, DamageType, Missile, Item } from './items'
+import { Protection, Damage, DamageType, Missile, Item, ProtectionType } from './items'
 import { ItemsBunch } from '../lib/bunch'
 
 export enum Clan {
@@ -268,6 +268,8 @@ export class Player extends Creature {
   public professions: Profession[] = []
   public inventory: Inventory = new Inventory()
 
+  public itemsProtections: Protection[] = []
+
   constructor(
     public level: Level,
     characteristics: Characteristics,
@@ -275,6 +277,10 @@ export class Player extends Creature {
     specie: Specie
   ) {
     super(characteristics, specie)
+    this.itemsProtections = [
+      { type: ProtectionType.Heavy, value: 4 },
+      { type: ProtectionType.Unarmored, value: 20 }
+    ]
   }
 
   public act(levelMap: LevelMap, game: Game): void {
@@ -296,11 +302,6 @@ export class Player extends Creature {
     return event.affectPlayer(this)
   }
 
-  get protections(): Protection[] {
-    // TODO: Add inventors protection
-    return this.specie.protections
-  }
-
   get missile(): GroupedItem<Missile> | undefined {
     return this.inventory.missileSlot.equipment
   }
@@ -315,5 +316,9 @@ export class Player extends Creature {
 
   public removeItem(item: Item, count: number): void {
     this.inventory.removeFromBag(item, count)
+  }
+
+  get protections(): Protection[] {
+    return concat(this.specie.protections, this.itemsProtections)
   }
 }

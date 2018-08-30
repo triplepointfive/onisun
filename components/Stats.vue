@@ -35,8 +35,9 @@
     :attr='creature.characteristics.speed'
     )
   .cell
-    .value
-      | {{ levelMap.name }}
+    .value {{ levelMap.name }}
+  .cell
+    .value {{ protections }}
 </template>
 
 <script lang="ts">
@@ -44,6 +45,10 @@ import Vue from 'vue'
 
 import PrimaryAttribute from './PrimaryAttribute.vue'
 import { Attribute, Level } from 'src/engine'
+
+import {
+  showProtection
+} from './shows'
 
 export default Vue.extend({
   name: 'Stats',
@@ -59,6 +64,9 @@ export default Vue.extend({
     healthLevel(): string {
       const attribute: Attribute = this.creature.characteristics.health
       return `${attribute.currentValue / (attribute.maximum || 0) * 100}%`
+    },
+    protections(): string {
+      return this.creature.protections.map(showProtection).join(', ')
     }
   },
   methods: {

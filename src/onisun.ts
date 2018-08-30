@@ -23,6 +23,7 @@ import { PickUpItemsEvent } from './engine/events/pick_up_items_event'
 import { DamageType, BodyArmor, ProtectionType } from './engine/models/items'
 import { PutOnItemEvent } from './engine/events/put_on_item_event'
 
+export * from './engine'
 export * from './onisun/professions'
 export * from './onisun/talents'
 export * from './onisun/items'

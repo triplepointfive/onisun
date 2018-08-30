@@ -39,6 +39,10 @@ import {
   displayItem,
 } from './../scene_tiles'
 
+import {
+  showItemDetails
+} from '../shows'
+
 const LETTER_OFFSET = 97
 
 export default Vue.extend({
@@ -79,6 +83,11 @@ export default Vue.extend({
         }
       }
     },
+    positionDetails(position: InventoryPresenterPosition): string  | undefined {
+      if (position.item && position.item.canSeeDetails) {
+        return showItemDetails(position.item)
+      }
+    },
     indexLetter(i: number): string {
       return String.fromCharCode(LETTER_OFFSET + i)
     },
@@ -87,61 +96,6 @@ export default Vue.extend({
         return ''
       } else {
         return 'text-success'
-      }
-    },
-    // TODO: Move this to module
-    positionDetails(position: InventoryPresenterPosition): string  | undefined {
-      if (!position.item || !position.item.canSeeDetails) {
-        return
-      }
-
-      if (position.item instanceof Weapon) {
-        return position.item.damages.map(this.showDamage).join(',')
-      } else if (position.item instanceof Armor) {
-        return position.item.protections.map(this.showProtection).join(',')
-      }
-
-      return
-    },
-    showDamage({ extra, dice: { times, max }, type }: Damage): string {
-      let base = `${this.showDamageType(type)} ${times}d${max}`
-
-      if (extra) {
-        base += `+${extra}`
-      }
-
-      return base
-    },
-    showDamageType(damageType: DamageType): string {
-      switch (damageType) {
-      case DamageType.Melee:
-        return 'Me'
-      case DamageType.Pierce:
-        return 'Pi'
-      case DamageType.Blunt:
-        return 'B'
-      case DamageType.Magic:
-        return 'Mg'
-      case DamageType.Pure:
-        return 'Pu'
-      default:
-        return 'unknown damage type'
-      }
-    },
-    showProtection({ type, value } : Protection): string {
-      switch (type) {
-      case ProtectionType.Light:
-        return `L${value}`
-      case ProtectionType.Medium:
-        return `M${value}`
-      case ProtectionType.Heavy:
-        return `H${value}`
-      case ProtectionType.Solid:
-        return `S${value}`
-      case ProtectionType.Unarmored:
-        return `U${value}`
-      default:
-        return 'unknown protection type'
       }
     },
     displayBodyPart(bodyPart: ChestSlot): string {
