@@ -47,16 +47,14 @@ export const allAbilities = [
   Ability.Throwing,
 ]
 
-export class Specie {
-  constructor(
-    public readonly name: string,
-    public readonly weight: number,
-    public readonly clan: Clan,
-    public readonly abilities: Ability[],
-    public protections: Protection[]
-  ) {}
-
-  public throwingItem?: Missile
+export interface Specie {
+  readonly name: string
+  readonly weight: number
+  readonly clan: Clan
+  readonly abilities: Ability[]
+  protections: Protection[]
+  damages: Damage[]
+  throwingItem?: Missile
 }
 
 export type CreatureId = number
@@ -106,7 +104,7 @@ export abstract class Creature {
   }
 
   get damages(): Damage[] {
-    return [{ extra: 0, dice: { times: 4, max: 3 }, type: DamageType.Melee }]
+    return this.specie.damages
   }
 
   public can(ability: Ability) {
