@@ -6,6 +6,7 @@ import { ThrowEvent } from './throw_event'
 import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
 import { Missile } from '../models/items'
+import { RemoveItemEvent } from './remove_item_event'
 
 export class MissileAttackEvent extends CreatureEvent {
   constructor(
@@ -38,7 +39,7 @@ export class MissileAttackEvent extends CreatureEvent {
 
     this.withMissile(player, missile.item)
 
-    player.inventory.missileSlot.removeItem(player, 1)
+    player.on(new RemoveItemEvent(player.inventory.missileSlot, 1, this.game))
     player.stuffWeight.subtract(missile.item.weight)
 
     return Reaction.NOTHING

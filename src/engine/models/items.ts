@@ -62,14 +62,6 @@ export class Item {
     return new Item(this.group, this.name, this.weight)
   }
 
-  public onPutOn(player: Player): void {
-    player.characteristics.addModifier(this.modifier)
-  }
-
-  public onTakeOff(player: Player): void {
-    player.characteristics.removeModifier(this.modifier)
-  }
-
   public groupsWith(item: Item): boolean {
     return this.name === item.name
   }

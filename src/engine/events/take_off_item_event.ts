@@ -1,4 +1,4 @@
-import { InventorySlot, CreatureEvent, Game } from '../../engine'
+import { InventorySlot, CreatureEvent, Game, Item } from '../../engine'
 import { Reaction, Creature, Player } from '../models/creature'
 
 export class TakeOffItemEvent extends CreatureEvent {
@@ -11,15 +11,21 @@ export class TakeOffItemEvent extends CreatureEvent {
   }
 
   public affectPlayer(player: Player): Reaction {
-    const groupedItem = this.slot.equipment
+    const equipment = this.slot.equipment
 
-    if (groupedItem === undefined) {
+    if (equipment === undefined) {
       throw `Can not take off item from ${this.slot.name} - nothing equipped`
     }
 
-    this.slot.takeOff(player)
-    this.game.logger.takeOff(groupedItem.item)
+    this.slot.takeOff()
+    this.onTakeOff(player, equipment.item)
+    player.inventory.putToBag(equipment.item, equipment.count)
+    this.game.logger.takeOff(equipment.item)
 
     return Reaction.NOTHING
+  }
+
+  private onTakeOff(player: Player, item: Item): void {
+    player.characteristics.removeModifier(item.modifier)
   }
 }

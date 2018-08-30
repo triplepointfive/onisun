@@ -12,6 +12,7 @@ import {
   PickUpItemsEvent,
   Missile,
   Game,
+  PutOnItemEvent,
 } from '../../../src/engine'
 
 import {
@@ -175,27 +176,27 @@ describe('IdlePresenter', () => {
 
     it('complains when can not use missile', () => {
       player.inventory.putToBag(missile, 5)
-      player.inventory.missileSlot.equip(player, missile)
+      player.on(new PutOnItemEvent(player.inventory.missileSlot, missile, game))
 
       missile.canThrow = jest.fn()
       missile.canThrow.mockReturnValueOnce(false)
 
       screen.onInput(IdleInputKey.Missile)
 
-      expect(game.logger.messages.length).toEqual(1)
+      expect(game.logger.messages.length).toEqual(2)
       expect(screen.redirect.mock.calls.length).toBe(0)
       expect(screen.endTurn.mock.calls.length).toBe(0)
     })
 
     it('opens missile screen', () => {
       player.inventory.putToBag(missile, 5)
-      player.inventory.missileSlot.equip(player, missile)
+      player.on(new PutOnItemEvent(player.inventory.missileSlot, missile, game))
       map.addCreature(new Point(1, 1), player)
       player.rebuildVision(game.currentMap)
 
       screen.onInput(IdleInputKey.Missile)
 
-      expect(game.logger.messages.length).toEqual(0)
+      expect(game.logger.messages.length).toEqual(1)
       expect(screen.redirect.mock.calls.length).toBe(1)
       expect(screen.redirect.mock.calls[0][0]).toBeInstanceOf(MissilePresenter)
       expect(screen.endTurn.mock.calls.length).toBe(0)

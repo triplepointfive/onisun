@@ -21,6 +21,7 @@ import {
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
 import { PickUpItemsEvent } from './engine/events/pick_up_items_event'
 import { DamageType, BodyArmor, ProtectionType } from './engine/models/items'
+import { PutOnItemEvent } from './engine/events/put_on_item_event'
 
 export * from './onisun/professions'
 export * from './onisun/talents'
@@ -86,13 +87,20 @@ export class Application {
         )
       )
 
-      player.inventory.missileWeaponSlot.equip(player, bow)
-      player.inventory.missileSlot.equip(player, wooden)
-      player.inventory.rightHandSlot.equip(player, katana)
+      player.on(
+        new PutOnItemEvent(player.inventory.missileWeaponSlot, bow, this.game)
+      )
+      player.on(
+        new PutOnItemEvent(player.inventory.missileSlot, wooden, this.game)
+      )
+      player.on(
+        new PutOnItemEvent(player.inventory.rightHandSlot, katana, this.game)
+      )
+      player.on(
+        new PutOnItemEvent(player.inventory.chestSlot, plateArmor, this.game)
+      )
 
-      player.inventory.chestSlot.equip(player, plateArmor)
-
-      player.inventory.putToBag(new LightSpeedBoots(), 1)
+      player.addItem(new LightSpeedBoots(), 1)
 
       this.game.logger.reset()
     }

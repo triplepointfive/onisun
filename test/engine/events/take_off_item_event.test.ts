@@ -3,7 +3,12 @@ import {
   generatePlayer,
   generateOneHandedWeapon,
 } from '../helpers'
-import { TakeOffItemEvent, LeftHandSlot, Player } from '../../../src/engine'
+import {
+  TakeOffItemEvent,
+  LeftHandSlot,
+  Player,
+  PutOnItemEvent,
+} from '../../../src/engine'
 
 describe('Taking item off event', () => {
   let item = generateOneHandedWeapon(),
@@ -17,7 +22,7 @@ describe('Taking item off event', () => {
     game = generateGame()
     player.inventory.putToBag(item, 1)
     slot = player.inventory.leftHandSlot
-    slot.equip(player, item)
+    player.on(new PutOnItemEvent(slot, item, game))
     event = new TakeOffItemEvent(slot, game)
   })
 
@@ -34,8 +39,8 @@ describe('Taking item off event', () => {
   })
 
   it('adds a message to log', () => {
-    expect(game.logger.messages.length).toEqual(0)
-    player.on(event)
     expect(game.logger.messages.length).toEqual(1)
+    player.on(event)
+    expect(game.logger.messages.length).toEqual(2)
   })
 })
