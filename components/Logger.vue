@@ -10,11 +10,16 @@ import Vue from 'vue'
 
 import { takeRight } from 'lodash'
 
-import { LogLevel, LogMessage } from '../src/engine'
+import { LogLevel, LogMessage, Logger } from '../src/engine'
 
 export default Vue.extend({
   name: 'Logger',
-  props: ['logger'],
+  props: {
+    logger: {
+      type: Logger,
+      required: true
+    }
+  },
   data() {
     return {
       lastId: 0,
@@ -22,7 +27,10 @@ export default Vue.extend({
   },
   computed: {
     messages() {
-      return takeRight(this.logger.messages, 5)
+      const currentMessagesCount: number = this.logger.messages.length,
+        messages = takeRight(this.logger.messages, Math.max(currentMessagesCount - this.lastId, 5))
+      this.lastId = currentMessagesCount
+      return messages
     }
   },
   methods: {
