@@ -127,7 +127,7 @@ export abstract class Creature {
   }
 
   get damages(): Damage[] {
-    return [{ extra: 0, dice: { times: 4, max: 3 }, type: DamageType.Melee }]
+    return [{ extra: 0, dice: { times: 4, max: 3 }, type: DamageType.Blunt }]
   }
 
   public can(ability: Ability) {

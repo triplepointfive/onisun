@@ -4,6 +4,7 @@ import { Corpse } from '../models/items'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
 import { AIDieEvent } from '../ai/player_ai'
+import { DeathPresenter } from '../presenters/death_presenter';
 
 export enum DieReason {
   Attack,
@@ -43,7 +44,14 @@ export class DieEvent extends CreatureEvent {
   }
 
   public affectPlayer(player: Player): Reaction {
-    player.ai.pushEvent(new AIDieEvent(this.reason, this.levelMap, this.game))
+    // TODO: On dying update vision
+    player.ai.presenter = new DeathPresenter(
+      this.reason,
+      this.levelMap,
+      this.game
+    )
+    player.dead = true
+    this.game.ai = player.ai
 
     return Reaction.DIE
   }
