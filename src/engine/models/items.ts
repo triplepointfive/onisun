@@ -1,4 +1,4 @@
-import { Specie, Creature, Player } from './creature'
+import { Specie, Player } from './creature'
 
 import { Game } from './game'
 import { Modifier } from '../lib/attribute'
@@ -62,12 +62,12 @@ export class Item {
     return new Item(this.group, this.name, this.weight)
   }
 
-  public onPutOn(creature: Creature): void {
-    creature.characteristics.addModifier(this.modifier)
+  public onPutOn(player: Player): void {
+    player.characteristics.addModifier(this.modifier)
   }
 
-  public onTakeOff(creature: Creature): void {
-    creature.characteristics.removeModifier(this.modifier)
+  public onTakeOff(player: Player): void {
+    player.characteristics.removeModifier(this.modifier)
   }
 
   public groupsWith(item: Item): boolean {

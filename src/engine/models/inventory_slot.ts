@@ -1,4 +1,4 @@
-import { Creature } from './creature'
+import { Player } from './creature'
 import { Usage, Item } from './items'
 import { intersection } from 'lodash'
 import { Inventory } from './inventory'
@@ -19,10 +19,10 @@ export abstract class InventorySlot {
     return inventory.cares().filter(itemGroup => this.match(itemGroup.item))
   }
 
-  public removeItem(actor: Creature, count: number): void {
+  public removeItem(player: Player, count: number): void {
     if (this.equipment) {
       if (this.equipment.count === count) {
-        this.equipment.item.onTakeOff(actor)
+        this.equipment.item.onTakeOff(player)
         this.equipment = undefined
       } else {
         this.equipment.count -= count
@@ -32,8 +32,8 @@ export abstract class InventorySlot {
     }
   }
 
-  public equip(actor: Creature, item: Item) {
-    let inventory = actor.inventory,
+  public equip(player: Player, item: Item) {
+    let inventory = player.inventory,
       groupItem = inventory.findInBag(item)
 
     if (groupItem === undefined) {
@@ -43,21 +43,21 @@ export abstract class InventorySlot {
     // TODO: assert that can't equip more than have in inventory
     // TODO: assert can equip
     if (this.equipment) {
-      this.takeOff(actor)
+      this.takeOff(player)
     }
     const count = this.useSingleItem ? 1 : groupItem.count
     this.equipment = { count, item }
     inventory.removeFromBag(item, count)
-    item.onPutOn(actor)
+    item.onPutOn(player)
   }
 
-  public takeOff(actor: Creature): void {
+  public takeOff(player: Player): void {
     if (!this.equipment) {
       throw `Slot ${this.name} has nothing to take off`
     }
 
-    actor.inventory.putToBag(this.equipment.item, this.equipment.count)
-    this.equipment.item.onTakeOff(actor)
+    player.inventory.putToBag(this.equipment.item, this.equipment.count)
+    this.equipment.item.onTakeOff(player)
     this.equipment = undefined
   }
 

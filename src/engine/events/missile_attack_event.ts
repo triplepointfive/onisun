@@ -1,10 +1,11 @@
 import { CreatureEvent } from './internal'
 import { Point } from '../utils/utils'
-import { Creature, Reaction } from '../models/creature'
+import { Creature, Reaction, Player } from '../models/creature'
 import { ItemFlightTileEffect } from '../models/tile_effect'
 import { ThrowEvent } from './throw_event'
 import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
+import { Missile } from '../models/items'
 
 export class MissileAttackEvent extends CreatureEvent {
   constructor(
@@ -17,18 +18,33 @@ export class MissileAttackEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
-    const slot = actor.inventory.missileSlot
+    let missile = actor.missile
 
-    if (slot.equipment === undefined) {
+    if (!missile) {
+      throw 'MissileAttackEvent called when actor has no missiles'
+    }
+
+    this.withMissile(actor, missile.item)
+
+    return Reaction.NOTHING
+  }
+
+  public affectPlayer(player: Player): Reaction {
+    const missile = player.missile
+
+    if (!missile) {
       throw 'MissileAttackEvent: slot has no items'
     }
 
-    const missile = slot.equipment.item
+    this.withMissile(player, missile.item)
 
-    slot.removeItem(actor, 1)
+    player.inventory.missileSlot.removeItem(player, 1)
+    player.stuffWeight.subtract(missile.item.weight)
 
-    actor.stuffWeight.subtract(missile.weight)
+    return Reaction.NOTHING
+  }
 
+  private withMissile(actor: Creature, missile: Missile): void {
     let flightPath: Point[] = [],
       victim: Creature | undefined
 
@@ -49,7 +65,5 @@ export class MissileAttackEvent extends CreatureEvent {
         this.done(Reaction.NOTHING)
       }
     })
-
-    return Reaction.NOTHING
   }
 }

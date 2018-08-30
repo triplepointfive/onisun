@@ -52,7 +52,7 @@ export class Thrower extends AI {
   }
 
   private hasMissile(actor: Creature): boolean {
-    this.missiles = actor.inventory.missileSlot.equipment
+    this.missiles = actor.missile
     return this.missiles !== undefined
   }
 

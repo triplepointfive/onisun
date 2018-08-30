@@ -1,6 +1,6 @@
 import { CreatureEvent } from './internal'
 import { InventorySlot, Item, Game } from '../../engine'
-import { Creature, Reaction } from '../models/creature'
+import { Creature, Reaction, Player } from '../models/creature'
 
 export class PutOnItemEvent extends CreatureEvent {
   constructor(
@@ -12,7 +12,11 @@ export class PutOnItemEvent extends CreatureEvent {
   }
 
   public affectCreature(creature: Creature): Reaction {
-    this.slot.equip(creature, this.item)
+    return Reaction.NOTHING
+  }
+
+  public affectPlayer(player: Player): Reaction {
+    this.slot.equip(player, this.item)
     this.game.logger.putOn(this.item)
 
     return Reaction.NOTHING

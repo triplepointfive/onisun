@@ -7,6 +7,7 @@ import {
   LevelMap,
   Memory,
   PlayerAI,
+  GroupedItem,
 } from '../../engine'
 import { CreatureEvent } from '../events/internal'
 import { ImpactType } from '../lib/impact'
@@ -18,7 +19,8 @@ import { Profession } from './profession'
 import { Door, Tile, TileVisitor } from './tile'
 import { AfterEvent } from '../events/after_event'
 import { MetaAI } from '../ai/meta_ai'
-import { Protection, Damage, DamageType } from './items'
+import { Protection, Damage, DamageType, Missile, Item } from './items'
+import { ItemsBunch } from '../lib/bunch'
 
 export enum Clan {
   Player,
@@ -48,6 +50,8 @@ export class Specie {
     public readonly abilities: Ability[],
     public protections: Protection[]
   ) {}
+
+  public throwingItem?: Missile
 }
 
 export type CreatureId = number
@@ -94,7 +98,6 @@ export abstract class Creature {
   }
 
   protected stageMemories: { [key: string]: Memory } = {}
-  public inventory: Inventory
 
   public dead: boolean = false
 
@@ -108,8 +111,6 @@ export abstract class Creature {
     public specie: Specie,
     public id: CreatureId = Creature.getId()
   ) {
-    this.inventory = new Inventory()
-
     this.stuffWeight = new Stat(0)
     this.carryingCapacity = new CapacityLimitStat(1, 4)
   }
@@ -202,9 +203,17 @@ export abstract class Creature {
 
     return []
   }
+
+  abstract get missile(): GroupedItem<Missile> | undefined
+  abstract get inventoryItems(): GroupedItem<Item>[]
+
+  public abstract addItem(item: Item, count: number): void
+  public abstract removeItem(item: Item, count: number): void
 }
 
 export class AICreature extends Creature {
+  private bag?: ItemsBunch<Item>
+
   constructor(
     characteristics: Characteristics,
     public ai: MetaAI,
@@ -224,10 +233,40 @@ export class AICreature extends Creature {
 
     this.on(new AfterEvent(levelMap, game))
   }
+
+  get missile(): GroupedItem<Missile> | undefined {
+    // TODO: Remove perpetuum items?
+    if (this.specie.throwingItem) {
+      return { item: this.specie.throwingItem, count: 1 }
+    }
+  }
+
+  get inventoryItems(): GroupedItem<Item>[] {
+    return this.bag ? this.bag.bunch : []
+  }
+
+  public addItem(item: Item, count: number): void {
+    if (!this.bag) {
+      this.bag = new ItemsBunch()
+    }
+
+    this.bag.put(item, count)
+  }
+
+  public removeItem(item: Item, count: number): void {
+    if (!this.bag) {
+      throw `Creature ${this.name} tried to remove item ${
+        item.name
+      } but it does not present`
+    }
+
+    this.bag.remove(item, count)
+  }
 }
 
 export class Player extends Creature {
   public professions: Profession[] = []
+  public inventory: Inventory = new Inventory()
 
   constructor(
     public level: Level,
@@ -260,5 +299,21 @@ export class Player extends Creature {
   get protections(): Protection[] {
     // TODO: Add inventors protection
     return this.specie.protections
+  }
+
+  get missile(): GroupedItem<Missile> | undefined {
+    return this.inventory.missileSlot.equipment
+  }
+
+  get inventoryItems(): GroupedItem<Item>[] {
+    return this.inventory.allItems
+  }
+
+  public addItem(item: Item, count: number): void {
+    this.inventory.putToBag(item, count)
+  }
+
+  public removeItem(item: Item, count: number): void {
+    this.inventory.removeFromBag(item, count)
   }
 }

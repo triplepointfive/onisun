@@ -26,7 +26,7 @@ export class PickUpItemsEvent extends CreatureEvent {
 
   protected withTileItems(subject: Creature, tileItems: ItemsBunch<Item>) {
     this.items.forEach(({ item, count }) => {
-      subject.inventory.putToBag(item, count)
+      subject.addItem(item, count)
       subject.stuffWeight.add(item.weight * count)
 
       this.game.logger.pickedUpItem(item, count)

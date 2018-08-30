@@ -18,6 +18,7 @@ import {
 } from './inventory_slot'
 import { Item } from './items'
 import { ItemsBunch, GroupedItem } from '../lib/bunch'
+import { concat, compact } from 'lodash'
 
 export class Inventory {
   private bag: ItemsBunch<Item> = new ItemsBunch()
@@ -56,6 +57,13 @@ export class Inventory {
       this.missileSlot,
       this.toolsSlot,
     ]
+  }
+
+  get allItems(): GroupedItem<Item>[] {
+    return concat(
+      this.cares(),
+      compact(this.slots().map(slot => slot.equipment))
+    )
   }
 
   public cares(): GroupedItem<Item>[] {

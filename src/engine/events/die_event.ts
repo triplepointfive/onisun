@@ -3,7 +3,6 @@ import { Creature, Reaction, Player } from '../models/creature'
 import { Corpse } from '../models/items'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
-import { AIDieEvent } from '../ai/player_ai'
 import { DeathPresenter } from '../presenters/death_presenter'
 
 export enum DieReason {
@@ -30,15 +29,9 @@ export class DieEvent extends CreatureEvent {
 
     tile.addItem(new Corpse(creature.specie), 1)
 
-    creature.inventory.slots().forEach(({ equipment }) => {
-      if (equipment) {
-        tile.addItem(equipment.item, equipment.count)
-      }
-    })
-
-    creature.inventory.cares().forEach(invItem => {
+    creature.inventoryItems.forEach(invItem =>
       tile.addItem(invItem.item, invItem.count)
-    })
+    )
 
     return Reaction.DIE
   }

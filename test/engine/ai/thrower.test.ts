@@ -28,9 +28,7 @@ describe('When there is nothing to throw', () => {
 
 describe('Throwing at enemy', () => {
   beforeEach(() => {
-    const item = generateMissile()
-    actor.inventory.putToBag(item, 1)
-    actor.inventory.missileSlot.equip(actor, item)
+    actor.specie.throwingItem = generateMissile()
 
     map.addCreature(new Point(1, 4), enemy)
 
@@ -40,10 +38,6 @@ describe('Throwing at enemy', () => {
   it('Adds throwing effect', () => {
     expect(game.effect).toBeTruthy()
   })
-
-  it('Removes missile from inventory', () => {
-    expect(actor.inventory.missileSlot.equipment).toBeUndefined()
-  })
 })
 
 describe('When there is someone else', () => {
@@ -51,10 +45,7 @@ describe('When there is someone else', () => {
 
   beforeEach(() => {
     enemy2 = generateCreature()
-
-    const item = generateMissile()
-    actor.inventory.putToBag(item, 1)
-    actor.inventory.missileSlot.equip(actor, item)
+    enemy2.specie.throwingItem = generateMissile()
 
     internalAI.victim = enemy
   })
