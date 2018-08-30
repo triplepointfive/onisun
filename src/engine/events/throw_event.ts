@@ -8,7 +8,7 @@ import { LevelMap } from '../../engine'
 
 export class ThrowEvent extends CreatureEvent {
   constructor(
-    public subject: Creature,
+    public victim: Creature,
     public missile: Item,
     private levelMap: LevelMap,
     private game: Game
@@ -17,32 +17,33 @@ export class ThrowEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
-    if (this.subject.characteristics.throwMisses(actor.characteristics)) {
-      this.game.logger.throwMissMessage(this.subject, actor, this.missile)
+    if (actor.characteristics.throwMisses(this.victim.characteristics)) {
+      this.game.logger.throwMissMessage(actor, this.victim, this.missile)
       return Reaction.THROW_DODGE
     }
 
-    const damage = this.subject.characteristics.throwDamageTo(
-      actor.characteristics,
+    const damage = actor.characteristics.throwDamageTo(
+      this.victim.characteristics,
       this.missile
     )
 
-    if (damage >= actor.characteristics.health.currentValue) {
-      this.subject.on(new AddExperienceEvent(actor, this.levelMap, this.game))
+    if (damage >= this.victim.characteristics.health.currentValue) {
+      actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
       this.game.logger.throwKillMessage(
         damage,
-        this.subject,
         actor,
+        this.victim,
         this.missile
       )
-      actor.on(new DieEvent(this.game, this.levelMap, DieReason.Missile))
-      return Reaction.DIE
+      return this.victim.on(
+        new DieEvent(this.game, this.levelMap, DieReason.Missile)
+      )
     } else {
-      actor.characteristics.health.decrease(damage)
+      this.victim.characteristics.health.decrease(damage)
       this.game.logger.throwHurtMessage(
         damage,
-        this.subject,
         actor,
+        this.victim,
         this.missile
       )
       return Reaction.HURT

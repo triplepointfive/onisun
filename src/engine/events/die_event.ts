@@ -4,7 +4,7 @@ import { Corpse } from '../models/items'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
 import { AIDieEvent } from '../ai/player_ai'
-import { DeathPresenter } from '../presenters/death_presenter';
+import { DeathPresenter } from '../presenters/death_presenter'
 
 export enum DieReason {
   Attack,
