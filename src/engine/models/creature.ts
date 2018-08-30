@@ -1,26 +1,31 @@
-import { includes, concat } from 'lodash'
+import { concat, includes } from 'lodash'
 import {
   Characteristics,
   Game,
+  GroupedItem,
   ImpactBunch,
   Inventory,
   LevelMap,
   Memory,
   PlayerAI,
-  GroupedItem,
 } from '../../engine'
+import { MetaAI } from '../ai/meta_ai'
+import { AfterEvent } from '../events/after_event'
 import { CreatureEvent } from '../events/internal'
+import { ItemsBunch } from '../lib/bunch'
 import { ImpactType } from '../lib/impact'
 import { Level } from '../lib/level'
+import { buildFov } from '../lib/map_fov'
 import { CapacityLimitStat, Stat } from '../lib/stat'
-import { Fov } from '../utils/fov'
-import { Point } from '../utils/utils'
+import {
+  Damage,
+  DamageType,
+  Item,
+  Missile,
+  Protection,
+  ProtectionType,
+} from './items'
 import { Profession } from './profession'
-import { Door, Tile, TileVisitor } from './tile'
-import { AfterEvent } from '../events/after_event'
-import { MetaAI } from '../ai/meta_ai'
-import { Protection, Damage, DamageType, Missile, Item, ProtectionType } from './items'
-import { ItemsBunch } from '../lib/bunch'
 
 export enum Clan {
   Player,
@@ -62,33 +67,6 @@ export enum Reaction {
   DODGE,
   THROW_DODGE,
   NOTHING,
-}
-
-class VisibilityTileVisitor extends TileVisitor {
-  public visible: boolean = false
-  private x: number | undefined
-  private y: number | undefined
-
-  constructor(private stage: LevelMap, private pos: Point) {
-    super()
-  }
-
-  public isSolid(x: number, y: number): boolean {
-    this.x = x
-    this.y = y
-    this.stage.at(x, y).visit(this)
-    return !this.visible
-  }
-
-  public onDoor(door: Door) {
-    this.visible = this.pos.x === this.x && this.pos.y === this.y
-  }
-
-  protected default(tile: Tile) {
-    if (this.x && this.y) {
-      this.visible = this.stage.visibleThrough(this.x, this.y)
-    }
-  }
 }
 
 export abstract class Creature {
@@ -151,33 +129,22 @@ export abstract class Creature {
     return this.stageMemories[levelMap.id]
   }
 
-  public abstract act(levelMap: LevelMap, game: Game): void
+  public visionMask(levelMap: LevelMap): void {
+    let memory = this.stageMemory(levelMap)
 
-  public visionMask(stage: LevelMap): void {
-    if (!this.stageMemories[stage.id]) {
-      this.stageMemories[stage.id] = new Memory(stage.width, stage.height)
+    if (memory) {
+      memory.resetVisible()
     } else {
-      this.stageMemory(stage).resetVisible()
+      this.stageMemories[levelMap.id] = memory = new Memory(
+        levelMap.width,
+        levelMap.height
+      )
     }
 
-    const see = (x: number, y: number, degree: number): void => {
-      this.stageMemory(stage)
-        .at(x, y)
-        .see(stage.at(x, y), degree)
-    }
-
-    const pos = stage.creaturePos(this)
-
-    new Fov(
-      pos.x,
-      pos.y,
-      this.radius(),
-      stage.width,
-      stage.height,
-      new VisibilityTileVisitor(stage, pos),
-      see
-    ).calc()
+    buildFov(levelMap.creaturePos(this), this.radius(), memory, levelMap)
   }
+
+  public abstract act(levelMap: LevelMap, game: Game): void
 
   public addImpact(type: ImpactType, effect: string): void {
     if (!this.impactsBunch) {
@@ -279,7 +246,7 @@ export class Player extends Creature {
     super(characteristics, specie)
     this.itemsProtections = [
       { type: ProtectionType.Heavy, value: 4 },
-      { type: ProtectionType.Unarmored, value: 20 }
+      { type: ProtectionType.Unarmored, value: 20 },
     ]
   }
 
