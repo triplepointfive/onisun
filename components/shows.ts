@@ -2,14 +2,14 @@ import { Item, Weapon, Armor, DamageType, ProtectionType, Damage, Protection } f
 
 export const showItemDetails = function(item: Item): string | undefined {
   if (item instanceof Weapon) {
-    return item.damages.map(this.showDamage).join(',')
+    return item.damages.map(showDamage).join(',')
   } else if (item instanceof Armor) {
-    return item.protections.map(this.showProtection).join(',')
+    return item.protections.map(showProtection).join(',')
   }
 }
 
 export const showDamage = function({ extra, dice: { times, max }, type }: Damage): string {
-  let base = `${this.showDamageType(type)} ${times}d${max}`
+  let base = `${showDamageType(type)} ${times}d${max}`
 
   if (extra) {
     base += `+${extra}`

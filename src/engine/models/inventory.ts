@@ -66,6 +66,17 @@ export class Inventory {
     )
   }
 
+  get unarmoredSlotsCount(): number {
+    return [
+      this.headSlot,
+      this.chestSlot,
+      this.glovesSlot,
+      this.gauntletsSlot,
+      this.beltSlot,
+      this.bootsSlot,
+    ].filter((slot: InventorySlot) => !slot.equipment).length
+  }
+
   public cares(): GroupedItem<Item>[] {
     return this.bag.bunch
   }

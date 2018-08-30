@@ -38,6 +38,8 @@
     .value {{ levelMap.name }}
   .cell
     .value {{ protections }}
+  .cell
+    .value {{ damages }}
 </template>
 
 <script lang="ts">
@@ -47,7 +49,7 @@ import PrimaryAttribute from './PrimaryAttribute.vue'
 import { Attribute, Level } from 'src/engine'
 
 import {
-  showProtection
+  showProtection, showDamage
 } from './shows'
 
 export default Vue.extend({
@@ -67,6 +69,9 @@ export default Vue.extend({
     },
     protections(): string {
       return this.creature.protections.map(showProtection).join(', ')
+    },
+    damages(): string {
+      return this.creature.damages.map(showDamage).join(', ')
     }
   },
   methods: {

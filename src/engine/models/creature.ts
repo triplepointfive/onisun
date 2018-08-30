@@ -242,10 +242,6 @@ export class Player extends Creature {
     specie: Specie
   ) {
     super(characteristics, specie)
-    this.itemsProtections = [
-      { type: ProtectionType.Heavy, value: 4 },
-      { type: ProtectionType.Unarmored, value: 20 },
-    ]
   }
 
   public act(levelMap: LevelMap, game: Game): void {
@@ -284,6 +280,13 @@ export class Player extends Creature {
   }
 
   get protections(): Protection[] {
-    return concat(this.specie.protections, this.itemsProtections)
+    const perEmptySlotArmor = 1
+
+    return concat(this.specie.protections, this.itemsProtections, [
+      {
+        type: ProtectionType.Unarmored,
+        value: perEmptySlotArmor * this.inventory.unarmoredSlotsCount,
+      },
+    ])
   }
 }

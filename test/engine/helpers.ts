@@ -97,7 +97,7 @@ const fakeSpecie = {
   clan: Clan.FreeForAll,
   abilities: allAbilities,
   protections: [],
-  damages: []
+  damages: [],
 }
 
 export class TestCreature extends AICreature {}

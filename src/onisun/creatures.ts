@@ -2,7 +2,6 @@ import {
   Characteristics,
   Creature,
   Dispatcher,
-  Specie,
   Clan,
   Pool,
   AICreature,
@@ -20,18 +19,14 @@ const newCreature = (
   protections: Protection[] = [],
   damages: Damage[]
 ) => {
-  return new AICreature(
-    characteristics,
-    new Dispatcher(),
-    {
-      name: name,
-      weight: 10,
-      clan: Clan.PlayerOnlyEnemy,
-      abilities: [],
-      protections: protections,
-      damages: damages
-    }
-  )
+  return new AICreature(characteristics, new Dispatcher(), {
+    name: name,
+    weight: 10,
+    clan: Clan.PlayerOnlyEnemy,
+    abilities: [],
+    protections: protections,
+    damages: damages,
+  })
 }
 
 const rat = () => {

@@ -1,7 +1,6 @@
 import {
   Clan,
   Player,
-  Specie,
   allAbilities,
   OneHandWeapon,
   Characteristics,
@@ -125,7 +124,7 @@ export class Application {
         clan: Clan.Player,
         abilities: allAbilities,
         protections: [],
-        damages: []
+        damages: [],
       }
     )
   }
