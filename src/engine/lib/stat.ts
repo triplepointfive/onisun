@@ -78,3 +78,15 @@ export class HealthStat extends Attribute {
     }
   }
 }
+
+export class StrengthStat extends Stat {
+  get meleeAdjustment(): number {
+    if (this.current < 5) {
+      return -2
+    } else if (this.current > 10) {
+      return Math.floor((this.current - 10) / 2)
+    } else {
+      return 0
+    }
+  }
+}

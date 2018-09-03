@@ -1,6 +1,7 @@
 import { Presenter, PresenterType } from './internal'
 import { Game, LevelMap, Talent, TalentStatus } from '../../engine'
 import { Profession } from '../models/profession'
+import { LevelUpEvent } from '../events/level_up_event'
 
 interface TalentWithStatus extends Talent {
   status: TalentStatus
@@ -65,7 +66,7 @@ export class TalentsTreePresenter extends Presenter {
 
     profession.points += 1
 
-    this.player.characteristics.levelUp(this.player.specie)
+    this.player.on(new LevelUpEvent())
 
     this.endTurn()
   }

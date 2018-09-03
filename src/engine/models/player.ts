@@ -1,4 +1,4 @@
-import { concat } from 'lodash'
+import { concat, cloneDeep } from 'lodash'
 import {
   Characteristics,
   Game,
@@ -10,7 +10,7 @@ import {
 import { AfterEvent } from '../events/after_event'
 import { CreatureEvent } from '../events/internal'
 import { Level } from '../lib/level'
-import { CapacityLimitStat, Stat } from '../lib/stat'
+import { CapacityLimitStat, Stat, StrengthStat } from '../lib/stat'
 import { Damage, Item, Missile, Protection, ProtectionType } from './items'
 import { Profession } from './profession'
 import { Specie } from './specie'
@@ -26,7 +26,7 @@ export class Player extends Creature {
   public carryingCapacity: CapacityLimitStat
 
   // Main attributes
-  public strength: Stat
+  public strength: StrengthStat
   public constitution: Stat
 
   constructor(
@@ -35,15 +35,18 @@ export class Player extends Creature {
     public ai: PlayerAI,
     specie: Specie,
     strengthValue: number,
-    constitutionValue: number,
+    constitutionValue: number
   ) {
     super(characteristics, specie)
 
-    this.strength = new Stat(strengthValue)
+    this.strength = new StrengthStat(strengthValue)
     this.constitution = new Stat(constitutionValue)
 
     this.stuffWeight = new Stat(0)
-    this.carryingCapacity = new CapacityLimitStat(this.strength.current, this.constitution.current)
+    this.carryingCapacity = new CapacityLimitStat(
+      this.strength.current,
+      this.constitution.current
+    )
   }
 
   public act(levelMap: LevelMap, game: Game): void {
@@ -81,7 +84,15 @@ export class Player extends Creature {
   }
 
   get damages(): Damage[] {
-    return concat(this.specie.damages, this.itemsDamages)
+    const strengthAdjustment = this.strength.meleeAdjustment
+
+    return concat(this.specie.damages, this.itemsDamages).map(
+      (damage: Damage) => {
+        let dmg = cloneDeep(damage)
+        dmg.extra += strengthAdjustment
+        return dmg
+      }
+    )
   }
 
   get protections(): Protection[] {

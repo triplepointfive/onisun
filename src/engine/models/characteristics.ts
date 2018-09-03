@@ -63,14 +63,4 @@ export class Characteristics extends AttributeSet<Attribute> {
     // TODO
     return 10
   }
-
-  public levelUp(specie: Specie) {
-    // this.health.constantIncrease(3)
-
-    if (Math.random() > 0.5) {
-      this.attack.constantIncrease(1)
-    } else {
-      this.defense.constantIncrease(1)
-    }
-  }
 }
