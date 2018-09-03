@@ -127,6 +127,7 @@ export class Application {
         maxHealthValue: 10,
         regenerationRate: 30,
         regenerationValue: 1,
+        resistances: [],
       },
       12,
       15

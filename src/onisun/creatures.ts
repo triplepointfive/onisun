@@ -12,6 +12,7 @@ import {
   Damage,
   DamageType,
 } from '../engine/models/items'
+import { Resistance } from '../engine/models/specie'
 
 const newCreature = (
   characteristics: Characteristics,
@@ -30,6 +31,8 @@ const newCreature = (
     maxHealthValue: 1,
     regenerationRate: 5,
     regenerationValue: 1,
+
+    resistances: [Resistance.PhysicalDamage],
   })
 }
 

@@ -13,14 +13,16 @@ import { Level } from '../lib/level'
 import { CapacityLimitStat, Stat, StrengthStat } from '../lib/stat'
 import { Damage, Item, Missile, Protection, ProtectionType } from './items'
 import { Profession } from './profession'
-import { Specie } from './specie'
+import { Specie, Resistance } from './specie'
 import { Creature, Reaction } from './creature'
 
 export class Player extends Creature {
   public professions: Profession[] = []
   public inventory: Inventory = new Inventory()
+
   public itemsProtections: Protection[] = []
   public itemsDamages: Damage[] = []
+  public itemsResistances: Resistance[] = []
 
   public stuffWeight: Stat
   public carryingCapacity: CapacityLimitStat
@@ -103,5 +105,9 @@ export class Player extends Creature {
         value: perEmptySlotArmor * this.inventory.unarmoredSlotsCount,
       },
     ])
+  }
+
+  get resistances(): Resistance[] {
+    return concat(this.specie.resistances, this.itemsResistances)
   }
 }

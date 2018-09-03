@@ -15,7 +15,7 @@ import { ImpactType } from '../lib/impact'
 import { buildFov } from '../lib/map_fov'
 import { HealthStat } from '../lib/stat'
 import { Damage, Item, Missile, Protection } from './items'
-import { Specie } from './specie'
+import { Specie, Resistance } from './specie'
 
 export enum Clan {
   Player,
@@ -45,6 +45,7 @@ export enum Reaction {
   DODGE,
   THROW_DODGE,
   NOTHING,
+  RESIST,
 }
 
 export abstract class Creature {
@@ -145,6 +146,10 @@ export abstract class Creature {
     }
 
     return []
+  }
+
+  get resistances(): Resistance[] {
+    return this.specie.resistances
   }
 
   abstract get missile(): GroupedItem<Missile> | undefined

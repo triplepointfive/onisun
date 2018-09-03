@@ -125,6 +125,14 @@ export class Logger {
     )
   }
 
+  public playerIgnoresDamage(target: Creature): void {
+    this.addMessage(LogLevel.DEBUG, `Я игнорирую урон ${target.name}`)
+  }
+
+  public targetIgnoresDamage(target: Creature): void {
+    this.addMessage(LogLevel.INFO, `${target.name} игнорирует урон`)
+  }
+
   public pickedUpItem(item: Item, count: number): void {
     if (count === 1) {
       this.addMessage(LogLevel.INFO, `You picked up ${item.name}`)

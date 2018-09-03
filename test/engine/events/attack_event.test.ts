@@ -53,7 +53,10 @@ describe('AttackEvent', () => {
 
     it('victim can got hurt', () => {
       Calculator.damage = jest.fn()
-      Calculator.damage.mockReturnValueOnce(victimHealth / 2)
+      Calculator.damage.mockReturnValueOnce({
+        damage: victimHealth / 2,
+        resist: false,
+      })
 
       expect(actor.on(event)).toEqual(Reaction.HURT)
       expect(victim.health.atMax).toBeFalsy()
@@ -63,7 +66,10 @@ describe('AttackEvent', () => {
 
     it('victim can die', () => {
       Calculator.damage = jest.fn()
-      Calculator.damage.mockReturnValueOnce(victimHealth)
+      Calculator.damage.mockReturnValueOnce({
+        damage: victimHealth,
+        resist: false,
+      })
 
       expect(actor.on(event)).toEqual(Reaction.DIE)
       expect(victim.dead).toBeTruthy()

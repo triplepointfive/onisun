@@ -5,6 +5,8 @@ import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'
 import { LevelMap } from '../models/level_map'
 import { Calculator } from '../lib/calculator'
+import { Damage } from '../models/items'
+import { Resistance } from '../models/specie'
 
 export class AttackEvent extends CreatureEvent {
   constructor(
@@ -18,9 +20,15 @@ export class AttackEvent extends CreatureEvent {
   public affectCreature(actor: Creature): Reaction {
     const reaction = this.process(actor)
 
-    if (reaction === Reaction.NOTHING) {
-      // TODO: victim is not always a player, should be another message as well
-      this.game.logger.noDamageToPlayer(actor)
+    switch (reaction) {
+      case Reaction.NOTHING:
+        // TODO: victim is not always a player, should be another message as well
+        this.game.logger.noDamageToPlayer(actor)
+        break
+      case Reaction.NOTHING:
+        // TODO: victim is not always a player, should be another message as well
+        this.game.logger.playerIgnoresDamage(actor)
+        break
     }
 
     return reaction
@@ -29,8 +37,13 @@ export class AttackEvent extends CreatureEvent {
   public affectPlayer(actor: Creature): Reaction {
     const reaction = this.process(actor)
 
-    if (reaction === Reaction.NOTHING) {
-      this.game.logger.noDamageToTarget(actor)
+    switch (reaction) {
+      case Reaction.NOTHING:
+        this.game.logger.noDamageToTarget(actor)
+        break
+      case Reaction.RESIST:
+        this.game.logger.targetIgnoresDamage(this.subject)
+        break
     }
 
     return reaction
@@ -42,7 +55,15 @@ export class AttackEvent extends CreatureEvent {
       return Reaction.DODGE
     }
 
-    const damage = Calculator.damage(actor.damages, this.subject.protections)
+    const { damage, resist } = Calculator.damage(
+      actor.damages,
+      this.subject.protections,
+      this.subject.resistances
+    )
+
+    if (resist) {
+      return Reaction.RESIST
+    }
 
     if (damage >= this.subject.health.currentValue) {
       actor.on(new AddExperienceEvent(this.subject, this.levelMap, this.game))

@@ -1,18 +1,30 @@
 import { DamageType, ProtectionType } from '../../engine'
 import { Damage, Dice, Protection } from '../models/items'
 
-import { sumBy, times, sum, random } from 'lodash'
+import { sumBy, times, sum, random, includes } from 'lodash'
+import { Resistance } from '../models/specie'
+
+export type DamageOrResist = { damage: number; resist: boolean }
 
 export class Calculator {
   private constructor() {}
 
   public static damage(
     damages: Damage[],
-    protectionTypes: Protection[]
-  ): number {
-    return sumBy(
+    protectionTypes: Protection[],
+    resistances: Resistance[]
+  ): DamageOrResist {
+    if (damages.every(({ type }) => this.resistTo(type, resistances))) {
+      return { damage: 0, resist: true }
+    }
+
+    const damage = sumBy(
       damages,
       ({ extra, dice, type }): number => {
+        if (this.resistTo(type, resistances)) {
+          return 0
+        }
+
         return Math.floor(
           Math.max(
             0,
@@ -23,6 +35,25 @@ export class Calculator {
         )
       }
     )
+
+    return { damage, resist: false }
+  }
+
+  protected static resistTo(
+    damageType: DamageType,
+    resistances: Resistance[]
+  ): boolean {
+    switch (damageType) {
+      case DamageType.Melee:
+      case DamageType.Pierce:
+      case DamageType.Blunt:
+        return includes(resistances, Resistance.PhysicalDamage)
+      case DamageType.Magic:
+        // TODO
+        return false
+      case DamageType.Pure:
+        return false
+    }
   }
 
   protected static dropDice(dice: Dice): number {

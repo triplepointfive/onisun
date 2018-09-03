@@ -1,6 +1,10 @@
 import { Damage, Missile, Protection } from './items'
 import { Clan, Ability } from './creature'
 
+export enum Resistance {
+  PhysicalDamage,
+}
+
 export interface Specie {
   readonly name: string
   readonly weight: number
@@ -15,4 +19,6 @@ export interface Specie {
   maxHealthValue: number
   regenerationRate: number
   regenerationValue: number
+
+  resistances: Resistance[]
 }
