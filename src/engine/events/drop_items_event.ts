@@ -1,9 +1,10 @@
 import { CreatureEvent } from './internal'
 import { Tile, GroupedItem, Game } from '../../engine'
-import { Creature, Reaction } from '../models/creature'
+import { Creature, Reaction, Player } from '../models/creature'
 import { Item } from '../models/items'
+import { PlayerEvent } from './player_event'
 
-export class DropItemsEvent extends CreatureEvent {
+export class DropItemsEvent extends PlayerEvent {
   constructor(
     private tile: Tile,
     private items: GroupedItem<Item>[],
@@ -12,11 +13,11 @@ export class DropItemsEvent extends CreatureEvent {
     super()
   }
 
-  public affectCreature(subject: Creature): Reaction {
+  public affectPlayer(player: Player): Reaction {
     // TODO: Validate items are part of positions
     this.items.forEach(({ item, count }) => {
-      subject.removeItem(item, count)
-      subject.stuffWeight.subtract(item.weight * count)
+      player.removeItem(item, count)
+      player.stuffWeight.subtract(item.weight * count)
 
       this.game.logger.droppedItem(item, count)
       this.tile.addItem(item, count)

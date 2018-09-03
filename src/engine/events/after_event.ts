@@ -1,37 +1,31 @@
-import { CreatureEvent } from './internal'
-import { Reaction, Creature } from '../models/creature'
-import { LevelMap, Game, ImpactType, DieEvent, DieReason } from '../../engine'
+import { DieEvent, DieReason, Game, ImpactType, LevelMap } from '../../engine'
+import { Player, Reaction } from '../models/creature'
+import { PlayerEvent } from './player_event'
 
-export class AfterEvent extends CreatureEvent {
+export class AfterEvent extends PlayerEvent {
   constructor(private levelMap: LevelMap, private game: Game) {
     super()
   }
 
-  public affectCreature(creature: Creature): Reaction {
-    creature.removeImpact(ImpactType.Overloaded, 'bag')
-    creature.removeImpact(ImpactType.Stressed, 'bag')
-    creature.removeImpact(ImpactType.Loaded, 'bag')
+  public affectPlayer(player: Player): Reaction {
+    player.removeImpact(ImpactType.Overloaded, 'bag')
+    player.removeImpact(ImpactType.Stressed, 'bag')
+    player.removeImpact(ImpactType.Loaded, 'bag')
 
-    if (
-      creature.stuffWeight.current > creature.carryingCapacity.flattenedStart
-    ) {
-      return creature.on(
+    if (player.stuffWeight.current > player.carryingCapacity.flattenedStart) {
+      return player.on(
         new DieEvent(this.game, this.levelMap, DieReason.Overloaded)
       )
     }
 
-    if (
-      creature.stuffWeight.current > creature.carryingCapacity.overloadedStart
-    ) {
-      creature.addImpact(ImpactType.Overloaded, 'bag')
+    if (player.stuffWeight.current > player.carryingCapacity.overloadedStart) {
+      player.addImpact(ImpactType.Overloaded, 'bag')
     } else if (
-      creature.stuffWeight.current > creature.carryingCapacity.loadedStart
+      player.stuffWeight.current > player.carryingCapacity.loadedStart
     ) {
-      creature.addImpact(ImpactType.Loaded, 'bag')
-    } else if (
-      creature.stuffWeight.current > creature.carryingCapacity.stressed
-    ) {
-      creature.addImpact(ImpactType.Stressed, 'bag')
+      player.addImpact(ImpactType.Loaded, 'bag')
+    } else if (player.stuffWeight.current > player.carryingCapacity.stressed) {
+      player.addImpact(ImpactType.Stressed, 'bag')
     }
 
     return Reaction.NOTHING

@@ -63,8 +63,6 @@ export abstract class Creature {
 
   private impactsBunch: ImpactBunch | undefined
 
-  public stuffWeight: Stat
-  public carryingCapacity: CapacityLimitStat
   public health: HealthStat
 
   constructor(
@@ -72,8 +70,6 @@ export abstract class Creature {
     public specie: Specie,
     public id: CreatureId = Creature.getId()
   ) {
-    this.stuffWeight = new Stat(0)
-    this.carryingCapacity = new CapacityLimitStat(1, 4)
     this.health = new HealthStat(specie)
   }
 
@@ -226,6 +222,8 @@ export class Player extends Creature {
 
   public itemsProtections: Protection[] = []
   public itemsDamages: Damage[] = []
+  public stuffWeight: Stat
+  public carryingCapacity: CapacityLimitStat
 
   constructor(
     public level: Level,
@@ -234,6 +232,9 @@ export class Player extends Creature {
     specie: Specie
   ) {
     super(characteristics, specie)
+
+    this.stuffWeight = new Stat(0)
+    this.carryingCapacity = new CapacityLimitStat(1, 4)
   }
 
   public act(levelMap: LevelMap, game: Game): void {

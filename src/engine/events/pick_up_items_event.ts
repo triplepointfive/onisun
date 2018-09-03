@@ -1,9 +1,9 @@
-import { CreatureEvent } from './internal'
-import { Tile, GroupedItem, Game, ItemsBunch } from '../../engine'
-import { Reaction, Creature } from '../models/creature'
+import { Game, GroupedItem, ItemsBunch, Tile } from '../../engine'
+import { Creature, Player, Reaction } from '../models/creature'
 import { Item } from '../models/items'
+import { PlayerEvent } from './player_event'
 
-export class PickUpItemsEvent extends CreatureEvent {
+export class PickUpItemsEvent extends PlayerEvent {
   constructor(
     private tile: Tile,
     private items: GroupedItem<Item>[],
@@ -12,19 +12,19 @@ export class PickUpItemsEvent extends CreatureEvent {
     super()
   }
 
-  public affectCreature(subject: Creature): Reaction {
+  public affectPlayer(player: Player): Reaction {
     let tileItems: ItemsBunch<Item> | undefined = this.tile.items
 
     if (tileItems === undefined) {
       throw 'Failed to pick up items - tile has no items'
     } else {
-      this.withTileItems(subject, tileItems)
+      this.withTileItems(player, tileItems)
     }
 
     return Reaction.NOTHING
   }
 
-  protected withTileItems(subject: Creature, tileItems: ItemsBunch<Item>) {
+  protected withTileItems(subject: Player, tileItems: ItemsBunch<Item>) {
     this.items.forEach(({ item, count }) => {
       subject.addItem(item, count)
       subject.stuffWeight.add(item.weight * count)

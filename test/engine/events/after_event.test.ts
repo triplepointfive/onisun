@@ -1,19 +1,19 @@
 import {
-  Creature,
-  ImpactType,
   AfterEvent,
-  Reaction,
+  ImpactType,
+  Player,
   Point,
+  Reaction,
 } from '../../../src/engine'
-import { generateCreature, generateGame, generateLevelMap } from '../helpers'
+import { generateGame, generateLevelMap, generatePlayer } from '../helpers'
 
 describe('AfterEvent', () => {
-  let creature: Creature,
+  let creature: Player,
     event: AfterEvent,
     game = generateGame()
 
   beforeEach(() => {
-    creature = generateCreature()
+    creature = generatePlayer()
     const map = generateLevelMap()
     map.addCreature(new Point(1, 1), creature)
 

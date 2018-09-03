@@ -11,4 +11,5 @@ This affects the damage you do with melee weapons and interactions with heavy it
   This means the more damage types you do the better result.
 
 ### Constitution
+
 - Every point adds 3kg to carrying capacity.
