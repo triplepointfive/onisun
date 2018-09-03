@@ -17,14 +17,7 @@ import { ImpactType } from '../lib/impact'
 import { Level } from '../lib/level'
 import { buildFov } from '../lib/map_fov'
 import { CapacityLimitStat, Stat } from '../lib/stat'
-import {
-  Damage,
-  DamageType,
-  Item,
-  Missile,
-  Protection,
-  ProtectionType,
-} from './items'
+import { Damage, Item, Missile, Protection, ProtectionType } from './items'
 import { Profession } from './profession'
 
 export enum Clan {
@@ -234,6 +227,7 @@ export class Player extends Creature {
   public inventory: Inventory = new Inventory()
 
   public itemsProtections: Protection[] = []
+  public itemsDamages: Damage[] = []
 
   constructor(
     public level: Level,
@@ -277,6 +271,10 @@ export class Player extends Creature {
 
   public removeItem(item: Item, count: number): void {
     this.inventory.removeFromBag(item, count)
+  }
+
+  get damages(): Damage[] {
+    return concat(this.specie.damages, this.itemsDamages)
   }
 
   get protections(): Protection[] {

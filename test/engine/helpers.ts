@@ -31,6 +31,7 @@ import {
   DamageType,
   AICreature,
   Talent,
+  ProtectionType,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -54,7 +55,9 @@ export const generateOneHandedWeapon = function(): OneHandWeapon {
 }
 
 export const generateBodyArmor = function(): BodyArmor {
-  return new BodyArmor(generateString(), 1, [])
+  return new BodyArmor(generateString(), 1, [
+    { type: ProtectionType.Medium, value: 3 },
+  ])
 }
 
 export const generateMissile = function(): Missile {

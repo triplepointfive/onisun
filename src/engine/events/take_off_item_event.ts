@@ -1,7 +1,7 @@
 import { InventorySlot, CreatureEvent, Game, Item, Armor } from '../../engine'
 import { Reaction, Creature, Player } from '../models/creature'
 import { findIndex } from 'lodash'
-import { Protection } from '../models/items'
+import { Protection, Weapon, Damage } from '../models/items'
 
 export class TakeOffItemEvent extends CreatureEvent {
   constructor(private slot: InventorySlot, private game: Game) {
@@ -37,6 +37,15 @@ export class TakeOffItemEvent extends CreatureEvent {
             player.itemsProtections,
             protection => protection === itemProtection
           ),
+          1
+        )
+      })
+    }
+
+    if (item instanceof Weapon) {
+      item.damages.forEach((itemDamage: Damage) => {
+        player.itemsDamages.splice(
+          findIndex(player.itemsDamages, damage => damage === itemDamage),
           1
         )
       })

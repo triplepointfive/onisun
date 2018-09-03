@@ -2,7 +2,7 @@ import { CreatureEvent } from './internal'
 import { InventorySlot, Item, Game } from '../../engine'
 import { Creature, Reaction, Player } from '../models/creature'
 import { TakeOffItemEvent } from './take_off_item_event'
-import { Armor } from '../models/items'
+import { Armor, Weapon } from '../models/items'
 
 export class PutOnItemEvent extends CreatureEvent {
   constructor(
@@ -52,6 +52,10 @@ export class PutOnItemEvent extends CreatureEvent {
 
     if (item instanceof Armor) {
       player.itemsProtections = player.itemsProtections.concat(item.protections)
+    }
+
+    if (item instanceof Weapon) {
+      player.itemsDamages = player.itemsDamages.concat(item.damages)
     }
   }
 }
