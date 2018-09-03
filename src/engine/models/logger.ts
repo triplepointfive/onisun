@@ -111,6 +111,20 @@ export class Logger {
     this.addMessage(LogLevel.DANGER, `${creature.name} наступил в ловушку`)
   }
 
+  public noDamageToPlayer(actor: Creature): void {
+    this.addMessage(
+      LogLevel.DEBUG,
+      `${actor.name} ударил по мне, но я не почувствовал боли`
+    )
+  }
+
+  public noDamageToTarget(actor: Creature): void {
+    this.addMessage(
+      LogLevel.DEBUG,
+      `Удар пришелся по ${actor.name} но остался незамеченным`
+    )
+  }
+
   public pickedUpItem(item: Item, count: number): void {
     if (count === 1) {
       this.addMessage(LogLevel.INFO, `You picked up ${item.name}`)

@@ -16,6 +16,27 @@ export class AttackEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
+    const reaction = this.process(actor)
+
+    if (reaction === Reaction.NOTHING) {
+      // TODO: victim is not always a player, should be another message as well
+      this.game.logger.noDamageToPlayer(actor)
+    }
+
+    return reaction
+  }
+
+  public affectPlayer(actor: Creature): Reaction {
+    const reaction = this.process(actor)
+
+    if (reaction === Reaction.NOTHING) {
+      this.game.logger.noDamageToTarget(actor)
+    }
+
+    return reaction
+  }
+
+  protected process(actor: Creature): Reaction {
     if (actor.characteristics.misses(this.subject.characteristics)) {
       this.game.logger.missMessage(actor, this.subject)
       return Reaction.DODGE
@@ -28,6 +49,8 @@ export class AttackEvent extends CreatureEvent {
       this.game.logger.killMessage(damage, actor, this.subject)
       this.subject.on(new DieEvent(this.game, this.levelMap, DieReason.Attack))
       return Reaction.DIE
+    } else if (damage <= 0) {
+      return Reaction.NOTHING
     } else {
       this.subject.health.decrease(damage)
       this.game.logger.hurtMessage(damage, actor, this.subject)
