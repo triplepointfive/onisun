@@ -2,7 +2,7 @@ import { CreatureEvent } from './internal'
 import { LevelMap } from '../models/level_map'
 import { TileVisitor } from '../models/tile'
 import { Creature, Game, Trap, Point, Reaction } from '../../engine'
-import { Player } from '../models/creature'
+import { Player } from '../models/player'
 
 class SteppingTileVisitor extends TileVisitor {
   constructor(

@@ -1,5 +1,6 @@
 import { CreatureEvent } from './internal'
-import { Creature, Reaction, Player } from '../models/creature'
+import { Creature, Reaction } from '../models/creature'
+import { Player } from '../models/player'
 import { Corpse } from '../models/items'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'

@@ -1,5 +1,6 @@
 import { InventorySlot, CreatureEvent, Game, Item, Armor } from '../../engine'
-import { Reaction, Creature, Player } from '../models/creature'
+import { Reaction, Creature } from '../models/creature'
+import { Player } from '../models/player'
 import { findIndex } from 'lodash'
 import { Protection, Weapon, Damage } from '../models/items'
 

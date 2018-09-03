@@ -1,6 +1,7 @@
 import { CreatureEvent } from './internal'
 import { Tile, GroupedItem, Game } from '../../engine'
-import { Creature, Reaction, Player } from '../models/creature'
+import { Creature, Reaction } from '../models/creature'
+import { Player } from '../models/player'
 import { Item } from '../models/items'
 import { PlayerEvent } from './player_event'
 

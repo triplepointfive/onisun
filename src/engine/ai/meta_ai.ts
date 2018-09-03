@@ -1,5 +1,5 @@
 import { AI } from './internal'
-import { Player } from '../models/creature'
+import { Player } from '../models/player'
 import { Logger } from '../models/logger'
 import { Game, ItemsBunch, Item } from '../../engine'
 

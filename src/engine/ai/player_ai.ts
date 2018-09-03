@@ -1,5 +1,5 @@
 import { MetaAI, AIEvent } from './meta_ai'
-import { Player } from '../models/creature'
+import { Player } from '../models/player'
 import {
   IdlePresenter,
   Game,

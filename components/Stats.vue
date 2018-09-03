@@ -17,23 +17,19 @@
       )
 
   PrimaryAttribute.attribute(
-    slug='attack'
-    name='А'
-    full-name='Атака'
-    :attr='creature.characteristics.attack'
+    slug='strength'
+    name='St'
+    full-name='Сила'
+    :attr='creature.strength'
     )
+
   PrimaryAttribute.attribute(
-    slug='defense'
-    name='З'
-    full-name='Защита'
-    :attr='creature.characteristics.defense'
+    slug='constitution'
+    name='Co'
+    full-name='Телосложение'
+    :attr='creature.constitution'
     )
-  PrimaryAttribute.attribute(
-    slug='speed'
-    name='С'
-    full-name='Скорость'
-    :attr='creature.characteristics.speed'
-    )
+
   .cell
     .value {{ levelMap.name }}
   .cell

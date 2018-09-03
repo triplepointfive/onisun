@@ -1,5 +1,6 @@
 import { CreatureEvent } from './internal'
-import { Player, Reaction, Creature } from '../models/creature'
+import { Reaction, Creature } from '../models/creature'
+import { Player } from '../models/player'
 import { InventorySlot } from '../models/inventory_slot'
 import { TakeOffItemEvent } from './take_off_item_event'
 import { Game } from '../models/game'

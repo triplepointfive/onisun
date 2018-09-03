@@ -1,5 +1,6 @@
 import { DieEvent, DieReason, Game, ImpactType, LevelMap } from '../../engine'
-import { Player, Reaction } from '../models/creature'
+import { Reaction } from '../models/creature'
+import { Player } from '../models/player'
 import { PlayerEvent } from './player_event'
 
 export class AfterEvent extends PlayerEvent {

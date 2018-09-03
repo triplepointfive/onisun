@@ -1,4 +1,4 @@
-import { Player } from '../models/creature'
+import { Player } from '../models/player'
 import { LevelMap } from '../models/level_map'
 import { Tile } from '../models/tile'
 import { Game } from '../../engine'

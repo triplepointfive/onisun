@@ -1,4 +1,4 @@
-import { Player } from './creature'
+import { Player } from './player'
 
 import { includes, sample } from 'lodash'
 import { Talent } from './talent'

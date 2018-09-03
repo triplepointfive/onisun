@@ -124,10 +124,12 @@ export class Application {
         abilities: allAbilities,
         protections: [],
         damages: [],
-        maxHealthValue: 100,
-        regenerationRate: 15,
+        maxHealthValue: 10,
+        regenerationRate: 30,
         regenerationValue: 1,
-      }
+      },
+      12,
+      15
     )
   }
 }

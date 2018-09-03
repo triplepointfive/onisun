@@ -1,7 +1,7 @@
 <template lang='pug'>
 .simple-popover(:id="id")
   .title {{ name }}
-  .value {{ attr.currentValue }}
+  .value {{ attr.current }}
   b-popover(
     :target='id'
     triggers='hover'

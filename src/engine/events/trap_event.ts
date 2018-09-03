@@ -1,6 +1,7 @@
 import { CreatureEvent } from './internal'
 import { Trap } from '../models/tile'
-import { Creature, Reaction, Player } from '../models/creature'
+import { Creature, Reaction } from '../models/creature'
+import { Player } from '../models/player'
 import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'
 import { LevelMap } from '../models/level_map'

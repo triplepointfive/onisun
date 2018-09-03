@@ -1,24 +1,20 @@
-import { concat, includes } from 'lodash'
+import { includes } from 'lodash'
 import {
   Characteristics,
   Game,
   GroupedItem,
   ImpactBunch,
-  Inventory,
   LevelMap,
   Memory,
-  PlayerAI,
 } from '../../engine'
 import { MetaAI } from '../ai/meta_ai'
 import { AfterEvent } from '../events/after_event'
 import { CreatureEvent } from '../events/internal'
 import { ItemsBunch } from '../lib/bunch'
 import { ImpactType } from '../lib/impact'
-import { Level } from '../lib/level'
 import { buildFov } from '../lib/map_fov'
-import { CapacityLimitStat, Stat, HealthStat } from '../lib/stat'
-import { Damage, Item, Missile, Protection, ProtectionType } from './items'
-import { Profession } from './profession'
+import { HealthStat } from '../lib/stat'
+import { Damage, Item, Missile, Protection } from './items'
 import { Specie } from './specie'
 
 export enum Clan {
@@ -213,78 +209,5 @@ export class AICreature extends Creature {
     }
 
     this.bag.remove(item, count)
-  }
-}
-
-export class Player extends Creature {
-  public professions: Profession[] = []
-  public inventory: Inventory = new Inventory()
-
-  public itemsProtections: Protection[] = []
-  public itemsDamages: Damage[] = []
-  public stuffWeight: Stat
-  public carryingCapacity: CapacityLimitStat
-
-  constructor(
-    public level: Level,
-    characteristics: Characteristics,
-    public ai: PlayerAI,
-    specie: Specie
-  ) {
-    super(characteristics, specie)
-
-    this.stuffWeight = new Stat(0)
-    this.carryingCapacity = new CapacityLimitStat(1, 4)
-  }
-
-  public act(levelMap: LevelMap, game: Game): void {
-    this.statsTurn()
-    this.visionMask(levelMap)
-
-    const command = this.ai.act(this, levelMap, game)
-    if (command) {
-      this.on(command)
-    }
-
-    this.on(new AfterEvent(levelMap, game))
-  }
-
-  public rebuildVision(levelMap: LevelMap): void {
-    this.visionMask(levelMap)
-  }
-
-  public on(event: CreatureEvent): Reaction {
-    return event.affectPlayer(this)
-  }
-
-  get missile(): GroupedItem<Missile> | undefined {
-    return this.inventory.missileSlot.equipment
-  }
-
-  get inventoryItems(): GroupedItem<Item>[] {
-    return this.inventory.allItems
-  }
-
-  public addItem(item: Item, count: number): void {
-    this.inventory.putToBag(item, count)
-  }
-
-  public removeItem(item: Item, count: number): void {
-    this.inventory.removeFromBag(item, count)
-  }
-
-  get damages(): Damage[] {
-    return concat(this.specie.damages, this.itemsDamages)
-  }
-
-  get protections(): Protection[] {
-    const perEmptySlotArmor = 1
-
-    return concat(this.specie.protections, this.itemsProtections, [
-      {
-        type: ProtectionType.Unarmored,
-        value: perEmptySlotArmor * this.inventory.unarmoredSlotsCount,
-      },
-    ])
   }
 }

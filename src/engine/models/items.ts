@@ -1,4 +1,4 @@
-import { Player } from './creature'
+import { Player } from './player'
 import { Specie } from './specie'
 
 import { Game } from './game'
