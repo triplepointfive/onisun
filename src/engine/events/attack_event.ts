@@ -23,13 +23,13 @@ export class AttackEvent extends CreatureEvent {
 
     const damage = Calculator.damage(actor.damages, this.subject.protections)
 
-    if (damage >= this.subject.characteristics.health.currentValue) {
+    if (damage >= this.subject.health.currentValue) {
       actor.on(new AddExperienceEvent(this.subject, this.levelMap, this.game))
       this.game.logger.killMessage(damage, actor, this.subject)
       this.subject.on(new DieEvent(this.game, this.levelMap, DieReason.Attack))
       return Reaction.DIE
     } else {
-      this.subject.characteristics.health.decrease(damage)
+      this.subject.health.decrease(damage)
       this.game.logger.hurtMessage(damage, actor, this.subject)
       return Reaction.HURT
     }

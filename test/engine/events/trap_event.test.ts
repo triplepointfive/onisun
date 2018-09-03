@@ -64,15 +64,13 @@ describe('Trap event', () => {
     })
 
     it('does damage', () => {
-      expect(creature.characteristics.health.atMax).toBeTruthy()
+      expect(creature.health.atMax).toBeTruthy()
       creature.on(event)
-      expect(creature.characteristics.health.atMax).toBeFalsy()
+      expect(creature.health.atMax).toBeFalsy()
     })
 
     it('may even kill', () => {
-      creature.characteristics.health.decrease(
-        player.characteristics.health.maximum - 1
-      )
+      creature.health.decrease(player.health.maximum - 1)
       creature.on(event)
       expect(creature.dead).toBeTruthy()
     })
@@ -92,9 +90,9 @@ describe('Trap event', () => {
     })
 
     it('does damage', () => {
-      expect(player.characteristics.health.atMax).toBeTruthy()
+      expect(player.health.atMax).toBeTruthy()
       player.on(event)
-      expect(player.characteristics.health.atMax).toBeFalsy()
+      expect(player.health.atMax).toBeFalsy()
     })
 
     it('adds a message to log', () => {

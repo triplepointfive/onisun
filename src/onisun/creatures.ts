@@ -26,6 +26,10 @@ const newCreature = (
     abilities: [],
     protections: protections,
     damages: damages,
+
+    maxHealthValue: 1,
+    regenerationRate: 5,
+    regenerationValue: 1,
   })
 }
 
@@ -35,7 +39,6 @@ const rat = () => {
       attack: 1,
       defense: 1,
       dexterity: 1,
-      health: 1,
       radius: 5,
       speed: 90,
     }),
@@ -51,7 +54,6 @@ const golem = () => {
       attack: 1,
       defense: 1,
       dexterity: 1,
-      health: 10,
       radius: 5,
       speed: 90,
     }),

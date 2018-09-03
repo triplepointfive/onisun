@@ -19,13 +19,13 @@ describe('With full health', () => {
   })
 
   it('Does nothing', () => {
-    expect(creature.characteristics.health.atMax).toBeTruthy()
+    expect(creature.health.atMax).toBeTruthy()
   })
 })
 
 describe('When health is not full', () => {
   beforeEach(() => {
-    creature.characteristics.health.decrease(10)
+    creature.health.decrease(10)
   })
 
   it('Available', () => {

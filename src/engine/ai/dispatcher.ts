@@ -26,8 +26,6 @@ export class Dispatcher extends MetaAI {
 
   private descender: Descender
 
-  private step: number = 0
-
   constructor() {
     super()
     this.escaper = new Escaper()
@@ -47,12 +45,6 @@ export class Dispatcher extends MetaAI {
     levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {
-    this.step += 1
-
-    if (this.step % actor.characteristics.regenerateEvery() === 0) {
-      actor.characteristics.regenerate()
-    }
-
     this.runEvents()
     let event: CreatureEvent | undefined
 
@@ -81,17 +73,11 @@ export class Dispatcher extends MetaAI {
   }
 
   private feelsGood(actor: Creature): boolean {
-    return (
-      actor.characteristics.health.currentValue >
-      actor.characteristics.health.maximum * 0.9
-    )
+    return actor.health.currentValue > actor.health.maximum * 0.9
   }
 
   private healthCritical(actor: Creature): boolean {
-    return (
-      actor.characteristics.health.currentValue <
-      actor.characteristics.health.maximum / 4
-    )
+    return actor.health.currentValue < actor.health.maximum / 4
   }
 
   private explore(

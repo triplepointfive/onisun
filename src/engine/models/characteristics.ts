@@ -1,4 +1,4 @@
-import { Specie } from './creature'
+import { Specie } from './specie'
 import { Item } from './items'
 import {
   AttributeSet,
@@ -12,14 +12,12 @@ export class Characteristics extends AttributeSet<Attribute> {
     attack,
     defense,
     dexterity,
-    health,
     radius,
     speed,
   }: {
     attack: number
     defense: number
     dexterity: number
-    health: number
     radius: number
     speed: number
   }) {
@@ -27,7 +25,6 @@ export class Characteristics extends AttributeSet<Attribute> {
       new PositiveAttribute(attack),
       new PositiveAttribute(defense),
       new PositiveAttribute(dexterity),
-      new Attribute(health),
       new PositiveAttribute(radius),
       new PositiveAttribute(speed)
     )
@@ -67,22 +64,8 @@ export class Characteristics extends AttributeSet<Attribute> {
     return 10
   }
 
-  public regenerate(): void {
-    this.health.increase(this.regenerationValue())
-  }
-
-  protected regenerationValue(): number {
-    // TODO
-    return 1
-  }
-
-  public regenerateEvery(): number {
-    // TODO
-    return 8
-  }
-
   public levelUp(specie: Specie) {
-    this.health.constantIncrease(3)
+    // this.health.constantIncrease(3)
 
     if (Math.random() > 0.5) {
       this.attack.constantIncrease(1)

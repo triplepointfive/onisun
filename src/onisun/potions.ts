@@ -6,6 +6,6 @@ export class HealPotion extends Potion {
   }
 
   public onDrink(game: Game) {
-    game.player.characteristics.health.increase(5)
+    game.player.health.increase(5)
   }
 }

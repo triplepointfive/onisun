@@ -11,7 +11,7 @@ export class SelfHealer extends AI {
     levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {
-    if (actor.characteristics.health.atMax) {
+    if (actor.health.atMax) {
       return
     }
 

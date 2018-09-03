@@ -16,9 +16,10 @@ import { ItemsBunch } from '../lib/bunch'
 import { ImpactType } from '../lib/impact'
 import { Level } from '../lib/level'
 import { buildFov } from '../lib/map_fov'
-import { CapacityLimitStat, Stat } from '../lib/stat'
+import { CapacityLimitStat, Stat, HealthStat } from '../lib/stat'
 import { Damage, Item, Missile, Protection, ProtectionType } from './items'
 import { Profession } from './profession'
+import { Specie } from './specie'
 
 export enum Clan {
   Player,
@@ -39,16 +40,6 @@ export const allAbilities = [
   Ability.PutOn,
   Ability.Throwing,
 ]
-
-export interface Specie {
-  readonly name: string
-  readonly weight: number
-  readonly clan: Clan
-  readonly abilities: Ability[]
-  protections: Protection[]
-  damages: Damage[]
-  throwingItem?: Missile
-}
 
 export type CreatureId = number
 
@@ -74,6 +65,7 @@ export abstract class Creature {
 
   public stuffWeight: Stat
   public carryingCapacity: CapacityLimitStat
+  public health: HealthStat
 
   constructor(
     public characteristics: Characteristics,
@@ -82,6 +74,7 @@ export abstract class Creature {
   ) {
     this.stuffWeight = new Stat(0)
     this.carryingCapacity = new CapacityLimitStat(1, 4)
+    this.health = new HealthStat(specie)
   }
 
   get name(): string {
@@ -167,6 +160,10 @@ export abstract class Creature {
 
   public abstract addItem(item: Item, count: number): void
   public abstract removeItem(item: Item, count: number): void
+
+  protected statsTurn(): void {
+    this.health.turn()
+  }
 }
 
 export class AICreature extends Creature {
@@ -182,6 +179,7 @@ export class AICreature extends Creature {
   }
 
   public act(levelMap: LevelMap, game: Game): void {
+    this.statsTurn()
     this.visionMask(levelMap)
 
     const command = this.ai.act(this, levelMap, game)
@@ -239,6 +237,7 @@ export class Player extends Creature {
   }
 
   public act(levelMap: LevelMap, game: Game): void {
+    this.statsTurn()
     this.visionMask(levelMap)
 
     const command = this.ai.act(this, levelMap, game)

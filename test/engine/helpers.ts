@@ -101,10 +101,13 @@ const fakeSpecie = {
   abilities: allAbilities,
   protections: [],
   damages: [],
+  maxHealthValue: 50,
+  regenerationRate: 10,
+  regenerationValue: 1,
 }
 
 export class TestCreature extends AICreature {}
-export const generateCreatureWithAI = function(ai: AI): Creature {
+export const generateCreatureWithAI = function(ai: AI): AICreature {
   return new TestCreature(generateCharacteristics(), wrapAI(ai), fakeSpecie)
 }
 
@@ -113,7 +116,6 @@ export const generateCharacteristics = function(): Characteristics {
     attack: 0,
     defense: 0,
     dexterity: 0,
-    health: 50,
     radius: 5,
     speed: 0,
   })

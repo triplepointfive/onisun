@@ -65,7 +65,6 @@ export class AttributeSet<T> {
     public attack: T,
     public defense: T,
     public dexterity: T,
-    public health: T,
     public radius: T,
     public speed: T
   ) {}
@@ -73,7 +72,6 @@ export class AttributeSet<T> {
   public with(pairSet: AttributeSet<any>, on: (first: T, second: any) => void) {
     on(this.attack, pairSet.attack)
     on(this.defense, pairSet.defense)
-    on(this.health, pairSet.health)
     on(this.radius, pairSet.radius)
     on(this.speed, pairSet.speed)
   }
@@ -84,11 +82,10 @@ export class Modifier extends AttributeSet<number> {
     attack = 0,
     defense = 0,
     dexterity = 0,
-    health = 0,
     radius = 0,
     speed = 0,
   }) {
-    super(attack, defense, dexterity, health, radius, speed)
+    super(attack, defense, dexterity, radius, speed)
   }
 
   public withWeight(
@@ -98,7 +95,6 @@ export class Modifier extends AttributeSet<number> {
   ) {
     on(this.attack, pairSet.attack, weight.attack)
     on(this.defense, pairSet.defense, weight.defense)
-    on(this.health, pairSet.health, weight.health)
     on(this.radius, pairSet.radius, weight.radius)
     on(this.speed, pairSet.speed, weight.speed)
   }

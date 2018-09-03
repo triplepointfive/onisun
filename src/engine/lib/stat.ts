@@ -1,3 +1,6 @@
+import { Specie } from '../models/Specie'
+import { Attribute } from './attribute'
+
 export class Stat {
   constructor(
     public base: number,
@@ -48,5 +51,30 @@ export class CapacityLimitStat {
 
   get flattenedStart(): number {
     return this.overloadedStart * 3
+  }
+}
+
+export class HealthStat extends Attribute {
+  private regenerationRate: number
+  private regenerationValue: number
+
+  constructor(
+    specie: Specie,
+    private currentTurn = 0,
+    currentValue = specie.maxHealthValue
+  ) {
+    super(specie.maxHealthValue, currentValue)
+
+    this.regenerationRate = specie.regenerationRate
+    this.regenerationValue = specie.regenerationValue
+  }
+
+  public turn(): void {
+    this.currentTurn += 1
+
+    if (this.currentTurn >= this.regenerationRate) {
+      this.currentTurn = 0
+      this.increase(this.regenerationValue)
+    }
   }
 }

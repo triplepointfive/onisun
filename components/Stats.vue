@@ -11,7 +11,7 @@
         )
   .hp.cell
     .value
-      | {{ displayAttribute(creature.characteristics.health) }}
+      | {{ displayAttribute(creature.health) }}
     .bar(
       :style='{ height: healthLevel }'
       )
@@ -64,7 +64,7 @@ export default Vue.extend({
       return `${level.currentExperience  / level.requiredExperience * 100}%`
     },
     healthLevel(): string {
-      const attribute: Attribute = this.creature.characteristics.health
+      const attribute: Attribute = this.creature.health
       return `${attribute.currentValue / (attribute.maximum || 0) * 100}%`
     },
     protections(): string {

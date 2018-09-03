@@ -35,11 +35,11 @@ export class TrapEvent extends CreatureEvent {
   private doDamage(actor: Creature): Reaction {
     const damage = 10
 
-    if (damage >= actor.characteristics.health.currentValue) {
+    if (damage >= actor.health.currentValue) {
       actor.on(new DieEvent(this.game, this.levelMap, DieReason.Trap))
       return Reaction.DIE
     } else {
-      actor.characteristics.health.decrease(damage)
+      actor.health.decrease(damage)
       return Reaction.HURT
     }
   }

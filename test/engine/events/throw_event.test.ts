@@ -65,7 +65,7 @@ describe('StayEvent', () => {
       })
 
       it('decreases health level', () => {
-        expect(victim.characteristics.health.atMax).toBeFalsy()
+        expect(victim.health.atMax).toBeFalsy()
       })
 
       it('logs a message', () => {
@@ -77,7 +77,7 @@ describe('StayEvent', () => {
       beforeEach(() => {
         actor.characteristics.throwDamageTo = jest.fn()
         actor.characteristics.throwDamageTo.mockReturnValueOnce(
-          victim.characteristics.health.maximum
+          victim.health.maximum
         )
 
         expect(actor.on(event)).toEqual(Reaction.DIE)

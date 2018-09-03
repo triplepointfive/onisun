@@ -27,7 +27,7 @@ export class ThrowEvent extends CreatureEvent {
       this.missile
     )
 
-    if (damage >= this.victim.characteristics.health.currentValue) {
+    if (damage >= this.victim.health.currentValue) {
       actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
       this.game.logger.throwKillMessage(
         damage,
@@ -39,7 +39,7 @@ export class ThrowEvent extends CreatureEvent {
         new DieEvent(this.game, this.levelMap, DieReason.Missile)
       )
     } else {
-      this.victim.characteristics.health.decrease(damage)
+      this.victim.health.decrease(damage)
       this.game.logger.throwHurtMessage(
         damage,
         actor,

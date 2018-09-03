@@ -1,4 +1,5 @@
-import { Specie, Player } from './creature'
+import { Player } from './creature'
+import { Specie } from './specie'
 
 import { Game } from './game'
 import { Modifier } from '../lib/attribute'
