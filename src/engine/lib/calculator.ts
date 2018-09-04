@@ -1,6 +1,6 @@
 import { DamageType, ProtectionType } from '../../engine'
 import { Protection } from '../models/items'
-import { Damage, Dice } from "./damage";
+import { Damage, Dice } from './damage'
 
 import { sumBy, times, sum, random, includes, intersection } from 'lodash'
 import { Resistance } from '../models/specie'
@@ -10,12 +10,31 @@ export type DamageOrResist = { damage: number; resist: boolean }
 export class Calculator {
   private constructor() {}
 
+  public static misses(attackerDex: number, victimDex: number): boolean {
+    return (
+      Math.random() >
+      attackerDex / (attackerDex + Math.pow(victimDex * 0.25, 0.8))
+    )
+  }
+
+  public static throwMisses(attackerDex: number, victimDex: number): boolean {
+    return this.misses(attackerDex, victimDex)
+  }
+
+  public static throwDamageTo(x: number, y: number): number {
+    return 10
+  }
+
   public static damage(
     damages: Damage[],
     protectionTypes: Protection[],
     victimResistances: Resistance[]
   ): DamageOrResist {
-    if (damages.every(({ type, resistances }) => this.resistTo(type, resistances, victimResistances))) {
+    if (
+      damages.every(({ type, resistances }) =>
+        this.resistTo(type, resistances, victimResistances)
+      )
+    ) {
       return { damage: 0, resist: true }
     }
 

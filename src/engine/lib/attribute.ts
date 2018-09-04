@@ -61,31 +61,17 @@ export class PositiveAttribute extends Attribute {
 }
 
 export class AttributeSet<T> {
-  constructor(
-    public attack: T,
-    public defense: T,
-    public dexterity: T,
-    public radius: T,
-    public speed: T
-  ) {}
+  constructor(public attack: T, public defense: T, public dexterity: T) {}
 
   public with(pairSet: AttributeSet<any>, on: (first: T, second: any) => void) {
     on(this.attack, pairSet.attack)
     on(this.defense, pairSet.defense)
-    on(this.radius, pairSet.radius)
-    on(this.speed, pairSet.speed)
   }
 }
 
 export class Modifier extends AttributeSet<number> {
-  constructor({
-    attack = 0,
-    defense = 0,
-    dexterity = 0,
-    radius = 0,
-    speed = 0,
-  }) {
-    super(attack, defense, dexterity, radius, speed)
+  constructor({ attack = 0, defense = 0, dexterity = 0 }) {
+    super(attack, defense, dexterity)
   }
 
   public withWeight(
@@ -95,7 +81,5 @@ export class Modifier extends AttributeSet<number> {
   ) {
     on(this.attack, pairSet.attack, weight.attack)
     on(this.defense, pairSet.defense, weight.defense)
-    on(this.radius, pairSet.radius, weight.radius)
-    on(this.speed, pairSet.speed, weight.speed)
   }
 }

@@ -49,7 +49,7 @@ export class PutOnItemEvent extends CreatureEvent {
   }
 
   private onPutOn(player: Player, item: Item): void {
-    player.characteristics.addModifier(item.modifier)
+    // player.characteristics.addModifier(item.modifier)
 
     if (item instanceof Armor) {
       player.itemsProtections = player.itemsProtections.concat(item.protections)

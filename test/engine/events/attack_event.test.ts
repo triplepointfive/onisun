@@ -34,8 +34,8 @@ describe('AttackEvent', () => {
   })
 
   it('victim can dodge', () => {
-    actor.characteristics.misses = jest.fn()
-    actor.characteristics.misses.mockReturnValueOnce(true)
+    Calculator.misses = jest.fn()
+    Calculator.misses.mockReturnValueOnce(true)
 
     expect(actor.on(event)).toEqual(Reaction.DODGE)
     expect(victim.health.atMax).toBeTruthy()
@@ -47,8 +47,8 @@ describe('AttackEvent', () => {
     beforeEach(() => {
       victimHealth = victim.health.maximum
 
-      actor.characteristics.misses = jest.fn()
-      actor.characteristics.misses.mockReturnValueOnce(false)
+      Calculator.misses = jest.fn()
+      Calculator.misses.mockReturnValueOnce(false)
     })
 
     it('victim can got hurt', () => {

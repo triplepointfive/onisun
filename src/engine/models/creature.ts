@@ -1,12 +1,5 @@
 import { includes } from 'lodash'
-import {
-  Characteristics,
-  Game,
-  GroupedItem,
-  ImpactBunch,
-  LevelMap,
-  Memory,
-} from '../../engine'
+import { Game, GroupedItem, ImpactBunch, LevelMap, Memory } from '../../engine'
 import { MetaAI } from '../ai/meta_ai'
 import { AfterEvent } from '../events/after_event'
 import { CreatureEvent } from '../events/internal'
@@ -15,7 +8,7 @@ import { ImpactType } from '../lib/impact'
 import { buildFov } from '../lib/map_fov'
 import { HealthStat } from '../lib/stat'
 import { Item, Missile, Protection } from './items'
-import { Damage } from "../lib/damage";
+import { Damage } from '../lib/damage'
 import { Specie, Resistance } from './specie'
 
 export enum Clan {
@@ -63,11 +56,7 @@ export abstract class Creature {
 
   public health: HealthStat
 
-  constructor(
-    public characteristics: Characteristics,
-    public specie: Specie,
-    public id: CreatureId = Creature.getId()
-  ) {
+  constructor(public specie: Specie, public id: CreatureId = Creature.getId()) {
     this.health = new HealthStat(specie)
   }
 
@@ -95,12 +84,8 @@ export abstract class Creature {
     return event.affectCreature(this)
   }
 
-  public speed(): number {
-    return this.characteristics.speed.currentValue
-  }
-
-  public radius(): number {
-    return this.characteristics.radius.currentValue
+  get speed(): number {
+    return this.specie.moveSpeed
   }
 
   public stageMemory(levelMap: LevelMap): Memory {
@@ -119,7 +104,7 @@ export abstract class Creature {
       )
     }
 
-    buildFov(levelMap.creaturePos(this), this.radius(), memory, levelMap)
+    buildFov(levelMap.creaturePos(this), this.visionRadius, memory, levelMap)
   }
 
   public abstract act(levelMap: LevelMap, game: Game): void
@@ -139,6 +124,10 @@ export abstract class Creature {
     }
 
     this.impactsBunch.removeConstImpact(type, effect)
+  }
+
+  get visionRadius(): number {
+    return this.specie.visionRadius
   }
 
   get impacts(): ImpactType[] {
@@ -168,12 +157,11 @@ export class AICreature extends Creature {
   private bag?: ItemsBunch<Item>
 
   constructor(
-    characteristics: Characteristics,
     public ai: MetaAI,
     specie: Specie,
     id: CreatureId = Creature.getId()
   ) {
-    super(characteristics, specie, id)
+    super(specie, id)
   }
 
   public act(levelMap: LevelMap, game: Game): void {

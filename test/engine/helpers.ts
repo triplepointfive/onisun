@@ -3,7 +3,6 @@ import {
   AI,
   allAbilities,
   BodyArmor,
-  Characteristics,
   Clan,
   Corridor,
   Creature,
@@ -94,31 +93,26 @@ const wrapAI = function(ai: AI): MetaAI {
   return new AIWrapper(ai)
 }
 
-const fakeSpecie = {
-  name: 'Test specie',
-  weight: 10,
-  clan: Clan.FreeForAll,
-  abilities: allAbilities,
-  protections: [],
-  damages: [],
-  maxHealthValue: 50,
-  regenerationRate: 10,
-  regenerationValue: 1,
+const fakeSpecie: () => Specie = () => {
+  return {
+    name: 'Test specie',
+    weight: 10,
+    clan: Clan.FreeForAll,
+    abilities: allAbilities,
+    protections: [],
+    damages: [],
+    maxHealthValue: 50,
+    regenerationRate: 10,
+    regenerationValue: 1,
+    resistances: [],
+    visionRadius: 5,
+    moveSpeed: 0,
+  }
 }
 
 export class TestCreature extends AICreature {}
 export const generateCreatureWithAI = function(ai: AI): AICreature {
-  return new TestCreature(generateCharacteristics(), wrapAI(ai), fakeSpecie)
-}
-
-export const generateCharacteristics = function(): Characteristics {
-  return new Characteristics({
-    attack: 0,
-    defense: 0,
-    dexterity: 0,
-    radius: 5,
-    speed: 0,
-  })
+  return new TestCreature(wrapAI(ai), fakeSpecie())
 }
 
 export const generateLevel = function(): Level {
@@ -126,12 +120,7 @@ export const generateLevel = function(): Level {
 }
 
 export const generatePlayer = function(): Player {
-  return new Player(
-    generateLevel(),
-    generateCharacteristics(),
-    generatePlayerAI(),
-    fakeSpecie
-  )
+  return new Player(generateLevel(), generatePlayerAI(), fakeSpecie(), 10, 10)
 }
 
 export class TestGame extends Game {}

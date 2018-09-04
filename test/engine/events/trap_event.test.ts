@@ -49,7 +49,7 @@ describe('Trap event', () => {
 
     it('leaves trap hidden when player does not see', () => {
       map.addCreature(new Point(1, 5), creature)
-      player.characteristics.radius.decrease(10)
+      player.specie.visionRadius -= 10
       player.rebuildVision(map)
 
       expect(trap.revealed).toBeFalsy()

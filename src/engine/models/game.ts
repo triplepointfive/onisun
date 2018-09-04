@@ -97,7 +97,7 @@ export abstract class Game {
 
       // If they are still on a map
       if (map.creatures.find(creature => actorId === creature.id)) {
-        timeline.add(actorId, actor.speed())
+        timeline.add(actorId, actor.speed)
       }
     }
   }

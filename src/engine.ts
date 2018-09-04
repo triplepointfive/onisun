@@ -45,7 +45,6 @@ export * from './engine/lib/pool'
 export * from './engine/lib/stat'
 export * from './engine/lib/timeline'
 
-export * from './engine/models/characteristics'
 export * from './engine/models/creature'
 export * from './engine/models/dungeon'
 export * from './engine/models/game'

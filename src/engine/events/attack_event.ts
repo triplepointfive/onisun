@@ -5,7 +5,7 @@ import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'
 import { LevelMap } from '../models/level_map'
 import { Calculator } from '../lib/calculator'
-import { Damage } from "../lib/damage";
+import { Damage } from '../lib/damage'
 import { Resistance } from '../models/specie'
 
 export class AttackEvent extends CreatureEvent {
@@ -50,7 +50,9 @@ export class AttackEvent extends CreatureEvent {
   }
 
   protected process(actor: Creature): Reaction {
-    if (actor.characteristics.misses(this.subject.characteristics)) {
+    // if (Calculator.misses(actor.characteristics.misses(this.subject.characteristics)) {
+    // TODO: Add actual check
+    if (Calculator.misses(10, 10)) {
       this.game.logger.missMessage(actor, this.subject)
       return Reaction.DODGE
     }

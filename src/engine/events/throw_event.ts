@@ -5,6 +5,7 @@ import { Item } from '../models/items'
 import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'
 import { LevelMap } from '../../engine'
+import { Calculator } from '../lib/calculator'
 
 export class ThrowEvent extends CreatureEvent {
   constructor(
@@ -17,15 +18,14 @@ export class ThrowEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
-    if (actor.characteristics.throwMisses(this.victim.characteristics)) {
+    // TODO: Calculate normally
+    if (Calculator.throwMisses(10, 10)) {
       this.game.logger.throwMissMessage(actor, this.victim, this.missile)
       return Reaction.THROW_DODGE
     }
 
-    const damage = actor.characteristics.throwDamageTo(
-      this.victim.characteristics,
-      this.missile
-    )
+    // TODO: Calculate normally
+    const damage = Calculator.throwDamageTo(10, 10)
 
     if (damage >= this.victim.health.currentValue) {
       actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))

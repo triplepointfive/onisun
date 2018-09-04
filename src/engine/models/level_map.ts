@@ -25,7 +25,7 @@ export class LevelMap extends Mapped<Tile> {
   public enter(): void {
     this.reset()
     this.creatures.forEach(creature =>
-      this.timeline.add(creature.id, creature.speed())
+      this.timeline.add(creature.id, creature.speed)
     )
   }
 
@@ -65,7 +65,7 @@ export class LevelMap extends Mapped<Tile> {
     this.creatures.push(creature)
     // TODO fail if taken
     this.at(pos.x, pos.y).creature = creature
-    this.timeline.add(creature.id, creature.speed())
+    this.timeline.add(creature.id, creature.speed)
   }
 
   public removeCreature(creature: Creature) {

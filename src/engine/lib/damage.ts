@@ -14,8 +14,8 @@ export type Dice = {
 }
 
 export type Damage = {
-  extra: number;
-  dice: Dice;
-  type: DamageType;
+  extra: number
+  dice: Dice
+  type: DamageType
   resistances?: Resistance[]
 }

@@ -3,7 +3,7 @@ import { Specie } from './specie'
 
 import { Game } from './game'
 import { Modifier } from '../lib/attribute'
-import { Damage } from '../lib/damage';
+import { Damage } from '../lib/damage'
 
 export enum Usage {
   WeaponOneHand,

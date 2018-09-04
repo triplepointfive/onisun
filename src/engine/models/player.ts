@@ -1,18 +1,11 @@
 import { concat, cloneDeep } from 'lodash'
-import {
-  Characteristics,
-  Game,
-  GroupedItem,
-  Inventory,
-  LevelMap,
-  PlayerAI,
-} from '../../engine'
+import { Game, GroupedItem, Inventory, LevelMap, PlayerAI } from '../../engine'
 import { AfterEvent } from '../events/after_event'
 import { CreatureEvent } from '../events/internal'
 import { Level } from '../lib/level'
 import { CapacityLimitStat, Stat, StrengthStat } from '../lib/stat'
 import { Item, Missile, Protection, ProtectionType } from './items'
-import { Damage } from "../lib/damage";
+import { Damage } from '../lib/damage'
 import { Profession } from './profession'
 import { Specie, Resistance } from './specie'
 import { Creature, Reaction } from './creature'
@@ -30,20 +23,27 @@ export class Player extends Creature {
 
   // Main attributes
   public strength: StrengthStat
+  public dexterity: Stat
   public constitution: Stat
+  public intelligence: Stat
+  public wisdom: Stat
+  public charisma: Stat
 
   constructor(
     public level: Level,
-    characteristics: Characteristics,
     public ai: PlayerAI,
     specie: Specie,
     strengthValue: number,
     constitutionValue: number
   ) {
-    super(characteristics, specie)
+    super(specie)
 
     this.strength = new StrengthStat(strengthValue)
+    this.dexterity = new Stat(2)
     this.constitution = new Stat(constitutionValue)
+    this.intelligence = new Stat(2)
+    this.wisdom = new Stat(2)
+    this.charisma = new Stat(2)
 
     this.stuffWeight = new Stat(0)
     this.carryingCapacity = new CapacityLimitStat(

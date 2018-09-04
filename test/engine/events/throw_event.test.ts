@@ -12,6 +12,7 @@ import {
   Game,
   Point,
   Missile,
+  Calculator,
 } from '../../../src/engine'
 
 describe('StayEvent', () => {
@@ -39,8 +40,8 @@ describe('StayEvent', () => {
 
   describe('when victim dodges', () => {
     beforeEach(() => {
-      actor.characteristics.throwMisses = jest.fn()
-      actor.characteristics.throwMisses.mockReturnValueOnce(true)
+      Calculator.throwMisses = jest.fn()
+      Calculator.throwMisses.mockReturnValueOnce(true)
 
       expect(actor.on(event)).toEqual(Reaction.THROW_DODGE)
     })
@@ -52,14 +53,14 @@ describe('StayEvent', () => {
 
   describe('when victim failed to dodge', () => {
     beforeEach(() => {
-      actor.characteristics.throwMisses = jest.fn()
-      actor.characteristics.throwMisses.mockReturnValueOnce(false)
+      Calculator.throwMisses = jest.fn()
+      Calculator.throwMisses.mockReturnValueOnce(false)
     })
 
     describe('actor does damage', () => {
       beforeEach(() => {
-        actor.characteristics.throwDamageTo = jest.fn()
-        actor.characteristics.throwDamageTo.mockReturnValueOnce(1)
+        Calculator.throwDamageTo = jest.fn()
+        Calculator.throwDamageTo.mockReturnValueOnce(1)
 
         expect(actor.on(event)).toEqual(Reaction.HURT)
       })
@@ -75,10 +76,8 @@ describe('StayEvent', () => {
 
     describe('actor kills', () => {
       beforeEach(() => {
-        actor.characteristics.throwDamageTo = jest.fn()
-        actor.characteristics.throwDamageTo.mockReturnValueOnce(
-          victim.health.maximum
-        )
+        Calculator.throwDamageTo = jest.fn()
+        Calculator.throwDamageTo.mockReturnValueOnce(victim.health.maximum)
 
         expect(actor.on(event)).toEqual(Reaction.DIE)
       })

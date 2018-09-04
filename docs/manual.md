@@ -1,3 +1,11 @@
+## Stats
+
+### Health
+
+It is the value of the damage you can take. Health could be regenerated with time and recovered with potions and some other tricks.
+
+## Stats
+
 ## Main attributes
 
 Main attributes are key stats of every character. Their lower limit is 0 and the max value differ.
@@ -21,12 +29,6 @@ This affects the damage you do with melee weapons and interactions with heavy it
 ### Wisdom
 
 ### Charisma
-
-## Stats
-
-### Health
-
-It is the value of the damage you can take. Health could be regenerated with time and recovered with potions and some other tricks.
 
 ## Combat
 

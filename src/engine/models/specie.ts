@@ -1,5 +1,5 @@
 import { Missile, Protection } from './items'
-import { Damage } from "../lib/damage";
+import { Damage } from '../lib/damage'
 import { Clan, Ability } from './creature'
 
 export enum Resistance {
@@ -8,10 +8,10 @@ export enum Resistance {
 }
 
 export interface Specie {
-  readonly name: string
-  readonly weight: number
-  readonly clan: Clan
-  readonly abilities: Ability[]
+  name: string
+  weight: number
+  clan: Clan
+  abilities: Ability[]
 
   protections: Protection[]
   damages: Damage[]
@@ -23,4 +23,7 @@ export interface Specie {
   regenerationValue: number
 
   resistances: Resistance[]
+
+  visionRadius: number
+  moveSpeed: number
 }

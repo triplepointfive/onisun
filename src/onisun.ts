@@ -3,13 +3,14 @@ import {
   Player,
   allAbilities,
   OneHandWeapon,
-  Characteristics,
   Game,
   Level,
   PlayerAI,
- PickUpItemsEvent,
- DamageType, BodyArmor, ProtectionType,
- PutOnItemEvent,
+  PickUpItemsEvent,
+  DamageType,
+  BodyArmor,
+  ProtectionType,
+  PutOnItemEvent,
 } from './engine'
 
 import { OnisunProfessionPicker } from './onisun/professions'
@@ -109,13 +110,6 @@ export class Application {
   protected initPlayer(): Player {
     return new Player(
       new Level([1, 3, 5, 10, 20]),
-      new Characteristics({
-        attack: 1,
-        defense: 4,
-        dexterity: 3,
-        radius: 10,
-        speed: 80,
-      }),
       new PlayerAI(),
       {
         name: 'Player',
@@ -128,6 +122,8 @@ export class Application {
         regenerationRate: 30,
         regenerationValue: 1,
         resistances: [],
+        visionRadius: 10,
+        moveSpeed: 80,
       },
       12,
       15

@@ -19,7 +19,7 @@ export class Escaper extends FollowTargetAI {
   private buildEscapePath(
     actor: Creature,
     levelMap: LevelMap,
-    minDistance: number = actor.radius() / 2
+    minDistance: number = actor.visionRadius / 2
   ): boolean {
     if (minDistance <= 1) {
       this.destination = undefined

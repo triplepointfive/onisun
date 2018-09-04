@@ -3,7 +3,7 @@ import { Reaction, Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { findIndex } from 'lodash'
 import { Protection, Weapon } from '../models/items'
-import { Damage } from "../lib/damage";
+import { Damage } from '../lib/damage'
 
 export class TakeOffItemEvent extends CreatureEvent {
   constructor(private slot: InventorySlot, private game: Game) {
@@ -30,7 +30,7 @@ export class TakeOffItemEvent extends CreatureEvent {
   }
 
   private onTakeOff(player: Player, item: Item): void {
-    player.characteristics.removeModifier(item.modifier)
+    // player.characteristics.removeModifier(item.modifier)
 
     if (item instanceof Armor) {
       item.protections.forEach((itemProtection: Protection) => {

@@ -23,8 +23,6 @@ beforeEach(() => {
   game.currentMap = map = generateLevelMap()
 
   map.addCreature(new Point(1, 1), actor)
-
-  actor.characteristics.dexterity.constantIncrease(10000)
 })
 
 describe('When there are no enemies', () => {

@@ -24,10 +24,38 @@
     )
 
   PrimaryAttribute.attribute(
+    slug='dexterity'
+    name='Dx'
+    full-name='Ловкость'
+    :attr='creature.dexterity'
+    )
+
+  PrimaryAttribute.attribute(
     slug='constitution'
     name='Co'
     full-name='Телосложение'
     :attr='creature.constitution'
+    )
+
+  PrimaryAttribute.attribute(
+    slug='intelligence'
+    name='In'
+    full-name='Интеллект'
+    :attr='creature.intelligence'
+    )
+
+  PrimaryAttribute.attribute(
+    slug='wisdom'
+    name='Ws'
+    full-name='Мудрость'
+    :attr='creature.wisdom'
+    )
+
+  PrimaryAttribute.attribute(
+    slug='charisma'
+    name='Ch'
+    full-name='Харизма'
+    :attr='creature.charisma'
     )
 
   .cell

@@ -17,7 +17,6 @@ beforeEach(() => {
   game.currentMap = map = generateLevelMap()
 
   map.addCreature(new Point(1, 1), actor)
-  actor.characteristics.dexterity.constantIncrease(10000)
 })
 
 describe('When there is nothing to throw', () => {
@@ -44,6 +43,8 @@ describe('When there is someone else', () => {
   let enemy2: Creature
 
   beforeEach(() => {
+    actor.specie.throwingItem = generateMissile()
+
     enemy2 = generateCreature()
     enemy2.specie.throwingItem = generateMissile()
 
