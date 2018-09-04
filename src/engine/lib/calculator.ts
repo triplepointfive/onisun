@@ -53,7 +53,7 @@ export class Calculator {
       case DamageType.Melee:
       case DamageType.Pierce:
       case DamageType.Blunt:
-        return includes(victimResistances, Resistance.PhysicalDamage)
+        return includes(victimResistances, Resistance.Intangible)
       case DamageType.Magic:
         return includes(victimResistances, Resistance.MagicDamage)
       case DamageType.Pure:

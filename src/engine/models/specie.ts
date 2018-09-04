@@ -3,7 +3,7 @@ import { Damage } from "../lib/damage";
 import { Clan, Ability } from './creature'
 
 export enum Resistance {
-  PhysicalDamage,
+  Intangible,
   MagicDamage,
 }
 

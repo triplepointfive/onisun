@@ -30,7 +30,7 @@ const newCreature = (
     regenerationRate: 5,
     regenerationValue: 1,
 
-    resistances: [Resistance.PhysicalDamage],
+    resistances: [Resistance.Intangible],
   })
 }
 
