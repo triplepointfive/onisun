@@ -52,14 +52,17 @@ export class Player extends Creature {
     )
   }
 
-  public act(levelMap: LevelMap, game: Game): void {
+  public act(levelMap: LevelMap, game: Game): number {
     this.statsTurn()
     this.visionMask(levelMap)
+
     const command = this.ai.act(this, levelMap, game)
     if (command) {
       this.on(command)
     }
     this.on(new AfterEvent(levelMap, game))
+
+    return this.speed
   }
 
   public rebuildVision(levelMap: LevelMap): void {

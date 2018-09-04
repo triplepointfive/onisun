@@ -27,4 +27,5 @@ export interface Specie {
 
   visionRadius: number
   moveSpeed: number
+  attackSpeed: number
 }

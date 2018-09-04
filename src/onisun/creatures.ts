@@ -28,10 +28,11 @@ const newCreature = (
     regenerationRate: 5,
     regenerationValue: 1,
 
-    resistances: [Resistance.Intangible],
+    resistances: [],
     visionRadius: 5,
 
-    moveSpeed: 90,
+    moveSpeed: 20,
+    attackSpeed: 20,
     bodyControl: 5,
   })
 }

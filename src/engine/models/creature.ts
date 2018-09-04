@@ -107,7 +107,7 @@ export abstract class Creature {
     buildFov(levelMap.creaturePos(this), this.visionRadius, memory, levelMap)
   }
 
-  public abstract act(levelMap: LevelMap, game: Game): void
+  public abstract act(levelMap: LevelMap, game: Game): number
 
   public addImpact(type: ImpactType, effect: string): void {
     if (!this.impactsBunch) {
@@ -118,7 +118,6 @@ export abstract class Creature {
   }
 
   public removeImpact(type: ImpactType, effect: string): void {
-    // TODO: Should never get here
     if (!this.impactsBunch) {
       this.impactsBunch = new ImpactBunch()
     }
@@ -168,7 +167,7 @@ export class AICreature extends Creature {
     super(specie, id)
   }
 
-  public act(levelMap: LevelMap, game: Game): void {
+  public act(levelMap: LevelMap, game: Game): number {
     this.statsTurn()
     this.visionMask(levelMap)
 
@@ -178,6 +177,8 @@ export class AICreature extends Creature {
     }
 
     this.on(new AfterEvent(levelMap, game))
+
+    return this.speed
   }
 
   get missile(): GroupedItem<Missile> | undefined {

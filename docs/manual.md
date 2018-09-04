@@ -70,7 +70,7 @@ All creatures can have resistances to different damage types. Some of them are b
 
 | Name           | Blocks                       |
 | -------------- | ---------------------------- |
-| Anemia         | Bleeding                     |
+| Anemia         | Bleeding, vampires           |
 | Antidote       | Poison                       |
 | Insulator      | Electricity                  |
 | Intangible     | Melee, pierce, blunt attacks |
