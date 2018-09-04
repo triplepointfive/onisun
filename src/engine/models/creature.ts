@@ -14,7 +14,8 @@ import { ItemsBunch } from '../lib/bunch'
 import { ImpactType } from '../lib/impact'
 import { buildFov } from '../lib/map_fov'
 import { HealthStat } from '../lib/stat'
-import { Damage, Item, Missile, Protection } from './items'
+import { Item, Missile, Protection } from './items'
+import { Damage } from "../lib/damage";
 import { Specie, Resistance } from './specie'
 
 export enum Clan {

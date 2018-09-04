@@ -2,7 +2,8 @@ import { InventorySlot, CreatureEvent, Game, Item, Armor } from '../../engine'
 import { Reaction, Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { findIndex } from 'lodash'
-import { Protection, Weapon, Damage } from '../models/items'
+import { Protection, Weapon } from '../models/items'
+import { Damage } from "../lib/damage";
 
 export class TakeOffItemEvent extends CreatureEvent {
   constructor(private slot: InventorySlot, private game: Game) {

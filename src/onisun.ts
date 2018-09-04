@@ -7,6 +7,9 @@ import {
   Game,
   Level,
   PlayerAI,
+ PickUpItemsEvent,
+ DamageType, BodyArmor, ProtectionType,
+ PutOnItemEvent,
 } from './engine'
 
 import { OnisunProfessionPicker } from './onisun/professions'
@@ -18,9 +21,6 @@ import {
   LightSpeedBoots,
 } from './onisun/items'
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
-import { PickUpItemsEvent } from './engine/events/pick_up_items_event'
-import { DamageType, BodyArmor, ProtectionType } from './engine/models/items'
-import { PutOnItemEvent } from './engine/events/put_on_item_event'
 
 export * from './engine'
 export * from './onisun/professions'

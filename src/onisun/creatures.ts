@@ -5,14 +5,12 @@ import {
   Clan,
   Pool,
   AICreature,
-} from '../engine'
-import {
+  DamageType,
   Protection,
   ProtectionType,
   Damage,
-  DamageType,
-} from '../engine/models/items'
-import { Resistance } from '../engine/models/specie'
+  Resistance
+} from '../engine'
 
 const newCreature = (
   characteristics: Characteristics,

@@ -3,6 +3,7 @@ import { Specie } from './specie'
 
 import { Game } from './game'
 import { Modifier } from '../lib/attribute'
+import { Damage } from '../lib/damage';
 
 export enum Usage {
   WeaponOneHand,
@@ -100,25 +101,6 @@ export abstract class MissileWeapon extends Item {
   constructor(name: string, weight: number, modifier: Modifier) {
     super(ItemGroup.MissileWeapon, name, weight, [Usage.Shoot], modifier)
   }
-}
-
-export enum DamageType {
-  Melee,
-  Pierce,
-  Blunt,
-  Magic,
-  Pure,
-}
-
-export type Dice = {
-  times: number
-  max: number
-}
-
-export type Damage = {
-  extra: number
-  dice: Dice
-  type: DamageType
 }
 
 export abstract class Weapon extends Item {

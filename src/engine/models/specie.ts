@@ -1,8 +1,10 @@
-import { Damage, Missile, Protection } from './items'
+import { Missile, Protection } from './items'
+import { Damage } from "../lib/damage";
 import { Clan, Ability } from './creature'
 
 export enum Resistance {
   PhysicalDamage,
+  MagicDamage,
 }
 
 export interface Specie {

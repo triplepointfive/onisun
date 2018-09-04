@@ -5,7 +5,7 @@ import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'
 import { LevelMap } from '../models/level_map'
 import { Calculator } from '../lib/calculator'
-import { Damage } from '../models/items'
+import { Damage } from "../lib/damage";
 import { Resistance } from '../models/specie'
 
 export class AttackEvent extends CreatureEvent {

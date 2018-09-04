@@ -1,7 +1,8 @@
 import { DamageType, ProtectionType } from '../../engine'
-import { Damage, Dice, Protection } from '../models/items'
+import { Protection } from '../models/items'
+import { Damage, Dice } from "./damage";
 
-import { sumBy, times, sum, random, includes } from 'lodash'
+import { sumBy, times, sum, random, includes, intersection } from 'lodash'
 import { Resistance } from '../models/specie'
 
 export type DamageOrResist = { damage: number; resist: boolean }
@@ -12,16 +13,16 @@ export class Calculator {
   public static damage(
     damages: Damage[],
     protectionTypes: Protection[],
-    resistances: Resistance[]
+    victimResistances: Resistance[]
   ): DamageOrResist {
-    if (damages.every(({ type }) => this.resistTo(type, resistances))) {
+    if (damages.every(({ type, resistances }) => this.resistTo(type, resistances, victimResistances))) {
       return { damage: 0, resist: true }
     }
 
     const damage = sumBy(
       damages,
-      ({ extra, dice, type }): number => {
-        if (this.resistTo(type, resistances)) {
+      ({ extra, dice, type, resistances }): number => {
+        if (this.resistTo(type, resistances, victimResistances)) {
           return 0
         }
 
@@ -41,16 +42,20 @@ export class Calculator {
 
   protected static resistTo(
     damageType: DamageType,
-    resistances: Resistance[]
+    resistances: Resistance[] | undefined,
+    victimResistances: Resistance[]
   ): boolean {
+    if (resistances && intersection(victimResistances, resistances).length) {
+      return true
+    }
+
     switch (damageType) {
       case DamageType.Melee:
       case DamageType.Pierce:
       case DamageType.Blunt:
-        return includes(resistances, Resistance.PhysicalDamage)
+        return includes(victimResistances, Resistance.PhysicalDamage)
       case DamageType.Magic:
-        // TODO
-        return false
+        return includes(victimResistances, Resistance.MagicDamage)
       case DamageType.Pure:
         return false
     }
@@ -76,12 +81,6 @@ export class Calculator {
     damageType: DamageType,
     armorType: ProtectionType
   ): number => {
-    //         Light  Medium   Heavy  Solid  Unarmored
-    // Melee       1     2/3       1    4/3          1
-    // Pierce    1/2     4/3       1      3        3/4
-    // Blunt       1       2       1    1/2        1/2
-    // Magic     5/4     3/4     1/2      3          1
-    // Pure        0       0       0      0          0
     switch (damageType) {
       case DamageType.Melee:
         switch (armorType) {
