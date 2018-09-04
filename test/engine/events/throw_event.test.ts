@@ -40,8 +40,8 @@ describe('StayEvent', () => {
 
   describe('when victim dodges', () => {
     beforeEach(() => {
-      Calculator.throwMisses = jest.fn()
-      Calculator.throwMisses.mockReturnValueOnce(true)
+      Calculator.misses = jest.fn()
+      Calculator.misses.mockReturnValueOnce(true)
 
       expect(actor.on(event)).toEqual(Reaction.THROW_DODGE)
     })
@@ -53,8 +53,8 @@ describe('StayEvent', () => {
 
   describe('when victim failed to dodge', () => {
     beforeEach(() => {
-      Calculator.throwMisses = jest.fn()
-      Calculator.throwMisses.mockReturnValueOnce(false)
+      Calculator.misses = jest.fn()
+      Calculator.misses.mockReturnValueOnce(false)
     })
 
     describe('actor does damage', () => {

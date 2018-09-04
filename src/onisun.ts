@@ -124,6 +124,7 @@ export class Application {
         resistances: [],
         visionRadius: 10,
         moveSpeed: 80,
+        bodyControl: 5,
       },
       12,
       15

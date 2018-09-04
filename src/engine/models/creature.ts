@@ -130,6 +130,10 @@ export abstract class Creature {
     return this.specie.visionRadius
   }
 
+  get bodyControl(): number {
+    return this.specie.bodyControl
+  }
+
   get impacts(): ImpactType[] {
     if (this.impactsBunch) {
       return this.impactsBunch.activeImpacts

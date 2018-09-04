@@ -1,24 +1,18 @@
+import { includes, intersection, random, sum, sumBy, times } from 'lodash'
 import { DamageType, ProtectionType } from '../../engine'
 import { Protection } from '../models/items'
-import { Damage, Dice } from './damage'
-
-import { sumBy, times, sum, random, includes, intersection } from 'lodash'
 import { Resistance } from '../models/specie'
+import { Damage, Dice } from './damage'
 
 export type DamageOrResist = { damage: number; resist: boolean }
 
 export class Calculator {
   private constructor() {}
 
-  public static misses(attackerDex: number, victimDex: number): boolean {
+  public static misses(attackerBC: number, victimBC: number): boolean {
     return (
-      Math.random() >
-      attackerDex / (attackerDex + Math.pow(victimDex * 0.25, 0.8))
+      Math.random() > attackerBC / (attackerBC + Math.pow(victimBC * 0.25, 0.8))
     )
-  }
-
-  public static throwMisses(attackerDex: number, victimDex: number): boolean {
-    return this.misses(attackerDex, victimDex)
   }
 
   public static throwDamageTo(x: number, y: number): number {

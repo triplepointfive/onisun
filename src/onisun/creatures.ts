@@ -32,6 +32,7 @@ const newCreature = (
     visionRadius: 5,
 
     moveSpeed: 90,
+    bodyControl: 5,
   })
 }
 

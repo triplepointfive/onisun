@@ -107,6 +107,7 @@ const fakeSpecie: () => Specie = () => {
     resistances: [],
     visionRadius: 5,
     moveSpeed: 0,
+    bodyControl: 5,
   }
 }
 

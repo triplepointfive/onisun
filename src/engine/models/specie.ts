@@ -15,6 +15,7 @@ export interface Specie {
 
   protections: Protection[]
   damages: Damage[]
+  bodyControl: number
 
   throwingItem?: Missile
 

@@ -1,10 +1,26 @@
 ## Stats
 
-### Health
+Every creature has the following stats:
 
-It is the value of the damage you can take. Health could be regenerated with time and recovered with potions and some other tricks.
+### HP
 
-## Stats
+It is the value of the damage you can take. Hit points could be regenerated with time and recovered with potions and some other tricks.
+
+### Armor
+
+Check [here](#damage-and-armor-types)
+
+### Damage
+
+Check [here](#damage-and-armor-types). Note that melee and missile damage (if applicable) may differ.
+
+### Speed
+
+This defines how often a creature has a turn in comparison to other creatures. The lower value means more often turns. E.g. a monster with speed 5 has twice more turns than a monster with speed 10. Different actions may take a different amount of time, so some monsters move slowly, but their attacks are extremely fast.
+
+### Body control
+
+It is a change of a monster to dodge the hit. It is the same for melee and missile attack (although missile attacks have it own change to miss). Note that this value works in comparison with enemies value. This means, even if a monster has a high body control value, still it can be easily hit by a monster with even higher body control value.
 
 ## Main attributes
 
