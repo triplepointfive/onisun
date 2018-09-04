@@ -1,3 +1,13 @@
+## Races
+
+## Classes
+
+## Professions
+
+## Talents
+
+## Skills
+
 ## Stats
 
 Every creature has the following stats:
@@ -18,7 +28,7 @@ Check [here](#damage-and-armor-types). Note that melee and missile damage (if ap
 
 This defines how often a creature has a turn in comparison to other creatures. The lower value means more often turns. E.g. a monster with speed 5 has twice more turns than a monster with speed 10. Different actions may take a different amount of time, so some monsters move slowly, but their attacks are extremely fast.
 
-### Body control
+### Body control (BC)
 
 It is a change of a monster to dodge the hit. It is the same for melee and missile attack (although missile attacks have it own change to miss). Note that this value works in comparison with enemies value. This means, even if a monster has a high body control value, still it can be easily hit by a monster with even higher body control value.
 
@@ -75,3 +85,21 @@ All creatures can have resistances to different damage types. Some of them are b
 | Insulator      | Electricity                  |
 | Intangible     | Melee, pierce, blunt attacks |
 | Magic Immunity | Magic attacks                |
+
+## Impacts
+
+Mostly these are applicable to player character only, nevertheless, some could be applied to monsters as well.
+
+| Name       | Source                                   | Effect                                                                             |
+| ---------- | ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| Blind      | Items, monsters                          | You can't see anything. Reading is blocked, moving is slowed                       |
+| Stressed   | Carrying more items then capacity allows | Speed is reduced by quoter, reduces BC by 3                                        |
+| Loaded     | Get Stressed and take more items         | Speed is reduces by half, reduces BC by 6                                          |
+| Overloaded | Get Loaded and take more items           | Movement unavailable, reduces BC by 10                                             |
+| Poisoned   | Monsters, traps                          | Periodical damage                                                                  |
+| Bleeding   | Monsters, traps                          | Periodical damage                                                                  |
+| Confusion  | Monsters, some actions                   | You fail to make things that require concentration, including reading, casting etc |
+
+## Magic
+
+## Experience
