@@ -12,6 +12,7 @@ import {
   Player,
   Stairway,
   LevelMap,
+  LookPresenter,
 } from '../../engine'
 import { InventoryPresenter } from './inventory_presenter'
 import { MissilePresenter } from './missile_presenter'
@@ -114,6 +115,10 @@ export class IdlePresenter extends Presenter {
         this.redirect(new BagPresenter(this.levelMap, this.game))
         return
     }
+  }
+
+  public lookCommand(): void {
+    this.redirect(new LookPresenter(this.levelMap, this.game))
   }
 
   private move(direction: Direction): void {

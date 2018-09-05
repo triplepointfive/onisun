@@ -42,6 +42,7 @@ import ProfessionPickingView from './views/ProfessionPickingView.vue'
 import ItemsListingView from './views/ItemsListingView.vue'
 import TalentsTreeView from './views/TalentsTreeView.vue'
 import InventoryView from './views/InventoryView.vue'
+import LookView from './views/LookView.vue'
 import MissileView from './views/MissileView.vue'
 import DeathView from './views/DeathView.vue'
 
@@ -79,6 +80,8 @@ export default Vue.extend({
         return InventoryView
       case PresenterType.Missile:
         return MissileView
+      case PresenterType.Look:
+        return LookView
       case PresenterType.Death:
         return DeathView
       }

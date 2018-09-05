@@ -11,6 +11,7 @@ export enum PresenterType {
   ItemsListing,
   Missile,
   ProfessionPicking,
+  Look,
 }
 
 export abstract class Presenter {

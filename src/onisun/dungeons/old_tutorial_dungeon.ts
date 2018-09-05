@@ -21,7 +21,6 @@ import {
 } from '../../engine'
 import { creaturesPool1 } from '../creatures'
 import { itemsPool, weapons } from '../items'
-import { OnisunFireTrap, OnisunIceTrap } from '../tiles/traps'
 
 const initId: number = -1
 
@@ -123,25 +122,25 @@ export class TutorialDungeon extends Dungeon {
     centralize(map)
     map.name = `MP ${id}`
 
-    if (config.addTraps) {
-      for (let i = 0; i < 10; i++) {
-        withMatchingTile(
-          map,
-          tile => tile.isFloor() && tile.passibleThrough(),
-          (x, y) => {
-            map.setTile(x, y, new OnisunFireTrap())
-          }
-        )
+    // if (config.addTraps) {
+    //   for (let i = 0; i < 10; i++) {
+    //     withMatchingTile(
+    //       map,
+    //       tile => tile.isFloor() && tile.passibleThrough(),
+    //       (x, y) => {
+    //         map.setTile(x, y, new OnisunFireTrap())
+    //       }
+    //     )
 
-        withMatchingTile(
-          map,
-          tile => tile.isFloor() && tile.passibleThrough(),
-          (x, y) => {
-            map.setTile(x, y, new OnisunIceTrap())
-          }
-        )
-      }
-    }
+    //     withMatchingTile(
+    //       map,
+    //       tile => tile.isFloor() && tile.passibleThrough(),
+    //       (x, y) => {
+    //         map.setTile(x, y, new OnisunIceTrap())
+    //       }
+    //     )
+    //   }
+    // }
 
     addItems(0.05, map, weapons.merge(itemsPool))
 

@@ -1,19 +1,33 @@
 <template lang='pug'>
-div
+.look-modal
+  .title(v-text='title')
+  div(v-for="msg in screen.body" v-text='msg')
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
-import { Direction } from '../../src/engine'
+import { Direction, LookPresenterVisibility } from '../../src/engine'
 
 export default Vue.extend({
-  name: 'MissileView',
+  name: 'LookView',
   props: ['screen'],
+  computed: {
+    title() {
+      switch (this.screen.title) {
+      case LookPresenterVisibility.See:
+        return 'Вижу ...'
+      case LookPresenterVisibility.Recall:
+        return 'Вспоминаю ...'
+      case LookPresenterVisibility.Hidden:
+        return 'Без понятия ...'
+      }
+    }
+  },
   methods: {
     close(inputKey) {
       this.screen.onInput(inputKey)
     },
-    onEvent(event) {
+    onEvent(event: KeyboardEvent) {
       switch (event.key) {
       case 'l':
       case 'ArrowRight':
@@ -36,15 +50,6 @@ export default Vue.extend({
       case 'n':
         return this.screen.moveTarget(Direction.downRight)
 
-      case '>':
-        this.screen.nextTarget()
-        break
-      case '<':
-        this.screen.previousTarget()
-        break
-      case 't':
-        this.screen.attack()
-        break
       case 'Escape':
         this.screen.close()
         break
@@ -53,3 +58,23 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang='scss' scoped>
+.look-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background-color: black;
+  border: 2px solid gold;
+  padding: 1rem;
+  z-index: 3;
+
+  color: white;
+
+  .title {
+    color: gold;
+    text-align: center;
+  }
+}
+</style>

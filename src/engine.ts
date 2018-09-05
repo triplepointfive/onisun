@@ -68,6 +68,7 @@ export * from './engine/presenters/internal'
 export * from './engine/presenters/idle_presenter'
 export * from './engine/presenters/inventory_presenter'
 export * from './engine/presenters/items_listing_presenter'
+export * from './engine/presenters/look_presenter'
 export * from './engine/presenters/talents_tree_presenter'
 export * from './engine/presenters/profession_picking_presenter'
 

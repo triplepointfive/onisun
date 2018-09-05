@@ -10,10 +10,10 @@ export default Vue.extend({
   name: 'IdleView',
   props: ['screen'],
   methods: {
-    close(inputKey) {
+    close(inputKey: IdleInputKey) {
       this.screen.onInput(inputKey)
     },
-    onEvent(event) {
+    onEvent(event: KeyboardEvent) {
       switch (event.key) {
       case 'l':
       case 'ArrowRight':
@@ -42,6 +42,8 @@ export default Vue.extend({
 
       case 'H':
         return this.close(IdleInputKey.Handle)
+      case 'L':
+        return this.screen.lookCommand()
 
       case 'i':
         return this.close(IdleInputKey.Inventory)
