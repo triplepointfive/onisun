@@ -149,19 +149,19 @@ export class Logger {
     }
   }
 
-  protected debug(message: string): void {
+  public debug(message: string): void {
     this.addMessage(LogLevel.DEBUG, message)
   }
 
-  protected info(message: string): void {
+  public info(message: string): void {
     this.addMessage(LogLevel.INFO, message)
   }
 
-  protected warning(message: string): void {
+  public warning(message: string): void {
     this.addMessage(LogLevel.WARNING, message)
   }
 
-  protected danger(message: string): void {
+  public danger(message: string): void {
     this.addMessage(LogLevel.DANGER, message)
   }
 

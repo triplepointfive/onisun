@@ -27,7 +27,7 @@ export * from './engine'
 export * from './onisun/professions'
 export * from './onisun/talents'
 export * from './onisun/items'
-export * from './onisun/tiles'
+export * from './onisun/tiles/traps'
 
 export class Application {
   public game: Onisun

@@ -12,6 +12,7 @@ export enum TileTypes {
   StairwayDown,
   StairwayUp,
   Trap,
+  Trigger,
 }
 
 export abstract class Tile {
@@ -182,6 +183,43 @@ export abstract class Trap extends Tile {
   ): void
 }
 
+export abstract class TriggerTile extends Tile {
+  constructor(public singleUse: boolean = true, public tile: Tile) {
+    super('T', TileTypes.Trigger)
+  }
+
+  public visit(tileVisitor: TileVisitor): void {
+    tileVisitor.onTrigger(this)
+  }
+
+  public activate(game: Game, levelMap: LevelMap, actor: Creature): void {
+    if (this.singleUse) {
+      const { x, y } = levelMap.creaturePos(actor)
+      const tile = this.clone()
+      tile.creature = actor
+      levelMap.setTile(x, y, tile)
+    }
+
+    this.onTrigger(game, levelMap, actor)
+  }
+
+  public buildNew(): Tile {
+    return this.tile.clone()
+  }
+
+  protected abstract onTrigger(game: Game, levelMap: LevelMap, actor: Creature): void
+}
+
+export class LogMessageTrigger extends TriggerTile {
+  constructor(private message: string, singleUse: boolean = true, tile: Tile) {
+    super(singleUse, tile)
+  }
+
+  protected onTrigger(game: Game): void {
+    game.logger.info(this.message)
+  }
+}
+
 // TODO: Add return type?
 export abstract class TileVisitor {
   public onWall(wall: Wall): void {
@@ -202,6 +240,10 @@ export abstract class TileVisitor {
 
   public onDoor(door: Door): void {
     this.default(door)
+  }
+
+  public onTrigger(trigger: TriggerTile): void {
+    this.default(trigger)
   }
 
   public onTrap(trap: Trap): void {

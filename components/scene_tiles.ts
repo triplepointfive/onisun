@@ -12,6 +12,7 @@ import {
   StairwayUp,
   Door,
   Trap,
+  TriggerTile,
 } from '../src/engine'
 
 import {
@@ -168,7 +169,6 @@ export const displayItem = function(item: Item): ItemTile {
     case ItemGroup.Boots:
       return BOOTS
     default:
-      console.error(`Unknown group ${item} with type ${item.group}`)
       return CORPSE
   }
 }
@@ -220,6 +220,10 @@ export class DisplayTileVisitor extends TileVisitor {
       this.tile = ICE_TRAP
       break
     }
+  }
+
+  public onTrigger(trigger: TriggerTile): void {
+    trigger.tile.visit(this)
   }
 
   protected default(tile: Tile): void {

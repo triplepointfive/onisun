@@ -1,38 +1,22 @@
 import {
   addCreatures,
-  addDoors,
-  addItems,
-  addOnTile,
   centralize,
   Corridor,
   Door,
   drawn,
   Dungeon,
-  dungeon,
   Floor,
   LevelMap,
   Point,
-  Room,
   Tile,
   TileTypes,
   Wall,
   Game,
   Player,
+  StairwayDown,
+  StairwayUp,
 } from '../../engine'
-import { creaturesPool1 } from '../creatures'
-import { itemsPool, weapons } from '../items'
-import { OnisunFireTrap, OnisunIceTrap } from '../tiles'
-
-const initId: number = -1
-
-const config = {
-  addDoors: false,
-  minSize: 3,
-  maxSize: 10,
-  roomsCount: 10,
-  simple: true,
-  addTraps: false,
-}
+import { LogMessageTrigger } from '../../engine/models/tile';
 
 const tiles: Map<string, () => Tile> = new Map()
 tiles.set('C', () => new Corridor('C', TileTypes.Floor))
@@ -40,110 +24,56 @@ tiles.set('W', () => new Wall())
 tiles.set('R', () => new Floor('R', TileTypes.Floor))
 tiles.set('D', () => new Door())
 
+const initId: number = 1
+
+
 export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
     const levelMap = (game.currentMap = game.getMap(initId))
 
-    addOnTile(
-      levelMap,
-      tile => tile.isFloor() && tile.passibleThrough(),
-      (x, y) => {
-        levelMap.addCreature(new Point(x, y), player)
-      }
-    )
+    levelMap.addCreature(new Point(1, 1), player)
   }
 
   public register(game: Game): void {
-    game.addMap(initId, (id, game) =>
-      addCreatures(
-        0.1,
-        this.addStairDown(this.generateMap(id), 0),
-        creaturesPool1
-      )
-    )
+    game.addMap(initId, (id, game) => {
+      let map = this.generateMap(id, undefined, undefined)
+      map.setTile(2, 1, new LogMessageTrigger("Welcome", true, map.at(2, 1)))
+      return map
+    })
 
-    for (let i = initId + 1; i < initId + 6; i++) {
-      game.addMap(i, (id, game) => {
-        return addCreatures(
-          i * 0.01,
-          this.addStairUp(
-            this.addStairDown(this.generateMap(id), i + 1),
-            i - 1
-          ),
-          creaturesPool1
-        )
-      })
-    }
-
-    game.addMap(5, (id, game) => this.addStairUp(this.generateMap(id), 4))
+    game.addMap(initId + 1, (id, game) => {
+      let map = this.generateMap(id, undefined, undefined)
+      return map
+    })
   }
 
-  private generateMap(id: number): LevelMap {
+  private generateMap(id: number, downId: number | undefined, upId: number | undefined): LevelMap {
     let map = new LevelMap(
       id,
-      dungeon<Tile>(
-        40,
-        30,
-        config.minSize,
-        config.maxSize,
-        config.roomsCount,
-        () => new Room(),
-        () => new Corridor('C', TileTypes.Floor),
-        () => new Wall()
+      drawn(
+        [
+          'WWWWW',
+          'WRRRW',
+          'WWCWW',
+          'WRRRW',
+          'WRRRW',
+          'WRRRW',
+          'WWWWW',
+        ],
+        tiles
       )
     )
-
-    if (config.simple) {
-      map = new LevelMap(
-        id,
-        drawn(
-          [
-            'WWWWWWWWWWWWWWWWWWWWWW',
-            'WRRRRRRRRRRRRRRRRRRRRW',
-            'WRRRRRRRRRRRRRRRRRRRRW',
-            'WRRRRRRRRRRRRRRRRRRRRW',
-            'WRRRRRRRRRRRRRRRRRRRRW',
-            'WRRRRRRRRRRRRRRRRRRRRW',
-            'WWWWWWWWWWWWWWWWWWWWWW',
-          ],
-          tiles
-        )
-      )
-    }
-
-    if (config.addDoors) {
-      const door = tiles.get('D')
-      if (door === undefined) {
-        throw 'Door is not found'
-      }
-
-      addDoors(map, door)
-    }
 
     centralize(map)
     map.name = `MP ${id}`
 
-    if (config.addTraps) {
-      for (let i = 0; i < 10; i++) {
-        addOnTile(
-          map,
-          tile => tile.isFloor() && tile.passibleThrough(),
-          (x, y) => {
-            map.setTile(x, y, new OnisunFireTrap())
-          }
-        )
-
-        addOnTile(
-          map,
-          tile => tile.isFloor() && tile.passibleThrough(),
-          (x, y) => {
-            map.setTile(x, y, new OnisunIceTrap())
-          }
-        )
-      }
+    if (downId !== undefined ) {
+      map.setTile(3, 1, new StairwayDown(map, downId))
     }
 
-    addItems(0.05, map, weapons.merge(itemsPool))
+    if (upId !== undefined) {
+      map.setTile(1, 1, new StairwayUp(map, upId))
+    }
 
     return map
   }

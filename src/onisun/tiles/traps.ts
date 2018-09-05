@@ -1,4 +1,4 @@
-import { TrapEvent, Creature, Tile, Trap, Game, LevelMap } from '../engine'
+import { TrapEvent, Creature, Tile, Trap, Game, LevelMap } from '../../engine'
 
 export enum OnisunTrapType {
   Fire,
