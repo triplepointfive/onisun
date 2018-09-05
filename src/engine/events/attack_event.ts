@@ -2,9 +2,9 @@ import { CreatureEvent } from './internal'
 import { Creature, Reaction } from '../models/creature'
 import { AddExperienceEvent } from './add_experience_event'
 import { Game } from '../models/game'
-import { DieEvent, DieReason } from './die_event'
 import { LevelMap } from '../models/level_map'
 import { Calculator } from '../lib/calculator'
+import { HurtEvent } from './hurt_event'
 
 export class AttackEvent extends CreatureEvent {
   constructor(
@@ -53,27 +53,19 @@ export class AttackEvent extends CreatureEvent {
       return Reaction.DODGE
     }
 
-    const { damage, resist } = Calculator.damage(
-      actor.damages,
-      this.victim.protections,
-      this.victim.resistances
-    )
+    const hurtEvent = new HurtEvent(actor.damages, this.levelMap, this.game),
+      reaction = this.victim.on(hurtEvent)
 
-    if (resist) {
-      return Reaction.RESIST
+    switch (reaction) {
+      case Reaction.DIE:
+        actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
+        this.game.logger.killMessage(hurtEvent.damage, actor, this.victim)
+        break
+      case Reaction.HURT:
+        this.game.logger.hurtMessage(hurtEvent.damage, actor, this.victim)
+        break
     }
 
-    if (damage >= this.victim.health.currentValue) {
-      actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
-      this.game.logger.killMessage(damage, actor, this.victim)
-      this.victim.on(new DieEvent(this.game, this.levelMap, DieReason.Attack))
-      return Reaction.DIE
-    } else if (damage <= 0) {
-      return Reaction.NOTHING
-    } else {
-      this.victim.health.decrease(damage)
-      this.game.logger.hurtMessage(damage, actor, this.victim)
-      return Reaction.HURT
-    }
+    return reaction
   }
 }

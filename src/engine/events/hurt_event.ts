@@ -7,6 +7,8 @@ import { DieEvent, DieReason } from './die_event'
 import { Calculator } from '../lib/calculator'
 
 export class HurtEvent extends CreatureEvent {
+  private doneDamage: number | undefined
+
   constructor(
     private damages: Damage[],
     private levelMap: LevelMap,
@@ -15,12 +17,22 @@ export class HurtEvent extends CreatureEvent {
     super()
   }
 
+  get damage(): number {
+    if (this.doneDamage) {
+      return this.doneDamage
+    } else {
+      throw `HurtEvent.damage called but there is no done damage`
+    }
+  }
+
   public affectCreature(subject: Creature): Reaction {
     const { damage, resist } = Calculator.damage(
       this.damages,
       subject.protections,
       subject.resistances
     )
+
+    this.doneDamage = damage
 
     if (resist) {
       return Reaction.RESIST

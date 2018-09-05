@@ -51,6 +51,7 @@ describe('AttackEvent', () => {
       Calculator.misses.mockReturnValueOnce(false)
     })
 
+    // TODO: Hurt & die reactions belong to HurtEvent. No need to test here
     it('victim can got hurt', () => {
       Calculator.damage = jest.fn()
       Calculator.damage.mockReturnValueOnce({

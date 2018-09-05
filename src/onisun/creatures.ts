@@ -37,7 +37,7 @@ const newCreature = (
   })
 }
 
-const rat = () => {
+export const rat = () => {
   return newCreature(
     'Rat',
     [],
@@ -45,7 +45,7 @@ const rat = () => {
   )
 }
 
-const golem = () => {
+export const golem = () => {
   return newCreature(
     'Golem',
     [{ type: ProtectionType.Solid, value: 5 }],
