@@ -103,3 +103,21 @@ Mostly these are applicable to player character only, nevertheless, some could b
 ## Magic
 
 ## Experience
+
+
+### Traps
+
+Traps are tiles on dungeon floor, that can be activated when monster steps on them. Some can be activated multiple times and some can be untrapped.
+
+| Trap          | Effect                                                                                  |
+| ------------- | --------------------------------------------------------------------------------------- |
+| Air blow      | Disarms players with low strength or blows away lightweight monster                     |
+| Arrow trap    | This trap has a second part on a wall around. It shoots arrow from a wall to floor tile |
+| Bare ware     | Electric shock damage on your feet                                                      |
+| Falling rock  | Falls on your head, does blunt damage                                                   |
+| Dart trap     | Same like arrow trap, but does poison damage                                            |
+| Spiked pit    | Does pierce damage, takes few turns to climb out                                        |
+| Hole          | Monster falls on a level below                                                          |
+| Light trap    | Makes you blind                                                                         |
+| Teleportation | Teleports to a random tile on same dungeon level                                        |
+| Water         | Rusts equipment, both carried and worn                                                  |
