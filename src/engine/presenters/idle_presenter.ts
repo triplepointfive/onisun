@@ -117,6 +117,10 @@ export class IdlePresenter extends Presenter {
     }
   }
 
+  public stayCommand(): void {
+    this.endTurn()
+  }
+
   public lookCommand(): void {
     this.redirect(new LookPresenter(this.levelMap, this.game))
   }

@@ -78,13 +78,14 @@ Also, the damage might have a subtype, which is used to be able to block the dam
 
 All creatures can have resistances to different damage types. Some of them are built in, but some may be acquired with items or other tricks. This is a list of all damage related resistances:
 
-| Name           | Blocks                       |
-| -------------- | ---------------------------- |
-| Anemia         | Bleeding, vampires           |
-| Antidote       | Poison                       |
-| Insulator      | Electricity                  |
-| Intangible     | Melee, pierce, blunt attacks |
-| Magic Immunity | Magic attacks                |
+| Name                  | Blocks                                                              |
+| --------------------- | ------------------------------------------------------------------- |
+| Anemia                | Bleeding, vampires                                                  |
+| Antidote              | Poison                                                              |
+| Insulator             | Electricity                                                         |
+| Intangible            | Melee, pierce, blunt attacks                                        |
+| Magic Immunity        | Magic attacks                                                       |
+| Teleportation control | Allows to resist random teleportation or choose desired destination |
 
 ## Impacts
 

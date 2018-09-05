@@ -45,6 +45,10 @@ export default Vue.extend({
       case 'L':
         return this.screen.lookCommand()
 
+      case 's':
+      case '.':
+        return this.screen.stayCommand()
+
       case 'i':
         return this.close(IdleInputKey.Inventory)
       case 'I':
@@ -57,6 +61,9 @@ export default Vue.extend({
         return this.close(IdleInputKey.Drop)
       case 'D':
         return this.close(IdleInputKey.Drink)
+
+      default:
+        console.log('Key: ', event.key)
       }
     }
   }
