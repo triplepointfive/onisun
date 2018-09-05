@@ -1,4 +1,9 @@
-import { drawn, centralize, addOnTile, LevelMap } from '../../../src/engine'
+import {
+  drawn,
+  centralize,
+  withMatchingTile,
+  LevelMap,
+} from '../../../src/engine'
 import { prettyMap, testTiles } from '../helpers'
 
 describe('centralize', () => {
@@ -51,12 +56,12 @@ describe('centralize', () => {
   })
 })
 
-describe('addOnTile', () => {
+describe('withMatchingTile', () => {
   let map = new LevelMap(0, drawn(['R'], testTiles))
 
   it('Fail when there is no matching tiles', () => {
     expect(() => {
-      addOnTile(map, tile => false, (ux, uy) => {})
+      withMatchingTile(map, tile => false, (ux, uy) => {})
     }).toThrowError()
   })
 })

@@ -1,4 +1,4 @@
-import { addOnTile } from '../generator/post'
+import { withMatchingTile } from '../generator/post'
 import { StairwayDown, StairwayUp, Tile } from './tile'
 import { LevelMap, LevelMapId } from './level_map'
 import { Game } from './game'
@@ -20,7 +20,7 @@ export abstract class Dungeon {
   }
 
   private addStairs(map: LevelMap, tile: Tile): LevelMap {
-    addOnTile(
+    withMatchingTile(
       map,
       tile => tile.isFloor() && tile.passibleThrough(),
       (x, y) => {

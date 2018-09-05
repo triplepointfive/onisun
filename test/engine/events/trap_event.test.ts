@@ -12,6 +12,8 @@ import {
   Player,
   Point,
   LevelMap,
+  CreatureEvent,
+  Reaction,
 } from '../../../src/engine'
 
 class TestTrap extends Trap {
@@ -24,8 +26,22 @@ class TestTrap extends Trap {
 
 const testTrap = 0
 
+class TestEvent extends CreatureEvent {
+  public called: boolean = false
+
+  public affectCreature(): Reaction {
+    this.called = true
+    return Reaction.NOTHING
+  }
+}
+
 describe('Trap event', () => {
-  let player: Player, game, event, map: LevelMap, trap: TestTrap
+  let player: Player,
+    game,
+    event,
+    map: LevelMap,
+    trap: TestTrap,
+    testEvent: TestEvent
 
   beforeEach(() => {
     trap = new TestTrap(false, testTrap)
@@ -36,7 +52,9 @@ describe('Trap event', () => {
 
     map.addCreature(new Point(1, 1), player)
     player.rebuildVision(map)
-    event = new TrapEvent(trap, map, game)
+
+    testEvent = new TestEvent()
+    event = new TrapEvent(trap, testEvent, map, game)
   })
 
   describe('for creature', () => {
@@ -63,22 +81,9 @@ describe('Trap event', () => {
       expect(trap.revealed).toBeTruthy()
     })
 
-    it('does damage', () => {
-      expect(creature.health.atMax).toBeTruthy()
+    it('calls event', () => {
       creature.on(event)
-      expect(creature.health.atMax).toBeFalsy()
-    })
-
-    it('may even kill', () => {
-      creature.health.decrease(player.health.maximum - 1)
-      creature.on(event)
-      expect(creature.dead).toBeTruthy()
-    })
-
-    it('adds a message to log', () => {
-      expect(game.logger.messages.length).toEqual(0)
-      creature.on(event)
-      expect(game.logger.messages.length).toEqual(1)
+      expect(testEvent.called).toBeTruthy()
     })
   })
 
@@ -89,16 +94,9 @@ describe('Trap event', () => {
       expect(trap.revealed).toBeTruthy()
     })
 
-    it('does damage', () => {
-      expect(player.health.atMax).toBeTruthy()
+    it('calls event', () => {
       player.on(event)
-      expect(player.health.atMax).toBeFalsy()
-    })
-
-    it('adds a message to log', () => {
-      expect(game.logger.messages.length).toEqual(0)
-      player.on(event)
-      expect(game.logger.messages.length).toEqual(1)
+      expect(testEvent.called).toBeTruthy()
     })
   })
 })

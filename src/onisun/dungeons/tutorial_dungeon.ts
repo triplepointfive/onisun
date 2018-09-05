@@ -1,5 +1,4 @@
 import {
-  addCreatures,
   centralize,
   Corridor,
   Door,
@@ -16,7 +15,8 @@ import {
   StairwayDown,
   StairwayUp,
 } from '../../engine'
-import { LogMessageTrigger } from '../../engine/models/tile';
+import { LogMessageTrigger } from '../../engine/models/tile'
+import { OnisunTeleportationTrap } from '../tiles/traps'
 
 const tiles: Map<string, () => Tile> = new Map()
 tiles.set('C', () => new Corridor('C', TileTypes.Floor))
@@ -25,7 +25,6 @@ tiles.set('R', () => new Floor('R', TileTypes.Floor))
 tiles.set('D', () => new Door())
 
 const initId: number = 1
-
 
 export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
@@ -37,7 +36,8 @@ export class TutorialDungeon extends Dungeon {
   public register(game: Game): void {
     game.addMap(initId, (id, game) => {
       let map = this.generateMap(id, undefined, undefined)
-      map.setTile(2, 1, new LogMessageTrigger("Welcome", true, map.at(2, 1)))
+      map.setTile(2, 1, new LogMessageTrigger('Welcome', true, map.at(2, 1)))
+      map.setTile(2, 4, new OnisunTeleportationTrap())
       return map
     })
 
@@ -47,19 +47,15 @@ export class TutorialDungeon extends Dungeon {
     })
   }
 
-  private generateMap(id: number, downId: number | undefined, upId: number | undefined): LevelMap {
+  private generateMap(
+    id: number,
+    downId: number | undefined,
+    upId: number | undefined
+  ): LevelMap {
     let map = new LevelMap(
       id,
       drawn(
-        [
-          'WWWWW',
-          'WRRRW',
-          'WWCWW',
-          'WRRRW',
-          'WRRRW',
-          'WRRRW',
-          'WWWWW',
-        ],
+        ['WWWWW', 'WRRRW', 'WWCWW', 'WRRRW', 'WRRRW', 'WRRRW', 'WWWWW'],
         tiles
       )
     )
@@ -67,7 +63,7 @@ export class TutorialDungeon extends Dungeon {
     centralize(map)
     map.name = `MP ${id}`
 
-    if (downId !== undefined ) {
+    if (downId !== undefined) {
       map.setTile(3, 1, new StairwayDown(map, downId))
     }
 

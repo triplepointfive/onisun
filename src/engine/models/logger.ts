@@ -133,6 +133,28 @@ export class Logger {
     this.addMessage(LogLevel.INFO, `${target.name} игнорирует урон`)
   }
 
+  public creatureTeleported(actor: Creature): void {
+    this.addMessage(LogLevel.INFO, `${actor.name} иcчез`)
+  }
+
+  public creatureNotTeleported(actor: Creature): void {
+    this.addMessage(
+      LogLevel.INFO,
+      `${actor.name} озарился светом, но ничего не произошло`
+    )
+  }
+
+  public playerTeleported(): void {
+    this.addMessage(LogLevel.INFO, `Яркая вспышка и я оказался в другом месте`)
+  }
+
+  public playerNotTeleported(): void {
+    this.addMessage(
+      LogLevel.INFO,
+      `Я озарился ярким светом, но ничего не произошло`
+    )
+  }
+
   public pickedUpItem(item: Item, count: number): void {
     if (count === 1) {
       this.addMessage(LogLevel.INFO, `You picked up ${item.name}`)

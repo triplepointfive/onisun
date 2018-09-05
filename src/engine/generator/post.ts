@@ -113,7 +113,8 @@ export const centralize = function(level: LevelMap): LevelMap {
   return level
 }
 
-export const addOnTile = function(
+// TODO: Move away from generators
+export const withMatchingTile = function(
   level: LevelMap,
   match: (tile: Tile) => boolean,
   onValid: (x: number, y: number) => void

@@ -207,7 +207,11 @@ export abstract class TriggerTile extends Tile {
     return this.tile.clone()
   }
 
-  protected abstract onTrigger(game: Game, levelMap: LevelMap, actor: Creature): void
+  protected abstract onTrigger(
+    game: Game,
+    levelMap: LevelMap,
+    actor: Creature
+  ): void
 }
 
 export class LogMessageTrigger extends TriggerTile {

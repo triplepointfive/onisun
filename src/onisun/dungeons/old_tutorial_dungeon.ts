@@ -2,7 +2,7 @@ import {
   addCreatures,
   addDoors,
   addItems,
-  addOnTile,
+  withMatchingTile,
   centralize,
   Corridor,
   Door,
@@ -44,7 +44,7 @@ export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
     const levelMap = (game.currentMap = game.getMap(initId))
 
-    addOnTile(
+    withMatchingTile(
       levelMap,
       tile => tile.isFloor() && tile.passibleThrough(),
       (x, y) => {
@@ -125,7 +125,7 @@ export class TutorialDungeon extends Dungeon {
 
     if (config.addTraps) {
       for (let i = 0; i < 10; i++) {
-        addOnTile(
+        withMatchingTile(
           map,
           tile => tile.isFloor() && tile.passibleThrough(),
           (x, y) => {
@@ -133,7 +133,7 @@ export class TutorialDungeon extends Dungeon {
           }
         )
 
-        addOnTile(
+        withMatchingTile(
           map,
           tile => tile.isFloor() && tile.passibleThrough(),
           (x, y) => {

@@ -180,8 +180,7 @@ const STAIRWAY_DOWN = new StairwayDownD()
 const STAIRWAY_UP = new StairwayUpD()
 const NULL_TILE = new DisplayTile('　', 0, 0, 0)
 
-const FIRE_TRAP = new DisplayTile('^', 200, 0, 0)
-const ICE_TRAP = new DisplayTile('^', 0, 0, 200)
+const TELEPORTATION_TRAP = new DisplayTile('^', 0, 191, 255)
 
 export class DisplayTileVisitor extends TileVisitor {
   public tile: DisplayTile
@@ -213,11 +212,8 @@ export class DisplayTileVisitor extends TileVisitor {
     }
 
     switch (trap.type) {
-    case OnisunTrapType.Fire:
-      this.tile = FIRE_TRAP
-      break
-    case OnisunTrapType.Ice:
-      this.tile = ICE_TRAP
+    case OnisunTrapType.Teleportation:
+      this.tile = TELEPORTATION_TRAP
       break
     }
   }
