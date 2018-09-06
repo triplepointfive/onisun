@@ -1,4 +1,4 @@
-import { Specie } from '../models/Specie'
+import { Specie } from '../models/specie'
 import { Attribute } from './attribute'
 
 export class Stat {

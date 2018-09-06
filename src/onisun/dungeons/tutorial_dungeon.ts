@@ -17,7 +17,7 @@ import {
 } from '../../engine'
 import { LogMessageTrigger } from '../../engine/models/tile'
 import { OnisunTeleportationTrap } from '../tiles/traps'
-import { rat } from '../creatures';
+import { rat } from '../creatures'
 
 const tiles: Map<string, () => Tile> = new Map()
 tiles.set('C', () => new Corridor('C', TileTypes.Floor))
@@ -26,7 +26,7 @@ tiles.set('R', () => new Floor('R', TileTypes.Floor))
 tiles.set('D', () => new Door())
 
 const initId: number = 1,
-      ratId = initId + 1
+  ratId = initId + 1
 
 export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
@@ -46,7 +46,7 @@ export class TutorialDungeon extends Dungeon {
     game.addMap(initId + 1, (id, game) => {
       let map = this.generateMap(id, undefined, initId)
       map.setTile(2, 2, new OnisunTeleportationTrap())
-      map.addCreature(new Point(2, 4,), rat())
+      map.addCreature(new Point(2, 4), rat())
       return map
     })
   }

@@ -7,6 +7,7 @@ import {
   ProfessionPickingPresenter,
   LevelMap,
   AfterEvent,
+  TeleportationPresenter,
 } from '../../engine'
 import { Presenter } from '../presenters/internal'
 import { DieReason } from '../events/die_event'
@@ -60,6 +61,29 @@ export class AIDieEvent extends AIEvent {
 
     this.game.ai.presenter = new DeathPresenter(
       this.dieReason,
+      this.levelMap,
+      this.game
+    )
+  }
+
+  public immediate(): boolean {
+    return true
+  }
+}
+
+export class AITeleportationEvent extends AIEvent {
+  constructor(private levelMap: LevelMap, game: Game) {
+    super(game)
+  }
+
+  public run(): void {
+    if (!this.game.ai) {
+      throw 'AINewLevelEvent.run: game.ai is undefined'
+    }
+
+    // TODO: Rethink whether should be here
+    this.game.player.rebuildVision(this.levelMap)
+    this.game.ai.presenter = new TeleportationPresenter(
       this.levelMap,
       this.game
     )

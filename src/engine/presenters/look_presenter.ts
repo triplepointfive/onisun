@@ -1,22 +1,22 @@
-import { Presenter, PresenterType } from './internal'
+import { PresenterType } from './internal'
 
-import { Point, Memory, MemoryTile, LevelMap, Game, Direction, IdlePresenter } from '../../engine'
+import { LevelMap, Game, IdlePresenter } from '../../engine'
+import { PickPointPresenter } from './pick_point_presenter'
 
 export enum LookPresenterVisibility {
   See,
   Recall,
-  Hidden
+  Hidden,
 }
 
-export class LookPresenter extends Presenter {
-  public targetPos: Point
-  private memory: Memory
-
+export class LookPresenter extends PickPointPresenter<
+  LookPresenterVisibility,
+  string
+> {
   constructor(levelMap: LevelMap, game: Game) {
-    super(PresenterType.Look, levelMap, game)
-
-    this.memory = this.player.stageMemory(this.levelMap)
-    this.targetPos = levelMap.creaturePos(this.player)
+    super(PresenterType.Look, levelMap, game, '_', target =>
+      this.memory.inRange(target)
+    )
   }
 
   get title(): LookPresenterVisibility {
@@ -43,7 +43,7 @@ export class LookPresenter extends Presenter {
     if (this.memoryTile.items) {
       switch (this.memoryTile.items.bunch.length) {
         case 0:
-          break;
+          break
         case 1:
           messages.push(`Лежит ${this.memoryTile.items.bunch[0].item.name}`)
           break
@@ -55,34 +55,7 @@ export class LookPresenter extends Presenter {
     return messages
   }
 
-  get memoryTile(): MemoryTile {
-    return this.memory.at(this.targetPos.x, this.targetPos.y)
-  }
-
-  public moveTarget(direction: Direction): void {
-    const dest = this.targetPos.add(direction)
-
-    if (this.memory.inRange(dest)) {
-      this.updateTarget(dest)
-    }
-  }
-
-  public close(): void {
-    this.removeEffect()
+  protected close(): void {
     this.redirect(new IdlePresenter(this.levelMap, this.game))
-  }
-
-  private removeEffect(): void {
-    this.memory.at(this.targetPos.x, this.targetPos.y).effect = undefined
-  }
-
-  private updateTarget(newPos: Point): void {
-    this.removeEffect()
-    this.targetPos = newPos.copy()
-    this.drawPath()
-  }
-
-  private drawPath(): void {
-    this.memoryTile.effect = '_'
   }
 }

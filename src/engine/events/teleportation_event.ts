@@ -6,7 +6,11 @@ import { MoveEvent } from './move_event'
 import { Point } from '../utils/utils'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
+import { Resistance } from '../models/specie'
+import { TeleportationPresenter } from '../presenters/teleportation_presenter'
+import { AITeleportationEvent } from '../ai/player_ai'
 
+// TODO: Creature that teleports itself away
 export class TeleportationEvent extends VisibleCreatureEvent {
   constructor(levelMap: LevelMap, game: Game, private selfCast: boolean) {
     super(levelMap, game)
@@ -14,10 +18,13 @@ export class TeleportationEvent extends VisibleCreatureEvent {
 
   public affectCreature(actor: Creature): Reaction {
     if (this.playerSees(actor)) {
-      if (this.teleport(actor)) {
-        this.game.logger.creatureTeleported(actor)
-      } else {
+      if (
+        actor.hasResistance(Resistance.TeleportationControl) ||
+        !this.teleport(actor)
+      ) {
         this.game.logger.creatureNotTeleported(actor)
+      } else {
+        this.game.logger.creatureTeleported(actor)
       }
     } else {
       this.teleport(actor)
@@ -29,8 +36,14 @@ export class TeleportationEvent extends VisibleCreatureEvent {
   }
 
   public affectPlayer(player: Player): Reaction {
-    // TODO: Add teleport control
-    if (this.teleport(player)) {
+    if (player.hasResistance(Resistance.TeleportationControl)) {
+      if (!this.selfCast) {
+        this.game.logger.playerTeleportationCaused()
+      }
+
+      player.ai.pushEvent(new AITeleportationEvent(this.levelMap, this.game))
+      this.game.ai = player.ai
+    } else if (this.teleport(player)) {
       if (!this.selfCast) {
         this.game.logger.playerTeleported()
       }

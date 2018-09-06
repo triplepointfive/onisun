@@ -12,6 +12,7 @@ export enum PresenterType {
   Missile,
   ProfessionPicking,
   Look,
+  Teleportation,
 }
 
 export abstract class Presenter {

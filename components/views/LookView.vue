@@ -20,6 +20,8 @@ export default Vue.extend({
         return 'Вспоминаю ...'
       case LookPresenterVisibility.Hidden:
         return 'Без понятия ...'
+      default:
+        return this.screen.title
       }
     }
   },
@@ -51,6 +53,7 @@ export default Vue.extend({
         return this.screen.moveTarget(Direction.downRight)
 
       case 'Escape':
+      case ' ':
         this.screen.close()
         break
       }

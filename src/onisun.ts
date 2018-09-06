@@ -22,6 +22,7 @@ import {
   LightSpeedBoots,
 } from './onisun/items'
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
+import { Resistance } from './engine/models/specie'
 
 export * from './engine'
 export * from './onisun/professions'

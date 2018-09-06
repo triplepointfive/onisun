@@ -141,6 +141,10 @@ export abstract class Creature {
     return []
   }
 
+  public hasResistance(resistance: Resistance): boolean {
+    return includes(this.resistances, resistance)
+  }
+
   get resistances(): Resistance[] {
     return this.specie.resistances
   }

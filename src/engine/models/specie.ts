@@ -5,6 +5,7 @@ import { Clan, Ability } from './creature'
 export enum Resistance {
   Intangible,
   MagicDamage,
+  TeleportationControl,
 }
 
 export interface Specie {

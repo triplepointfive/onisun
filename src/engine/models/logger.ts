@@ -144,6 +144,10 @@ export class Logger {
     )
   }
 
+  public playerTeleportationCaused(): void {
+    this.addMessage(LogLevel.INFO, `Что-то заставило меня телепортироваться`)
+  }
+
   public playerTeleported(): void {
     this.addMessage(LogLevel.INFO, `Яркая вспышка и я оказался в другом месте`)
   }

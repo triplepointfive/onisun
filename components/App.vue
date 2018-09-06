@@ -80,10 +80,14 @@ export default Vue.extend({
         return InventoryView
       case PresenterType.Missile:
         return MissileView
+      case PresenterType.Teleportation:
       case PresenterType.Look:
+        // TODO: It's not only look anymore, name accordingly
         return LookView
       case PresenterType.Death:
         return DeathView
+      default:
+        throw `App: unknown presenter ${this.game.ai.presenter}`
       }
     }
   },
