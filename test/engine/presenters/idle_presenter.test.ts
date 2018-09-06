@@ -64,7 +64,8 @@ describe('IdlePresenter', () => {
 
     presenter = new IdlePresenter(map, game)
     presenter.redirect = jest.fn()
-    presenter.endTurn = jest.fn()
+
+    jest.spyOn(presenter, 'endTurn')
   })
 
   it('opens inventory screen', () => {

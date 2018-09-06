@@ -26,8 +26,6 @@ export abstract class Presenter {
     this.player = this.game.player
   }
 
-  public build() {}
-
   get tile(): Tile {
     return this.levelMap.creatureTile(this.player)
   }

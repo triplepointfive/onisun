@@ -1,23 +1,15 @@
-import { Presenter, PresenterType } from './internal'
-import {
-  Game,
-  Item,
-  PickUpItemsEvent,
-  DrinkPotionEvent,
-  DropItemsEvent,
-  GroupedItem,
-  LevelMap,
-} from '../../engine'
+import { DropItemsEvent, Game, GroupedItem, Item, LevelMap } from '../../engine'
+import { Potion } from '../models/items'
 import { IdlePresenter } from './idle_presenter'
-import { ItemGroup, Potion } from '../models/items'
+import { Presenter, PresenterType } from './internal'
 import { InventoryPresenter } from './inventory_presenter'
 
-interface ItemsListingPosition {
+export interface ItemsListingPosition {
   item: Item
   count: number
 }
 
-abstract class ItemsListingPresenter extends Presenter {
+export abstract class ItemsListingPresenter extends Presenter {
   // TODO: Pass to constructor
   public positions: ItemsListingPosition[] = []
   public title: string = 'unnamed'
@@ -31,28 +23,6 @@ abstract class ItemsListingPresenter extends Presenter {
 
   public close(): void {
     this.redirect(new IdlePresenter(this.levelMap, this.game))
-  }
-}
-
-export class PickUpPresenter extends ItemsListingPresenter {
-  public title: string = 'Что поднять?'
-
-  protected initPositions(): void {
-    const items = this.tile.items
-
-    if (items === undefined) {
-      throw `Failed to show pick up dialog - tile has no items`
-    }
-
-    this.positions = items.bunch.map(itemGroup => {
-      return { item: itemGroup.item, count: itemGroup.count }
-    })
-  }
-
-  public pickUpItems(items: GroupedItem<Item>[]): void {
-    // TODO: Validate items are part of positions
-    this.player.on(new PickUpItemsEvent(this.tile, items, this.game))
-    this.endTurn()
   }
 }
 
@@ -99,26 +69,6 @@ export class PutOnItemsPresenter extends ItemsListingPresenter {
 
   public close(): void {
     this.redirect(new InventoryPresenter(this.levelMap, this.game))
-  }
-}
-
-export class DrinkPresenter extends ItemsListingPresenter {
-  public title: string = 'Что выпить?'
-  public singleItemMode: boolean = true
-
-  protected initPositions(): void {
-    this.positions = this.player.inventory
-      .cares()
-      .filter(itemGroup => itemGroup.item.group === ItemGroup.Potion)
-  }
-
-  public pickUpItems(items: ItemsListingPosition[]): void {
-    // TODO: Remove this method or ensure it's not being called
-  }
-
-  public withItem(itemGroup: { item: Potion }): void {
-    this.player.on(new DrinkPotionEvent(itemGroup.item, this.game))
-    this.endTurn()
   }
 }
 
