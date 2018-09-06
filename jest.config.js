@@ -14,6 +14,6 @@ module.exports = {
     "json",
     "node"
   ],
-  "collectCoverageFrom": ["src/**/*.{ts,js}"],
+  "collectCoverageFrom": ["src/engine/**/*.{ts,js}"],
   "testURL": 'http://localhost',
 }

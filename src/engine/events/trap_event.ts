@@ -1,33 +1,50 @@
-import { CreatureEvent } from './internal'
 import { VisibleCreatureEvent } from './visible_creature_event'
 import { Trap } from '../models/tile'
 import { Creature, Reaction } from '../models/creature'
 import { Player } from '../models/player'
 import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
+import { Calculator } from '../lib/calculator'
 
 export class TrapEvent extends VisibleCreatureEvent {
   constructor(
     private trap: Trap,
-    private trapEvent: CreatureEvent,
+    private dodgeRatio: number,
     levelMap: LevelMap,
-    game: Game
+    game: Game,
+    private onCreatureDodge: (sees: boolean, isPlayer: boolean) => void,
+    private onCreatureActivated: (sees: boolean, isPlayer: boolean) => Reaction
   ) {
     super(levelMap, game)
   }
 
   public affectCreature(actor: Creature): Reaction {
     // TODO: Special messages for dying.
-    if (this.playerSees(actor)) {
+    const sees = this.playerSees(actor)
+    if (sees) {
       this.trap.revealed = true
     }
 
-    return actor.on(this.trapEvent)
+    if (this.dodges(actor)) {
+      this.onCreatureDodge(sees, false)
+      return Reaction.DODGE
+    } else {
+      return this.onCreatureActivated(sees, false)
+    }
   }
 
   public affectPlayer(actor: Player): Reaction {
     this.trap.revealed = true
 
-    return actor.on(this.trapEvent)
+    if (this.dodges(actor)) {
+      this.onCreatureDodge(true, true)
+      return Reaction.DODGE
+    } else {
+      return this.onCreatureActivated(true, true)
+    }
+  }
+
+  protected dodges(actor: Creature): boolean {
+    return Calculator.dodges(actor.bodyControl, this.dodgeRatio)
   }
 }

@@ -14,6 +14,7 @@ import {
   LevelMap,
   CreatureEvent,
   Reaction,
+  Calculator,
 } from '../../../src/engine'
 
 class TestTrap extends Trap {
@@ -26,22 +27,16 @@ class TestTrap extends Trap {
 
 const testTrap = 0
 
-class TestEvent extends CreatureEvent {
-  public called: boolean = false
-
-  public affectCreature(): Reaction {
-    this.called = true
-    return Reaction.NOTHING
-  }
-}
-
 describe('Trap event', () => {
   let player: Player,
     game,
     event,
     map: LevelMap,
     trap: TestTrap,
-    testEvent: TestEvent
+    dodgeSees: boolean,
+    dodgeIsPlayer: boolean,
+    activatedSees: boolean,
+    activatedIsPlayer: boolean
 
   beforeEach(() => {
     trap = new TestTrap(false, testTrap)
@@ -53,8 +48,23 @@ describe('Trap event', () => {
     map.addCreature(new Point(1, 1), player)
     player.rebuildVision(map)
 
-    testEvent = new TestEvent()
-    event = new TrapEvent(trap, testEvent, map, game)
+    dodgeSees = false
+    dodgeIsPlayer = false
+
+    activatedSees = false
+    activatedIsPlayer = false
+
+    event = new TrapEvent(
+      trap,
+      0,
+      map,
+      game,
+      (sees, isPlayer) => ([dodgeSees, dodgeIsPlayer] = [sees, isPlayer]),
+      (sees, isPlayer) => {
+        ;[activatedSees, activatedIsPlayer] = [sees, isPlayer]
+        return Reaction.NOTHING
+      }
+    )
   })
 
   describe('for creature', () => {
@@ -65,38 +75,92 @@ describe('Trap event', () => {
       map.addCreature(new Point(1, 2), creature)
     })
 
-    it('leaves trap hidden when player does not see', () => {
-      map.addCreature(new Point(1, 5), creature)
-      player.specie.visionRadius -= 10
-      player.rebuildVision(map)
+    describe('activated', () => {
+      afterEach(() => {
+        expect(dodgeSees).toBeFalsy()
+        expect(dodgeIsPlayer).toBeFalsy()
+        expect(activatedIsPlayer).toBeFalsy()
+      })
 
-      expect(trap.revealed).toBeFalsy()
-      creature.on(event)
-      expect(trap.revealed).toBeFalsy()
+      beforeEach(() => {
+        Calculator.dodges = jest.fn()
+        Calculator.dodges.mockReturnValueOnce(false)
+      })
+
+      it('leaves trap hidden when player does not see', () => {
+        map.addCreature(new Point(1, 5), creature)
+        player.specie.visionRadius -= 10
+        player.rebuildVision(map)
+
+        creature.on(event)
+        expect(trap.revealed).toBeFalsy()
+
+        expect(activatedSees).toBeFalsy()
+      })
+
+      it('reveals trap when player sees', () => {
+        creature.on(event)
+        expect(trap.revealed).toBeTruthy()
+        expect(activatedSees).toBeTruthy()
+      })
     })
 
-    it('reveals trap when player sees', () => {
-      expect(trap.revealed).toBeFalsy()
-      creature.on(event)
-      expect(trap.revealed).toBeTruthy()
-    })
+    describe('dodges', () => {
+      afterEach(() => {
+        expect(dodgeIsPlayer).toBeFalsy()
+        expect(activatedSees).toBeFalsy()
+        expect(activatedIsPlayer).toBeFalsy()
+      })
 
-    it('calls event', () => {
-      creature.on(event)
-      expect(testEvent.called).toBeTruthy()
+      beforeEach(() => {
+        Calculator.dodges = jest.fn()
+        Calculator.dodges.mockReturnValueOnce(true)
+      })
+
+      it('leaves trap hidden when player does not see', () => {
+        map.addCreature(new Point(1, 5), creature)
+        player.specie.visionRadius -= 10
+        player.rebuildVision(map)
+
+        creature.on(event)
+        expect(trap.revealed).toBeFalsy()
+
+        expect(dodgeSees).toBeFalsy()
+      })
+
+      it('reveals trap when player sees', () => {
+        creature.on(event)
+        expect(trap.revealed).toBeTruthy()
+        expect(dodgeSees).toBeTruthy()
+      })
     })
   })
 
   describe('for player', () => {
-    it('reveals trap', () => {
-      expect(trap.revealed).toBeFalsy()
+    it('dodges', () => {
+      Calculator.dodges = jest.fn()
+      Calculator.dodges.mockReturnValueOnce(true)
+
       player.on(event)
       expect(trap.revealed).toBeTruthy()
+
+      expect(dodgeSees).toBeTruthy()
+      expect(dodgeIsPlayer).toBeTruthy()
+      expect(activatedSees).toBeFalsy()
+      expect(activatedIsPlayer).toBeFalsy()
     })
 
-    it('calls event', () => {
+    it('activated', () => {
+      Calculator.dodges = jest.fn()
+      Calculator.dodges.mockReturnValueOnce(false)
+
       player.on(event)
-      expect(testEvent.called).toBeTruthy()
+      expect(trap.revealed).toBeTruthy()
+
+      expect(dodgeSees).toBeFalsy()
+      expect(dodgeIsPlayer).toBeFalsy()
+      expect(activatedSees).toBeTruthy()
+      expect(activatedIsPlayer).toBeTruthy()
     })
   })
 })
