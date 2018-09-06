@@ -13,6 +13,9 @@ import {
   Missile,
   Game,
   PutOnItemEvent,
+  LookPresenter,
+  AttackEvent,
+  Direction,
 } from '../../../src/engine'
 
 import {
@@ -22,6 +25,7 @@ import {
   generatePlayer,
   generateItem,
   generateMissile,
+  generateCreature,
 } from '../helpers'
 import { MissilePresenter } from '../../../src/engine/presenters/missile_presenter'
 
@@ -48,7 +52,7 @@ class TestDungeon extends Dungeon {
 }
 
 describe('IdlePresenter', () => {
-  let game: TestGame, player: Player, screen: IdlePresenter, map: LevelMap
+  let game: TestGame, player: Player, presenter: IdlePresenter, map: LevelMap
 
   beforeEach(() => {
     game = generateGame()
@@ -58,33 +62,84 @@ describe('IdlePresenter', () => {
     game.ai = player.ai
     map.addCreature(fakeStairPos, player)
 
-    screen = new IdlePresenter(map, game)
-    screen.redirect = jest.fn()
-    screen.endTurn = jest.fn()
+    presenter = new IdlePresenter(map, game)
+    presenter.redirect = jest.fn()
+    presenter.endTurn = jest.fn()
   })
 
   it('opens inventory screen', () => {
-    screen.onInput(IdleInputKey.Inventory)
-    expect(screen.redirect.mock.calls.length).toBe(1)
-    expect(screen.redirect.mock.calls[0][0]).toBeInstanceOf(InventoryPresenter)
+    presenter.inventoryCommand()
+    expect(presenter.redirect.mock.calls.length).toBe(1)
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
+      InventoryPresenter
+    )
   })
 
   it('opens bag screen', () => {
-    screen.onInput(IdleInputKey.Bag)
-    expect(screen.redirect.mock.calls.length).toBe(1)
-    expect(screen.redirect.mock.calls[0][0]).toBeInstanceOf(BagPresenter)
+    presenter.bagCommand()
+    expect(presenter.redirect.mock.calls.length).toBe(1)
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(BagPresenter)
   })
 
   it('opens drink screen', () => {
-    screen.onInput(IdleInputKey.Drink)
-    expect(screen.redirect.mock.calls.length).toBe(1)
-    expect(screen.redirect.mock.calls[0][0]).toBeInstanceOf(DrinkPresenter)
+    presenter.drinkCommand()
+    expect(presenter.redirect.mock.calls.length).toBe(1)
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(DrinkPresenter)
   })
 
   it('opens drop screen', () => {
-    screen.onInput(IdleInputKey.Drop)
-    expect(screen.redirect.mock.calls.length).toBe(1)
-    expect(screen.redirect.mock.calls[0][0]).toBeInstanceOf(DropItemsPresenter)
+    presenter.dropCommand()
+    expect(presenter.redirect.mock.calls.length).toBe(1)
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
+      DropItemsPresenter
+    )
+  })
+
+  it('waits', () => {
+    presenter.stayCommand()
+
+    expect(presenter.redirect).not.toHaveBeenCalled()
+    expect(presenter.endTurn).toHaveBeenCalled()
+  })
+
+  it('look', () => {
+    presenter.lookCommand()
+
+    expect(presenter.endTurn).not.toHaveBeenCalled()
+    expect(presenter.redirect).toHaveBeenCalled()
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(LookPresenter)
+  })
+
+  describe('moving', () => {
+    it('into a wall', () => {
+      presenter.move(Direction.up)
+
+      expect(presenter.endTurn).toHaveBeenCalled()
+      expect(map.creaturePos(player)).toEqual(fakeStairPos)
+    })
+
+    it('on free space', () => {
+      presenter.move(Direction.down)
+
+      expect(presenter.endTurn).toHaveBeenCalled()
+      expect(map.creaturePos(player)).toEqual(new Point(1, 2))
+    })
+
+    it('on cell with creature', () => {
+      let creature = generateCreature()
+
+      map.addCreature(fakeStairPos.add(new Point(1, 0)), creature)
+
+      player.on = jest.fn()
+
+      presenter.move(Direction.right)
+
+      expect(presenter.endTurn).toHaveBeenCalled()
+      expect(map.creaturePos(player)).toEqual(fakeStairPos)
+
+      expect(player.on).toHaveBeenCalled()
+      expect(player.on.mock.calls[0][0]).toBeInstanceOf(AttackEvent)
+    })
   })
 
   describe('handles', () => {
@@ -104,47 +159,47 @@ describe('IdlePresenter', () => {
       game.ai.act(player, map, game)
 
       expect(game.logger.messages.length).toEqual(0)
-      screen.onInput(IdleInputKey.Handle)
+      presenter.handleCommand()
       expect(game.logger.messages.length).toEqual(1)
 
-      expect(screen.redirect.mock.calls.length).toBe(0)
-      expect(screen.endTurn.mock.calls.length).toBe(0)
+      expect(presenter.redirect.mock.calls.length).toBe(0)
+      expect(presenter.endTurn.mock.calls.length).toBe(0)
     })
 
     it('handles stairs', () => {
       // TODO: Remove
-      screen = new IdlePresenter(game.currentMap, game)
-      screen.redirect = jest.fn()
-      screen.endTurn = jest.fn()
+      presenter = new IdlePresenter(game.currentMap, game)
+      presenter.redirect = jest.fn()
+      presenter.endTurn = jest.fn()
 
       game.getMap(level0).addCreature(stairPos, player)
       game.ai.act(player, map, game)
 
-      screen.onInput(IdleInputKey.Handle)
+      presenter.handleCommand()
       expect(game.logger.messages.length).toEqual(0)
 
-      expect(screen.redirect.mock.calls.length).toBe(0)
-      expect(screen.endTurn.mock.calls.length).toBe(1)
+      expect(presenter.redirect.mock.calls.length).toBe(0)
+      expect(presenter.endTurn.mock.calls.length).toBe(1)
     })
   })
 
   describe('on pick up', () => {
     it('logs when there is nothing to pick up', () => {
-      screen.onInput(IdleInputKey.PickUp)
+      presenter.pickUpCommand()
 
       expect(game.logger.messages.length).toEqual(1)
-      expect(screen.redirect.mock.calls.length).toBe(0)
-      expect(screen.endTurn.mock.calls.length).toBe(0)
+      expect(presenter.redirect.mock.calls.length).toBe(0)
+      expect(presenter.endTurn.mock.calls.length).toBe(0)
     })
 
     it('picks up single item', () => {
       map.at(1, 1).addItem(generateItem(), 1)
       player.on = jest.fn()
-      screen.onInput(IdleInputKey.PickUp)
+      presenter.pickUpCommand()
 
       expect(game.logger.messages.length).toEqual(0)
-      expect(screen.redirect.mock.calls.length).toBe(0)
-      expect(screen.endTurn.mock.calls.length).toBe(1)
+      expect(presenter.redirect.mock.calls.length).toBe(0)
+      expect(presenter.endTurn.mock.calls.length).toBe(1)
       expect(player.on.mock.calls.length).toEqual(1)
       expect(player.on.mock.calls[0][0]).toBeInstanceOf(PickUpItemsEvent)
     })
@@ -152,10 +207,10 @@ describe('IdlePresenter', () => {
     it('opens pickup dialog for multiple items', () => {
       map.at(1, 1).addItem(generateItem(), 1)
       map.at(1, 1).addItem(generateItem(), 1)
-      screen.onInput(IdleInputKey.PickUp)
+      presenter.pickUpCommand()
 
-      expect(screen.redirect.mock.calls.length).toBe(1)
-      expect(screen.endTurn.mock.calls.length).toBe(0)
+      expect(presenter.redirect.mock.calls.length).toBe(1)
+      expect(presenter.endTurn.mock.calls.length).toBe(0)
     })
   })
 
@@ -167,11 +222,11 @@ describe('IdlePresenter', () => {
     })
 
     it('complains when no missile equipped', () => {
-      screen.onInput(IdleInputKey.Missile)
+      presenter.missileCommand()
 
       expect(game.logger.messages.length).toEqual(1)
-      expect(screen.redirect.mock.calls.length).toBe(0)
-      expect(screen.endTurn.mock.calls.length).toBe(0)
+      expect(presenter.redirect.mock.calls.length).toBe(0)
+      expect(presenter.endTurn.mock.calls.length).toBe(0)
     })
 
     it('complains when can not use missile', () => {
@@ -181,11 +236,11 @@ describe('IdlePresenter', () => {
       missile.canThrow = jest.fn()
       missile.canThrow.mockReturnValueOnce(false)
 
-      screen.onInput(IdleInputKey.Missile)
+      presenter.missileCommand()
 
       expect(game.logger.messages.length).toEqual(2)
-      expect(screen.redirect.mock.calls.length).toBe(0)
-      expect(screen.endTurn.mock.calls.length).toBe(0)
+      expect(presenter.redirect.mock.calls.length).toBe(0)
+      expect(presenter.endTurn.mock.calls.length).toBe(0)
     })
 
     it('opens missile screen', () => {
@@ -194,12 +249,14 @@ describe('IdlePresenter', () => {
       map.addCreature(new Point(1, 1), player)
       player.rebuildVision(game.currentMap)
 
-      screen.onInput(IdleInputKey.Missile)
+      presenter.missileCommand()
 
       expect(game.logger.messages.length).toEqual(1)
-      expect(screen.redirect.mock.calls.length).toBe(1)
-      expect(screen.redirect.mock.calls[0][0]).toBeInstanceOf(MissilePresenter)
-      expect(screen.endTurn.mock.calls.length).toBe(0)
+      expect(presenter.redirect.mock.calls.length).toBe(1)
+      expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
+        MissilePresenter
+      )
+      expect(presenter.endTurn.mock.calls.length).toBe(0)
     })
   })
 })

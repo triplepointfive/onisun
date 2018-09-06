@@ -127,7 +127,7 @@ Traps are tiles on dungeon floor, that can be activated when monster steps on th
 
 Main screen:
 
-| Key | Command | Effect                                                              |
-| --- | ------- | ------------------------------------------------------------------- |
-| L   | Look    | Allows you to check what it is in a tile                            |
-| H   | Handle  | General command for all interactions with tiles: going on stairways |
+| Key | Command | Effect                                                                      |
+| --- | ------- | --------------------------------------------------------------------------- |
+| L   | Look    | Allows you to check what it is in a tile                                    |
+| H   | Handle  | General command for all interactions with tiles: going on stairways, untrap |

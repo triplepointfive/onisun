@@ -4,44 +4,37 @@ div
 
 <script lang='ts'>
 import Vue from 'vue'
-import { IdleInputKey } from '../../src/engine'
+import { IdleInputKey, Direction } from '../../src/onisun'
 
 export default Vue.extend({
   name: 'IdleView',
   props: ['screen'],
   methods: {
-    close(inputKey: IdleInputKey) {
-      this.screen.onInput(inputKey)
-    },
     onEvent(event: KeyboardEvent) {
       switch (event.key) {
       case 'l':
       case 'ArrowRight':
-        return this.close(IdleInputKey.Right)
-
+        return this.screen.move(Direction.right)
       case 'h':
       case 'ArrowLeft':
-        return this.close(IdleInputKey.Left)
-
+        return this.screen.move(Direction.left)
       case 'k':
       case 'ArrowUp':
-        return this.close(IdleInputKey.Up)
-
+        return this.screen.move(Direction.up)
       case 'j':
       case 'ArrowDown':
-        return this.close(IdleInputKey.Down)
-
+        return this.screen.move(Direction.down)
       case 'y':
-        return this.close(IdleInputKey.UpLeft)
+        return this.screen.move(Direction.upLeft)
       case 'u':
-        return this.close(IdleInputKey.UpRight)
+        return this.screen.move(Direction.upRight)
       case 'b':
-        return this.close(IdleInputKey.DownLeft)
+        return this.screen.move(Direction.downLeft)
       case 'n':
-        return this.close(IdleInputKey.DownRight)
+        return this.screen.move(Direction.downRight)
 
       case 'H':
-        return this.close(IdleInputKey.Handle)
+        return this.screen.handleCommand()
       case 'L':
         return this.screen.lookCommand()
 
@@ -50,17 +43,17 @@ export default Vue.extend({
         return this.screen.stayCommand()
 
       case 'i':
-        return this.close(IdleInputKey.Inventory)
+        return this.screen.inventoryCommand()
       case 'I':
-        return this.close(IdleInputKey.Bag)
+        return this.screen.bagCommand()
       case 't':
-        return this.close(IdleInputKey.Missile)
+        return this.screen.missileCommand()
       case ',':
-        return this.close(IdleInputKey.PickUp)
+        return this.screen.pickUpCommand()
       case 'd':
-        return this.close(IdleInputKey.Drop)
+        return this.screen.dropCommand()
       case 'D':
-        return this.close(IdleInputKey.Drink)
+        return this.screen.drinkCommand()
 
       default:
         console.log('Key: ', event.key)

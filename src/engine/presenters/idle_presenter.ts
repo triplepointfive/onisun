@@ -18,27 +18,6 @@ import { InventoryPresenter } from './inventory_presenter'
 import { MissilePresenter } from './missile_presenter'
 import { MoveEvent } from '../events/move_event'
 
-export enum IdleInputKey {
-  Right,
-  Left,
-  Down,
-  Up,
-
-  UpRight,
-  UpLeft,
-  DownRight,
-  DownLeft,
-
-  Handle,
-  Missile,
-
-  Inventory,
-  Bag,
-  PickUp,
-  Drop,
-  Drink,
-}
-
 class HandleTileVisitor extends TileVisitor {
   constructor(
     private game: Game,
@@ -74,58 +53,31 @@ export class IdlePresenter extends Presenter {
     super(PresenterType.Idle, levelMap, game)
   }
 
-  public onInput(key: IdleInputKey) {
-    switch (key) {
-      case IdleInputKey.Right:
-        return this.move(Direction.right)
-      case IdleInputKey.Left:
-        return this.move(Direction.left)
-      case IdleInputKey.Down:
-        return this.move(Direction.down)
-      case IdleInputKey.Up:
-        return this.move(Direction.up)
+  public inventoryCommand(): void {
+    this.redirect(new InventoryPresenter(this.levelMap, this.game))
+  }
 
-      case IdleInputKey.UpRight:
-        return this.move(Direction.upRight)
-      case IdleInputKey.UpLeft:
-        return this.move(Direction.upLeft)
-      case IdleInputKey.DownRight:
-        return this.move(Direction.downRight)
-      case IdleInputKey.DownLeft:
-        return this.move(Direction.downLeft)
-
-      case IdleInputKey.Handle:
-        return this.handle()
-
-      case IdleInputKey.PickUp:
-        return this.pickUpDialog()
-      case IdleInputKey.Missile:
-        return this.missileDialog()
-
-      case IdleInputKey.Drop:
-        this.redirect(new DropItemsPresenter(this.levelMap, this.game))
-        return
-      case IdleInputKey.Drink:
-        this.redirect(new DrinkPresenter(this.levelMap, this.game))
-        return
-      case IdleInputKey.Inventory:
-        this.redirect(new InventoryPresenter(this.levelMap, this.game))
-        return
-      case IdleInputKey.Bag:
-        this.redirect(new BagPresenter(this.levelMap, this.game))
-        return
-    }
+  public bagCommand(): void {
+    this.redirect(new BagPresenter(this.levelMap, this.game))
   }
 
   public stayCommand(): void {
     this.endTurn()
   }
 
+  public dropCommand(): void {
+    this.redirect(new DropItemsPresenter(this.levelMap, this.game))
+  }
+
+  public drinkCommand(): void {
+    this.redirect(new DrinkPresenter(this.levelMap, this.game))
+  }
+
   public lookCommand(): void {
     this.redirect(new LookPresenter(this.levelMap, this.game))
   }
 
-  private move(direction: Direction): void {
+  public move(direction: Direction): void {
     const pos = this.levelMap.creaturePos(this.player),
       dest = pos.add(direction),
       tile = this.levelMap.at(dest.x, dest.y)
@@ -141,7 +93,7 @@ export class IdlePresenter extends Presenter {
     this.endTurn()
   }
 
-  private pickUpDialog(): void {
+  public pickUpCommand(): void {
     const tile = this.tile,
       items = tile.items
 
@@ -155,7 +107,7 @@ export class IdlePresenter extends Presenter {
     }
   }
 
-  private missileDialog(): void {
+  public missileCommand(): void {
     const missile = this.player.inventory.missileSlot.equipment
 
     if (missile && missile.item) {
@@ -169,7 +121,7 @@ export class IdlePresenter extends Presenter {
     }
   }
 
-  private handle(): void {
+  public handleCommand(): void {
     this.tile.visit(
       new HandleTileVisitor(this.game, this.levelMap, this.player, () =>
         this.endTurn()
