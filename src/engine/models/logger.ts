@@ -144,6 +144,13 @@ export class Logger {
     )
   }
 
+  public creatureDodgesTeleportationTrap(actor: Creature): void {
+    this.addMessage(
+      LogLevel.INFO,
+      `${actor.name} попал в ловушку телепортации но смог увернуться`
+    )
+  }
+
   public playerTeleportationCaused(): void {
     this.addMessage(LogLevel.INFO, `Что-то заставило меня телепортироваться`)
   }
@@ -156,6 +163,13 @@ export class Logger {
     this.addMessage(
       LogLevel.INFO,
       `Я озарился ярким светом, но ничего не произошло`
+    )
+  }
+
+  public playerDodgesTeleportationTrap(): void {
+    this.addMessage(
+      LogLevel.INFO,
+      `Я попал в ловушку телепортации но смог увернуться`
     )
   }
 

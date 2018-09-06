@@ -32,6 +32,7 @@ export * from './engine/events/take_off_item_event'
 export * from './engine/events/teleportation_event'
 export * from './engine/events/throw_event'
 export * from './engine/events/trap_event'
+export * from './engine/events/visible_creature_event'
 
 export * from './engine/generator/post'
 export { default as drawn } from './engine/generator/drawn'
@@ -62,6 +63,8 @@ export * from './engine/models/specie'
 export * from './engine/models/talent'
 export * from './engine/models/tile'
 export * from './engine/models/tile_effect'
+
+export * from './engine/models/traps/teleportation_trap'
 
 export * from './engine/presenters/death_presenter'
 export * from './engine/presenters/internal'

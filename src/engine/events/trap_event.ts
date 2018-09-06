@@ -1,4 +1,5 @@
-import { CreatureEvent, VisibleCreatureEvent } from './internal'
+import { CreatureEvent } from './internal'
+import { VisibleCreatureEvent } from './visible_creature_event'
 import { Trap } from '../models/tile'
 import { Creature, Reaction } from '../models/creature'
 import { Player } from '../models/player'

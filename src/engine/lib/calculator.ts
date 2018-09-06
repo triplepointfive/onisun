@@ -15,6 +15,13 @@ export class Calculator {
     )
   }
 
+  // Function result varies from 0 to 1. Ratio defines the speed of growing.
+  // E.g. dodges(10, 1) = 0.93
+  //      dodges(10, 5) = 0.7
+  public static dodges(actorBC: number, ratio: number): boolean {
+    return Math.random() < (Math.atan(actorBC / ratio) / Math.PI) * 2
+  }
+
   public static throwDamageTo(x: number, y: number): number {
     return 10
   }

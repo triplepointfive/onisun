@@ -13,7 +13,6 @@ import { Presenter } from '../presenters/internal'
 import { DieReason } from '../events/die_event'
 import { DeathPresenter } from '../presenters/death_presenter'
 import { CreatureEvent } from '../events/internal'
-import { Level } from '../lib/level'
 
 export class AINewLevelEvent extends AIEvent {
   constructor(public level: number, private levelMap: LevelMap, game: Game) {

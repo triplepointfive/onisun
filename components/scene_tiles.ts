@@ -13,10 +13,7 @@ import {
   Door,
   Trap,
   TriggerTile,
-} from '../src/engine'
-
-import {
-  OnisunTrapType,
+  TrapType,
 } from '../src/onisun'
 
 const DEFAULT_GREY: number = 120
@@ -212,7 +209,7 @@ export class DisplayTileVisitor extends TileVisitor {
     }
 
     switch (trap.type) {
-    case OnisunTrapType.Teleportation:
+    case TrapType.Teleportation:
       this.tile = TELEPORTATION_TRAP
       break
     }

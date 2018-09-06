@@ -1,4 +1,4 @@
-import { VisibleCreatureEvent } from './internal'
+import { VisibleCreatureEvent } from './visible_creature_event'
 import { Reaction, Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { withMatchingTile } from '../generator/post'
@@ -7,7 +7,6 @@ import { Point } from '../utils/utils'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
 import { Resistance } from '../models/specie'
-import { TeleportationPresenter } from '../presenters/teleportation_presenter'
 import { AITeleportationEvent } from '../ai/player_ai'
 
 // TODO: Creature that teleports itself away

@@ -22,13 +22,11 @@ import {
   LightSpeedBoots,
 } from './onisun/items'
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
-import { Resistance } from './engine/models/specie'
 
 export * from './engine'
 export * from './onisun/professions'
 export * from './onisun/talents'
 export * from './onisun/items'
-export * from './onisun/tiles/traps'
 
 export class Application {
   public game: Onisun
