@@ -1,5 +1,17 @@
-import { generatePlayer, generateCreature, generateGame, generateLevelMap } from '../../helpers'
-import { TeleportationTrap, Player, Calculator, Game, LevelMap, Point } from '../../../../src/engine'
+import {
+  generatePlayer,
+  generateCreature,
+  generateGame,
+  generateLevelMap,
+} from '../../helpers'
+import {
+  TeleportationTrap,
+  Player,
+  Calculator,
+  Game,
+  LevelMap,
+  Point,
+} from '../../../../src/engine'
 
 describe('TeleportationTrap', () => {
   let trap: TeleportationTrap, player: Player, game: Game, map: LevelMap

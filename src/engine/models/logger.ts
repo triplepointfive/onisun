@@ -166,6 +166,10 @@ export class Logger {
     )
   }
 
+  public playerTeleportedWhereTheyWere(): void {
+    this.addMessage(LogLevel.INFO, `Я решил никуда не телепортироваться`)
+  }
+
   public playerDodgesTeleportationTrap(): void {
     this.addMessage(
       LogLevel.INFO,

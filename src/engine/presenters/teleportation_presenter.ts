@@ -29,7 +29,12 @@ export class TeleportationPresenter extends PickPointPresenter<
   }
 
   protected close(): void {
-    this.player.on(new MoveEvent(this.game, this.levelMap, this.targetPos))
+    if (this.targetPos.eq(this.levelMap.creaturePos(this.player))) {
+      this.game.logger.playerTeleportedWhereTheyWere()
+    } else {
+      this.player.on(new MoveEvent(this.game, this.levelMap, this.targetPos))
+    }
+
     this.endTurn()
   }
 }
