@@ -45,8 +45,9 @@ import InventoryView from './views/InventoryView.vue'
 import LookView from './views/LookView.vue'
 import MissileView from './views/MissileView.vue'
 import DeathView from './views/DeathView.vue'
+import PickSingleOptionView from './views/PickSingleOptionView.vue'
 
-import { LevelMap, PresenterType } from '../src/engine'
+import { LevelMap, PresenterType, Presenter } from '../src/engine'
 
 import { Application } from '../src/onisun'
 import { setInterval, clearInterval } from 'timers'
@@ -86,6 +87,8 @@ export default Vue.extend({
         return LookView
       case PresenterType.Death:
         return DeathView
+      case PresenterType.PickHandleOption:
+        return PickSingleOptionView
       default:
         throw `App: unknown presenter ${this.game.ai.presenter}`
       }

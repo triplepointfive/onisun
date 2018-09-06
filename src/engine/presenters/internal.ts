@@ -1,7 +1,7 @@
 import { Player } from '../models/player'
 import { LevelMap } from '../models/level_map'
 import { Tile } from '../models/tile'
-import { Game } from '../../engine'
+import { Game, IdlePresenter } from '../../engine'
 
 export enum PresenterType {
   AbilitiesPicking,
@@ -13,6 +13,7 @@ export enum PresenterType {
   ProfessionPicking,
   Look,
   Teleportation,
+  PickHandleOption,
 }
 
 export abstract class Presenter {
@@ -36,5 +37,9 @@ export abstract class Presenter {
 
   protected redirect(presenter: Presenter): void {
     this.game.player.ai.redirect(presenter)
+  }
+
+  protected goIdle(): void {
+    this.redirect(new IdlePresenter(this.levelMap, this.game))
   }
 }

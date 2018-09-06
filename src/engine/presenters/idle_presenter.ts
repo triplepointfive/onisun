@@ -13,17 +13,24 @@ import {
   Stairway,
   LevelMap,
   LookPresenter,
+  UntrapEvent,
 } from '../../engine'
 import { InventoryPresenter } from './inventory_presenter'
 import { MissilePresenter } from './missile_presenter'
 import { MoveEvent } from '../events/move_event'
+import { CreatureEvent } from '../events/internal'
+import { concat } from 'lodash'
+import { Trap } from '../models/tile'
+import { PickSingleOptionPresenter } from './pick_single_option_presenter'
 
 class HandleTileVisitor extends TileVisitor {
+  // TODO: Add direction since commands might duplicate
+  public commands: [string, CreatureEvent][] = []
+
   constructor(
     private game: Game,
     private levelMap: LevelMap,
-    private player: Player,
-    private done: () => void
+    private player: Player
   ) {
     super()
   }
@@ -36,16 +43,27 @@ class HandleTileVisitor extends TileVisitor {
       this.levelMap.id,
       this.levelMap.creaturePos(this.player)
     )
-    this.player.on(
-      new MoveEvent(this.game, this.levelMap, stairway.enterPos, adjacentMap)
-    )
 
-    this.done()
+    this.commands.push([
+      'stairway',
+      new MoveEvent(this.game, this.levelMap, stairway.enterPos, adjacentMap),
+    ])
   }
 
-  protected default(): void {
-    this.game.logger.howToHandle()
+  public onTrap(trap: Trap): void {
+    if (!trap.revealed) {
+      return
+    }
+
+    this.commands.push([
+      'untrap',
+      new UntrapEvent(trap, this.levelMap, this.game),
+    ])
   }
+}
+
+class AdjustHandleTileVisitor extends HandleTileVisitor {
+  protected onStairway(): void {}
 }
 
 export class IdlePresenter extends Presenter {
@@ -122,10 +140,44 @@ export class IdlePresenter extends Presenter {
   }
 
   public handleCommand(): void {
-    this.tile.visit(
-      new HandleTileVisitor(this.game, this.levelMap, this.player, () =>
-        this.endTurn()
+    let visitor = new HandleTileVisitor(this.game, this.levelMap, this.player),
+      adjustVisitor = new AdjustHandleTileVisitor(
+        this.game,
+        this.levelMap,
+        this.player
       )
-    )
+
+    this.tile.visit(visitor)
+
+    this.levelMap
+      .creaturePos(this.player)
+      .wrappers()
+      .forEach(({ x, y }) => {
+        this.levelMap.at(x, y).visit(adjustVisitor)
+      })
+
+    const commands = concat(visitor.commands, adjustVisitor.commands)
+
+    switch (commands.length) {
+      case 0:
+        this.game.logger.howToHandle()
+        break
+      case 1:
+        this.player.on(commands[0][1])
+        this.endTurn()
+        break
+      default:
+        this.redirect(
+          new PickSingleOptionPresenter(
+            commands,
+            this.levelMap,
+            this.game,
+            ([name, command]) => {
+              this.player.on(command)
+              this.endTurn()
+            }
+          )
+        )
+    }
   }
 }
