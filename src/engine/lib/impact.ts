@@ -1,7 +1,7 @@
 import { remove } from 'lodash'
 
 export enum ImpactType {
-  Blind,
+  Blind, // TODO: Do not display messages while being blind
   Stressed,
   Loaded,
   Overloaded,

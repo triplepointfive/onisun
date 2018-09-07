@@ -23,6 +23,7 @@ import { CreatureEvent } from '../events/internal'
 import { concat } from 'lodash'
 import { Trap } from '../models/tile'
 import { PickSingleOptionPresenter } from './pick_single_option_presenter'
+import { StayEvent } from '../events/stay_event'
 
 class HandleTileVisitor extends TileVisitor {
   // TODO: Add direction since commands might duplicate
@@ -82,6 +83,7 @@ export class IdlePresenter extends Presenter {
   }
 
   public stayCommand(): void {
+    this.player.on(new StayEvent(this.levelMap))
     this.endTurn()
   }
 
@@ -108,6 +110,10 @@ export class IdlePresenter extends Presenter {
       this.player.on(new AttackEvent(tile.creature, this.levelMap, this.game))
     } else {
       this.game.logger.ranIntoAnObstacle()
+      this.player
+        .stageMemory(this.levelMap)
+        .at(dest.x, dest.y)
+        .see(tile, 0)
     }
 
     this.endTurn()

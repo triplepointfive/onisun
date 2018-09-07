@@ -93,7 +93,7 @@ Mostly these are applicable to player character only, nevertheless, some could b
 
 | Name       | Source                                   | Effect                                                                             |
 | ---------- | ---------------------------------------- | ---------------------------------------------------------------------------------- |
-| Blind      | Items, monsters                          | You can't see anything. Reading is blocked, moving is slowed                       |
+| Blind      | Items, monsters                          | You can't see anything                                                             |
 | Stressed   | Carrying more items then capacity allows | Speed is reduced by quoter, reduces BC by 3                                        |
 | Loaded     | Get Stressed and take more items         | Speed is reduces by half, reduces BC by 6                                          |
 | Overloaded | Get Loaded and take more items           | Movement unavailable, reduces BC by 10                                             |

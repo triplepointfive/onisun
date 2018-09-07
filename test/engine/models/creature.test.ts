@@ -1,5 +1,5 @@
 import { generateCreature } from '../helpers'
-import { Creature } from '../../../src/engine'
+import { Creature, ImpactType } from '../../../src/engine'
 
 describe('Creature', () => {
   let creature: Creature
@@ -19,5 +19,11 @@ describe('Creature', () => {
     creature.statsTurn()
 
     expect(creature.health.currentValue).toEqual(2)
+  })
+
+  it('vision radius', () => {
+    expect(creature.visionRadius).toBeGreaterThan(0)
+    creature.addImpact(ImpactType.Blind, 'test')
+    expect(creature.visionRadius).toEqual(0)
   })
 })

@@ -16,6 +16,8 @@ import {
   LookPresenter,
   AttackEvent,
   Direction,
+  StayEvent,
+  ImpactType,
 } from '../../../src/engine'
 
 import {
@@ -97,7 +99,11 @@ describe('IdlePresenter', () => {
   })
 
   it('waits', () => {
+    player.on = jest.fn()
     presenter.stayCommand()
+
+    expect(player.on).toHaveBeenCalled()
+    expect(player.on.mock.calls[0][0]).toBeInstanceOf(StayEvent)
 
     expect(presenter.redirect).not.toHaveBeenCalled()
     expect(presenter.endTurn).toHaveBeenCalled()
@@ -113,9 +119,16 @@ describe('IdlePresenter', () => {
 
   describe('moving', () => {
     it('into a wall', () => {
+      player.addImpact(ImpactType.Blind, 'test')
+
+      const wallPos = fakeStairPos.add(Direction.up)
+      expect(player.stageMemory(map).at(wallPos.x, wallPos.y).seen).toBeFalsy()
+
       presenter.move(Direction.up)
 
+      expect(player.stageMemory(map).at(wallPos.x, wallPos.y).seen).toBeTruthy()
       expect(presenter.endTurn).toHaveBeenCalled()
+      expect(game.logger.messages.length).toEqual(1)
       expect(map.creaturePos(player)).toEqual(fakeStairPos)
     })
 

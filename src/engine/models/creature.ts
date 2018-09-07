@@ -10,6 +10,7 @@ import { HealthStat } from '../lib/stat'
 import { Item, Missile, Protection } from './items'
 import { Damage } from '../lib/damage'
 import { Specie, Resistance } from './specie'
+import { LevelMapId } from './level_map'
 
 export enum Clan {
   Player,
@@ -48,7 +49,7 @@ export abstract class Creature {
     return this.lastId++
   }
 
-  protected stageMemories: { [key: string]: Memory } = {}
+  protected stageMemories: Map<LevelMapId, Memory> = new Map()
 
   public dead: boolean = false
 
@@ -87,22 +88,29 @@ export abstract class Creature {
   }
 
   public stageMemory(levelMap: LevelMap): Memory {
-    return this.stageMemories[levelMap.id]
+    const memory = this.stageMemories.get(levelMap.id)
+
+    if (memory) {
+      return memory
+    }
+
+    return this.visionMask(levelMap)
   }
 
-  public visionMask(levelMap: LevelMap): void {
-    let memory = this.stageMemory(levelMap)
+  public visionMask(levelMap: LevelMap): Memory {
+    let memory = this.stageMemories.get(levelMap.id)
 
     if (memory) {
       memory.resetVisible()
     } else {
-      this.stageMemories[levelMap.id] = memory = new Memory(
-        levelMap.width,
-        levelMap.height
-      )
+      memory = new Memory(levelMap.width, levelMap.height)
+
+      this.stageMemories.set(levelMap.id, memory)
     }
 
     buildFov(levelMap.creaturePos(this), this.visionRadius, memory, levelMap)
+
+    return memory
   }
 
   public abstract act(levelMap: LevelMap, game: Game): number
@@ -130,6 +138,10 @@ export abstract class Creature {
   }
 
   get visionRadius(): number {
+    if (this.hasImpact(ImpactType.Blind)) {
+      return 0
+    }
+
     return this.specie.visionRadius
   }
 
@@ -155,7 +167,7 @@ export abstract class Creature {
   public abstract addItem(item: Item, count: number): void
   public abstract removeItem(item: Item, count: number): void
 
-  protected statsTurn(): void {
+  public statsTurn(): void {
     this.health.turn()
 
     if (this._impactsBunch) {

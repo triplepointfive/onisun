@@ -64,7 +64,7 @@ export class Dispatcher extends MetaAI {
     } else if ((event = this.thrower.act(actor, levelMap, game))) {
     } else if ((event = this.chaser.act(actor, levelMap, game))) {
     } else {
-      event = new SelfHealer().act(actor, levelMap, game)
+      event = new SelfHealer().act(actor, levelMap)
     }
 
     this.resetEvents()
