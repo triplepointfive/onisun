@@ -1,13 +1,13 @@
-import { Trap, Tile, TrapType } from '../tile'
+import { Trap, TrapType, Tile } from '../tile'
 import { Game } from '../game'
 import { LevelMap } from '../level_map'
 import { Creature } from '../creature'
+import { TrapEvent } from '../../events/trap_event'
+import { Point } from '../../utils/utils'
 
-import { TrapEvent, TeleportationEvent, Point } from '../../../engine'
-
-export class TeleportationTrap extends Trap {
+export class LightTrap extends Trap {
   constructor(revealed: boolean = false) {
-    super(revealed, TrapType.Teleportation)
+    super(revealed, TrapType.Light)
   }
 
   public untrap(pos: Point, levelMap: LevelMap, game: Game): void {
@@ -15,14 +15,14 @@ export class TeleportationTrap extends Trap {
   }
 
   protected buildNew(): Tile {
-    return new TeleportationTrap(this.revealed)
+    return new LightTrap(this.revealed)
   }
 
   protected affect(game: Game, levelMap: LevelMap, creature: Creature): void {
     creature.on(
       new TrapEvent(
         this,
-        this.revealed ? 3 : 10,
+        5,
         levelMap,
         game,
         (sees, isPlayer) => {
@@ -33,7 +33,7 @@ export class TeleportationTrap extends Trap {
           }
         },
         (sees, isPlayer) => {
-          return creature.on(new TeleportationEvent(levelMap, game, false))
+          //return creature.on(new TeleportationEvent(levelMap, game, false))
         }
       )
     )

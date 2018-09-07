@@ -163,6 +163,11 @@ export class StairwayUp extends Stairway {
   }
 }
 
+export enum TrapType {
+  Teleportation,
+  Light,
+}
+
 export abstract class Trap extends Tile {
   constructor(public revealed: boolean = false, public readonly type: number) {
     super('^', TileTypes.Trap)
