@@ -52,8 +52,6 @@ export abstract class Creature {
 
   public dead: boolean = false
 
-  private impactsBunch: ImpactBunch | undefined
-
   public health: HealthStat
 
   constructor(public specie: Specie, public id: CreatureId = Creature.getId()) {
@@ -109,19 +107,25 @@ export abstract class Creature {
 
   public abstract act(levelMap: LevelMap, game: Game): number
 
-  public addImpact(type: ImpactType, effect: string): void {
-    if (!this.impactsBunch) {
-      this.impactsBunch = new ImpactBunch()
+  private _impactsBunch: ImpactBunch | undefined
+
+  get impactsBunch(): ImpactBunch {
+    if (!this._impactsBunch) {
+      this._impactsBunch = new ImpactBunch()
     }
 
+    return this._impactsBunch
+  }
+
+  public hasImpact(type: ImpactType): boolean {
+    return includes(this.impacts, type)
+  }
+
+  public addImpact(type: ImpactType, effect: string): void {
     this.impactsBunch.addConstImpact(type, effect)
   }
 
   public removeImpact(type: ImpactType, effect: string): void {
-    if (!this.impactsBunch) {
-      this.impactsBunch = new ImpactBunch()
-    }
-
     this.impactsBunch.removeConstImpact(type, effect)
   }
 
@@ -134,11 +138,7 @@ export abstract class Creature {
   }
 
   get impacts(): ImpactType[] {
-    if (this.impactsBunch) {
-      return this.impactsBunch.activeImpacts
-    }
-
-    return []
+    return this.impactsBunch.activeImpacts
   }
 
   public hasResistance(resistance: Resistance): boolean {
@@ -157,6 +157,11 @@ export abstract class Creature {
 
   protected statsTurn(): void {
     this.health.turn()
+
+    if (this._impactsBunch) {
+      // TODO: When ran out - disappear
+      this._impactsBunch.turn()
+    }
   }
 }
 

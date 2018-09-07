@@ -4,6 +4,7 @@ import { Specie } from './specie'
 import { Game } from './game'
 import { Modifier } from '../lib/attribute'
 import { Damage } from '../lib/damage'
+import { ImpactType } from '../lib/impact'
 
 export enum Usage {
   WeaponOneHand,
@@ -46,6 +47,8 @@ export class Item {
   public static getId(): ItemId {
     return this.lastId++
   }
+
+  public impacts: ImpactType[] = []
 
   constructor(
     public group: ItemGroup,

@@ -1,4 +1,11 @@
-import { InventorySlot, CreatureEvent, Game, Item, Armor } from '../../engine'
+import {
+  InventorySlot,
+  CreatureEvent,
+  Game,
+  Item,
+  Armor,
+  RemoveImpactEvent,
+} from '../../engine'
 import { Reaction, Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { findIndex } from 'lodash'
@@ -52,5 +59,9 @@ export class TakeOffItemEvent extends CreatureEvent {
         )
       })
     }
+
+    item.impacts.forEach(impact => {
+      player.on(new RemoveImpactEvent(impact, item.name, this.game))
+    })
   }
 }

@@ -4,6 +4,8 @@ import { LevelMap } from '../level_map'
 import { Creature } from '../creature'
 import { TrapEvent } from '../../events/trap_event'
 import { Point } from '../../utils/utils'
+import { AddImpactEvent } from '../../events/add_impact_event'
+import { ImpactType } from '../../lib/impact'
 
 export class LightTrap extends Trap {
   constructor(revealed: boolean = false) {
@@ -26,6 +28,7 @@ export class LightTrap extends Trap {
         levelMap,
         game,
         (sees, isPlayer) => {
+          // TODO: Light trap messages
           if (isPlayer) {
             game.logger.playerDodgesTeleportationTrap()
           } else if (sees) {
@@ -33,7 +36,9 @@ export class LightTrap extends Trap {
           }
         },
         (sees, isPlayer) => {
-          //return creature.on(new TeleportationEvent(levelMap, game, false))
+          return creature.on(
+            new AddImpactEvent(ImpactType.Blind, 'trap', game, 10)
+          )
         }
       )
     )

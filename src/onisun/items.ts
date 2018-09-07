@@ -11,6 +11,7 @@ import {
   Boots,
   ImpactType,
   DamageType,
+  AddImpactEvent,
 } from '../engine'
 import { HealPotion } from './potions'
 import { ProtectionType } from '../engine/models/items'
@@ -88,15 +89,9 @@ export const itemsPool = new Pool<null, Item>([
 ])
 
 export class LightSpeedBoots extends Boots {
+  public impacts: ImpactType[] = [ImpactType.Blind]
+
   constructor() {
     super('Кроссовки скорости света', 0.1, [])
-  }
-
-  public onPutOn(creature: Creature): void {
-    creature.addImpact(ImpactType.Blind, this.name)
-  }
-
-  public onTakeOff(creature: Creature): void {
-    creature.removeImpact(ImpactType.Blind, this.name)
   }
 }

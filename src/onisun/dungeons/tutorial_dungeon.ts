@@ -16,6 +16,7 @@ import {
   LogMessageTrigger,
   TeleportationTrap,
   Room,
+  LightTrap,
 } from '../../engine'
 import { rat } from '../creatures'
 
@@ -76,6 +77,9 @@ export class TutorialDungeon extends Dungeon {
         new LogMessageTrigger('Teleportation trap', false, new Room())
       )
       map.setTile(2, 6, new TeleportationTrap())
+
+      map.setTile(6, 6, new LogMessageTrigger('Light trap', false, new Room()))
+      map.setTile(8, 6, new LightTrap())
 
       return map
     })

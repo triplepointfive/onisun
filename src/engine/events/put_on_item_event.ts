@@ -4,6 +4,7 @@ import { Creature, Reaction } from '../models/creature'
 import { Player } from '../models/player'
 import { TakeOffItemEvent } from './take_off_item_event'
 import { Armor, Weapon } from '../models/items'
+import { AddImpactEvent } from './add_impact_event'
 
 export class PutOnItemEvent extends CreatureEvent {
   constructor(
@@ -49,8 +50,6 @@ export class PutOnItemEvent extends CreatureEvent {
   }
 
   private onPutOn(player: Player, item: Item): void {
-    // player.characteristics.addModifier(item.modifier)
-
     if (item instanceof Armor) {
       player.itemsProtections = player.itemsProtections.concat(item.protections)
     }
@@ -58,5 +57,9 @@ export class PutOnItemEvent extends CreatureEvent {
     if (item instanceof Weapon) {
       player.itemsDamages = player.itemsDamages.concat(item.damages)
     }
+
+    item.impacts.forEach(impact => {
+      player.on(new AddImpactEvent(impact, item.name, this.game))
+    })
   }
 }

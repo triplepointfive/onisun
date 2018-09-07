@@ -178,6 +178,7 @@ const STAIRWAY_UP = new StairwayUpD()
 const NULL_TILE = new DisplayTile('　', 0, 0, 0)
 
 const TELEPORTATION_TRAP = new DisplayTile('^', 0, 191, 255)
+const LIGHT_TRAP = new DisplayTile('^', 255, 255, 0)
 
 export class DisplayTileVisitor extends TileVisitor {
   public tile: DisplayTile
@@ -211,6 +212,9 @@ export class DisplayTileVisitor extends TileVisitor {
     switch (trap.type) {
     case TrapType.Teleportation:
       this.tile = TELEPORTATION_TRAP
+      break
+    case TrapType.Light:
+      this.tile = LIGHT_TRAP
       break
     }
   }
