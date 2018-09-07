@@ -177,6 +177,10 @@ export class Logger {
     )
   }
 
+  public canNotUntrap(): void {
+    this.addMessage(LogLevel.INFO, `Не представляю, как это обезвредить`)
+  }
+
   public pickedUpItem(item: Item, count: number): void {
     if (count === 1) {
       this.addMessage(LogLevel.INFO, `You picked up ${item.name}`)

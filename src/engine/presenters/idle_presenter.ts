@@ -14,6 +14,7 @@ import {
   LevelMap,
   LookPresenter,
   UntrapEvent,
+  Point,
 } from '../../engine'
 import { InventoryPresenter } from './inventory_presenter'
 import { MissilePresenter } from './missile_presenter'
@@ -28,6 +29,7 @@ class HandleTileVisitor extends TileVisitor {
   public commands: [string, CreatureEvent][] = []
 
   constructor(
+    public position: Point,
     private game: Game,
     private levelMap: LevelMap,
     private player: Player
@@ -57,7 +59,7 @@ class HandleTileVisitor extends TileVisitor {
 
     this.commands.push([
       'untrap',
-      new UntrapEvent(trap, this.levelMap, this.game),
+      new UntrapEvent(this.position, trap, this.levelMap, this.game),
     ])
   }
 }
@@ -140,8 +142,15 @@ export class IdlePresenter extends Presenter {
   }
 
   public handleCommand(): void {
-    let visitor = new HandleTileVisitor(this.game, this.levelMap, this.player),
+    let pos = this.levelMap.creaturePos(this.player),
+      visitor = new HandleTileVisitor(
+        pos,
+        this.game,
+        this.levelMap,
+        this.player
+      ),
       adjustVisitor = new AdjustHandleTileVisitor(
+        pos,
         this.game,
         this.levelMap,
         this.player
@@ -149,12 +158,10 @@ export class IdlePresenter extends Presenter {
 
     this.tile.visit(visitor)
 
-    this.levelMap
-      .creaturePos(this.player)
-      .wrappers()
-      .forEach(({ x, y }) => {
-        this.levelMap.at(x, y).visit(adjustVisitor)
-      })
+    pos.wrappers().forEach((point: Point) => {
+      adjustVisitor.position = point
+      this.levelMap.at(point.x, point.y).visit(adjustVisitor)
+    })
 
     const commands = concat(visitor.commands, adjustVisitor.commands)
 

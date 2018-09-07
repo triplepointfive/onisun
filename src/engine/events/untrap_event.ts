@@ -4,9 +4,11 @@ import { Player } from '../models/player'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
 import { Trap } from '../models/tile'
+import { Point } from '../utils/utils'
 
 export class UntrapEvent extends CreatureEvent {
   constructor(
+    private trapPosition: Point,
     private trap: Trap,
     private levelMap: LevelMap,
     private game: Game
@@ -19,7 +21,7 @@ export class UntrapEvent extends CreatureEvent {
   }
 
   public affectPlayer(player: Player): Reaction {
-    console.log('untrap')
+    this.trap.untrap(this.trapPosition, this.levelMap, this.game)
     return Reaction.NOTHING
   }
 }

@@ -176,6 +176,8 @@ export abstract class Trap extends Tile {
     this.affect(game, levelMap, actor)
   }
 
+  public abstract untrap(pos: Point, levelMap: LevelMap, game: Game): void
+
   protected abstract affect(
     game: Game,
     levelMap: LevelMap,

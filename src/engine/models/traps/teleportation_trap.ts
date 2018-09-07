@@ -3,7 +3,7 @@ import { Game } from '../game'
 import { LevelMap } from '../level_map'
 import { Creature } from '../creature'
 
-import { TrapEvent, TeleportationEvent } from '../../../engine'
+import { TrapEvent, TeleportationEvent, Point } from '../../../engine'
 
 export enum TrapType {
   Teleportation,
@@ -12,6 +12,10 @@ export enum TrapType {
 export class TeleportationTrap extends Trap {
   constructor(revealed: boolean = false) {
     super(revealed, TrapType.Teleportation)
+  }
+
+  public untrap(pos: Point, levelMap: LevelMap, game: Game): void {
+    game.logger.canNotUntrap()
   }
 
   protected buildNew(): Tile {
