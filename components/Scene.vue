@@ -176,6 +176,10 @@ export default Vue.extend({
   watch: {
     interval() {
       this.initViewport()
+    },
+    level() {
+      clearInterval(this.drawInterval)
+      this.initViewport()
     }
   }
 })

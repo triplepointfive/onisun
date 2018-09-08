@@ -27,7 +27,7 @@ tiles.set('R', () => new Floor('R', TileTypes.Floor))
 tiles.set('D', () => new Door())
 
 const initId: number = 1,
-  ratId = initId + 1
+  secondId = initId + 1
 
 export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
@@ -81,10 +81,12 @@ export class TutorialDungeon extends Dungeon {
       map.setTile(6, 6, new LogMessageTrigger('Light trap', false, new Room()))
       map.setTile(8, 6, new LightTrap(new Room()))
 
+      map.setTile(5, 2, new StairwayDown(map, secondId))
+
       return map
     })
 
-    game.addMap(ratId, (id, game) => {
+    game.addMap(secondId, (id, game) => {
       let map = this.generateMap(id, [
         'WWWWW',
         'WRRRW',
@@ -93,10 +95,9 @@ export class TutorialDungeon extends Dungeon {
         'WWWWW',
       ])
       map.name = '2nd'
-      map.setTile(2, 2, new TeleportationTrap(new Room()))
-      map.addCreature(new Point(2, 4), rat())
-      // map.setTile(3, 1, new StairwayDown(map, downId))
-      // map.setTile(1, 1, new StairwayUp(map, upId))
+
+      map.setTile(2, 1, new StairwayUp(map, initId))
+
       return map
     })
   }
