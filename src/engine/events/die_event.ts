@@ -45,7 +45,7 @@ export class DieEvent extends CreatureEvent {
       this.game
     )
     player.dead = true
-    this.game.ai = player.ai
+    this.game.playerTurn = true
 
     return Reaction.DIE
   }

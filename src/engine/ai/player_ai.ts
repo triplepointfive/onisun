@@ -20,18 +20,18 @@ export class AINewLevelEvent extends AIEvent {
   }
 
   public run(): void {
-    if (!this.game.ai) {
+    if (!this.game.playerTurn) {
       throw 'AINewLevelEvent.run: game.ai is undefined'
     }
 
     if (this.level % 3 === 0) {
-      this.game.ai.presenter = new ProfessionPickingPresenter(
+      this.game.player.ai.presenter = new ProfessionPickingPresenter(
         this.level,
         this.levelMap,
         this.game
       )
     } else {
-      this.game.ai.presenter = new TalentsTreePresenter(
+      this.game.player.ai.presenter = new TalentsTreePresenter(
         this.level,
         this.levelMap,
         this.game
@@ -54,11 +54,11 @@ export class AIDieEvent extends AIEvent {
   }
 
   public run(): void {
-    if (!this.game.ai) {
+    if (!this.game.playerTurn) {
       throw 'AINewLevelEvent.run: game.ai is undefined'
     }
 
-    this.game.ai.presenter = new DeathPresenter(
+    this.game.player.ai.presenter = new DeathPresenter(
       this.dieReason,
       this.levelMap,
       this.game
@@ -76,13 +76,13 @@ export class AITeleportationEvent extends AIEvent {
   }
 
   public run(): void {
-    if (!this.game.ai) {
+    if (!this.game.playerTurn) {
       throw 'AINewLevelEvent.run: game.ai is undefined'
     }
 
     // TODO: Rethink whether should be here
     this.game.player.rebuildVision(this.levelMap)
-    this.game.ai.presenter = new TeleportationPresenter(
+    this.game.player.ai.presenter = new TeleportationPresenter(
       this.levelMap,
       this.game
     )
@@ -108,7 +108,7 @@ export class PlayerAI extends MetaAI {
     this.levelMap = levelMap
 
     this.presenter = new IdlePresenter(levelMap, this.game)
-    this.game.ai = this
+    this.game.playerTurn = true
 
     return
   }
@@ -125,7 +125,7 @@ export class PlayerAI extends MetaAI {
         event.run()
       } else {
         this.game.player.ai.runEvents()
-        this.game.ai = null
+        this.game.playerTurn = false
         this.presenter = null
       }
     }

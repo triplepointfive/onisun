@@ -21,9 +21,9 @@
   )
 
   component(
-    v-if='game.ai'
+    v-if='game.playerTurn'
     :is='viewComponent'
-    :screen='game.ai.presenter'
+    :screen='game.player.ai.presenter'
     ref="viewComponent"
     )
 </template>
@@ -68,7 +68,7 @@ export default Vue.extend({
   },
   computed: {
     viewComponent(): VueConstructor | undefined {
-      switch (this.game.ai && this.game.ai.presenter && this.game.ai.presenter.type) {
+      switch (this.game.playerTurn && this.game.player.ai.presenter && this.game.player.ai.presenter.type) {
       case PresenterType.AbilitiesPicking:
         return TalentsTreeView
       case PresenterType.ProfessionPicking:
@@ -90,7 +90,7 @@ export default Vue.extend({
       case PresenterType.PickHandleOption:
         return PickSingleOptionView
       default:
-        throw `App: unknown presenter ${this.game.ai.presenter}`
+        throw `App: unknown presenter ${this.game.player.ai.presenter}`
       }
     }
   },

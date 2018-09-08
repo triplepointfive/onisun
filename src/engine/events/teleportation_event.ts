@@ -41,7 +41,7 @@ export class TeleportationEvent extends VisibleCreatureEvent {
       }
 
       player.ai.pushEvent(new AITeleportationEvent(this.levelMap, this.game))
-      this.game.ai = player.ai
+      this.game.playerTurn = true
     } else if (this.teleport(player)) {
       if (!this.selfCast) {
         this.game.logger.playerTeleported()

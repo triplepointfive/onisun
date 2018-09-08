@@ -3,14 +3,13 @@ import { TileEffect } from './tile_effect'
 import { LevelMapId, LevelMap } from './level_map'
 import { Logger } from './logger'
 import { Player } from './player'
-import { PlayerAI } from '../../engine'
 
 type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
 
 export abstract class Game {
   public logger: Logger = new Logger()
   public currentMap: LevelMap | undefined
-  public ai: PlayerAI | null = null
+  public playerTurn: boolean = false
   public running: boolean = false
   public effect: TileEffect | null = null
 
@@ -22,7 +21,7 @@ export abstract class Game {
   ) {}
 
   public turn() {
-    if (this.running || (this.ai && !this.effect)) {
+    if (this.running || (this.playerTurn && !this.effect)) {
       return
     }
     this.running = true
@@ -42,7 +41,7 @@ export abstract class Game {
 
       this.running = false
     } else {
-      while (!this.player.dead && !this.ai) {
+      while (!this.player.dead && !this.playerTurn) {
         this.levelMapTurn()
       }
 
