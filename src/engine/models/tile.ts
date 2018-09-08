@@ -187,9 +187,11 @@ export abstract class Trap extends Tile {
     tileVisitor.onTrap(this)
   }
 
-  public activate(game: Game, levelMap: LevelMap, actor: Creature): void {
-    this.affect(game, levelMap, actor)
-  }
+  public abstract activate(
+    game: Game,
+    levelMap: LevelMap,
+    actor: Creature
+  ): void
 
   protected disarmTile(
     { x, y }: Point,
@@ -206,12 +208,6 @@ export abstract class Trap extends Tile {
     player: Player,
     levelMap: LevelMap,
     game: Game
-  ): void
-
-  protected abstract affect(
-    game: Game,
-    levelMap: LevelMap,
-    actor: Creature
   ): void
 }
 

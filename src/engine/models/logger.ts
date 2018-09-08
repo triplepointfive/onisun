@@ -215,8 +215,14 @@ export class Logger {
     this.addMessage(LogLevel.WARNING, `Я чуть не упал в яму`)
   }
 
-  public creatureDodgesHole(player: Player, actor: Creature): void {
-    this.addMessage(LogLevel.WARNING, `${actor.name} чуть не упал в яму`)
+  public creatureDodgesHole(
+    sees: boolean,
+    player: Player,
+    actor: Creature
+  ): void {
+    if (sees) {
+      this.addMessage(LogLevel.WARNING, `${actor.name} чуть не упал в яму`)
+    }
   }
 
   public playerActivatedHole(player: Player): void {
@@ -227,12 +233,24 @@ export class Logger {
     this.addMessage(LogLevel.INFO, `Я упал в неглубокую яму`)
   }
 
-  public creatureActivatedHole(player: Player, actor: Creature): void {
-    this.addMessage(LogLevel.WARNING, `${actor.name} упал в яму`)
+  public creatureActivatedHole(
+    sees: boolean,
+    player: Player,
+    actor: Creature
+  ): void {
+    if (sees) {
+      this.addMessage(LogLevel.WARNING, `${actor.name} упал в яму`)
+    }
   }
 
-  public creatureActivatedShallowHole(player: Player, actor: Creature): void {
-    this.addMessage(LogLevel.INFO, `${actor} упал в неглубокую яму`)
+  public creatureActivatedShallowHole(
+    sees: boolean,
+    player: Player,
+    actor: Creature
+  ): void {
+    if (sees) {
+      this.addMessage(LogLevel.INFO, `${actor} упал в неглубокую яму`)
+    }
   }
 
   public canNotUntrap(): void {

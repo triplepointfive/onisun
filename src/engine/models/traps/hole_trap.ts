@@ -34,7 +34,7 @@ export class HoleTrap extends Trap {
     game.logger.canNotUntrap()
   }
 
-  protected affect(game: Game, levelMap: LevelMap, creature: Creature): void {
+  public activate(game: Game, levelMap: LevelMap, creature: Creature): void {
     creature.on(
       new TrapEvent(
         this,
@@ -44,8 +44,8 @@ export class HoleTrap extends Trap {
         (sees, isPlayer) => {
           if (isPlayer) {
             game.logger.playerDodgesHole(game.player)
-          } else if (sees) {
-            game.logger.creatureDodgesHole(game.player, creature)
+          } else {
+            game.logger.creatureDodgesHole(sees, game.player, creature)
           }
         },
         (sees, isPlayer) => {
@@ -73,13 +73,13 @@ export class HoleTrap extends Trap {
             }
           } else {
             if (fallEvent) {
-              if (sees) {
-                game.logger.creatureActivatedHole(game.player, creature)
-              }
+              game.logger.creatureActivatedHole(sees, game.player, creature)
             } else {
-              if (sees) {
-                game.logger.creatureActivatedShallowHole(game.player, creature)
-              }
+              game.logger.creatureActivatedShallowHole(
+                sees,
+                game.player,
+                creature
+              )
 
               fallEvent = new StayEvent(levelMap)
               hurtEvent = undefined

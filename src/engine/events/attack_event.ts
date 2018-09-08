@@ -5,7 +5,7 @@ import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
 import { Calculator } from '../lib/calculator'
 import { HurtEvent } from './hurt_event'
-import { DieReason } from './die_event';
+import { DieReason } from './die_event'
 
 export class AttackEvent extends CreatureEvent {
   constructor(
@@ -54,7 +54,12 @@ export class AttackEvent extends CreatureEvent {
       return Reaction.DODGE
     }
 
-    const hurtEvent = new HurtEvent(actor.damages, DieReason.Attack, this.levelMap, this.game),
+    const hurtEvent = new HurtEvent(
+        actor.damages,
+        DieReason.Attack,
+        this.levelMap,
+        this.game
+      ),
       reaction = this.victim.on(hurtEvent)
 
     switch (reaction) {

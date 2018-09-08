@@ -1,10 +1,9 @@
-import { Trap, Tile, TrapType } from '../tile'
+import { Point, TeleportationEvent, TrapEvent } from '../../../engine'
+import { Creature } from '../creature'
 import { Game } from '../game'
 import { LevelMap } from '../level_map'
-import { Creature } from '../creature'
-
-import { TrapEvent, TeleportationEvent, Point } from '../../../engine'
 import { Player } from '../player'
+import { Tile, Trap, TrapType } from '../tile'
 
 export class TeleportationTrap extends Trap {
   constructor(tile: Tile, revealed: boolean = false) {
@@ -24,7 +23,7 @@ export class TeleportationTrap extends Trap {
     return new TeleportationTrap(this.tile, this.revealed)
   }
 
-  protected affect(game: Game, levelMap: LevelMap, creature: Creature): void {
+  public activate(game: Game, levelMap: LevelMap, creature: Creature): void {
     creature.on(
       new TrapEvent(
         this,

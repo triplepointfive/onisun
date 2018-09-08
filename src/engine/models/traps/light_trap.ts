@@ -22,7 +22,7 @@ export class LightTrap extends Trap {
   ): void {
     if (Calculator.chance(1, 3)) {
       game.logger.failedToUntrap(player)
-      this.affect(game, levelMap, player)
+      this.activate(game, levelMap, player)
     } else {
       this.disarmTile(pos, player, levelMap, game)
     }
@@ -32,7 +32,7 @@ export class LightTrap extends Trap {
     return new LightTrap(this.tile, this.revealed)
   }
 
-  protected affect(game: Game, levelMap: LevelMap, creature: Creature): void {
+  public activate(game: Game, levelMap: LevelMap, creature: Creature): void {
     creature.on(
       new TrapEvent(
         this,

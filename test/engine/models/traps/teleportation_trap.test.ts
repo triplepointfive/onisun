@@ -3,6 +3,7 @@ import {
   generateCreature,
   generateGame,
   generateLevelMap,
+  testTiles,
 } from '../../helpers'
 import {
   TeleportationTrap,
@@ -11,6 +12,7 @@ import {
   Game,
   LevelMap,
   Point,
+  Room,
 } from '../../../../src/engine'
 
 describe('TeleportationTrap', () => {
@@ -24,9 +26,20 @@ describe('TeleportationTrap', () => {
 
     Calculator.dodges = jest.fn()
 
-    player.rebuildVision(map)
+    trap = new TeleportationTrap(new Room())
+  })
 
-    trap = new TeleportationTrap()
+  it('buildNew', () => {
+    expect(trap.clone()).toBeInstanceOf(TeleportationTrap)
+  })
+
+  it('disarm fails', () => {
+    map.setTile(1, 2, trap)
+
+    trap.untrap(new Point(1, 2), player, map, game)
+
+    expect(map.at(1, 2)).toEqual(trap)
+    expect(game.logger.messages.length).toEqual(1)
   })
 
   describe('creature', () => {
