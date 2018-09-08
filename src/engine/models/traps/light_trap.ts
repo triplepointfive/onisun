@@ -36,7 +36,7 @@ export class LightTrap extends Trap {
     creature.on(
       new TrapEvent(
         this,
-        this.revealed ? 0 : 10,
+        this.revealed ? 1 : 10,
         levelMap,
         game,
         (sees, isPlayer) => {

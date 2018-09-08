@@ -20,14 +20,24 @@ export abstract class Game {
     public professionPicker: ProfessionPicker
   ) {}
 
-  public turn() {
-    if (this.running || (this.playerTurn && !this.effect)) {
+  public turn(): void {
+    if (this.running || (this.player.ai.presenter && !this.effect)) {
       return
     }
     this.running = true
 
+    this.mutexTurn()
+
+    this.running = false
+  }
+
+  protected mutexTurn(): void {
+    if (this.player.ai.runEvents()) {
+      return
+    }
+
     if (!this.currentMap) {
-      throw 'levelMapTurn: Map is undefined'
+      throw 'mutexTurn: Map is undefined'
     }
 
     if (this.effect) {
@@ -38,8 +48,6 @@ export abstract class Game {
         this.effect.onDone()
         this.effect = null
       }
-
-      this.running = false
     } else {
       while (!this.player.dead && !this.playerTurn) {
         this.levelMapTurn()
@@ -47,8 +55,6 @@ export abstract class Game {
 
       this.player.rebuildVision(this.currentMap)
     }
-
-    this.running = false
   }
 
   public getMap(id: LevelMapId): LevelMap {

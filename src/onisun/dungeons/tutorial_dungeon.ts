@@ -17,8 +17,9 @@ import {
   TeleportationTrap,
   Room,
   LightTrap,
+  HoleTrap,
 } from '../../engine'
-import { rat } from '../creatures'
+import { rat, golem } from '../creatures'
 
 const tiles: Map<string, () => Tile> = new Map()
 tiles.set('C', () => new Corridor('C', TileTypes.Floor))
@@ -33,7 +34,7 @@ export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
     const levelMap = (game.currentMap = game.getMap(initId))
 
-    levelMap.addCreature(new Point(5, 2), player)
+    levelMap.addCreature(new Point(2, 9), player)
   }
 
   public register(game: Game): void {
@@ -81,6 +82,9 @@ export class TutorialDungeon extends Dungeon {
       map.setTile(6, 6, new LogMessageTrigger('Light trap', false, new Room()))
       map.setTile(8, 6, new LightTrap(new Room()))
 
+      map.setTile(4, 10, new LogMessageTrigger('Hole trap', false, new Room()))
+      map.setTile(2, 10, new HoleTrap(new Room()))
+
       map.setTile(5, 2, new StairwayDown(map, secondId))
 
       return map
@@ -97,6 +101,8 @@ export class TutorialDungeon extends Dungeon {
       map.name = '2nd'
 
       map.setTile(2, 1, new StairwayUp(map, initId))
+
+      map.addCreature(new Point(1, 1), golem())
 
       return map
     })

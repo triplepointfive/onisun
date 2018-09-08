@@ -22,7 +22,7 @@ export abstract class Dungeon {
   private addStairs(map: LevelMap, tile: Tile): LevelMap {
     withMatchingTile(
       map,
-      tile => tile.isFloor() && tile.passibleThrough(),
+      tile => tile.free(),
       (x, y) => {
         map.setTile(x, y, tile)
       }

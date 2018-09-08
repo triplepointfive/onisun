@@ -30,6 +30,10 @@ export abstract class Tile {
     this.items.put(item, count)
   }
 
+  public free(creature?: Creature): boolean {
+    return this.isFloor() && this.passibleThrough(creature)
+  }
+
   public isFloor(): boolean {
     return this.kind === TileTypes.Floor
   }
@@ -167,6 +171,7 @@ export class StairwayUp extends Stairway {
 export enum TrapType {
   Teleportation,
   Light,
+  Hole,
 }
 
 export abstract class Trap extends Tile {

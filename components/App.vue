@@ -68,7 +68,11 @@ export default Vue.extend({
   },
   computed: {
     viewComponent(): VueConstructor | undefined {
-      switch (this.game.playerTurn && this.game.player.ai.presenter && this.game.player.ai.presenter.type) {
+      if (!this.game.playerTurn || !this.game.player.ai.presenter) {
+        return
+      }
+
+      switch (this.game.player.ai.presenter.type) {
       case PresenterType.AbilitiesPicking:
         return TalentsTreeView
       case PresenterType.ProfessionPicking:

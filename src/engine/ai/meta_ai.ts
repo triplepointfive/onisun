@@ -42,11 +42,14 @@ export abstract class MetaAI extends AI {
     this.events = []
   }
 
-  public runEvents(): void {
+  public runEvents(): boolean {
+    let res = false
     this.events.forEach(event => {
+      res = true
       event.run()
     })
 
     this.resetEvents()
+    return res
   }
 }

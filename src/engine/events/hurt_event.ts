@@ -11,6 +11,7 @@ export class HurtEvent extends CreatureEvent {
 
   constructor(
     private damages: Damage[],
+    private dieReason: DieReason,
     private levelMap: LevelMap,
     private game: Game
   ) {
@@ -39,7 +40,7 @@ export class HurtEvent extends CreatureEvent {
     }
 
     if (damage >= subject.health.currentValue) {
-      subject.on(new DieEvent(this.game, this.levelMap, DieReason.Attack))
+      subject.on(new DieEvent(this.game, this.levelMap, this.dieReason))
       return Reaction.DIE
     } else if (damage <= 0) {
       return Reaction.NOTHING

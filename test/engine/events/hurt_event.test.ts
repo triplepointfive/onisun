@@ -4,6 +4,7 @@ import {
   HurtEvent,
   LevelMap,
   Point,
+  DieReason,
 } from '../../../src/engine'
 import { generateCreature, generateGame, generateLevelMap } from '../helpers'
 
@@ -18,6 +19,7 @@ describe('HurtEvent', () => {
 
     event = new HurtEvent(
       [{ type: DamageType.Pure, dice: { times: 0, max: 0 }, extra: 10 }],
+      DieReason.Attack,
       map,
       game
     )

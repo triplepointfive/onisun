@@ -20,10 +20,6 @@ export class AINewLevelEvent extends AIEvent {
   }
 
   public run(): void {
-    if (!this.game.playerTurn) {
-      throw 'AINewLevelEvent.run: game.ai is undefined'
-    }
-
     if (this.level % 3 === 0) {
       this.game.player.ai.presenter = new ProfessionPickingPresenter(
         this.level,
@@ -54,10 +50,7 @@ export class AIDieEvent extends AIEvent {
   }
 
   public run(): void {
-    if (!this.game.playerTurn) {
-      throw 'AINewLevelEvent.run: game.ai is undefined'
-    }
-
+    this.game.playerTurn = true
     this.game.player.ai.presenter = new DeathPresenter(
       this.dieReason,
       this.levelMap,
@@ -76,12 +69,9 @@ export class AITeleportationEvent extends AIEvent {
   }
 
   public run(): void {
-    if (!this.game.playerTurn) {
-      throw 'AINewLevelEvent.run: game.ai is undefined'
-    }
-
     // TODO: Rethink whether should be here
     this.game.player.rebuildVision(this.levelMap)
+    this.game.playerTurn = true
     this.game.player.ai.presenter = new TeleportationPresenter(
       this.levelMap,
       this.game

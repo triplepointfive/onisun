@@ -59,8 +59,7 @@ export class TeleportationEvent extends VisibleCreatureEvent {
     try {
       withMatchingTile(
         this.levelMap,
-        // TODO: Extract to a method or post-function
-        tile => tile.isFloor() && tile.passibleThrough(),
+        tile => tile.free(),
         (x, y) => {
           teleported = true
           actor.on(new MoveEvent(this.game, this.levelMap, new Point(x, y)))

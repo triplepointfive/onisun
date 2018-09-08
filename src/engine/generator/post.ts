@@ -114,6 +114,7 @@ export const centralize = function(level: LevelMap): LevelMap {
 }
 
 // TODO: Move away from generators
+// TODO: Do not throw
 export const withMatchingTile = function(
   level: LevelMap,
   match: (tile: Tile) => boolean,
@@ -134,4 +135,35 @@ export const withMatchingTile = function(
   }
 
   throw 'post add failed to add tile'
+}
+
+export const safeWithMatchingTile = function(
+  level: LevelMap,
+  match: (tile: Tile) => boolean
+): { tile: Tile; x: number; y: number } | undefined {
+  let iters = level.width * level.height
+
+  while (iters > 0) {
+    const x = random(0, level.width - 1),
+      y = random(0, level.height - 1),
+      tile = level.at(x, y)
+
+    if (match(tile)) {
+      return { tile, x, y }
+    }
+
+    iters--
+  }
+}
+
+export const withEachTile = function(
+  level: LevelMap,
+  match: (tile: Tile) => boolean,
+  onValid: (tile: Tile, x: number, y: number) => void
+): void {
+  level.each((tile, x, y) => {
+    if (match(tile)) {
+      onValid(tile, x, y)
+    }
+  })
 }
