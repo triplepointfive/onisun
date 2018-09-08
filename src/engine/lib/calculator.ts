@@ -15,6 +15,10 @@ export class Calculator {
     )
   }
 
+  public static chance(hit: number, of: number): boolean {
+    return random(1, of) <= hit
+  }
+
   // Function result varies from 0 to 1. Ratio defines the speed of growing.
   // E.g. dodges(10, 1) = 0.93
   //      dodges(10, 5) = 0.7

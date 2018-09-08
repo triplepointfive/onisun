@@ -4,6 +4,7 @@ import { LevelMap, LevelMapId } from './level_map'
 import { Item } from './items'
 import { Game } from './game'
 import { ItemsBunch } from '../lib/bunch'
+import { Player } from './player'
 
 export enum TileTypes {
   Wall,
@@ -47,13 +48,13 @@ export abstract class Tile {
 
   public abstract visit(tileVisitor: TileVisitor): void
 
-  public clone(): Tile {
-    let tile = this.buildNew()
+  public clone(from: Tile = this): Tile {
+    let tile = this.buildNew() // TODO: Rethink & make clear
 
-    if (this.creature) {
-      tile.creature = this.creature
+    if (from.creature) {
+      tile.creature = from.creature
     }
-    tile.items = this.items && this.items.clone()
+    tile.items = from.items && from.items.clone()
     return tile
   }
 
@@ -169,7 +170,11 @@ export enum TrapType {
 }
 
 export abstract class Trap extends Tile {
-  constructor(public revealed: boolean = false, public readonly type: number) {
+  constructor(
+    public readonly type: number,
+    public tile: Tile,
+    public revealed: boolean = false
+  ) {
     super('^', TileTypes.Trap)
   }
 
@@ -181,7 +186,22 @@ export abstract class Trap extends Tile {
     this.affect(game, levelMap, actor)
   }
 
-  public abstract untrap(pos: Point, levelMap: LevelMap, game: Game): void
+  protected disarmTile(
+    { x, y }: Point,
+    player: Player,
+    levelMap: LevelMap,
+    game: Game
+  ): void {
+    game.logger.succeededToUntrap(player)
+    levelMap.setTile(x, y, this.tile.clone(this))
+  }
+
+  public abstract untrap(
+    pos: Point,
+    player: Player,
+    levelMap: LevelMap,
+    game: Game
+  ): void
 
   protected abstract affect(
     game: Game,

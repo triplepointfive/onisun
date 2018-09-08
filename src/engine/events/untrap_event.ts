@@ -21,7 +21,7 @@ export class UntrapEvent extends CreatureEvent {
   }
 
   public affectPlayer(player: Player): Reaction {
-    this.trap.untrap(this.trapPosition, this.levelMap, this.game)
+    this.trap.untrap(this.trapPosition, player, this.levelMap, this.game)
     return Reaction.NOTHING
   }
 }

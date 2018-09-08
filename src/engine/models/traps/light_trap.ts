@@ -1,23 +1,35 @@
 import { Trap, TrapType, Tile } from '../tile'
 import { Game } from '../game'
 import { LevelMap } from '../level_map'
-import { Creature } from '../creature'
+import { Creature, Reaction } from '../creature'
 import { TrapEvent } from '../../events/trap_event'
 import { Point } from '../../utils/utils'
 import { AddImpactEvent } from '../../events/add_impact_event'
 import { ImpactType } from '../../lib/impact'
+import { Calculator } from '../../lib/calculator'
+import { Player } from '../player'
 
 export class LightTrap extends Trap {
-  constructor(revealed: boolean = false) {
-    super(revealed, TrapType.Light)
+  constructor(tile: Tile, revealed: boolean = false) {
+    super(TrapType.Light, tile, revealed)
   }
 
-  public untrap(pos: Point, levelMap: LevelMap, game: Game): void {
-    game.logger.canNotUntrap()
+  public untrap(
+    pos: Point,
+    player: Player,
+    levelMap: LevelMap,
+    game: Game
+  ): void {
+    if (Calculator.chance(1, 3)) {
+      game.logger.failedToUntrap(player)
+      this.affect(game, levelMap, player)
+    } else {
+      this.disarmTile(pos, player, levelMap, game)
+    }
   }
 
   protected buildNew(): Tile {
-    return new LightTrap(this.revealed)
+    return new LightTrap(this.tile, this.revealed)
   }
 
   protected affect(game: Game, levelMap: LevelMap, creature: Creature): void {
@@ -28,14 +40,23 @@ export class LightTrap extends Trap {
         levelMap,
         game,
         (sees, isPlayer) => {
-          // TODO: Light trap messages
           if (isPlayer) {
-            game.logger.playerDodgesTeleportationTrap()
+            game.logger.playerDodgesBlindTrap(game.player)
           } else if (sees) {
-            game.logger.creatureDodgesTeleportationTrap(creature)
+            game.logger.creatureLighted(game.player, creature)
           }
         },
         (sees, isPlayer) => {
+          if (creature.hasImpact(ImpactType.Blind)) {
+            return Reaction.NOTHING
+          }
+
+          if (isPlayer) {
+            game.logger.playerActivatedLightTrap(game.player)
+          } else {
+            game.logger.creatureLighted(game.player, creature)
+          }
+
           return creature.on(
             new AddImpactEvent(ImpactType.Blind, 'trap', game, 10)
           )

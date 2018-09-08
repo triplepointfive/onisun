@@ -76,10 +76,10 @@ export class TutorialDungeon extends Dungeon {
         6,
         new LogMessageTrigger('Teleportation trap', false, new Room())
       )
-      map.setTile(2, 6, new TeleportationTrap())
+      map.setTile(2, 6, new TeleportationTrap(new Room()))
 
       map.setTile(6, 6, new LogMessageTrigger('Light trap', false, new Room()))
-      map.setTile(8, 6, new LightTrap())
+      map.setTile(8, 6, new LightTrap(new Room()))
 
       return map
     })
@@ -93,7 +93,7 @@ export class TutorialDungeon extends Dungeon {
         'WWWWW',
       ])
       map.name = '2nd'
-      map.setTile(2, 2, new TeleportationTrap())
+      map.setTile(2, 2, new TeleportationTrap(new Room()))
       map.addCreature(new Point(2, 4), rat())
       // map.setTile(3, 1, new StairwayDown(map, downId))
       // map.setTile(1, 1, new StairwayUp(map, upId))

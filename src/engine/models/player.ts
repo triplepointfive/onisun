@@ -41,7 +41,7 @@ export class Player extends Creature {
     this.strength = new StrengthStat(strengthValue)
     this.dexterity = new Stat(2)
     this.constitution = new Stat(constitutionValue)
-    this.intelligence = new Stat(2)
+    this.intelligence = new Stat(10)
     this.wisdom = new Stat(2)
     this.charisma = new Stat(2)
 

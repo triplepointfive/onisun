@@ -2,7 +2,7 @@ import { Creature } from './creature'
 import { Item, Potion } from './items'
 
 import { last } from 'lodash'
-import { Player } from './player';
+import { Player } from './player'
 
 export enum LogLevel {
   DEBUG,
@@ -25,11 +25,21 @@ export class Logger {
     this.messages = []
   }
 
-  public hurtMessage(player: Player, damage: number, actor: Creature, target: Creature) {
+  public hurtMessage(
+    player: Player,
+    damage: number,
+    actor: Creature,
+    target: Creature
+  ) {
     this.debug(`${target.name} got ${damage} damage from ${actor.name}`)
   }
 
-  public killMessage(player: Player, damage: number, actor: Creature, target: Creature) {
+  public killMessage(
+    player: Player,
+    damage: number,
+    actor: Creature,
+    target: Creature
+  ) {
     this.warning(
       `${target.name} got ${damage} damage from ${
         actor.name
@@ -41,7 +51,12 @@ export class Logger {
     this.debug(`${actor.name} misses ${target.name}!`)
   }
 
-  public throwMissMessage(player: Player, actor: Creature, target: Creature, missile: Item) {
+  public throwMissMessage(
+    player: Player,
+    actor: Creature,
+    target: Creature,
+    missile: Item
+  ) {
     this.debug(
       `${actor.name} throws ${missile.name} in ${target.name}, but misses!`
     )
@@ -155,6 +170,17 @@ export class Logger {
     )
   }
 
+  public creatureLighted(player: Player, actor: Creature): void {
+    this.addMessage(
+      LogLevel.INFO,
+      `${actor.name} озарился яркой вспышкой света`
+    )
+  }
+
+  public playerActivatedLightTrap(player: Player): void {
+    this.addMessage(LogLevel.INFO, `Яркая вспышка света ослепила меня`)
+  }
+
   public playerTeleportationCaused(): void {
     this.addMessage(LogLevel.INFO, `Что-то заставило меня телепортироваться`)
   }
@@ -181,8 +207,23 @@ export class Logger {
     )
   }
 
+  public playerDodgesBlindTrap(player: Player): void {
+    this.addMessage(LogLevel.INFO, `Вспышка света чуть не ослепила меня`)
+  }
+
   public canNotUntrap(): void {
     this.addMessage(LogLevel.INFO, `Не представляю, как это обезвредить`)
+  }
+
+  public failedToUntrap(player: Player): void {
+    this.addMessage(
+      LogLevel.WARNING,
+      `У меня не получилось обезвредить ловушку`
+    )
+  }
+
+  public succeededToUntrap(player: Player): void {
+    this.addMessage(LogLevel.INFO, `Успешно обезвредил ловушку`)
   }
 
   public pickedUpItem(item: Item, count: number): void {

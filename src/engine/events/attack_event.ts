@@ -59,10 +59,20 @@ export class AttackEvent extends CreatureEvent {
     switch (reaction) {
       case Reaction.DIE:
         actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
-        this.game.logger.killMessage(this.game.player, hurtEvent.damage, actor, this.victim)
+        this.game.logger.killMessage(
+          this.game.player,
+          hurtEvent.damage,
+          actor,
+          this.victim
+        )
         break
       case Reaction.HURT:
-        this.game.logger.hurtMessage(this.game.player, hurtEvent.damage, actor, this.victim)
+        this.game.logger.hurtMessage(
+          this.game.player,
+          hurtEvent.damage,
+          actor,
+          this.victim
+        )
         break
     }
 

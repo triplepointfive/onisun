@@ -205,7 +205,7 @@ export class DisplayTileVisitor extends TileVisitor {
 
   public onTrap(trap: Trap): void {
     if (!trap.revealed) {
-      this.tile = FLOOR
+      trap.tile.visit(this)
       return
     }
 

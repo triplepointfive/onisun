@@ -19,7 +19,12 @@ export class ThrowEvent extends CreatureEvent {
 
   public affectCreature(actor: Creature): Reaction {
     if (Calculator.misses(actor.bodyControl, this.victim.bodyControl)) {
-      this.game.logger.throwMissMessage(this.game.player, actor, this.victim, this.missile)
+      this.game.logger.throwMissMessage(
+        this.game.player,
+        actor,
+        this.victim,
+        this.missile
+      )
       return Reaction.THROW_DODGE
     }
 

@@ -4,18 +4,24 @@ import { LevelMap } from '../level_map'
 import { Creature } from '../creature'
 
 import { TrapEvent, TeleportationEvent, Point } from '../../../engine'
+import { Player } from '../player'
 
 export class TeleportationTrap extends Trap {
-  constructor(revealed: boolean = false) {
-    super(revealed, TrapType.Teleportation)
+  constructor(tile: Tile, revealed: boolean = false) {
+    super(TrapType.Teleportation, tile, revealed)
   }
 
-  public untrap(pos: Point, levelMap: LevelMap, game: Game): void {
+  public untrap(
+    pos: Point,
+    player: Player,
+    levelMap: LevelMap,
+    game: Game
+  ): void {
     game.logger.canNotUntrap()
   }
 
   protected buildNew(): Tile {
-    return new TeleportationTrap(this.revealed)
+    return new TeleportationTrap(this.tile, this.revealed)
   }
 
   protected affect(game: Game, levelMap: LevelMap, creature: Creature): void {
