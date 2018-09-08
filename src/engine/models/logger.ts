@@ -2,6 +2,7 @@ import { Creature } from './creature'
 import { Item, Potion } from './items'
 
 import { last } from 'lodash'
+import { Player } from './player';
 
 export enum LogLevel {
   DEBUG,
@@ -16,6 +17,7 @@ export interface LogMessage {
   counter: number
 }
 
+// TODO: Do not display messages while being blind
 export class Logger {
   public messages: LogMessage[] = []
 
@@ -23,11 +25,11 @@ export class Logger {
     this.messages = []
   }
 
-  public hurtMessage(damage: number, actor: Creature, target: Creature) {
+  public hurtMessage(player: Player, damage: number, actor: Creature, target: Creature) {
     this.debug(`${target.name} got ${damage} damage from ${actor.name}`)
   }
 
-  public killMessage(damage: number, actor: Creature, target: Creature) {
+  public killMessage(player: Player, damage: number, actor: Creature, target: Creature) {
     this.warning(
       `${target.name} got ${damage} damage from ${
         actor.name
@@ -35,17 +37,18 @@ export class Logger {
     )
   }
 
-  public missMessage(actor: Creature, target: Creature) {
+  public missMessage(player: Player, actor: Creature, target: Creature) {
     this.debug(`${actor.name} misses ${target.name}!`)
   }
 
-  public throwMissMessage(actor: Creature, target: Creature, missile: Item) {
+  public throwMissMessage(player: Player, actor: Creature, target: Creature, missile: Item) {
     this.debug(
       `${actor.name} throws ${missile.name} in ${target.name}, but misses!`
     )
   }
 
   public throwKillMessage(
+    player: Player,
     damage: number,
     actor: Creature,
     target: Creature,
@@ -59,6 +62,7 @@ export class Logger {
   }
 
   public throwHurtMessage(
+    player: Player,
     damage: number,
     actor: Creature,
     target: Creature,

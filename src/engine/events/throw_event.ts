@@ -19,7 +19,7 @@ export class ThrowEvent extends CreatureEvent {
 
   public affectCreature(actor: Creature): Reaction {
     if (Calculator.misses(actor.bodyControl, this.victim.bodyControl)) {
-      this.game.logger.throwMissMessage(actor, this.victim, this.missile)
+      this.game.logger.throwMissMessage(this.game.player, actor, this.victim, this.missile)
       return Reaction.THROW_DODGE
     }
 
@@ -29,6 +29,7 @@ export class ThrowEvent extends CreatureEvent {
     if (damage >= this.victim.health.currentValue) {
       actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
       this.game.logger.throwKillMessage(
+        this.game.player,
         damage,
         actor,
         this.victim,
@@ -40,6 +41,7 @@ export class ThrowEvent extends CreatureEvent {
     } else {
       this.victim.health.decrease(damage)
       this.game.logger.throwHurtMessage(
+        this.game.player,
         damage,
         actor,
         this.victim,

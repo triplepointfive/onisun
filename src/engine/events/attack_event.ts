@@ -49,7 +49,7 @@ export class AttackEvent extends CreatureEvent {
 
   protected process(actor: Creature): Reaction {
     if (Calculator.misses(actor.bodyControl, this.victim.bodyControl)) {
-      this.game.logger.missMessage(actor, this.victim)
+      this.game.logger.missMessage(this.game.player, actor, this.victim)
       return Reaction.DODGE
     }
 
@@ -59,10 +59,10 @@ export class AttackEvent extends CreatureEvent {
     switch (reaction) {
       case Reaction.DIE:
         actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
-        this.game.logger.killMessage(hurtEvent.damage, actor, this.victim)
+        this.game.logger.killMessage(this.game.player, hurtEvent.damage, actor, this.victim)
         break
       case Reaction.HURT:
-        this.game.logger.hurtMessage(hurtEvent.damage, actor, this.victim)
+        this.game.logger.hurtMessage(this.game.player, hurtEvent.damage, actor, this.victim)
         break
     }
 
