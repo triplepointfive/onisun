@@ -105,6 +105,18 @@ Mostly these are applicable to player character only, nevertheless, some could b
 
 ## Experience
 
+## Items
+
+Basically, items are equipment or usable. Equipment items are various types of armor made of different materials.
+
+### Materials
+
+Materials have the following properties:
+
+| Name      | Description                              |
+| --------- | ---------------------------------------- |
+| Conductor | Allows the flow of an electrical current |
+| Firm      | Retains the shape when interacting       |
 
 ### Traps
 
@@ -114,7 +126,7 @@ Traps are tiles on dungeon floor, that can be activated when monster steps on th
 | ------------- | --------------------------------------------------------------------------------------- |
 | Air blow      | Disarms players with low strength or blows away lightweight monster                     |
 | Arrow trap    | This trap has a second part on a wall around. It shoots arrow from a wall to floor tile |
-| Bare ware     | Electric shock damage on your feet                                                      |
+| Bare wire     | Electric shock damage on your feet                                                      |
 | Falling rock  | Falls on your head, does blunt damage                                                   |
 | Dart trap     | Same like arrow trap, but does poison damage                                            |
 | Spiked pit    | Does pierce damage, takes few turns to climb out                                        |

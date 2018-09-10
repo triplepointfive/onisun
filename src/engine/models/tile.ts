@@ -172,8 +172,10 @@ export enum TrapType {
   Teleportation,
   Light,
   Hole,
+  BareWire,
 }
 
+// Add dodge ration
 export abstract class Trap extends Tile {
   constructor(
     public readonly type: number,

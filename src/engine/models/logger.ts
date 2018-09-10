@@ -1,4 +1,4 @@
-import { Creature } from './creature'
+import { Creature, Reaction } from './creature'
 import { Item, Potion } from './items'
 
 import { last } from 'lodash'
@@ -282,6 +282,19 @@ export class Logger {
     } else {
       this.addMessage(LogLevel.INFO, `You dropped ${count} ${item.name}`)
     }
+  }
+
+  public bareWireHit(
+    sees: boolean,
+    reaction: Reaction,
+    creature: Creature
+  ): void {
+    // TODO: Better messages
+    this.info(`${creature.name} наступил на оголенный провод`)
+  }
+
+  public bareWirePlayerBootResist(): void {
+    this.info('Я наступил на оголенный провод, но все обошлось')
   }
 
   public debug(message: string): void {

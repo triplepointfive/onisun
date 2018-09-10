@@ -59,6 +59,10 @@ export class Item {
     public id: ItemId = Item.getId()
   ) {}
 
+  get insulator(): boolean {
+    return false
+  }
+
   get canSeeDetails(): boolean {
     return true
   }

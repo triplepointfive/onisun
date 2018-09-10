@@ -6,6 +6,7 @@ export enum Resistance {
   Intangible,
   MagicDamage,
   TeleportationControl,
+  Insulator,
 }
 
 export interface Specie {

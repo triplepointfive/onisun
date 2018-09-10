@@ -18,6 +18,10 @@ export abstract class InventorySlot {
     return inventory.cares().filter(itemGroup => this.match(itemGroup.item))
   }
 
+  get insulator(): boolean {
+    return !!(this.equipment && this.equipment.item.insulator)
+  }
+
   public equip(item: Item, count: number) {
     if (this.equipment) {
       throw `Slot ${this.name} is already equipped with ${this.equipment.item}`

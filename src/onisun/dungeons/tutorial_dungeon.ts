@@ -20,6 +20,7 @@ import {
   HoleTrap,
 } from '../../engine'
 import { rat, golem } from '../creatures'
+import { BareWireTrap } from '../../engine/models/traps/bare_wire'
 
 const tiles: Map<string, () => Tile> = new Map()
 tiles.set('C', () => new Corridor('C', TileTypes.Floor))
@@ -34,7 +35,7 @@ export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
     const levelMap = (game.currentMap = game.getMap(initId))
 
-    levelMap.addCreature(new Point(2, 9), player)
+    levelMap.addCreature(new Point(5, 10), player)
   }
 
   public register(game: Game): void {
@@ -84,6 +85,9 @@ export class TutorialDungeon extends Dungeon {
 
       map.setTile(4, 10, new LogMessageTrigger('Hole trap', false, new Room()))
       map.setTile(2, 10, new HoleTrap(new Room()))
+
+      map.setTile(6, 10, new LogMessageTrigger('Bare wire', false, new Room()))
+      map.setTile(8, 10, new BareWireTrap(new Room()))
 
       map.setTile(5, 2, new StairwayDown(map, secondId))
 
