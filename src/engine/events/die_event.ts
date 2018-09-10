@@ -29,7 +29,9 @@ export class DieEvent extends CreatureEvent {
     this.levelMap.removeCreature(creature)
     creature.dead = true
 
-    tile.addItem(new Corpse(creature.specie), 1)
+    if (creature.specie.leavesCorpseRatio > Math.random()) {
+      tile.addItem(new Corpse(creature.specie), 1)
+    }
 
     creature.inventoryItems.forEach(invItem =>
       tile.addItem(invItem.item, invItem.count)

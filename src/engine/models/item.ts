@@ -60,7 +60,7 @@ export class Item {
   ) {}
 
   get insulator(): boolean {
-    return false
+    return this.material.insulator
   }
 
   get canSeeDetails(): boolean {
