@@ -34,10 +34,6 @@ export class AINewLevelEvent extends AIEvent {
       )
     }
   }
-
-  public immediate(): boolean {
-    return true
-  }
 }
 
 export class AIDieEvent extends AIEvent {
@@ -57,10 +53,6 @@ export class AIDieEvent extends AIEvent {
       this.game
     )
   }
-
-  public immediate(): boolean {
-    return true
-  }
 }
 
 export class AITeleportationEvent extends AIEvent {
@@ -76,10 +68,6 @@ export class AITeleportationEvent extends AIEvent {
       this.levelMap,
       this.game
     )
-  }
-
-  public immediate(): boolean {
-    return true
   }
 }
 

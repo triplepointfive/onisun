@@ -13,7 +13,6 @@ export abstract class AIEvent {
   }
 
   public abstract run(): void
-  public abstract immediate(): boolean
 }
 
 export class AIItemPickedEvent extends AIEvent {
@@ -22,10 +21,6 @@ export class AIItemPickedEvent extends AIEvent {
   }
 
   public run(): void {}
-
-  public immediate(): boolean {
-    return false
-  }
 }
 
 export abstract class MetaAI extends AI {
