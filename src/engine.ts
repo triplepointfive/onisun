@@ -1,6 +1,5 @@
 export * from './engine/ai/attacker'
 export * from './engine/ai/chaser'
-export * from './engine/ai/dispatcher'
 export * from './engine/ai/escaper'
 export * from './engine/ai/explorer'
 export * from './engine/ai/internal'

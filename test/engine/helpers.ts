@@ -72,7 +72,7 @@ export const generateItem = function() {
 }
 
 export const generateMetaAI = function(): MetaAI {
-  return new Dispatcher()
+  return new AIWrapper()
 }
 
 export const generateCreature = function(): Creature {

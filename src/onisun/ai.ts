@@ -1,18 +1,20 @@
-import { Creature } from '../models/creature'
-import { MetaAI } from './meta_ai'
-import { Escaper } from './escaper'
-import { Explorer } from './explorer'
-import { Chaser } from './chaser'
-import { Attacker } from './attacker'
-import { Picker } from './picker'
-import { Patrol } from './patrol'
-import { Loiter } from './loiter'
-import { Thrower } from './thrower'
-import { Descender } from './descender'
-import { SelfHealer } from './selfhealer'
-import { Game } from '../models/game'
-import { CreatureEvent } from '../events/internal'
-import { LevelMap } from '../models/level_map'
+import {
+  MetaAI,
+  Escaper,
+  Explorer,
+  Chaser,
+  Attacker,
+  Picker,
+  Patrol,
+  Loiter,
+  Thrower,
+  Descender,
+  Creature,
+  LevelMap,
+  Game,
+  CreatureEvent,
+  SelfHealer,
+} from '../engine'
 
 export class Dispatcher extends MetaAI {
   private escaper: Escaper

@@ -1,6 +1,5 @@
 import {
   Creature,
-  Dispatcher,
   Clan,
   Pool,
   AICreature,
@@ -10,6 +9,7 @@ import {
   Damage,
   Resistance,
 } from '../engine'
+import { Dispatcher } from './ai'
 
 const newCreature = (
   name: string,

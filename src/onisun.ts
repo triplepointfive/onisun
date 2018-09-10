@@ -24,6 +24,7 @@ import {
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
 
 export * from './engine'
+export * from './onisun/ai'
 export * from './onisun/professions'
 export * from './onisun/talents'
 export * from './onisun/items'
