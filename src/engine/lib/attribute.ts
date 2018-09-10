@@ -59,27 +59,3 @@ export class PositiveAttribute extends Attribute {
     this.current = Math.max(1, this.current - modifier)
   }
 }
-
-export class AttributeSet<T> {
-  constructor(public attack: T, public defense: T, public dexterity: T) {}
-
-  public with(pairSet: AttributeSet<any>, on: (first: T, second: any) => void) {
-    on(this.attack, pairSet.attack)
-    on(this.defense, pairSet.defense)
-  }
-}
-
-export class Modifier extends AttributeSet<number> {
-  constructor({ attack = 0, defense = 0, dexterity = 0 }) {
-    super(attack, defense, dexterity)
-  }
-
-  public withWeight(
-    pairSet: Modifier,
-    weight: Modifier,
-    on: (first: number, second: number, weight: number) => void
-  ) {
-    on(this.attack, pairSet.attack, weight.attack)
-    on(this.defense, pairSet.defense, weight.defense)
-  }
-}
