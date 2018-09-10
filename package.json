@@ -6,7 +6,7 @@
     "dev": "poi",
     "build": "poi build",
     "deploy": "npm run build && gh-pages -d dist",
-    "test": "npx jest",
+    "test": "npx jest --runInBand",
     "prettier": "prettier --parser typescript --tab-width 2 --single-quote --no-semi --trailing-comma es5 --loglevel warn --write \"src/**/*.ts\" \"test/**/*.ts\""
   },
   "devDependencies": {
