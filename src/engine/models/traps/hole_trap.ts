@@ -34,11 +34,15 @@ export class HoleTrap extends Trap {
     game.logger.canNotUntrap()
   }
 
+  get dodgeRatio(): number {
+    return this.revealed ? 1 : 5
+  }
+
   public activate(game: Game, levelMap: LevelMap, creature: Creature): void {
     creature.on(
       new TrapEvent(
         this,
-        this.revealed ? 1 : 5,
+        this.dodgeRatio,
         levelMap,
         game,
         (sees, isPlayer) => {

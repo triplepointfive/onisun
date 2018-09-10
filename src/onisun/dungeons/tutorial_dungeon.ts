@@ -20,7 +20,7 @@ import {
   HoleTrap,
 } from '../../engine'
 import { rat, golem } from '../creatures'
-import { BareWireTrap } from '../../engine/models/traps/bare_wire'
+import { BareWireTrap } from '../../engine/models/traps/bare_wire_trap'
 
 const tiles: Map<string, () => Tile> = new Map()
 tiles.set('C', () => new Corridor('C', TileTypes.Floor))

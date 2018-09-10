@@ -23,11 +23,15 @@ export class TeleportationTrap extends Trap {
     return new TeleportationTrap(this.tile, this.revealed)
   }
 
+  get dodgeRatio(): number {
+    return this.revealed ? 3 : 10
+  }
+
   public activate(game: Game, levelMap: LevelMap, creature: Creature): void {
     creature.on(
       new TrapEvent(
         this,
-        this.revealed ? 3 : 10,
+        this.dodgeRatio,
         levelMap,
         game,
         (sees, isPlayer) => {

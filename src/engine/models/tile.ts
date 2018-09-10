@@ -175,7 +175,6 @@ export enum TrapType {
   BareWire,
 }
 
-// Add dodge ration
 export abstract class Trap extends Tile {
   constructor(
     public readonly type: number,
@@ -188,6 +187,8 @@ export abstract class Trap extends Tile {
   public visit(tileVisitor: TileVisitor): void {
     tileVisitor.onTrap(this)
   }
+
+  abstract get dodgeRatio(): number
 
   public abstract activate(
     game: Game,

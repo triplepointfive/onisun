@@ -11,7 +11,7 @@ import { Damage, DamageType } from '../../lib/damage'
 import { VisibleCreatureEvent } from '../../events/visible_creature_event'
 
 class BareWireTrapEvent extends VisibleCreatureEvent {
-  constructor(levelMap: LevelMap, game: Game) {
+  constructor(private trap: Trap, levelMap: LevelMap, game: Game) {
     super(levelMap, game)
   }
 
@@ -26,6 +26,10 @@ class BareWireTrapEvent extends VisibleCreatureEvent {
   public affectCreature(creature: Creature): Reaction {
     const hurtReaction = creature.on(this.hurtEvent)
 
+    if (this.playerSees(creature)) {
+      this.trap.revealed = true
+    }
+
     this.game.logger.bareWireHit(
       this.playerSees(creature),
       hurtReaction,
@@ -36,6 +40,8 @@ class BareWireTrapEvent extends VisibleCreatureEvent {
   }
 
   public affectPlayer(player: Player): Reaction {
+    this.trap.revealed = true
+
     if (player.inventory.bootsSlot.insulator) {
       this.game.logger.bareWirePlayerBootResist()
 
@@ -75,8 +81,6 @@ export class BareWireTrap extends Trap {
     if (Calculator.dodges(creature.bodyControl, this.dodgeRatio)) {
       return
     }
-    this.revealed = true
-
-    creature.on(new BareWireTrapEvent(levelMap, game))
+    creature.on(new BareWireTrapEvent(this, levelMap, game))
   }
 }
