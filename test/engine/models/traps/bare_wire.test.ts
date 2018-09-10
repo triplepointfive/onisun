@@ -37,6 +37,49 @@ describe('BareWire', () => {
     expect(trap.clone()).toBeInstanceOf(BareWireTrap)
   })
 
+  describe('untrap', () => {
+    const pos = new Point(1, 1)
+
+    it('when does not want', () => {
+      trap.untrap(pos, player, levelMap, game)
+      expect(game.logger.messages.length).toEqual(1)
+    })
+
+    describe('when wants', () => {
+      beforeEach(() => {
+        const slot = player.inventory.glovesSlot,
+          mock = jest.spyOn(slot, 'insulator', 'get')
+
+        mock.mockReturnValueOnce(true)
+
+        Calculator.chance = jest.fn()
+
+        jest.spyOn(trap, 'activate')
+        jest.spyOn(trap, 'disarmTile')
+      })
+
+      it('failed to disarm', () => {
+        Calculator.chance.mockReturnValueOnce(true)
+
+        trap.untrap(pos, player, levelMap, game)
+
+        expect(game.logger.messages.length).toEqual(2)
+        expect(trap.activate).toHaveBeenCalled()
+        expect(trap.disarmTile).not.toHaveBeenCalled()
+      })
+
+      it('succeeded to disarm', () => {
+        Calculator.chance.mockReturnValueOnce(false)
+
+        trap.untrap(pos, player, levelMap, game)
+
+        expect(game.logger.messages.length).toEqual(1)
+        expect(trap.activate).not.toHaveBeenCalled()
+        expect(trap.disarmTile).toHaveBeenCalled()
+      })
+    })
+  })
+
   describe('activate', () => {
     it('dodges', () => {
       Calculator.dodges.mockReturnValueOnce(true)

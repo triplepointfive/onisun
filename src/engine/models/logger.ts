@@ -293,6 +293,10 @@ export class Logger {
     this.info(`${creature.name} наступил на оголенный провод`)
   }
 
+  public bareWireUntrapDoNotWant() {
+    this.info('Трогать оголенный провод руками так себе затея')
+  }
+
   public bareWirePlayerBootResist(): void {
     this.info('Я наступил на оголенный провод, но все обошлось')
   }

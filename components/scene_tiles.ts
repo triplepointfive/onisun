@@ -180,6 +180,7 @@ const NULL_TILE = new DisplayTile('　', 0, 0, 0)
 const TELEPORTATION_TRAP = new DisplayTile('^', 0, 191, 255)
 const LIGHT_TRAP = new DisplayTile('^', 255, 255, 0)
 const HOLE_TRAP = new DisplayTile('^', 139, 69, 19)
+const BARE_WIRE_TRAP = new DisplayTile('^', 255, 165, 0)
 
 export class DisplayTileVisitor extends TileVisitor {
   public tile: DisplayTile
@@ -219,6 +220,9 @@ export class DisplayTileVisitor extends TileVisitor {
       break
     case TrapType.Hole:
       this.tile = HOLE_TRAP
+      break
+    case TrapType.BareWire:
+      this.tile = BARE_WIRE_TRAP
       break
     }
   }

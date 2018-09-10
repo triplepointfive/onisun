@@ -66,7 +66,15 @@ export class BareWireTrap extends Trap {
     levelMap: LevelMap,
     game: Game
   ): void {
-    // Success if has matching gloves
+    // TODO: Do stupid thing when has low
+    if (!player.inventory.glovesSlot.insulator) {
+      game.logger.bareWireUntrapDoNotWant()
+    } else if (Calculator.chance(1, 7)) {
+      game.logger.failedToUntrap(player)
+      this.activate(game, levelMap, player)
+    } else {
+      this.disarmTile(pos, player, levelMap, game)
+    }
   }
 
   protected buildNew(): Tile {
