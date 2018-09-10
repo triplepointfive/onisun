@@ -1,6 +1,7 @@
-import { Missile, Protection } from './items'
+import { Missile, Protection } from './item'
 import { Damage } from '../lib/damage'
 import { Clan, Ability } from './creature'
+import { Material } from '../lib/material'
 
 export enum Resistance {
   Intangible,
@@ -30,4 +31,7 @@ export interface Specie {
   visionRadius: number
   moveSpeed: number
   attackSpeed: number
+
+  leavesCorpseRatio: number
+  corpseMaterial: Material
 }

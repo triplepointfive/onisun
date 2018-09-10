@@ -1,7 +1,7 @@
 import { Game, GroupedItem, ItemsBunch, Tile } from '../../engine'
 import { Creature, Reaction } from '../models/creature'
 import { Player } from '../models/player'
-import { Item } from '../models/items'
+import { Item } from '../models/item'
 import { PlayerEvent } from './player_event'
 
 export class PickUpItemsEvent extends PlayerEvent {

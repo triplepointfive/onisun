@@ -2,9 +2,9 @@ import { Player } from './player'
 import { Specie } from './specie'
 
 import { Game } from './game'
-import { Modifier } from '../lib/attribute'
 import { Damage } from '../lib/damage'
 import { ImpactType } from '../lib/impact'
+import { Material } from '../lib/material'
 
 export enum Usage {
   WeaponOneHand,
@@ -54,8 +54,8 @@ export class Item {
     public group: ItemGroup,
     public name: string,
     public weight: number,
+    public material: Material,
     public readonly usages: Usage[] = [],
-    public readonly modifier: Modifier = new Modifier({}),
     public id: ItemId = Item.getId()
   ) {}
 
@@ -68,7 +68,7 @@ export class Item {
   }
 
   public clone(): Item {
-    return new Item(this.group, this.name, this.weight)
+    return new Item(this.group, this.name, this.weight, this.material)
   }
 
   public groupsWith(item: Item): boolean {
@@ -86,27 +86,32 @@ export class Item {
 
 export class Corpse extends Item {
   constructor(public readonly specie: Specie) {
-    super(ItemGroup.Consumable, `${specie.name}'s corpse`, specie.weight)
+    super(
+      ItemGroup.Consumable,
+      `${specie.name}'s corpse`,
+      specie.weight,
+      specie.corpseMaterial
+    )
   }
 }
 
 export abstract class Potion extends Item {
-  constructor(public name: string) {
-    super(ItemGroup.Potion, name, 0.2)
+  constructor(public name: string, material: Material = Material.glass) {
+    super(ItemGroup.Potion, name, 0.2, material)
   }
 
   abstract onDrink(game: Game): void
 }
 
 export abstract class Missile extends Item {
-  constructor(name: string, weight: number, modifier: Modifier) {
-    super(ItemGroup.Missile, name, weight, [], modifier)
+  constructor(name: string, weight: number, material: Material) {
+    super(ItemGroup.Missile, name, weight, material, [])
   }
 }
 
 export abstract class MissileWeapon extends Item {
-  constructor(name: string, weight: number, modifier: Modifier) {
-    super(ItemGroup.MissileWeapon, name, weight, [Usage.Shoot], modifier)
+  constructor(name: string, weight: number, material: Material) {
+    super(ItemGroup.MissileWeapon, name, weight, material, [Usage.Shoot])
   }
 }
 
@@ -115,16 +120,29 @@ export abstract class Weapon extends Item {
     group: ItemGroup,
     name: string,
     weight: number,
+    material: Material,
     public readonly damages: Damage[],
     usage: Usage
   ) {
-    super(group, name, weight, [usage])
+    super(group, name, weight, material, [usage])
   }
 }
 
 export class OneHandWeapon extends Weapon {
-  constructor(name: string, weight: number, damages: Damage[]) {
-    super(ItemGroup.OneHandWeapon, name, weight, damages, Usage.WeaponOneHand)
+  constructor(
+    name: string,
+    weight: number,
+    material: Material,
+    damages: Damage[]
+  ) {
+    super(
+      ItemGroup.OneHandWeapon,
+      name,
+      weight,
+      material,
+      damages,
+      Usage.WeaponOneHand
+    )
   }
 }
 
@@ -146,21 +164,39 @@ export abstract class Armor extends Item {
     group: ItemGroup,
     name: string,
     weight: number,
+    material: Material,
     public readonly protections: Protection[],
     usage: Usage
   ) {
-    super(group, name, weight, [usage])
+    super(group, name, weight, material, [usage])
   }
 }
 
 export class BodyArmor extends Armor {
-  constructor(name: string, weight: number, protections: Protection[]) {
-    super(ItemGroup.BodyArmor, name, weight, protections, Usage.WearsOnBody)
+  constructor(
+    name: string,
+    weight: number,
+    material: Material,
+    protections: Protection[]
+  ) {
+    super(
+      ItemGroup.BodyArmor,
+      name,
+      weight,
+      material,
+      protections,
+      Usage.WearsOnBody
+    )
   }
 }
 
 export class Boots extends Armor {
-  constructor(name: string, weight: number, protections: Protection[]) {
-    super(ItemGroup.Boots, name, weight, protections, Usage.Boots)
+  constructor(
+    name: string,
+    weight: number,
+    material: Material,
+    protections: Protection[]
+  ) {
+    super(ItemGroup.Boots, name, weight, material, protections, Usage.Boots)
   }
 }

@@ -1,7 +1,7 @@
 import { Creature } from './creature'
 import { Point } from '../utils/utils'
 import { LevelMap, LevelMapId } from './level_map'
-import { Item } from './items'
+import { Item } from './item'
 import { Game } from './game'
 import { ItemsBunch } from '../lib/bunch'
 import { Player } from './player'

@@ -9,7 +9,7 @@ import {
 import { Reaction, Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { findIndex } from 'lodash'
-import { Protection, Weapon } from '../models/items'
+import { Protection, Weapon } from '../models/item'
 import { Damage } from '../lib/damage'
 
 export class TakeOffItemEvent extends CreatureEvent {

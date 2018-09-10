@@ -1,7 +1,7 @@
 import { CreatureEvent } from './internal'
 import { Creature, Reaction } from '../models/creature'
 import { AddExperienceEvent } from './add_experience_event'
-import { Item } from '../models/items'
+import { Item } from '../models/item'
 import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'
 import { LevelMap } from '../../engine'

@@ -6,7 +6,7 @@ import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
 import { Memory } from '../models/memory'
 import { CreatureEvent } from '../events/internal'
-import { Item } from '../models/items'
+import { Item } from '../models/item'
 
 export class Thrower extends AI {
   public victim: Creature | undefined

@@ -7,9 +7,9 @@ import {
   Protection,
   ProtectionType,
   Damage,
-  Resistance,
 } from '../engine'
 import { Dispatcher } from './ai'
+import { Material } from '../engine/lib/material'
 
 const newCreature = (
   name: string,
@@ -34,6 +34,9 @@ const newCreature = (
     moveSpeed: 20,
     attackSpeed: 20,
     bodyControl: 5,
+
+    leavesCorpseRatio: 50,
+    corpseMaterial: Material.flesh,
   })
 }
 

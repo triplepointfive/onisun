@@ -1,4 +1,4 @@
-import { Usage, Item } from './items'
+import { Usage, Item } from './item'
 import { intersection } from 'lodash'
 import { Inventory } from './inventory'
 import { GroupedItem } from '../lib/bunch'

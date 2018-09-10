@@ -6,7 +6,6 @@ import {
   Clan,
   Corridor,
   Creature,
-  Dispatcher,
   Door,
   drawn,
   Game,
@@ -14,7 +13,6 @@ import {
   LevelMap,
   MetaAI,
   Missile,
-  Modifier,
   OneHandWeapon,
   Player,
   PlayerAI,
@@ -31,6 +29,7 @@ import {
   AICreature,
   Talent,
   ProtectionType,
+  Material,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -48,19 +47,19 @@ testTiles.set('D', () => new Door())
 class TestMissile extends Missile {}
 
 export const generateOneHandedWeapon = function(): OneHandWeapon {
-  return new OneHandWeapon(generateString(), 1, [
+  return new OneHandWeapon(generateString(), 1, Material.iron, [
     { type: DamageType.Melee, dice: { max: 10, times: 3 }, extra: 4 },
   ])
 }
 
 export const generateBodyArmor = function(): BodyArmor {
-  return new BodyArmor(generateString(), 1, [
+  return new BodyArmor(generateString(), 1, Material.iron, [
     { type: ProtectionType.Medium, value: 3 },
   ])
 }
 
 export const generateMissile = function(): Missile {
-  return new TestMissile('test missile', 1, new Modifier({}))
+  return new TestMissile('test missile', 1, Material.wood)
 }
 
 export const generatePlayerAI = function(): PlayerAI {
@@ -107,6 +106,7 @@ const fakeSpecie: () => Specie = () => {
     resistances: [],
     visionRadius: 5,
     moveSpeed: 0,
+    attackSpeed: 0,
     bodyControl: 5,
   }
 }

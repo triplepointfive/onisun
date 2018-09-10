@@ -16,7 +16,7 @@ import {
   ToolsSlot,
   CloakSlot,
 } from './inventory_slot'
-import { Item } from './items'
+import { Item } from './item'
 import { ItemsBunch, GroupedItem } from '../lib/bunch'
 import { concat, compact } from 'lodash'
 

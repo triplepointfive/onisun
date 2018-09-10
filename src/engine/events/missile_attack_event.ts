@@ -6,7 +6,7 @@ import { ItemFlightTileEffect } from '../models/tile_effect'
 import { ThrowEvent } from './throw_event'
 import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
-import { Missile } from '../models/items'
+import { Missile } from '../models/item'
 import { RemoveItemEvent } from './remove_item_event'
 
 export class MissileAttackEvent extends CreatureEvent {

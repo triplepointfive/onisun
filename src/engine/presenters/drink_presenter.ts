@@ -2,7 +2,7 @@ import {
   ItemsListingPresenter,
   ItemsListingPosition,
 } from './items_listing_presenter'
-import { ItemGroup, Potion } from '../models/items'
+import { ItemGroup, Potion } from '../models/item'
 import { DrinkPotionEvent } from '../../engine'
 
 export class DrinkPresenter extends ItemsListingPresenter {

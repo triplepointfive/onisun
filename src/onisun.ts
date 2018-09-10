@@ -22,6 +22,7 @@ import {
   LightSpeedBoots,
 } from './onisun/items'
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
+import { Material } from './engine/lib/material'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -45,13 +46,13 @@ export class Application {
       player.professions.push(prof)
     }
 
-    const dagger = new OneHandWeapon('Кинжал', 0.8, [
+    const dagger = new OneHandWeapon('Кинжал', 0.8, Material.iron, [
       { type: DamageType.Melee, dice: { times: 1, max: 3 }, extra: 2 },
     ])
-    const katana = new OneHandWeapon('Катана', 1, [
+    const katana = new OneHandWeapon('Катана', 1, Material.iron, [
       { type: DamageType.Melee, dice: { times: 5, max: 2 }, extra: 0 },
     ])
-    const plateArmor = new BodyArmor('Латы', 1, [
+    const plateArmor = new BodyArmor('Латы', 1, Material.iron, [
       { type: ProtectionType.Heavy, value: 5 },
     ])
 
@@ -126,6 +127,8 @@ export class Application {
         moveSpeed: 20,
         attackSpeed: 20,
         bodyControl: 5,
+        leavesCorpseRatio: 0,
+        corpseMaterial: Material.flesh,
       },
       12,
       15

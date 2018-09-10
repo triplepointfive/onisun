@@ -1,5 +1,5 @@
 import { DropItemsEvent, Game, GroupedItem, Item, LevelMap } from '../../engine'
-import { Potion } from '../models/items'
+import { Potion } from '../models/item'
 import { IdlePresenter } from './idle_presenter'
 import { Presenter, PresenterType } from './internal'
 import { InventoryPresenter } from './inventory_presenter'

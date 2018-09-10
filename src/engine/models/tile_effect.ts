@@ -1,4 +1,4 @@
-import { Item } from './items'
+import { Item } from './item'
 import { Point } from '../utils/utils'
 import { Memory } from './memory'
 

@@ -1,6 +1,6 @@
 import { includes, intersection, random, sum, sumBy, times } from 'lodash'
 import { DamageType, ProtectionType } from '../../engine'
-import { Protection } from '../models/items'
+import { Protection } from '../models/item'
 import { Resistance } from '../models/specie'
 import { Damage, Dice } from './damage'
 

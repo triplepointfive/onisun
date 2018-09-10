@@ -3,7 +3,7 @@ import { InventorySlot, Item, Game } from '../../engine'
 import { Creature, Reaction } from '../models/creature'
 import { Player } from '../models/player'
 import { TakeOffItemEvent } from './take_off_item_event'
-import { Armor, Weapon } from '../models/items'
+import { Armor, Weapon } from '../models/item'
 import { AddImpactEvent } from './add_impact_event'
 
 export class PutOnItemEvent extends CreatureEvent {

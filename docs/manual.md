@@ -115,8 +115,9 @@ Materials have the following properties:
 
 | Name      | Description                              |
 | --------- | ---------------------------------------- |
-| Conductor | Allows the flow of an electrical current |
+| Insulator | Blocks the flow of an electrical current |
 | Firm      | Retains the shape when interacting       |
+| Fragile   | Easy to break                            |
 
 ### Traps
 

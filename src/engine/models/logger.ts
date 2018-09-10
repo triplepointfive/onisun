@@ -1,5 +1,5 @@
 import { Creature, Reaction } from './creature'
-import { Item, Potion } from './items'
+import { Item, Potion } from './item'
 
 import { last } from 'lodash'
 import { Player } from './player'
