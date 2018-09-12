@@ -173,6 +173,7 @@ export enum TrapType {
   Light,
   Hole,
   BareWire,
+  FallingRock,
 }
 
 export abstract class Trap extends Tile {

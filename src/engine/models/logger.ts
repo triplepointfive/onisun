@@ -301,6 +301,14 @@ export class Logger {
     this.info('Я наступил на оголенный провод, но все обошлось')
   }
 
+  public dodgeFallingTrap(player: Player, sees: boolean, isPlayer: boolean, actor: Creature): void {
+
+  }
+
+  public activateFallingTrap(): void {
+
+  }
+
   public debug(message: string): void {
     this.addMessage(LogLevel.DEBUG, message)
   }

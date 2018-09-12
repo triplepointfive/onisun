@@ -9,7 +9,6 @@ import { Calculator } from '../lib/calculator'
 export class TrapEvent extends VisibleCreatureEvent {
   constructor(
     private trap: Trap,
-    private dodgeRatio: number,
     levelMap: LevelMap,
     game: Game,
     private onCreatureDodge: (sees: boolean, isPlayer: boolean) => void,
@@ -45,6 +44,6 @@ export class TrapEvent extends VisibleCreatureEvent {
   }
 
   protected dodges(actor: Creature): boolean {
-    return Calculator.dodges(actor.bodyControl, this.dodgeRatio)
+    return Calculator.dodges(actor.bodyControl, this.trap.dodgeRatio)
   }
 }

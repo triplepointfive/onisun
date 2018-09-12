@@ -42,7 +42,6 @@ export class HoleTrap extends Trap {
     creature.on(
       new TrapEvent(
         this,
-        this.dodgeRatio,
         levelMap,
         game,
         (sees, isPlayer) => {

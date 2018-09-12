@@ -18,7 +18,13 @@ import {
 } from '../../../src/engine'
 
 class TestTrap extends Trap {
-  protected affect(game: Game, levelMap: LevelMap, actor: Creature): void {}
+  public activate(): void {}
+
+  get dodgeRatio(): number {
+    return 0
+  }
+
+  public untrap(): void {}
 
   public buildNew(): TestTrap {
     return this
@@ -56,7 +62,6 @@ describe('Trap event', () => {
 
     event = new TrapEvent(
       trap,
-      0,
       map,
       game,
       (sees, isPlayer) => ([dodgeSees, dodgeIsPlayer] = [sees, isPlayer]),
