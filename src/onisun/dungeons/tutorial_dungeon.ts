@@ -21,6 +21,8 @@ import {
 } from '../../engine'
 import { rat, golem } from '../creatures'
 import { BareWireTrap } from '../../engine/models/traps/bare_wire_trap'
+import { FallingRockTrap } from '../../engine/models/traps/falling_rock_trap'
+import { smallRock } from '../items'
 
 const tiles: Map<string, () => Tile> = new Map()
 tiles.set('C', () => new Corridor('C', TileTypes.Floor))
@@ -35,7 +37,7 @@ export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
     const levelMap = (game.currentMap = game.getMap(initId))
 
-    levelMap.addCreature(new Point(5, 10), player)
+    levelMap.addCreature(new Point(7, 14), player)
   }
 
   public register(game: Game): void {
@@ -73,6 +75,8 @@ export class TutorialDungeon extends Dungeon {
       ])
       map.name = 'Traps'
 
+      map.setTile(5, 2, new StairwayDown(map, secondId))
+
       map.setTile(
         4,
         6,
@@ -89,7 +93,12 @@ export class TutorialDungeon extends Dungeon {
       map.setTile(6, 10, new LogMessageTrigger('Bare wire', false, new Room()))
       map.setTile(8, 10, new BareWireTrap(new Room()))
 
-      map.setTile(5, 2, new StairwayDown(map, secondId))
+      map.setTile(
+        6,
+        14,
+        new LogMessageTrigger('Falling rock trap', false, new Room())
+      )
+      map.setTile(8, 14, new FallingRockTrap(smallRock, new Room()))
 
       return map
     })

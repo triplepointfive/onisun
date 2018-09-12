@@ -69,6 +69,7 @@ export * from './engine/models/tile'
 export * from './engine/models/tile_effect'
 
 export * from './engine/models/traps/bare_wire_trap'
+export * from './engine/models/traps/falling_rock_trap'
 export * from './engine/models/traps/hole_trap'
 export * from './engine/models/traps/light_trap'
 export * from './engine/models/traps/teleportation_trap'

@@ -7,6 +7,8 @@ import { LevelMap } from '../models/level_map'
 import { Calculator } from '../lib/calculator'
 
 export class TrapEvent extends VisibleCreatureEvent {
+  private dodgeRatio: number
+
   constructor(
     private trap: Trap,
     levelMap: LevelMap,
@@ -15,6 +17,8 @@ export class TrapEvent extends VisibleCreatureEvent {
     private onCreatureActivated: (sees: boolean, isPlayer: boolean) => Reaction
   ) {
     super(levelMap, game)
+    // Calc ratio *before* any interaction with trap
+    this.dodgeRatio = trap.dodgeRatio
   }
 
   public affectCreature(actor: Creature): Reaction {
@@ -44,6 +48,6 @@ export class TrapEvent extends VisibleCreatureEvent {
   }
 
   protected dodges(actor: Creature): boolean {
-    return Calculator.dodges(actor.bodyControl, this.trap.dodgeRatio)
+    return Calculator.dodges(actor.bodyControl, this.dodgeRatio)
   }
 }
