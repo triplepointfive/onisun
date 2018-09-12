@@ -169,11 +169,12 @@ export class StairwayUp extends Stairway {
 }
 
 export enum TrapType {
-  Teleportation,
-  Light,
-  Hole,
   BareWire,
   FallingRock,
+  Hole,
+  Light,
+  Teleportation,
+  Water,
 }
 
 export abstract class Trap extends Tile {

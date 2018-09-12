@@ -73,6 +73,7 @@ export * from './engine/models/traps/falling_rock_trap'
 export * from './engine/models/traps/hole_trap'
 export * from './engine/models/traps/light_trap'
 export * from './engine/models/traps/teleportation_trap'
+export * from './engine/models/traps/water_trap'
 
 export * from './engine/presenters/death_presenter'
 export * from './engine/presenters/drink_presenter'

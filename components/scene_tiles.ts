@@ -183,6 +183,7 @@ const LIGHT_TRAP = new DisplayTile('^', 255, 255, 0)
 const HOLE_TRAP = new DisplayTile('^', 139, 69, 19)
 const BARE_WIRE_TRAP = new DisplayTile('^', 255, 165, 0)
 const FALLING_ROCK_TRAP = new DisplayTile('^', 200, 200, 200)
+const WATER_TRAP = new DisplayTile('^', 0, 0, 205)
 
 export class DisplayTileVisitor extends TileVisitor {
   public tile: DisplayTile
@@ -228,6 +229,9 @@ export class DisplayTileVisitor extends TileVisitor {
       break
     case TrapType.FallingRock:
       this.tile = FALLING_ROCK_TRAP
+      break
+    case TrapType.Water:
+      this.tile = WATER_TRAP
       break
     }
   }
