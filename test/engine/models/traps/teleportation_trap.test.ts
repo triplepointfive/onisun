@@ -93,6 +93,7 @@ describe('TeleportationTrap', () => {
     })
 
     it('activates', () => {
+      trap.revealed = true
       Calculator.dodges.mockReturnValueOnce(false)
       trap.activate(pos, game, map, player)
 

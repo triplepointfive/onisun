@@ -37,6 +37,10 @@ export class LightTrap extends Trap {
     return this.revealed ? 1 : 10
   }
 
+  get duration(): number {
+    return 10
+  }
+
   public activate(
     pos: Point,
     game: Game,
@@ -48,26 +52,18 @@ export class LightTrap extends Trap {
         this,
         levelMap,
         game,
+        (sees, isPlayer) =>
+          game.logger.lightTrapDodge(game.player, sees, isPlayer, creature),
         (sees, isPlayer) => {
-          if (isPlayer) {
-            game.logger.playerDodgesBlindTrap(game.player)
-          } else if (sees) {
-            game.logger.creatureLighted(game.player, creature)
-          }
-        },
-        (sees, isPlayer) => {
+          // TODO: If player sees a creature log a message nevertheless
           if (creature.hasImpact(ImpactType.Blind)) {
             return Reaction.NOTHING
           }
 
-          if (isPlayer) {
-            game.logger.playerActivatedLightTrap(game.player)
-          } else {
-            game.logger.creatureLighted(game.player, creature)
-          }
+          game.logger.lightTrapActivated(game.player, sees, isPlayer, creature)
 
           return creature.on(
-            new AddImpactEvent(ImpactType.Blind, 'trap', game, 10)
+            new AddImpactEvent(ImpactType.Blind, 'trap', game, this.duration)
           )
         }
       )

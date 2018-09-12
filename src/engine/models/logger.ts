@@ -170,17 +170,6 @@ export class Logger {
     )
   }
 
-  public creatureLighted(player: Player, actor: Creature): void {
-    this.addMessage(
-      LogLevel.INFO,
-      `${actor.name} озарился яркой вспышкой света`
-    )
-  }
-
-  public playerActivatedLightTrap(player: Player): void {
-    this.addMessage(LogLevel.INFO, `Яркая вспышка света ослепила меня`)
-  }
-
   public playerTeleportationCaused(): void {
     this.addMessage(LogLevel.INFO, `Что-то заставило меня телепортироваться`)
   }
@@ -207,8 +196,36 @@ export class Logger {
     )
   }
 
-  public playerDodgesBlindTrap(player: Player): void {
-    this.addMessage(LogLevel.INFO, `Вспышка света чуть не ослепила меня`)
+  public lightTrapActivated(
+    player: Player,
+    sees: boolean,
+    isPlayer: boolean,
+    actor: Creature
+  ): void {
+    if (isPlayer) {
+      this.addMessage(LogLevel.INFO, `Яркая вспышка света ослепила меня`)
+    } else {
+      this.addMessage(
+        LogLevel.INFO,
+        `${actor.name} озарился яркой вспышкой света`
+      )
+    }
+  }
+
+  public lightTrapDodge(
+    player: Player,
+    sees: boolean,
+    isPlayer: boolean,
+    actor: Creature
+  ): void {
+    if (isPlayer) {
+      this.addMessage(LogLevel.INFO, `Вспышка света чуть не ослепила меня`)
+    } else {
+      this.addMessage(
+        LogLevel.INFO,
+        `${actor.name} озарился яркой вспышкой света`
+      )
+    }
   }
 
   public playerDodgesHole(player: Player): void {
