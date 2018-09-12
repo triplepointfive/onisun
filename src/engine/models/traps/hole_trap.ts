@@ -17,6 +17,7 @@ import { DamageType } from '../../lib/damage'
 import { DieReason } from '../../events/die_event'
 import { Reaction } from '../creature'
 
+// Leads to a random tile every time because tile might be taken by another creature next time you are falling down
 export class HoleTrap extends Trap {
   constructor(tile: Tile, revealed: boolean = false) {
     super(TrapType.Hole, tile, revealed)
@@ -58,6 +59,7 @@ export class HoleTrap extends Trap {
           }
         },
         (sees, isPlayer) => {
+          // TODO: Break fragile items
           let fallEvent = this.fallEvent(game, levelMap),
             hurtEvent: CreatureEvent | undefined = new HurtEvent(
               [

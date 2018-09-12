@@ -1,49 +1,57 @@
 export interface Material {
-  readonly insulator: boolean
+  readonly corrodible: boolean
   readonly firm: boolean
   readonly fragile: boolean
+  readonly insulator: boolean
 }
 
 export namespace Material {
-  export const cloth = {
-    insulator: false,
+  export const cloth: Material = {
+    corrodible: false,
     firm: false,
     fragile: false,
+    insulator: false,
   }
 
-  export const flesh = {
-    insulator: true,
+  export const flesh: Material = {
+    corrodible: false,
     firm: true,
     fragile: false,
+    insulator: true,
   }
 
-  export const glass = {
-    insulator: false,
+  export const glass: Material = {
+    corrodible: false,
     firm: false,
     fragile: true,
+    insulator: false,
   }
 
-  export const iron = {
-    insulator: true,
+  export const iron: Material = {
+    corrodible: true,
     firm: true,
     fragile: false,
+    insulator: true,
   }
 
-  export const leather = {
-    insulator: false,
+  export const leather: Material = {
+    corrodible: false,
     firm: false,
     fragile: false,
+    insulator: false,
   }
 
-  export const stone = {
-    insulator: true,
+  export const stone: Material = {
+    corrodible: false,
     firm: true,
     fragile: false,
+    insulator: true,
   }
 
-  export const wood = {
-    insulator: true,
+  export const wood: Material = {
+    corrodible: false,
     firm: true,
     fragile: false,
+    insulator: true,
   }
 }

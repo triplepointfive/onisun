@@ -46,6 +46,7 @@ export class AIDieEvent extends AIEvent {
   }
 
   public run(): void {
+    this.game.player.rebuildVision(this.levelMap)
     this.game.playerTurn = true
     this.game.player.ai.presenter = new DeathPresenter(
       this.dieReason,

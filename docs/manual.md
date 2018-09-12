@@ -113,11 +113,12 @@ Basically, items are equipment or usable. Equipment items are various types of a
 
 Materials have the following properties:
 
-| Name      | Description                              |
-| --------- | ---------------------------------------- |
-| Insulator | Blocks the flow of an electrical current |
-| Firm      | Retains the shape when interacting       |
-| Fragile   | Easy to break                            |
+| Name       | Description                                       |
+| ---------- | ------------------------------------------------- |
+| Insulator  | Blocks the flow of an electrical current          |
+| Firm       | Retains the shape when interacting                |
+| Fragile    | Easy to break                                     |
+| Corrodible | May rust if affected with water or another liquid |
 
 ### Traps
 

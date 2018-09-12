@@ -42,6 +42,13 @@ export enum ItemSubgroup {
 
 export type ItemId = number
 
+export enum CorrosionLevel {
+  None,
+  Slightly,
+  Mostly,
+  Fully,
+}
+
 export class Item {
   private static lastId: ItemId = 0
   public static getId(): ItemId {
@@ -49,6 +56,7 @@ export class Item {
   }
 
   public impacts: ImpactType[] = []
+  public corrosionLevel: CorrosionLevel = CorrosionLevel.None
 
   constructor(
     public group: ItemGroup,
@@ -58,6 +66,24 @@ export class Item {
     public readonly usages: Usage[] = [],
     public id: ItemId = Item.getId()
   ) {}
+
+  public corrode(): void {
+    if (!this.material.corrodible) {
+      return
+    }
+
+    switch (this.corrosionLevel) {
+      case CorrosionLevel.None:
+        this.corrosionLevel = CorrosionLevel.Slightly
+        break
+      case CorrosionLevel.Slightly:
+        this.corrosionLevel = CorrosionLevel.Mostly
+        break
+      case CorrosionLevel.Mostly:
+        this.corrosionLevel = CorrosionLevel.Fully
+        break
+    }
+  }
 
   get firm(): boolean {
     return this.material.firm
@@ -125,10 +151,29 @@ export abstract class Weapon extends Item {
     name: string,
     weight: number,
     material: Material,
-    public readonly damages: Damage[],
+    protected rawDamages: Damage[],
     usage: Usage
   ) {
     super(group, name, weight, material, [usage])
+  }
+
+  get damages(): Damage[] {
+    switch (this.corrosionLevel) {
+      case CorrosionLevel.Slightly:
+        return this.damageWithCorrosion(1)
+      case CorrosionLevel.Mostly:
+        return this.damageWithCorrosion(2)
+      case CorrosionLevel.Fully:
+        return this.damageWithCorrosion(4)
+      default:
+        return this.rawDamages
+    }
+  }
+
+  protected damageWithCorrosion(penalty: number): Damage[] {
+    return this.rawDamages.map(({ dice, type, extra }: Damage) => {
+      return { dice, type, extra: extra - penalty }
+    })
   }
 }
 
@@ -169,10 +214,29 @@ export abstract class Armor extends Item {
     name: string,
     weight: number,
     material: Material,
-    public readonly protections: Protection[],
+    protected readonly rawProtections: Protection[],
     usage: Usage
   ) {
     super(group, name, weight, material, [usage])
+  }
+
+  get protections(): Protection[] {
+    switch (this.corrosionLevel) {
+      case CorrosionLevel.Slightly:
+        return this.protectionWithCorrosion(1)
+      case CorrosionLevel.Mostly:
+        return this.protectionWithCorrosion(2)
+      case CorrosionLevel.Fully:
+        return this.protectionWithCorrosion(4)
+      default:
+        return this.rawProtections
+    }
+  }
+
+  protected protectionWithCorrosion(penalty: number): Protection[] {
+    return this.rawProtections.map(({ type, value }: Protection) => {
+      return { type, value: value - penalty }
+    })
   }
 }
 
