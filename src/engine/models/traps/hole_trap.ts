@@ -38,7 +38,12 @@ export class HoleTrap extends Trap {
     return this.revealed ? 1 : 5
   }
 
-  public activate(game: Game, levelMap: LevelMap, creature: Creature): void {
+  public activate(
+    pos: Point,
+    game: Game,
+    levelMap: LevelMap,
+    creature: Creature
+  ): void {
     creature.on(
       new TrapEvent(
         this,

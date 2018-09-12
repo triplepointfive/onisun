@@ -22,6 +22,10 @@ export abstract class InventorySlot {
     return !!(this.equipment && this.equipment.item.insulator)
   }
 
+  get firm(): boolean {
+    return !!(this.equipment && this.equipment.item.firm)
+  }
+
   public equip(item: Item, count: number) {
     if (this.equipment) {
       throw `Slot ${this.name} is already equipped with ${this.equipment.item}`

@@ -59,6 +59,10 @@ export class Item {
     public id: ItemId = Item.getId()
   ) {}
 
+  get firm(): boolean {
+    return this.material.firm
+  }
+
   get insulator(): boolean {
     return this.material.insulator
   }

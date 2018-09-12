@@ -27,7 +27,12 @@ export class TeleportationTrap extends Trap {
     return this.revealed ? 3 : 10
   }
 
-  public activate(game: Game, levelMap: LevelMap, creature: Creature): void {
+  public activate(
+    pos: Point,
+    game: Game,
+    levelMap: LevelMap,
+    creature: Creature
+  ): void {
     creature.on(
       new TrapEvent(
         this,

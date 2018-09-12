@@ -71,7 +71,8 @@ export class BareWireTrap extends Trap {
       game.logger.bareWireUntrapDoNotWant()
     } else if (Calculator.chance(1, 7)) {
       game.logger.failedToUntrap(player)
-      this.activate(game, levelMap, player)
+      // TODO: Activate on both player and creature standing on the trap
+      this.activate(pos, game, levelMap, player)
     } else {
       this.disarmTile(pos, player, levelMap, game)
     }
@@ -85,7 +86,12 @@ export class BareWireTrap extends Trap {
     return this.revealed ? 5 : 10
   }
 
-  public activate(game: Game, levelMap: LevelMap, creature: Creature): void {
+  public activate(
+    pos: Point,
+    game: Game,
+    levelMap: LevelMap,
+    creature: Creature
+  ): void {
     if (Calculator.dodges(creature.bodyControl, this.dodgeRatio)) {
       return
     }

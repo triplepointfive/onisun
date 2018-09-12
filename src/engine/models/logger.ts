@@ -301,12 +301,32 @@ export class Logger {
     this.info('Я наступил на оголенный провод, но все обошлось')
   }
 
-  public dodgeFallingTrap(player: Player, sees: boolean, isPlayer: boolean, actor: Creature): void {
-
+  public fallingTrapRests(player: Player): void {
+    // TODO: Different messages when head is firm or item if firm
+    return this.info('Камень упал мне на голову, но каска защитила меня')
   }
 
-  public activateFallingTrap(): void {
+  public fallingTrapRanOut(): void {
+    return this.debug('Громкий щелчок, но ничего не произошло')
+  }
 
+  public fallingTrapDodge(
+    player: Player,
+    sees: boolean,
+    isPlayer: boolean,
+    actor: Creature
+  ): void {
+    this.info(`${actor.name} увернулся от ловушки`)
+  }
+
+  public fallingTrapActivate(
+    player: Player,
+    sees: boolean,
+    isPlayer: boolean,
+    reaction: Reaction,
+    actor: Creature
+  ): void {
+    this.info(`${actor.name} попал в ловушку`)
   }
 
   public debug(message: string): void {

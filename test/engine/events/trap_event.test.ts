@@ -5,14 +5,12 @@ import {
   generateLevelMap,
 } from '../helpers'
 import {
-  Game,
   TrapEvent,
   Trap,
   Creature,
   Player,
   Point,
   LevelMap,
-  CreatureEvent,
   Reaction,
   Calculator,
 } from '../../../src/engine'

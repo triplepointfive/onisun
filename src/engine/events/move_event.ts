@@ -6,6 +6,7 @@ import { Player } from '../models/player'
 
 class SteppingTileVisitor extends TileVisitor {
   constructor(
+    private pos: Point,
     private creature: Creature,
     private levelMap: LevelMap,
     private game: Game
@@ -14,7 +15,7 @@ class SteppingTileVisitor extends TileVisitor {
   }
 
   public onTrap(trap: Trap): void {
-    trap.activate(this.game, this.levelMap, this.creature)
+    trap.activate(this.pos, this.game, this.levelMap, this.creature)
   }
 
   public onTrigger(trigger: TriggerTile): void {
@@ -27,7 +28,7 @@ export class MoveEvent extends CreatureEvent {
     private game: Game,
     private levelMap: LevelMap,
     private nextPoint: Point,
-    private nextLevel: LevelMap | undefined = undefined
+    private nextLevel: LevelMap = levelMap
   ) {
     super()
   }
@@ -35,7 +36,7 @@ export class MoveEvent extends CreatureEvent {
   public affectCreature(actor: Creature): Reaction {
     const pos = this.levelMap.creaturePos(actor)
 
-    if (this.nextLevel && this.nextLevel.id !== this.levelMap.id) {
+    if (this.nextLevel.id !== this.levelMap.id) {
       this.levelMap.removeCreature(actor)
       this.nextLevel.addCreature(this.nextPoint, actor)
     } else {
@@ -43,9 +44,11 @@ export class MoveEvent extends CreatureEvent {
       this.levelMap.at(this.nextPoint.x, this.nextPoint.y).creature = actor
     }
 
-    ;(this.nextLevel || this.levelMap)
+    this.nextLevel
       .at(this.nextPoint.x, this.nextPoint.y)
-      .visit(new SteppingTileVisitor(actor, this.levelMap, this.game))
+      .visit(
+        new SteppingTileVisitor(this.nextPoint, actor, this.levelMap, this.game)
+      )
 
     return Reaction.NOTHING
   }

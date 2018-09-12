@@ -17,14 +17,18 @@ import {
 } from '../../../../src/engine'
 
 describe('BareWire', () => {
-  let levelMap: LevelMap, game: Game, player: Player, trap: BareWireTrap
+  let levelMap: LevelMap,
+    game: Game,
+    player: Player,
+    trap: BareWireTrap,
+    pos = new Point(1, 1)
 
   beforeEach(() => {
     game = generateGame()
     game.currentMap = levelMap = generateLevelMap()
     game.player = player = generatePlayer()
 
-    levelMap.addCreature(new Point(1, 1), player)
+    levelMap.addCreature(pos, player)
 
     Calculator.dodges = jest.fn()
 
@@ -38,8 +42,6 @@ describe('BareWire', () => {
   })
 
   describe('untrap', () => {
-    const pos = new Point(1, 1)
-
     it('when does not want', () => {
       trap.untrap(pos, player, levelMap, game)
       expect(game.logger.messages.length).toEqual(1)
@@ -84,7 +86,7 @@ describe('BareWire', () => {
     it('dodges', () => {
       Calculator.dodges.mockReturnValueOnce(true)
 
-      trap.activate(game, levelMap, player)
+      trap.activate(pos, game, levelMap, player)
 
       expect(player.on).not.toHaveBeenCalled()
       expect(trap.revealed).toBeFalsy()
@@ -103,7 +105,7 @@ describe('BareWire', () => {
       })
 
       it('hit', () => {
-        trap.activate(game, levelMap, creature)
+        trap.activate(pos, game, levelMap, creature)
 
         expect(trap.revealed).toBeTruthy()
         expect(creature.on).toHaveBeenCalledTimes(2)
@@ -118,7 +120,7 @@ describe('BareWire', () => {
       })
 
       it('hit without protection', () => {
-        trap.activate(game, levelMap, player)
+        trap.activate(pos, game, levelMap, player)
 
         expect(player.on).toHaveBeenCalledTimes(2)
         expect(player.on.mock.calls[1][0]).toBeInstanceOf(HurtEvent)
@@ -130,7 +132,7 @@ describe('BareWire', () => {
 
         mock.mockReturnValueOnce(true)
 
-        trap.activate(game, levelMap, player)
+        trap.activate(pos, game, levelMap, player)
         expect(player.on).toHaveBeenCalledTimes(1)
       })
     })

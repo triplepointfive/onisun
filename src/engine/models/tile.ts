@@ -192,6 +192,7 @@ export abstract class Trap extends Tile {
   abstract get dodgeRatio(): number
 
   public abstract activate(
+    pos: Point,
     game: Game,
     levelMap: LevelMap,
     actor: Creature

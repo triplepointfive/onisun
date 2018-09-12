@@ -22,7 +22,8 @@ export class LightTrap extends Trap {
   ): void {
     if (Calculator.chance(1, 3)) {
       game.logger.failedToUntrap(player)
-      this.activate(game, levelMap, player)
+      // TODO: Activate on creature on trap or on player
+      this.activate(pos, game, levelMap, player)
     } else {
       this.disarmTile(pos, player, levelMap, game)
     }
@@ -36,7 +37,12 @@ export class LightTrap extends Trap {
     return this.revealed ? 1 : 10
   }
 
-  public activate(game: Game, levelMap: LevelMap, creature: Creature): void {
+  public activate(
+    pos: Point,
+    game: Game,
+    levelMap: LevelMap,
+    creature: Creature
+  ): void {
     creature.on(
       new TrapEvent(
         this,

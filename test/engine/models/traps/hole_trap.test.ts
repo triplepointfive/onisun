@@ -20,14 +20,18 @@ import {
 } from '../../../../src/engine'
 
 describe('HoleTrap', () => {
-  let trap: HoleTrap, levelMap: LevelMap, game: Game, player: Player
+  let trap: HoleTrap,
+    levelMap: LevelMap,
+    game: Game,
+    player: Player,
+    pos = new Point(1, 1)
 
   beforeEach(() => {
     game = generateGame()
     game.player = player = generatePlayer()
     game.currentMap = levelMap = generateLevelMap()
 
-    levelMap.addCreature(new Point(1, 1), player)
+    levelMap.addCreature(pos, player)
 
     Calculator.dodges = jest.fn()
 
@@ -68,17 +72,19 @@ describe('HoleTrap', () => {
 
       it('when hit', () => {
         Calculator.dodges.mockReturnValueOnce(false)
-        trap.activate(game, levelMap, creature)
+        trap.activate(pos, game, levelMap, creature)
         expect(game.logger.messages.length).toEqual(1)
 
         expect(creature.on).toHaveBeenCalledTimes(3)
         expect(creature.on.mock.calls[1][0]).toBeInstanceOf(MoveEvent)
         expect(creature.on.mock.calls[2][0]).toBeInstanceOf(HurtEvent)
 
-        const pos = secondFloor.creaturePos(creature)
-        expect(pos).toBeDefined()
+        const secondFloorPos = secondFloor.creaturePos(creature)
+        expect(secondFloorPos).toBeDefined()
 
-        expect(secondFloor.at(pos.x, pos.y).free).toBeTruthy()
+        expect(
+          secondFloor.at(secondFloorPos.x, secondFloorPos.y).free
+        ).toBeTruthy()
       })
     })
 
@@ -90,17 +96,19 @@ describe('HoleTrap', () => {
 
       it('when hit', () => {
         Calculator.dodges.mockReturnValueOnce(false)
-        trap.activate(game, levelMap, player)
+        trap.activate(pos, game, levelMap, player)
         expect(game.logger.messages.length).toEqual(1)
 
         expect(player.on).toHaveBeenCalledTimes(3)
         expect(player.on.mock.calls[1][0]).toBeInstanceOf(MoveEvent)
         expect(player.on.mock.calls[2][0]).toBeInstanceOf(HurtEvent)
 
-        const pos = secondFloor.creaturePos(player)
-        expect(pos).toBeDefined()
+        const secondFloorPos = secondFloor.creaturePos(player)
+        expect(secondFloorPos).toBeDefined()
 
-        expect(secondFloor.at(pos.x, pos.y).free).toBeTruthy()
+        expect(
+          secondFloor.at(secondFloorPos.x, secondFloorPos.y).free
+        ).toBeTruthy()
       })
     })
   })
@@ -117,14 +125,14 @@ describe('HoleTrap', () => {
 
       it('when dodges', () => {
         Calculator.dodges.mockReturnValueOnce(true)
-        trap.activate(game, levelMap, creature)
+        trap.activate(pos, game, levelMap, creature)
         expect(game.logger.messages.length).toEqual(1)
         expect(creature.on).toHaveBeenCalledTimes(1)
       })
 
       it('when hit', () => {
         Calculator.dodges.mockReturnValueOnce(false)
-        trap.activate(game, levelMap, creature)
+        trap.activate(pos, game, levelMap, creature)
         expect(game.logger.messages.length).toEqual(1)
         expect(creature.on).toHaveBeenCalledTimes(2)
         expect(creature.on.mock.calls[1][0]).toBeInstanceOf(StayEvent)
@@ -139,14 +147,14 @@ describe('HoleTrap', () => {
 
       it('when dodges', () => {
         Calculator.dodges.mockReturnValueOnce(true)
-        trap.activate(game, levelMap, player)
+        trap.activate(pos, game, levelMap, player)
         expect(game.logger.messages.length).toEqual(1)
         expect(player.on).toHaveBeenCalledTimes(1)
       })
 
       it('when hit', () => {
         Calculator.dodges.mockReturnValueOnce(false)
-        trap.activate(game, levelMap, player)
+        trap.activate(pos, game, levelMap, player)
         expect(game.logger.messages.length).toEqual(1)
         expect(player.on).toHaveBeenCalledTimes(2)
         expect(player.on.mock.calls[1][0]).toBeInstanceOf(StayEvent)

@@ -16,13 +16,17 @@ import {
 } from '../../../../src/engine'
 
 describe('TeleportationTrap', () => {
-  let trap: TeleportationTrap, player: Player, game: Game, map: LevelMap
+  let trap: TeleportationTrap,
+    player: Player,
+    game: Game,
+    map: LevelMap,
+    pos = new Point(1, 1)
 
   beforeEach(() => {
     game = generateGame()
     game.currentMap = map = generateLevelMap()
     game.player = player = generatePlayer()
-    map.addCreature(new Point(1, 1), player)
+    map.addCreature(pos, player)
 
     Calculator.dodges = jest.fn()
 
@@ -55,14 +59,14 @@ describe('TeleportationTrap', () => {
     it('activates', () => {
       Calculator.dodges.mockReturnValueOnce(false)
 
-      trap.activate(game, map, creature)
+      trap.activate(pos, game, map, creature)
       expect(mock).toHaveBeenCalledTimes(3)
       expect(game.logger.messages.length).toEqual(1)
     })
 
     it('dodges when seen', () => {
       Calculator.dodges.mockReturnValueOnce(true)
-      trap.activate(game, map, creature)
+      trap.activate(pos, game, map, creature)
 
       expect(mock).toHaveBeenCalledTimes(1)
       expect(game.logger.messages.length).toEqual(1)
@@ -74,7 +78,7 @@ describe('TeleportationTrap', () => {
       player.rebuildVision(map)
 
       Calculator.dodges.mockReturnValueOnce(true)
-      trap.activate(game, map, creature)
+      trap.activate(pos, game, map, creature)
 
       expect(mock).toHaveBeenCalledTimes(1)
       expect(game.logger.messages.length).toEqual(0)
@@ -90,7 +94,7 @@ describe('TeleportationTrap', () => {
 
     it('activates', () => {
       Calculator.dodges.mockReturnValueOnce(false)
-      trap.activate(game, map, player)
+      trap.activate(pos, game, map, player)
 
       expect(mock).toHaveBeenCalledTimes(3)
       expect(game.logger.messages.length).toEqual(1)
@@ -98,7 +102,7 @@ describe('TeleportationTrap', () => {
 
     it('dodges', () => {
       Calculator.dodges.mockReturnValueOnce(true)
-      trap.activate(game, map, player)
+      trap.activate(pos, game, map, player)
 
       expect(mock).toHaveBeenCalledTimes(1)
       expect(game.logger.messages.length).toEqual(1)
