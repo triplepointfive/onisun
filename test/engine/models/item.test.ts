@@ -15,7 +15,7 @@ describe('Weapon', () => {
     let item = new OneHandWeapon('test', 1, Material.glass, [])
     expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
 
-    item.corrode()
+    item.affectWithWater()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
   })
 
@@ -28,19 +28,19 @@ describe('Weapon', () => {
     expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
     expect(item.damages).toEqual(damages(0))
 
-    item.corrode()
+    item.affectWithWater()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Slightly)
     expect(item.damages).toEqual(damages(1))
 
-    item.corrode()
+    item.affectWithWater()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Mostly)
     expect(item.damages).toEqual(damages(2))
 
-    item.corrode()
+    item.affectWithWater()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Fully)
     expect(item.damages).toEqual(damages(4))
 
-    item.corrode()
+    item.affectWithWater()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Fully)
     expect(item.damages).toEqual(damages(4))
   })
@@ -56,19 +56,19 @@ describe('Armor', () => {
     expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
     expect(item.protections).toEqual(protections(0))
 
-    item.corrode()
+    item.affectWithWater()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Slightly)
     expect(item.protections).toEqual(protections(1))
 
-    item.corrode()
+    item.affectWithWater()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Mostly)
     expect(item.protections).toEqual(protections(2))
 
-    item.corrode()
+    item.affectWithWater()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Fully)
     expect(item.protections).toEqual(protections(4))
 
-    item.corrode()
+    item.affectWithWater()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Fully)
     expect(item.protections).toEqual(protections(4))
   })

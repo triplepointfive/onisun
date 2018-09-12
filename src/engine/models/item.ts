@@ -67,7 +67,7 @@ export class Item {
     public id: ItemId = Item.getId()
   ) {}
 
-  public corrode(): void {
+  public affectWithWater(): void {
     if (!this.material.corrodible) {
       return
     }

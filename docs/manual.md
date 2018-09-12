@@ -115,10 +115,10 @@ Materials have the following properties:
 
 | Name       | Description                                       |
 | ---------- | ------------------------------------------------- |
-| Insulator  | Blocks the flow of an electrical current          |
+| Corrodible | May rust if affected with water or another liquid |
 | Firm       | Retains the shape when interacting                |
 | Fragile    | Easy to break                                     |
-| Corrodible | May rust if affected with water or another liquid |
+| Insulator  | Blocks the flow of an electrical current          |
 
 ### Traps
 
