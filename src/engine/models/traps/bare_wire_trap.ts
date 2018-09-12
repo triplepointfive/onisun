@@ -91,10 +91,11 @@ export class BareWireTrap extends Trap {
     game: Game,
     levelMap: LevelMap,
     creature: Creature
-  ): void {
+  ): Reaction {
     if (Calculator.dodges(creature.bodyControl, this.dodgeRatio)) {
-      return
+      return Reaction.DODGE
     }
-    creature.on(new BareWireTrapEvent(this, levelMap, game))
+
+    return creature.on(new BareWireTrapEvent(this, levelMap, game))
   }
 }

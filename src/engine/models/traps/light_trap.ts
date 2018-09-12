@@ -46,8 +46,8 @@ export class LightTrap extends Trap {
     game: Game,
     levelMap: LevelMap,
     creature: Creature
-  ): void {
-    creature.on(
+  ): Reaction {
+    return creature.on(
       new TrapEvent(
         this,
         levelMap,

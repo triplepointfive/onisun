@@ -61,12 +61,12 @@ export class FallingRockTrap extends Trap {
     game: Game,
     levelMap: LevelMap,
     creature: Creature
-  ): void {
+  ): Reaction {
     if (!this.throwMissile(pos, levelMap, game.logger)) {
-      return
+      return Reaction.NOTHING
     }
 
-    creature.on(
+    return creature.on(
       new TrapEvent(
         this,
         levelMap,

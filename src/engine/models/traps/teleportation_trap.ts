@@ -1,5 +1,5 @@
 import { Point, TeleportationEvent, TrapEvent } from '../../../engine'
-import { Creature } from '../creature'
+import { Creature, Reaction } from '../creature'
 import { Game } from '../game'
 import { LevelMap } from '../level_map'
 import { Player } from '../player'
@@ -32,8 +32,8 @@ export class TeleportationTrap extends Trap {
     game: Game,
     levelMap: LevelMap,
     creature: Creature
-  ): void {
-    creature.on(
+  ): Reaction {
+    return creature.on(
       new TrapEvent(
         this,
         levelMap,

@@ -1,4 +1,4 @@
-import { Creature } from './creature'
+import { Creature, Reaction } from './creature'
 import { Point } from '../utils/utils'
 import { LevelMap, LevelMapId } from './level_map'
 import { Item } from './item'
@@ -196,7 +196,7 @@ export abstract class Trap extends Tile {
     game: Game,
     levelMap: LevelMap,
     actor: Creature
-  ): void
+  ): Reaction
 
   protected disarmTile(
     { x, y }: Point,

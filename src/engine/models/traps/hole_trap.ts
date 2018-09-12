@@ -15,6 +15,7 @@ import { StairwayDown, Tile, Trap, TrapType } from '../tile'
 import { HurtEvent } from '../../events/hurt_event'
 import { DamageType } from '../../lib/damage'
 import { DieReason } from '../../events/die_event'
+import { Reaction } from '../creature'
 
 export class HoleTrap extends Trap {
   constructor(tile: Tile, revealed: boolean = false) {
@@ -43,8 +44,8 @@ export class HoleTrap extends Trap {
     game: Game,
     levelMap: LevelMap,
     creature: Creature
-  ): void {
-    creature.on(
+  ): Reaction {
+    return creature.on(
       new TrapEvent(
         this,
         levelMap,
