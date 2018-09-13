@@ -36,6 +36,7 @@ export * from './engine/events/throw_event'
 export * from './engine/events/trap_event'
 export * from './engine/events/visible_creature_event'
 export * from './engine/events/untrap_event'
+export * from './engine/events/water_damage_event'
 
 export * from './engine/generator/post'
 export { default as drawn } from './engine/generator/drawn'

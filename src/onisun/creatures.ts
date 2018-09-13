@@ -36,7 +36,7 @@ const newCreature = (
     bodyControl: 5,
 
     leavesCorpseRatio: 50,
-    corpseMaterial: Material.flesh,
+    material: Material.flesh,
   })
 }
 

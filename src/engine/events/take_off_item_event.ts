@@ -37,8 +37,6 @@ export class TakeOffItemEvent extends CreatureEvent {
   }
 
   private onTakeOff(player: Player, item: Item): void {
-    // player.characteristics.removeModifier(item.modifier)
-
     if (item instanceof Armor) {
       item.protections.forEach((itemProtection: Protection) => {
         player.itemsProtections.splice(

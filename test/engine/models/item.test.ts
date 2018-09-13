@@ -11,14 +11,6 @@ import {
 } from '../../../src/engine'
 
 describe('Weapon', () => {
-  it('does nothing if material is not corrodible', () => {
-    let item = new OneHandWeapon('test', 1, Material.glass, [])
-    expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
-
-    item.affectWithWater()
-    expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
-  })
-
   it('corrosion', () => {
     const damages = (penalty: number): Damage[] => [
       { type: DamageType.Pure, dice: { times: 0, max: 0 }, extra: 3 - penalty },
@@ -28,19 +20,19 @@ describe('Weapon', () => {
     expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
     expect(item.damages).toEqual(damages(0))
 
-    item.affectWithWater()
+    expect(item.corrode()).toBeTruthy()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Slightly)
     expect(item.damages).toEqual(damages(1))
 
-    item.affectWithWater()
+    expect(item.corrode()).toBeTruthy()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Mostly)
     expect(item.damages).toEqual(damages(2))
 
-    item.affectWithWater()
+    expect(item.corrode()).toBeTruthy()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Fully)
     expect(item.damages).toEqual(damages(4))
 
-    item.affectWithWater()
+    expect(item.corrode()).toBeFalsy()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Fully)
     expect(item.damages).toEqual(damages(4))
   })
@@ -56,19 +48,19 @@ describe('Armor', () => {
     expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
     expect(item.protections).toEqual(protections(0))
 
-    item.affectWithWater()
+    expect(item.corrode()).toBeTruthy()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Slightly)
     expect(item.protections).toEqual(protections(1))
 
-    item.affectWithWater()
+    expect(item.corrode()).toBeTruthy()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Mostly)
     expect(item.protections).toEqual(protections(2))
 
-    item.affectWithWater()
+    expect(item.corrode()).toBeTruthy()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Fully)
     expect(item.protections).toEqual(protections(4))
 
-    item.affectWithWater()
+    expect(item.corrode()).toBeFalsy()
     expect(item.corrosionLevel).toEqual(CorrosionLevel.Fully)
     expect(item.protections).toEqual(protections(4))
   })

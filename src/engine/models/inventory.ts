@@ -15,29 +15,41 @@ import {
   BeltSlot,
   ToolsSlot,
   CloakSlot,
+  BodyPart,
 } from './inventory_slot'
 import { Item } from './item'
 import { ItemsBunch, GroupedItem } from '../lib/bunch'
 import { concat, compact } from 'lodash'
+import { Material } from '../lib/material'
 
 export class Inventory {
   private bag: ItemsBunch<Item> = new ItemsBunch()
 
-  public headSlot = new HeadSlot()
+  public headSlot = new HeadSlot(Material.flesh)
   public amuletSlot = new AmuletSlot()
   public cloakSlot = new CloakSlot()
-  public chestSlot = new ChestSlot()
-  public rightHandSlot = new RightHandSlot()
-  public leftHandSlot = new LeftHandSlot()
+  public chestSlot = new ChestSlot(Material.paper)
+  public rightHandSlot = new RightHandSlot(Material.flesh)
+  public leftHandSlot = new LeftHandSlot(Material.flesh)
   public leftFingerSlot = new LeftFingerSlot()
   public rightFingerSlot = new RightFingerSlot()
   public glovesSlot = new GlovesSlot()
   public gauntletsSlot = new GauntletsSlot()
   public beltSlot = new BeltSlot()
-  public bootsSlot = new BootsSlot()
+  public bootsSlot = new BootsSlot(Material.flesh)
   public missileWeaponSlot = new MissileWeaponSlot()
   public missileSlot = new MissileSlot()
   public toolsSlot = new ToolsSlot()
+
+  get bodyParts(): BodyPart[] {
+    return [
+      this.headSlot,
+      this.rightHandSlot,
+      this.leftHandSlot,
+      this.chestSlot,
+      this.bootsSlot,
+    ]
+  }
 
   public slots(): InventorySlot[] {
     return [

@@ -2,6 +2,7 @@ import { Usage, Item } from './item'
 import { intersection } from 'lodash'
 import { Inventory } from './inventory'
 import { GroupedItem } from '../lib/bunch'
+import { Material } from '../../engine'
 
 export abstract class InventorySlot {
   public name: string = 'InventorySlot'
@@ -54,31 +55,46 @@ export abstract class InventorySlot {
   }
 }
 
-export class RightHandSlot extends InventorySlot {
+export abstract class BodyPart extends InventorySlot {
+  public abstract material: Material
+
+  get affectedWithWater(): boolean {
+    return this.material.affectedWithWater !== undefined
+  }
+}
+
+export class RightHandSlot extends BodyPart {
   public name: string = 'Правая рука'
-  constructor() {
+  constructor(public material: Material) {
     super([Usage.WeaponOneHand], true)
   }
 }
 
-export class LeftHandSlot extends InventorySlot {
+export class LeftHandSlot extends BodyPart {
   public name: string = 'Левая рука'
-  constructor() {
+  constructor(public material: Material) {
     super([Usage.WeaponOneHand], true)
   }
 }
 
-export class HeadSlot extends InventorySlot {
+export class HeadSlot extends BodyPart {
   public name: string = 'Голова'
-  constructor() {
+  constructor(public material: Material) {
     super([Usage.WearsOnHead], true)
   }
 }
 
-export class ChestSlot extends InventorySlot {
+export class ChestSlot extends BodyPart {
   public name: string = 'Корпус'
-  constructor() {
+  constructor(public material: Material) {
     super([Usage.WearsOnBody], true)
+  }
+}
+
+export class BootsSlot extends BodyPart {
+  public name: string = 'Ботинки'
+  constructor(public material: Material) {
+    super([Usage.Boots], true)
   }
 }
 
@@ -100,13 +116,6 @@ export class BeltSlot extends InventorySlot {
   public name: string = 'Пояс'
   constructor() {
     super([Usage.Belt], true)
-  }
-}
-
-export class BootsSlot extends InventorySlot {
-  public name: string = 'Ботинки'
-  constructor() {
-    super([Usage.Boots], true)
   }
 }
 

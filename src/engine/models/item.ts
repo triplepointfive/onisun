@@ -4,7 +4,7 @@ import { Specie } from './specie'
 import { Game } from './game'
 import { Damage } from '../lib/damage'
 import { ImpactType } from '../lib/impact'
-import { Material } from '../lib/material'
+import { Material, WaterAffect } from '../lib/material'
 
 export enum Usage {
   WeaponOneHand,
@@ -20,6 +20,7 @@ export enum Usage {
   Gloves,
   Gauntlets,
   Cloak,
+  Scroll,
 }
 
 export enum ItemGroup {
@@ -30,6 +31,7 @@ export enum ItemGroup {
   Potion,
   MissileWeapon,
   Boots,
+  Scrolls,
 }
 
 export enum ItemSubgroup {
@@ -67,22 +69,25 @@ export class Item {
     public id: ItemId = Item.getId()
   ) {}
 
-  public affectWithWater(): void {
-    if (!this.material.corrodible) {
-      return
-    }
-
+  // TODO: Recalculate stats on corrosion
+  public corrode(): boolean {
     switch (this.corrosionLevel) {
       case CorrosionLevel.None:
         this.corrosionLevel = CorrosionLevel.Slightly
-        break
+        return true
       case CorrosionLevel.Slightly:
         this.corrosionLevel = CorrosionLevel.Mostly
-        break
+        return true
       case CorrosionLevel.Mostly:
         this.corrosionLevel = CorrosionLevel.Fully
-        break
+        return true
     }
+
+    return false
+  }
+
+  get affectedWithWater(): boolean {
+    return this.material.affectedWithWater !== undefined
   }
 
   get firm(): boolean {
@@ -120,7 +125,7 @@ export class Corpse extends Item {
       ItemGroup.Consumable,
       `${specie.name}'s corpse`,
       specie.weight,
-      specie.corpseMaterial
+      specie.material
     )
   }
 }
@@ -266,5 +271,11 @@ export class Boots extends Armor {
     protections: Protection[]
   ) {
     super(ItemGroup.Boots, name, weight, material, protections, Usage.Boots)
+  }
+}
+
+export class Scroll extends Item {
+  constructor(name: string) {
+    super(ItemGroup.Scrolls, name, 0.1, Material.paper, [Usage.Scroll])
   }
 }

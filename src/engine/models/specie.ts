@@ -33,5 +33,6 @@ export interface Specie {
   attackSpeed: number
 
   leavesCorpseRatio: number
-  corpseMaterial: Material
+
+  material: Material
 }

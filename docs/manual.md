@@ -86,6 +86,7 @@ All creatures can have resistances to different damage types. Some of them are b
 | Intangible            | Melee, pierce, blunt attacks                                        |
 | Magic Immunity        | Magic attacks                                                       |
 | Teleportation control | Allows to resist random teleportation or choose desired destination |
+| Water proof           | Ignores possible affects of water                                   |
 
 ## Impacts
 
@@ -113,12 +114,12 @@ Basically, items are equipment or usable. Equipment items are various types of a
 
 Materials have the following properties:
 
-| Name       | Description                                       |
-| ---------- | ------------------------------------------------- |
-| Corrodible | May rust if affected with water or another liquid |
-| Firm       | Retains the shape when interacting                |
-| Fragile    | Easy to break                                     |
-| Insulator  | Blocks the flow of an electrical current          |
+| Name                | Description                                        |
+| ------------------- | -------------------------------------------------- |
+| Affected with water | Transforms when contacts water (rusts or destroys) |
+| Firm                | Retains the shape when interacting                 |
+| Fragile             | Easy to break                                      |
+| Insulator           | Blocks the flow of an electrical current           |
 
 ### Traps
 

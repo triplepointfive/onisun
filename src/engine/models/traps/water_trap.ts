@@ -1,9 +1,11 @@
 import { Trap, TrapType, Tile } from '../tile'
-import { Point } from '../../../engine'
+import { Point, TrapEvent, Calculator } from '../../../engine'
 import { Game } from '../game'
 import { LevelMap } from '../level_map'
 import { Reaction, Creature } from '../creature'
 import { Player } from '../player'
+import { DamageType, Damage } from '../../lib/damage'
+import { WaterDamageEvent } from '../../events/water_damage_event'
 
 export class WaterTrap extends Trap {
   constructor(tile: Tile, revealed: boolean = false) {
@@ -15,7 +17,11 @@ export class WaterTrap extends Trap {
   }
 
   get dodgeRatio(): number {
-    return this.revealed ? 2 : 8
+    return this.revealed ? 10 : 8
+  }
+
+  get damages(): Damage[] {
+    return [{ type: DamageType.Pure, extra: 5, dice: { times: 2, max: 2 } }]
   }
 
   public untrap(
@@ -24,16 +30,59 @@ export class WaterTrap extends Trap {
     levelMap: LevelMap,
     game: Game
   ): void {
-    throw new Error('Method not implemented.')
+    if (Calculator.chance(3, 4)) {
+      game.logger.failedToUntrap(player)
+
+      // TODO: Activate on creature on trap or on player
+      if (Calculator.chance(1, 4)) {
+        this.activate(pos, game, levelMap, player)
+      }
+    } else {
+      this.disarmTile(pos, player, levelMap, game)
+    }
   }
 
   public activate(
     pos: Point,
     game: Game,
     levelMap: LevelMap,
-    actor: Creature
+    creature: Creature
   ): Reaction {
-    // TODO: Do water damage to body parts those do not have water resistance
-    throw new Error('Method not implemented.')
+    return creature.on(
+      new TrapEvent(
+        this,
+        levelMap,
+        game,
+        (sees, isPlayer) =>
+          game.logger.waterTrapDamage(
+            game.player,
+            sees,
+            isPlayer,
+            Reaction.DODGE,
+            creature
+          ),
+        (sees, isPlayer) => {
+          if (isPlayer) {
+            game.logger.waterTrapActivated()
+          }
+
+          let reaction = creature.on(
+            new WaterDamageEvent(this.damages, levelMap, game)
+          )
+
+          if (!isPlayer) {
+            game.logger.waterTrapDamage(
+              game.player,
+              sees,
+              isPlayer,
+              reaction,
+              creature
+            )
+          }
+
+          return reaction
+        }
+      )
+    )
   }
 }

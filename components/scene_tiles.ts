@@ -147,6 +147,7 @@ const BODY_ARMOR = new ItemTile('胸', 200, 200, 200)
 const MISSILE = new ItemTile('石', 200, 200, 200)
 const MISSILE_WEAPON = new ItemTile(']', 200, 200, 200)
 const BOOTS = new ItemTile('[', 255, 255, 0)
+const SCROLL = new ItemTile('?', 255, 255, 255)
 
 const POTION = new ItemTile('！', 200, 200, 200)
 
@@ -166,6 +167,8 @@ export const displayItem = function(item: Item): ItemTile {
       return POTION
     case ItemGroup.Boots:
       return BOOTS
+    case ItemGroup.Scrolls:
+      return SCROLL
     default:
       return CORPSE
   }

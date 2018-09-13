@@ -15,6 +15,19 @@ export class Calculator {
     )
   }
 
+  // Random with luck based align to get lower value
+  public static lowerWeight(max: number, min: number = 1): number {
+    let count = 0
+
+    for (let i = min; i < max; i++) {
+      if (this.chance(1, 3)) {
+        count += 1
+      }
+    }
+
+    return Math.max(1, count)
+  }
+
   public static chance(hit: number, of: number): boolean {
     return random(1, of) <= hit
   }

@@ -1,5 +1,10 @@
+export enum WaterAffect {
+  Corrosion,
+  Destroy,
+}
+
 export interface Material {
-  readonly corrodible: boolean
+  readonly affectedWithWater?: WaterAffect
   readonly firm: boolean
   readonly fragile: boolean
   readonly insulator: boolean
@@ -7,49 +12,56 @@ export interface Material {
 
 export namespace Material {
   export const cloth: Material = {
-    corrodible: false,
+    affectedWithWater: undefined,
     firm: false,
     fragile: false,
     insulator: false,
   }
 
   export const flesh: Material = {
-    corrodible: false,
+    affectedWithWater: undefined,
     firm: true,
     fragile: false,
     insulator: true,
   }
 
   export const glass: Material = {
-    corrodible: false,
+    affectedWithWater: undefined,
     firm: false,
     fragile: true,
     insulator: false,
   }
 
   export const iron: Material = {
-    corrodible: true,
+    affectedWithWater: WaterAffect.Corrosion,
     firm: true,
     fragile: false,
     insulator: true,
   }
 
   export const leather: Material = {
-    corrodible: false,
+    affectedWithWater: undefined,
     firm: false,
     fragile: false,
     insulator: false,
   }
 
+  export const paper: Material = {
+    affectedWithWater: WaterAffect.Destroy,
+    firm: false,
+    fragile: false,
+    insulator: true,
+  }
+
   export const stone: Material = {
-    corrodible: false,
+    affectedWithWater: undefined,
     firm: true,
     fragile: false,
     insulator: true,
   }
 
   export const wood: Material = {
-    corrodible: false,
+    affectedWithWater: undefined,
     firm: true,
     fragile: false,
     insulator: true,

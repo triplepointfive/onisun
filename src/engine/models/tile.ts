@@ -196,7 +196,7 @@ export abstract class Trap extends Tile {
     pos: Point,
     game: Game,
     levelMap: LevelMap,
-    actor: Creature
+    creature: Creature
   ): Reaction
 
   protected disarmTile(

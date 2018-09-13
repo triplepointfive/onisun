@@ -23,6 +23,7 @@ import {
 } from './onisun/items'
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
 import { Material } from './engine/lib/material'
+import { Scroll } from './engine/models/item'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -55,6 +56,7 @@ export class Application {
     const plateArmor = new BodyArmor('Латы', 1, Material.iron, [
       { type: ProtectionType.Heavy, value: 5 },
     ])
+    const scroll = new Scroll('Свиток ххх')
 
     const wooden = woodenArrow()
     const iron = ironArrow()
@@ -72,6 +74,7 @@ export class Application {
       tile.addItem(iron, 5)
       tile.addItem(rock, 5)
       tile.addItem(bow, 2)
+      tile.addItem(scroll, 20)
 
       player.on(
         new PickUpItemsEvent(
@@ -84,6 +87,7 @@ export class Application {
             { item: iron, count: 5 },
             { item: rock, count: 5 },
             { item: bow, count: 2 },
+            { item: scroll, count: 20 },
           ],
           this.game
         )
@@ -128,7 +132,7 @@ export class Application {
         attackSpeed: 20,
         bodyControl: 5,
         leavesCorpseRatio: 0,
-        corpseMaterial: Material.flesh,
+        material: Material.flesh,
       },
       12,
       15

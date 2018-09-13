@@ -1,8 +1,9 @@
 import { Creature, Reaction } from './creature'
-import { Item, Potion } from './item'
+import { Item, Potion, CorrosionLevel } from './item'
 
 import { last } from 'lodash'
 import { Player } from './player'
+import { BodyPart } from './inventory_slot'
 
 export enum LogLevel {
   DEBUG,
@@ -344,6 +345,76 @@ export class Logger {
     actor: Creature
   ): void {
     this.info(`${actor.name} попал в ловушку`)
+  }
+
+  public waterTrapActivated(): void {
+    this.info(`Я попал в ловушку с водой`)
+  }
+
+  public waterBodyPartEquipmentResist(bodyPart: BodyPart, item: Item): void {
+    this.debug(`${item.name} защитил ${bodyPart.name} от воды`)
+  }
+
+  public waterBodyPartDamage(bodyPart: BodyPart, reaction: Reaction): void {
+    switch (reaction) {
+      case Reaction.DIE:
+        this.danger(
+          `Вода попала мне на ${bodyPart.name}, рана не совместима с жизнью`
+        )
+        break
+      case Reaction.HURT:
+        this.danger(`Вода обожгла мне ${bodyPart.name}`)
+        break
+      case Reaction.NOTHING:
+      case Reaction.RESIST:
+        this.danger(`Вода попала мне на ${bodyPart.name}, но все обошлось`)
+        break
+    }
+  }
+
+  public waterTrapDamage(
+    player: Player,
+    sees: boolean,
+    isPlayer: boolean,
+    reaction: Reaction,
+    creature: Creature
+  ): void {
+    if (!sees) {
+      return
+    }
+
+    switch (reaction) {
+      case Reaction.DIE:
+        this.danger(`${creature.name} растворился в потоках воды`)
+        break
+      case Reaction.DODGE:
+        this.info(`${creature.name} уклонился от потока воды`)
+        break
+      case Reaction.HURT:
+        this.warning(`${creature.name} пострадал от воды`)
+        break
+      case Reaction.NOTHING:
+      case Reaction.RESIST:
+        if (!isPlayer) {
+          this.debug(`${creature.name} был облит водой`)
+        }
+        break
+    }
+  }
+
+  public itemCorrode(item: Item): void {
+    switch (item.corrosionLevel) {
+      case CorrosionLevel.Slightly:
+        return this.info(`${item.name} немного заржавел`)
+      case CorrosionLevel.Mostly:
+        return this.info(`${item.name} значительно проржавел`)
+      case CorrosionLevel.Fully:
+        return this.warning(`${item.name} полностью проржавел`)
+    }
+  }
+
+  public itemDestroyByWater(item: Item, count: number): void {
+    this.warning(`${count} ${item.name} были уничтожены водой`)
   }
 
   public debug(message: string): void {
