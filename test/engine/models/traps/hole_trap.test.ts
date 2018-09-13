@@ -114,6 +114,12 @@ describe('HoleTrap', () => {
   })
 
   describe('without second floor', () => {
+    beforeEach(() => {
+      const secondFloor = generateLevelMap(['W'])
+      game.addMap(secondFloor.id, () => secondFloor)
+      levelMap.setTile(2, 2, new StairwayDown(levelMap, secondFloor.id))
+    })
+
     describe('for creature', () => {
       let creature: Creature
 

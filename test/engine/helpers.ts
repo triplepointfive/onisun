@@ -108,6 +108,8 @@ const fakeSpecie: () => Specie = () => {
     moveSpeed: 0,
     attackSpeed: 0,
     bodyControl: 5,
+    leavesCorpseRatio: 0.5,
+    material: Material.flesh,
   }
 }
 
@@ -128,12 +130,13 @@ export class TestGame extends Game {}
 
 let levelMapId = 0
 export const generateLevelMap = function(
+  mask: string[] = undefined,
   id: LevelMapId = levelMapId++
 ): LevelMap {
   let map = new LevelMap(
     id,
     drawn(
-      [
+      mask || [
         'WWWWW',
         'WRRRW',
         'WRRRW',

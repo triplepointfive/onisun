@@ -113,7 +113,7 @@ export class HoleTrap extends Trap {
 
     withEachTile(
       levelMap,
-      tile => tile instanceof StairwayDown,
+      () => true,
       tile => {
         if (tile instanceof StairwayDown) {
           let downLevelMap = game.getMap(tile.adjacentMapId),

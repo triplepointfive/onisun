@@ -111,6 +111,15 @@ describe('BareWire', () => {
         expect(creature.on).toHaveBeenCalledTimes(2)
         expect(creature.on.mock.calls[1][0]).toBeInstanceOf(HurtEvent)
       })
+
+      it('hit does not reveal if not seen', () => {
+        player.specie.visionRadius = 0
+        trap.activate(pos, game, levelMap, creature)
+
+        expect(trap.revealed).toBeFalsy()
+        expect(creature.on).toHaveBeenCalledTimes(2)
+        expect(creature.on.mock.calls[1][0]).toBeInstanceOf(HurtEvent)
+      })
     })
 
     describe('player activates', () => {

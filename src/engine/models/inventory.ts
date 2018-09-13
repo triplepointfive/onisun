@@ -28,7 +28,7 @@ export class Inventory {
   public headSlot = new HeadSlot(Material.flesh)
   public amuletSlot = new AmuletSlot()
   public cloakSlot = new CloakSlot()
-  public chestSlot = new ChestSlot(Material.paper)
+  public chestSlot = new ChestSlot(Material.flesh)
   public rightHandSlot = new RightHandSlot(Material.flesh)
   public leftHandSlot = new LeftHandSlot(Material.flesh)
   public leftFingerSlot = new LeftFingerSlot()

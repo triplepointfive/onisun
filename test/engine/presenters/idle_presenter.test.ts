@@ -49,7 +49,7 @@ class TestDungeon extends Dungeon {
   }
 
   private newMap(id): LevelMap {
-    return generateLevelMap(id)
+    return generateLevelMap(undefined, id)
   }
 }
 

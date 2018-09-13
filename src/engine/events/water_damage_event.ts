@@ -55,12 +55,13 @@ export class WaterDamageEvent extends CreatureEvent {
 
         switch (item.material.affectedWithWater) {
           case WaterAffect.Corrosion:
+            // TODO: Should corrode all items?
             if (Calculator.chance(1, 3) && item.corrode()) {
               this.game.logger.itemCorrode(item)
             }
             break
           case WaterAffect.Destroy:
-            if (Calculator.chance(1, 4) && item.corrode()) {
+            if (Calculator.chance(1, 4)) {
               const destroyedCount = Calculator.lowerWeight(count)
               this.game.logger.itemDestroyByWater(item, destroyedCount)
               // TODO: Do not log  taking off item?
@@ -79,7 +80,7 @@ export class WaterDamageEvent extends CreatureEvent {
       return
     }
 
-    player.inventoryItems.forEach(({ count, item }: GroupedItem<Item>) => {
+    player.inventory.cares().forEach(({ count, item }: GroupedItem<Item>) => {
       switch (item.material.affectedWithWater) {
         case WaterAffect.Corrosion:
           if (Calculator.chance(1, 4) && item.corrode()) {
@@ -87,7 +88,7 @@ export class WaterDamageEvent extends CreatureEvent {
           }
           break
         case WaterAffect.Destroy:
-          if (Calculator.chance(1, 6) && item.corrode()) {
+          if (Calculator.chance(1, 6)) {
             const destroyedCount = Calculator.lowerWeight(count)
             this.game.logger.itemDestroyByWater(item, destroyedCount)
             player.inventory.removeFromBag(item, destroyedCount)
@@ -127,12 +128,7 @@ export class WaterDamageEvent extends CreatureEvent {
   }
 
   protected trackReaction(reaction: Reaction): void {
-    if (this.playerReaction === Reaction.DIE) {
-      return
-    } else if (
-      this.playerReaction === Reaction.HURT &&
-      reaction === Reaction.DIE
-    ) {
+    if (this.playerReaction === Reaction.HURT && reaction === Reaction.DIE) {
       this.playerReaction = Reaction.DIE
     } else if (this.playerReaction === Reaction.HURT) {
       this.playerReaction = Reaction.HURT
