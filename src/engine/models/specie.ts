@@ -21,6 +21,7 @@ export interface Specie {
   bodyControl: number
 
   throwingItem?: Missile
+  throwingDamages: Damage[]
 
   maxHealthValue: number
   regenerationRate: number

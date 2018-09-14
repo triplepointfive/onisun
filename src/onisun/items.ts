@@ -42,14 +42,36 @@ class Bow extends MissileWeapon {
   }
 }
 
-export const commonBow = () => new Bow('Обычный лук', 1, Material.wood)
+export const commonBow = () =>
+  new Bow(
+    'Обычный лук',
+    1,
+    [{ type: DamageType.Pierce, dice: { times: 1, max: 3 }, extra: 3 }],
+    Material.wood
+  )
 
 export const smallRock = () =>
-  new MissileRock('Маленький камень', 0.3, Material.stone)
+  new MissileRock(
+    'Маленький камень',
+    0.3,
+    [{ type: DamageType.Blunt, dice: { times: 1, max: 3 }, extra: 2 }],
+    Material.stone
+  )
 
 export const woodenArrow = () =>
-  new Arrow('Деревянная стрела', 0.2, Material.wood)
-export const ironArrow = () => new Arrow('Железная стрела', 0.25, Material.iron)
+  new Arrow(
+    'Деревянная стрела',
+    0.2,
+    [{ type: DamageType.Pierce, dice: { times: 1, max: 4 }, extra: 3 }],
+    Material.wood
+  )
+export const ironArrow = () =>
+  new Arrow(
+    'Железная стрела',
+    0.25,
+    [{ type: DamageType.Pierce, dice: { times: 2, max: 3 }, extra: 3 }],
+    Material.iron
+  )
 
 export const weapons = new Pool<null, Item>([
   [

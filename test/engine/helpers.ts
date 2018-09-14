@@ -59,7 +59,12 @@ export const generateBodyArmor = function(): BodyArmor {
 }
 
 export const generateMissile = function(): Missile {
-  return new TestMissile('test missile', 1, Material.wood)
+  return new TestMissile(
+    'test missile',
+    1,
+    [{ type: DamageType.Pierce, dice: { times: 0, max: 0 }, extra: 2 }],
+    Material.wood
+  )
 }
 
 export const generatePlayerAI = function(): PlayerAI {
@@ -110,6 +115,7 @@ const fakeSpecie: () => Specie = () => {
     bodyControl: 5,
     leavesCorpseRatio: 0.5,
     material: Material.flesh,
+    throwingDamages: [],
   }
 }
 

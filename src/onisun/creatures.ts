@@ -37,6 +37,8 @@ const newCreature = (
 
     leavesCorpseRatio: 50,
     material: Material.flesh,
+
+    throwingDamages: [],
   })
 }
 

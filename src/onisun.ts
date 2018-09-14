@@ -133,6 +133,7 @@ export class Application {
         bodyControl: 5,
         leavesCorpseRatio: 0,
         material: Material.flesh,
+        throwingDamages: [],
       },
       12,
       15

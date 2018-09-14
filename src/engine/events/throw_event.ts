@@ -28,8 +28,14 @@ export class ThrowEvent extends CreatureEvent {
       return Reaction.THROW_DODGE
     }
 
-    // TODO: Calculate normally
-    const damage = Calculator.throwDamageTo(10, 10)
+    // TODO: Check if hit with shooter's BC
+
+    // TODO: Check has no resistances
+    const { damage, resist } = Calculator.damage(
+      actor.throwDamages,
+      this.victim.protections,
+      this.victim.resistances
+    )
 
     if (damage >= this.victim.health.currentValue) {
       actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))

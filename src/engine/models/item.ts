@@ -138,18 +138,6 @@ export abstract class Potion extends Item {
   abstract onDrink(game: Game): void
 }
 
-export abstract class Missile extends Item {
-  constructor(name: string, weight: number, material: Material) {
-    super(ItemGroup.Missile, name, weight, material, [])
-  }
-}
-
-export abstract class MissileWeapon extends Item {
-  constructor(name: string, weight: number, material: Material) {
-    super(ItemGroup.MissileWeapon, name, weight, material, [Usage.Shoot])
-  }
-}
-
 export abstract class Weapon extends Item {
   constructor(
     group: ItemGroup,
@@ -157,9 +145,9 @@ export abstract class Weapon extends Item {
     weight: number,
     material: Material,
     protected rawDamages: Damage[],
-    usage: Usage
+    usages: Usage[]
   ) {
-    super(group, name, weight, material, [usage])
+    super(group, name, weight, material, usages)
   }
 
   get damages(): Damage[] {
@@ -182,6 +170,30 @@ export abstract class Weapon extends Item {
   }
 }
 
+export abstract class Missile extends Weapon {
+  constructor(
+    name: string,
+    weight: number,
+    damages: Damage[],
+    material: Material
+  ) {
+    super(ItemGroup.Missile, name, weight, material, damages, [])
+  }
+}
+
+export abstract class MissileWeapon extends Weapon {
+  constructor(
+    name: string,
+    weight: number,
+    damages: Damage[],
+    material: Material
+  ) {
+    super(ItemGroup.MissileWeapon, name, weight, material, damages, [
+      Usage.Shoot,
+    ])
+  }
+}
+
 export class OneHandWeapon extends Weapon {
   constructor(
     name: string,
@@ -189,14 +201,9 @@ export class OneHandWeapon extends Weapon {
     material: Material,
     damages: Damage[]
   ) {
-    super(
-      ItemGroup.OneHandWeapon,
-      name,
-      weight,
-      material,
-      damages,
-      Usage.WeaponOneHand
-    )
+    super(ItemGroup.OneHandWeapon, name, weight, material, damages, [
+      Usage.WeaponOneHand,
+    ])
   }
 }
 

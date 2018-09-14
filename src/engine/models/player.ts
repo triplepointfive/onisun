@@ -74,6 +74,7 @@ export class Player extends Creature {
   }
 
   get missile(): GroupedItem<Missile> | undefined {
+    // TODO: Validate item on slot
     return this.inventory.missileSlot.equipment
   }
 
@@ -87,6 +88,11 @@ export class Player extends Creature {
 
   public removeItem(item: Item, count: number): void {
     this.inventory.removeFromBag(item, count)
+  }
+
+  get throwDamages(): Damage[] {
+    // TODO: Add missile and missile weapons damages
+    return this.specie.throwingDamages
   }
 
   get damages(): Damage[] {

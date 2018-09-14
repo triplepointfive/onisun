@@ -59,8 +59,9 @@ describe('StayEvent', () => {
 
     describe('actor does damage', () => {
       beforeEach(() => {
-        Calculator.throwDamageTo = jest.fn()
-        Calculator.throwDamageTo.mockReturnValueOnce(1)
+        Calculator.damage = jest.fn(() => {
+          return { damage: 1, resist: false }
+        })
 
         expect(actor.on(event)).toEqual(Reaction.HURT)
       })
@@ -76,8 +77,9 @@ describe('StayEvent', () => {
 
     describe('actor kills', () => {
       beforeEach(() => {
-        Calculator.throwDamageTo = jest.fn()
-        Calculator.throwDamageTo.mockReturnValueOnce(victim.health.maximum)
+        Calculator.damage = jest.fn(() => {
+          return { damage: victim.health.maximum, resist: false }
+        })
 
         expect(actor.on(event)).toEqual(Reaction.DIE)
       })

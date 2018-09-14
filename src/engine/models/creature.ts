@@ -71,6 +71,10 @@ export abstract class Creature {
     return this.specie.protections
   }
 
+  get throwDamages(): Damage[] {
+    return this.specie.throwingDamages
+  }
+
   get damages(): Damage[] {
     return this.specie.damages
   }

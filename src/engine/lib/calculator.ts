@@ -39,10 +39,6 @@ export class Calculator {
     return Math.random() < (Math.atan(actorBC / ratio) / Math.PI) * 2
   }
 
-  public static throwDamageTo(x: number, y: number): number {
-    return 10
-  }
-
   public static damage(
     damages: Damage[],
     protectionTypes: Protection[],

@@ -74,7 +74,7 @@ export default Vue.extend({
       }
     },
     itemWeight(position) {
-      return position.item.weight * position.count
+      return Math.round(position.item.weight * position.count * 100) / 100
     }
   }
 })
