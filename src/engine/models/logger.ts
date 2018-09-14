@@ -21,10 +21,15 @@ export interface LogMessage {
 // TODO: Do not display messages while being blind
 export class Logger {
   public messages: LogMessage[] = []
-  public trapHole: TrapHoleLogger
 
-  constructor(private player: Player) {
+  public trapBareWire: TrapBareWireLogger
+  public trapHole: TrapHoleLogger
+  public trapFallingRock: TrapFallingRock
+
+  constructor(player: Player) {
     this.trapHole = new TrapHoleLogger(this, player)
+    this.trapBareWire = new TrapBareWireLogger(this, player)
+    this.trapFallingRock = new TrapFallingRock(this, player)
   }
 
   public reset() {
@@ -265,51 +270,6 @@ export class Logger {
     }
   }
 
-  public bareWireHit(
-    sees: boolean,
-    reaction: Reaction,
-    creature: Creature
-  ): void {
-    // TODO: Better messages
-    this.info(`${creature.name} наступил на оголенный провод`)
-  }
-
-  public bareWireUntrapDoNotWant() {
-    this.info('Трогать оголенный провод руками так себе затея')
-  }
-
-  public bareWirePlayerBootResist(): void {
-    this.info('Я наступил на оголенный провод, но все обошлось')
-  }
-
-  public fallingTrapRests(player: Player): void {
-    // TODO: Different messages when head is firm or item if firm
-    return this.info('Камень упал мне на голову, но каска защитила меня')
-  }
-
-  public fallingTrapRanOut(): void {
-    return this.debug('Громкий щелчок, но ничего не произошло')
-  }
-
-  public fallingTrapDodge(
-    player: Player,
-    sees: boolean,
-    isPlayer: boolean,
-    actor: Creature
-  ): void {
-    this.info(`${actor.name} увернулся от ловушки`)
-  }
-
-  public fallingTrapActivate(
-    player: Player,
-    sees: boolean,
-    isPlayer: boolean,
-    reaction: Reaction,
-    actor: Creature
-  ): void {
-    this.info(`${actor.name} попал в ловушку`)
-  }
-
   public waterTrapActivated(): void {
     this.info(`Я попал в ловушку с водой`)
   }
@@ -454,5 +414,54 @@ class TrapHoleLogger extends SubLogger {
     } else if (sees) {
       this.warning(`${creature.name} упал в неглубокую яму`)
     }
+  }
+}
+
+class TrapBareWireLogger extends SubLogger {
+  public activated(
+    sees: boolean,
+    reaction: Reaction,
+    creature: Creature
+  ): void {
+    // TODO: Better messages
+    this.info(`${creature.name} наступил на оголенный провод`)
+  }
+
+  public doNotWant() {
+    this.info('Трогать оголенный провод руками так себе затея')
+  }
+
+  public resist(): void {
+    this.info('Я наступил на оголенный провод, но все обошлось')
+  }
+}
+
+class TrapFallingRock extends SubLogger {
+  public resist(player: Player): void {
+    // TODO: Different messages when head is firm or item if firm
+    return this.info('Камень упал мне на голову, но каска защитила меня')
+  }
+
+  public ranOut(): void {
+    return this.debug('Громкий щелчок, но ничего не произошло')
+  }
+
+  public dodge(
+    player: Player,
+    sees: boolean,
+    isPlayer: boolean,
+    actor: Creature
+  ): void {
+    this.info(`${actor.name} увернулся от ловушки`)
+  }
+
+  public activate(
+    player: Player,
+    sees: boolean,
+    isPlayer: boolean,
+    reaction: Reaction,
+    actor: Creature
+  ): void {
+    this.info(`${actor.name} попал в ловушку`)
   }
 }

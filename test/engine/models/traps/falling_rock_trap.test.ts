@@ -125,7 +125,7 @@ describe('FallingRockTrap', () => {
 
       Calculator.dodges.mockReturnValueOnce(true)
 
-      jest.spyOn(game.logger, 'fallingTrapDodge')
+      jest.spyOn(game.logger.trapFallingRock, 'dodge')
 
       let creature = generateCreature()
       jest.spyOn(creature, 'on')
@@ -134,7 +134,7 @@ describe('FallingRockTrap', () => {
 
       trap.activate(pos, game, levelMap, creature)
 
-      expect(game.logger.fallingTrapDodge).toHaveBeenCalled()
+      expect(game.logger.trapFallingRock.dodge).toHaveBeenCalled()
       expect(creature.on).toHaveBeenCalledTimes(1)
       expect(trap.missilesCount).toEqual(initMissilesCount - 1)
     })

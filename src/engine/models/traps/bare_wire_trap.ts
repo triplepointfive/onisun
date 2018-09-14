@@ -30,7 +30,7 @@ class BareWireTrapEvent extends VisibleCreatureEvent {
       this.trap.revealed = true
     }
 
-    this.game.logger.bareWireHit(
+    this.game.logger.trapBareWire.activated(
       this.playerSees(creature),
       hurtReaction,
       creature
@@ -43,12 +43,12 @@ class BareWireTrapEvent extends VisibleCreatureEvent {
     this.trap.revealed = true
 
     if (player.inventory.bootsSlot.insulator) {
-      this.game.logger.bareWirePlayerBootResist()
+      this.game.logger.trapBareWire.resist()
 
       return Reaction.RESIST
     } else {
       const hurtReaction = player.on(this.hurtEvent)
-      this.game.logger.bareWireHit(true, hurtReaction, player)
+      this.game.logger.trapBareWire.activated(true, hurtReaction, player)
 
       return hurtReaction
     }
@@ -68,7 +68,7 @@ export class BareWireTrap extends Trap {
   ): void {
     // TODO: Do stupid thing when has low
     if (!player.inventory.glovesSlot.insulator) {
-      game.logger.bareWireUntrapDoNotWant()
+      game.logger.trapBareWire.doNotWant()
     } else if (Calculator.chance(1, 7)) {
       game.logger.failedToUntrap(player)
       // TODO: Activate on both player and creature standing on the trap

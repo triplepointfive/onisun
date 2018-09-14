@@ -72,10 +72,15 @@ export class FallingRockTrap extends Trap {
         levelMap,
         game,
         (sees, isPlayer) =>
-          game.logger.fallingTrapDodge(game.player, sees, isPlayer, creature),
+          game.logger.trapFallingRock.dodge(
+            game.player,
+            sees,
+            isPlayer,
+            creature
+          ),
         (sees, isPlayer) => {
           if (isPlayer && game.player.inventory.headSlot.firm) {
-            game.logger.fallingTrapRests(game.player)
+            game.logger.trapFallingRock.resist(game.player)
             return Reaction.RESIST
           }
 
@@ -83,7 +88,7 @@ export class FallingRockTrap extends Trap {
             new HurtEvent(this.damages, DieReason.Trap, levelMap, game)
           )
 
-          game.logger.fallingTrapActivate(
+          game.logger.trapFallingRock.activate(
             game.player,
             sees,
             isPlayer,
@@ -103,7 +108,7 @@ export class FallingRockTrap extends Trap {
     logger: Logger
   ): boolean {
     if (this.missilesCount <= 0) {
-      logger.fallingTrapRanOut()
+      logger.trapFallingRock.ranOut()
       return false
     }
 
