@@ -85,13 +85,12 @@ export class LevelMap extends Mapped<Tile> {
     this.map[x][y] = tile
   }
 
-  public matchStairs(adjustName: string, enterPos: Point): Point {
+  public matchStairs(adjustName: string): Point {
     let stairPos: Point | undefined
 
     this.each((tile, x, y) => {
       if (tile instanceof StairwayDown || tile instanceof StairwayUp) {
         if (tile.adjacentMapName === adjustName) {
-          tile.enterPos = enterPos
           stairPos = new Point(x, y)
         }
       }

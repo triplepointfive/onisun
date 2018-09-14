@@ -9,10 +9,10 @@ import Vue from 'vue'
 import { Direction, LookPresenterVisibility } from '../../src/engine'
 
 export default Vue.extend({
-  name: 'LookView',
+  name: 'PickPointView',
   props: ['screen'],
   computed: {
-    title() {
+    title(): string {
       switch (this.screen.title) {
       case LookPresenterVisibility.See:
         return 'Вижу ...'
@@ -26,7 +26,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    close(inputKey) {
+    close(inputKey: KeyboardEvent) {
       this.screen.onInput(inputKey)
     },
     onEvent(event: KeyboardEvent) {

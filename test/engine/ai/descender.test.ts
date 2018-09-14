@@ -58,7 +58,7 @@ describe('Descender', () => {
       map.addCreature(new Point(1, 1), actor)
     })
 
-    fit('goes down', () => {
+    it('goes down', () => {
       actor.act(map, game)
       expect(() => map.creaturePos(actor)).toThrow()
       expect(adjustMap.creaturePos(actor).eq(new Point(1, 5))).toBeTruthy()

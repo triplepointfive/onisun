@@ -21,26 +21,17 @@ class StairwayDownFinderVisitor extends TileVisitor {
 class StairwayDownTileMoverVisitor extends TileVisitor {
   public event: CreatureEvent | undefined
 
-  constructor(
-    private actor: Creature,
-    private game: Game,
-    private levelMap: LevelMap
-  ) {
+  constructor(private game: Game, private levelMap: LevelMap) {
     super()
   }
 
   public onStairwayDown(stairway: StairwayDown): void {
-    // TODO: Do not do this if already connected
     const adjacentMap = this.game.getMap(stairway.adjacentMapName)
-    stairway.enterPos = adjacentMap.matchStairs(
-      this.levelMap.name,
-      this.levelMap.creaturePos(this.actor)
-    )
 
     this.event = new MoveEvent(
       this.game,
       this.levelMap,
-      stairway.enterPos,
+      stairway.enterPos(this.levelMap, adjacentMap),
       adjacentMap
     )
   }
@@ -71,7 +62,7 @@ export class Descender extends GoToTileAI {
     game: Game
   ): CreatureEvent | undefined {
     // Should stay here at least for a turn
-    const visitor = new StairwayDownTileMoverVisitor(actor, game, levelMap),
+    const visitor = new StairwayDownTileMoverVisitor(game, levelMap),
       tile = levelMap.creatureTile(actor)
 
     tile.visit(visitor)

@@ -42,7 +42,7 @@ import ProfessionPickingView from './views/ProfessionPickingView.vue'
 import ItemsListingView from './views/ItemsListingView.vue'
 import TalentsTreeView from './views/TalentsTreeView.vue'
 import InventoryView from './views/InventoryView.vue'
-import LookView from './views/LookView.vue'
+import PickPointView from './views/PickPointView.vue'
 import MissileView from './views/MissileView.vue'
 import DeathView from './views/DeathView.vue'
 import PickSingleOptionView from './views/PickSingleOptionView.vue'
@@ -87,8 +87,7 @@ export default Vue.extend({
         return MissileView
       case PresenterType.Teleportation:
       case PresenterType.Look:
-        // TODO: It's not only look anymore, name accordingly
-        return LookView
+        return PickPointView
       case PresenterType.Death:
         return DeathView
       case PresenterType.PickHandleOption:

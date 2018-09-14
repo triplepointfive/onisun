@@ -9,7 +9,6 @@ import {
   PickUpItemsEvent,
   PickUpPresenter,
   TileVisitor,
-  Player,
   Stairway,
   LevelMap,
   LookPresenter,
@@ -32,24 +31,22 @@ class HandleTileVisitor extends TileVisitor {
   constructor(
     public position: Point,
     private game: Game,
-    private levelMap: LevelMap,
-    private player: Player
+    private levelMap: LevelMap
   ) {
     super()
   }
 
   protected onStairway(stairway: Stairway): void {
-    // TODO: Do not do this if already connected
-    // TODO: Remove duplicity!!! descender.ts
     const adjacentMap = this.game.getMap(stairway.adjacentMapName)
-    stairway.enterPos = adjacentMap.matchStairs(
-      this.levelMap.name,
-      this.levelMap.creaturePos(this.player)
-    )
 
     this.commands.push([
       'stairway',
-      new MoveEvent(this.game, this.levelMap, stairway.enterPos, adjacentMap),
+      new MoveEvent(
+        this.game,
+        this.levelMap,
+        stairway.enterPos(this.levelMap, adjacentMap),
+        adjacentMap
+      ),
     ])
   }
 
@@ -149,18 +146,8 @@ export class IdlePresenter extends Presenter {
 
   public handleCommand(): void {
     let pos = this.levelMap.creaturePos(this.player),
-      visitor = new HandleTileVisitor(
-        pos,
-        this.game,
-        this.levelMap,
-        this.player
-      ),
-      adjustVisitor = new AdjustHandleTileVisitor(
-        pos,
-        this.game,
-        this.levelMap,
-        this.player
-      )
+      visitor = new HandleTileVisitor(pos, this.game, this.levelMap),
+      adjustVisitor = new AdjustHandleTileVisitor(pos, this.game, this.levelMap)
 
     this.tile.visit(visitor)
 

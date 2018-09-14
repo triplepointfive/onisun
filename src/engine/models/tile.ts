@@ -124,7 +124,7 @@ export class Wall extends Tile {
 }
 
 export abstract class Stairway extends Tile {
-  public enterPos: Point | undefined
+  private _enterPos: Point | undefined
 
   constructor(
     key: string,
@@ -133,6 +133,14 @@ export abstract class Stairway extends Tile {
     public adjacentMapName: string
   ) {
     super(key, type)
+  }
+
+  public enterPos(levelMap: LevelMap, adjacentMap: LevelMap): Point {
+    if (this._enterPos) {
+      return this._enterPos
+    }
+
+    return (this._enterPos = adjacentMap.matchStairs(levelMap.name))
   }
 
   public visibleThrough(): boolean {

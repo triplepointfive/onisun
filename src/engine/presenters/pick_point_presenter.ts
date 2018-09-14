@@ -19,6 +19,7 @@ export abstract class PickPointPresenter<Title, Body> extends Presenter {
 
     this.memory = this.player.stageMemory(this.levelMap)
     this.targetPos = levelMap.creaturePos(this.player)
+    this.drawTarget()
   }
 
   abstract get title(): Title
