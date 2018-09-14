@@ -1,10 +1,10 @@
-import { Usage, Item } from './item'
+import { Usage, Item, Missile, Weapon } from './item'
 import { intersection } from 'lodash'
 import { Inventory } from './inventory'
 import { GroupedItem } from '../lib/bunch'
 import { Material } from '../../engine'
 
-export abstract class InventorySlot {
+export abstract class InventorySlot<Equipment extends Item = Item> {
   public name: string = 'InventorySlot'
 
   constructor(
@@ -12,7 +12,7 @@ export abstract class InventorySlot {
     public readonly usages: Usage[],
     // Has to put only a single item or can put a bunch of them
     public readonly useSingleItem: boolean,
-    public equipment?: GroupedItem<Item>
+    public equipment?: GroupedItem<Equipment>
   ) {}
 
   public matchingItems(inventory: Inventory): GroupedItem<Item>[] {
@@ -27,7 +27,7 @@ export abstract class InventorySlot {
     return !!(this.equipment && this.equipment.item.firm)
   }
 
-  public equip(item: Item, count: number) {
+  public equip(item: Equipment, count: number) {
     if (this.equipment) {
       throw `Slot ${this.name} is already equipped with ${this.equipment.item}`
     }
@@ -55,7 +55,9 @@ export abstract class InventorySlot {
   }
 }
 
-export abstract class BodyPart extends InventorySlot {
+export abstract class BodyPart<
+  Equipment extends Item = Item
+> extends InventorySlot<Equipment> {
   public abstract material: Material
 
   get affectedWithWater(): boolean {
@@ -63,14 +65,14 @@ export abstract class BodyPart extends InventorySlot {
   }
 }
 
-export class RightHandSlot extends BodyPart {
+export class RightHandSlot extends BodyPart<Weapon> {
   public name: string = 'Правая рука'
   constructor(public material: Material) {
     super([Usage.WeaponOneHand], true)
   }
 }
 
-export class LeftHandSlot extends BodyPart {
+export class LeftHandSlot extends BodyPart<Weapon> {
   public name: string = 'Левая рука'
   constructor(public material: Material) {
     super([Usage.WeaponOneHand], true)
@@ -147,7 +149,7 @@ export class CloakSlot extends InventorySlot {
   }
 }
 
-export class MissileWeaponSlot extends InventorySlot {
+export class MissileWeaponSlot extends InventorySlot<Weapon> {
   public name: string = 'Метательное'
   constructor() {
     super([Usage.Shoot], true)
@@ -165,7 +167,7 @@ export class MissileWeaponSlot extends InventorySlot {
   }
 }
 
-export class MissileSlot extends InventorySlot {
+export class MissileSlot extends InventorySlot<Missile> {
   public name: string = 'Снаряды'
   constructor() {
     super([Usage.Throw], false)

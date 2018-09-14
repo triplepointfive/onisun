@@ -24,7 +24,6 @@ import {
   TileVisitor,
   Wall,
   CreatureEvent,
-  LevelMapId,
   DamageType,
   AICreature,
   Talent,
@@ -129,12 +128,18 @@ export const generateLevel = function(): Level {
 }
 
 export const generatePlayer = function(): Player {
-  return new Player(generateLevel(), generatePlayerAI(), fakeSpecie(), 10, 10)
+  return new Player(
+    generateLevel(),
+    generatePlayerAI(),
+    fakeSpecie(),
+    10,
+    10,
+    10
+  )
 }
 
 export class TestGame extends Game {}
 
-let levelMapId = 0
 export const generateLevelMap = function(
   mask: string[] = undefined,
   name: string = generateString()

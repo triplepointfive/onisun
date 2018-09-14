@@ -95,6 +95,10 @@ export class Player extends Creature {
     this.inventory.removeFromBag(item, count)
   }
 
+  get bodyControl(): number {
+    return this.specie.bodyControl + this.dexterity.bodyControlAdjustment
+  }
+
   get throwDamages(): Damage[] {
     const dexterityAdjustment = this.dexterity.missileAdjustment
 
@@ -150,7 +154,8 @@ export class Player extends Creature {
 
     // TODO: Default damage
     return concat(
-      missileEq ? missileEq.item.damages : [],
+      // Can throw literally anything, so damage might be undefined
+      missileEq ? missileEq.item.damages || [] : [],
       missileWeaponEq ? missileWeaponEq.item.damages : []
     )
   }

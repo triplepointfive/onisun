@@ -136,6 +136,7 @@ export class Application {
         throwingDamages: [],
       },
       12,
+      12,
       15
     )
   }

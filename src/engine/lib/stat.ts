@@ -92,6 +92,16 @@ export class StrengthStat extends Stat {
 }
 
 export class DexterityStat extends Stat {
+  get bodyControlAdjustment(): number {
+    if (this.current < 5) {
+      return -2
+    } else if (this.current > 10) {
+      return Math.floor((this.current - 10) * 0.9)
+    } else {
+      return 0
+    }
+  }
+
   get missileAdjustment(): number {
     if (this.current < 5) {
       return -2
