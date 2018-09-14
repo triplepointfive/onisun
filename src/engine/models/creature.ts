@@ -164,6 +164,10 @@ export abstract class Creature {
     return this.specie.resistances
   }
 
+  get weightWithCarryings(): number {
+    return this.specie.weight
+  }
+
   abstract get missile(): GroupedItem<Missile> | undefined
   abstract get inventoryItems(): GroupedItem<Item>[]
 

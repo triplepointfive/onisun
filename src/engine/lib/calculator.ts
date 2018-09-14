@@ -15,7 +15,7 @@ export class Calculator {
     )
   }
 
-  // Random with luck based align to get lower value
+  // Random with luck based align to get low value
   public static lowerWeight(max: number, min: number = 1): number {
     let count = 0
 
@@ -26,6 +26,10 @@ export class Calculator {
     }
 
     return Math.max(1, count)
+  }
+  // Random with luck based align to get high value
+  public static higherWeight(max: number, min: number = 1): number {
+    return max + min - this.lowerWeight(max, min)
   }
 
   public static chance(hit: number, of: number): boolean {

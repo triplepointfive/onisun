@@ -164,6 +164,21 @@ export class Direction extends Point {
   static readonly upRight = new Direction(1, -1)
   static readonly downLeft = new Direction(-1, 1)
   static readonly downRight = new Direction(1, 1)
+
+  static readonly all = [
+    Direction.up,
+    Direction.down,
+    Direction.left,
+    Direction.right,
+    Direction.upLeft,
+    Direction.upRight,
+    Direction.downLeft,
+    Direction.downRight,
+  ]
+
+  public multiple(ratio: number): Point {
+    return new Point(this.x * ratio, this.y * ratio)
+  }
 }
 
 export const minUnsafe = function<T>(list: T[]): T {

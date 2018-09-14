@@ -24,6 +24,7 @@ import { BareWireTrap } from '../../engine/models/traps/bare_wire_trap'
 import { FallingRockTrap } from '../../engine/models/traps/falling_rock_trap'
 import { smallRock } from '../items'
 import { WaterTrap } from '../../engine/models/traps/water_trap'
+import { AirBlowTrap } from '../../engine/models/traps/air_blow_trap'
 
 const tiles: Map<string, () => Tile> = new Map()
 tiles.set('C', () => new Corridor('C', TileTypes.Floor))
@@ -38,41 +39,43 @@ export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
     const levelMap = (game.currentMap = game.getMap(trapsLevel))
 
-    levelMap.addCreature(new Point(3, 14), player)
+    levelMap.addCreature(new Point(3, 27), player)
   }
 
   public register(game: Game): void {
     game.addMap(trapsLevel, (name, game) => {
       let map = this.generateMap(name, [
-        'WWWWWWWWWWW',
-        'WWWWRRRWWWW',
-        'WWWWRRRWWWW',
-        'WWWWRRRWWWW',
-        'WWWWWCWWWWW',
-        'WRRRWCWRRRW',
-        'WRRRCCCRRRW',
-        'WRRRWCWRRRW',
-        'WWWWWCWWWWW',
-        'WRRRWCWRRRW',
-        'WRRRCCCRRRW',
-        'WRRRWCWRRRW',
-        'WWWWWCWWWWW',
-        'WRRRWCWRRRW',
-        'WRRRCCCRRRW',
-        'WRRRWCWRRRW',
-        'WWWWWCWWWWW',
-        'WRRRWCWRRRW',
-        'WRRRCCCRRRW',
-        'WRRRWCWRRRW',
-        'WWWWWCWWWWW',
-        'WRRRWCWRRRW',
-        'WRRRCCCRRRW',
-        'WRRRWCWRRRW',
-        'WWWWWCWWWWW',
-        'WRRRWCWRRRW',
-        'WRRRCCCRRRW',
-        'WRRRWCWRRRW',
-        'WWWWWWWWWWW',
+        'WWWWWWWWWWWWW',
+        'WWWWRRRWWWWWW',
+        'WWWWRRRWWWWWW',
+        'WWWWRRRWWWWWW',
+        'WWWWWCWWWWWWW',
+        'WRRRWCWRRRWWW',
+        'WRRRCCCRRRWWW',
+        'WRRRWCWRRRWWW',
+        'WWWWWCWWWWWWW',
+        'WRRRWCWRRRWWW',
+        'WRRRCCCRRRWWW',
+        'WRRRWCWRRRWWW',
+        'WWWWWCWWWWWWW',
+        'WRRRWCWRRRWWW',
+        'WRRRCCCRRRWWW',
+        'WRRRWCWRRRWWW',
+        'WWWWWCWWWWWWW',
+        'WRRRWCWRRRWWW',
+        'WRRRCCCRRRWWW',
+        'WRRRWCWRRRWWW',
+        'WWWWWCWWWWWWW',
+        'WRRRWCWRRRWWW',
+        'WRRRCCCRRRWWW',
+        'WRRRWCWRRRWWW',
+        'WWWWWCWWWWWWW',
+        'WWWWWCWRRRRRW',
+        'WRRRWCWRRRRRW',
+        'WRRRCCCRRRRRW',
+        'WRRRWCWRRRRRW',
+        'WWWWWCWRRRRRW',
+        'WWWWWWWWWWWWW',
       ])
 
       map.setTile(5, 2, new StairwayDown(map, secondLevel))
@@ -102,6 +105,13 @@ export class TutorialDungeon extends Dungeon {
         new LogMessageTrigger('Falling rock trap', false, new Room())
       )
       map.setTile(8, 14, new FallingRockTrap(smallRock, new Room()))
+
+      map.setTile(
+        6,
+        27,
+        new LogMessageTrigger('Air blow trap', false, new Room())
+      )
+      map.setTile(9, 27, new AirBlowTrap(new Room()))
 
       return map
     })

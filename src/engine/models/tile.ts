@@ -177,6 +177,7 @@ export class StairwayUp extends Stairway {
 }
 
 export enum TrapType {
+  AirBlow,
   BareWire,
   FallingRock,
   Hole,

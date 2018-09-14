@@ -69,6 +69,7 @@ export * from './engine/models/talent'
 export * from './engine/models/tile'
 export * from './engine/models/tile_effect'
 
+export * from './engine/models/traps/air_blow_trap'
 export * from './engine/models/traps/bare_wire_trap'
 export * from './engine/models/traps/falling_rock_trap'
 export * from './engine/models/traps/hole_trap'

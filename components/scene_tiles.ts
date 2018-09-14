@@ -181,6 +181,7 @@ const STAIRWAY_DOWN = new StairwayDownD()
 const STAIRWAY_UP = new StairwayUpD()
 const NULL_TILE = new DisplayTile('　', 0, 0, 0)
 
+const AIR_BLOW_TRAP = new DisplayTile('^', 255, 255, 255)
 const TELEPORTATION_TRAP = new DisplayTile('^', 0, 191, 255)
 const LIGHT_TRAP = new DisplayTile('^', 255, 255, 0)
 const HOLE_TRAP = new DisplayTile('^', 139, 69, 19)
@@ -218,6 +219,9 @@ export class DisplayTileVisitor extends TileVisitor {
     }
 
     switch (trap.type) {
+    case TrapType.AirBlow:
+      this.tile = AIR_BLOW_TRAP
+      break
     case TrapType.Teleportation:
       this.tile = TELEPORTATION_TRAP
       break

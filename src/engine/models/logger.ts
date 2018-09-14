@@ -22,14 +22,16 @@ export interface LogMessage {
 export class Logger {
   public messages: LogMessage[] = []
 
+  public trapAirBlow: TrapAirBlowLogger
   public trapBareWire: TrapBareWireLogger
   public trapHole: TrapHoleLogger
-  public trapFallingRock: TrapFallingRock
+  public trapFallingRock: TrapFallingRockLogger
 
   constructor(player: Player) {
-    this.trapHole = new TrapHoleLogger(this, player)
+    this.trapAirBlow = new TrapAirBlowLogger(this, player)
     this.trapBareWire = new TrapBareWireLogger(this, player)
-    this.trapFallingRock = new TrapFallingRock(this, player)
+    this.trapFallingRock = new TrapFallingRockLogger(this, player)
+    this.trapHole = new TrapHoleLogger(this, player)
   }
 
   public reset() {
@@ -387,6 +389,40 @@ class SubLogger {
   }
 }
 
+class TrapAirBlowLogger extends SubLogger {
+  public dodge(sees: boolean, isPlayer: boolean, creature: Creature): void {
+    if (isPlayer) {
+      this.info(`Я увернулся от потока воздуха`)
+    } else if (sees) {
+      this.info(`${creature.name} увернулся от потока воздуха`)
+    }
+  }
+
+  public resist(sees: boolean, isPlayer: boolean, creature: Creature): void {
+    if (isPlayer) {
+      this.debug('Поток воздуха чуть не снес меня')
+    } else if (sees) {
+      this.debug(`${creature.name} попал в поток воздуха`)
+    }
+  }
+
+  public activate(sees: boolean, isPlayer: boolean, creature: Creature): void {
+    if (isPlayer) {
+      this.info('Меня снесло потоком воздуха')
+    } else if (sees) {
+      this.info(`${creature.name} снесло потоком воздуха`)
+    }
+  }
+
+  public handBlow(item: Item): void {
+    this.warning(`Поток воздуха выбил ${item.name} у меня из руки`)
+  }
+
+  public headBlow(item: Item): void {
+    this.warning(`Поток воздуха снял ${item.name} с моей головы`)
+  }
+}
+
 class TrapHoleLogger extends SubLogger {
   public dodge(sees: boolean, isPlayer: boolean, creature: Creature): void {
     if (isPlayer) {
@@ -436,7 +472,7 @@ class TrapBareWireLogger extends SubLogger {
   }
 }
 
-class TrapFallingRock extends SubLogger {
+class TrapFallingRockLogger extends SubLogger {
   public resist(player: Player): void {
     // TODO: Different messages when head is firm or item if firm
     return this.info('Камень упал мне на голову, но каска защитила меня')

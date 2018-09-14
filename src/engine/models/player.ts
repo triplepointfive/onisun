@@ -1,4 +1,4 @@
-import { concat, cloneDeep } from 'lodash'
+import { concat, cloneDeep, sumBy } from 'lodash'
 import { Game, GroupedItem, Inventory, LevelMap, PlayerAI } from '../../engine'
 import { AfterEvent } from '../events/after_event'
 import { CreatureEvent } from '../events/internal'
@@ -93,6 +93,13 @@ export class Player extends Creature {
 
   public removeItem(item: Item, count: number): void {
     this.inventory.removeFromBag(item, count)
+  }
+
+  get weightWithCarryings(): number {
+    return (
+      this.specie.weight +
+      sumBy(this.inventory.allItems, ({ item, count }) => item.weight * count)
+    )
   }
 
   get bodyControl(): number {
