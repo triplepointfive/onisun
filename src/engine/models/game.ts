@@ -7,7 +7,7 @@ import { Player } from './player'
 type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
 
 export abstract class Game {
-  public logger: Logger = new Logger()
+  public logger: Logger
   public currentMap: LevelMap | undefined
   public playerTurn: boolean = false
   public running: boolean = false
@@ -18,7 +18,9 @@ export abstract class Game {
   constructor(
     public player: Player,
     public professionPicker: ProfessionPicker
-  ) {}
+  ) {
+    this.logger = new Logger(player)
+  }
 
   public turn(): void {
     if (this.running || (this.player.ai.presenter && !this.effect)) {

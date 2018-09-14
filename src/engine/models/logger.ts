@@ -21,6 +21,11 @@ export interface LogMessage {
 // TODO: Do not display messages while being blind
 export class Logger {
   public messages: LogMessage[] = []
+  public trapHole: TrapHoleLogger
+
+  constructor(private player: Player) {
+    this.trapHole = new TrapHoleLogger(this, player)
+  }
 
   public reset() {
     this.messages = []
@@ -229,48 +234,6 @@ export class Logger {
     }
   }
 
-  public playerDodgesHole(player: Player): void {
-    this.addMessage(LogLevel.WARNING, `Я чуть не упал в яму`)
-  }
-
-  public creatureDodgesHole(
-    sees: boolean,
-    player: Player,
-    actor: Creature
-  ): void {
-    if (sees) {
-      this.addMessage(LogLevel.WARNING, `${actor.name} чуть не упал в яму`)
-    }
-  }
-
-  public playerActivatedHole(player: Player): void {
-    this.addMessage(LogLevel.WARNING, `Я упал в яму`)
-  }
-
-  public playerActivatedShallowHole(player: Player): void {
-    this.addMessage(LogLevel.INFO, `Я упал в неглубокую яму`)
-  }
-
-  public creatureActivatedHole(
-    sees: boolean,
-    player: Player,
-    actor: Creature
-  ): void {
-    if (sees) {
-      this.addMessage(LogLevel.WARNING, `${actor.name} упал в яму`)
-    }
-  }
-
-  public creatureActivatedShallowHole(
-    sees: boolean,
-    player: Player,
-    actor: Creature
-  ): void {
-    if (sees) {
-      this.addMessage(LogLevel.INFO, `${actor} упал в неглубокую яму`)
-    }
-  }
-
   public canNotUntrap(): void {
     this.addMessage(LogLevel.INFO, `Не представляю, как это обезвредить`)
   }
@@ -440,6 +403,56 @@ export class Logger {
       lastRow.counter += 1
     } else {
       this.messages.push({ level, message, counter: 1 })
+    }
+  }
+}
+
+class SubLogger {
+  constructor(private logger: Logger, protected player: Player) {}
+
+  protected debug(message: string): void {
+    this.logger.debug(message)
+  }
+
+  protected info(message: string): void {
+    this.logger.info(message)
+  }
+
+  protected warning(message: string): void {
+    this.logger.warning(message)
+  }
+
+  protected danger(message: string): void {
+    this.logger.danger(message)
+  }
+}
+
+class TrapHoleLogger extends SubLogger {
+  public dodge(sees: boolean, isPlayer: boolean, creature: Creature): void {
+    if (isPlayer) {
+      this.warning(`Я чуть не упал в яму`)
+    } else if (sees) {
+      this.warning(`${creature.name} чуть не упал в яму`)
+    }
+  }
+
+  public activated(sees: boolean, isPlayer: boolean, creature: Creature): void {
+    if (isPlayer) {
+      this.warning(`Я упал в яму`)
+    } else if (sees) {
+      this.warning(`${creature.name} упал в яму`)
+    }
+  }
+
+  public shallowActivated(
+    sees: boolean,
+    isPlayer: boolean,
+    creature: Creature
+  ): void {
+    if (isPlayer) {
+      this.warning(`Я упал в неглубокую яму`)
+    } else if (sees) {
+      this.warning(`${creature.name} упал в неглубокую яму`)
     }
   }
 }

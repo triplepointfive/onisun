@@ -17,7 +17,8 @@ import { DamageType } from '../../lib/damage'
 import { DieReason } from '../../events/die_event'
 import { Reaction } from '../creature'
 
-// Leads to a random tile every time because tile might be taken by another creature next time you are falling down
+// Leads to a random tile every time because tile might be taken
+// by another creature next time you are falling down
 export class HoleTrap extends Trap {
   constructor(tile: Tile, revealed: boolean = false) {
     super(TrapType.Hole, tile, revealed)
@@ -51,58 +52,35 @@ export class HoleTrap extends Trap {
         this,
         levelMap,
         game,
-        (sees, isPlayer) => {
-          if (isPlayer) {
-            game.logger.playerDodgesHole(game.player)
-          } else {
-            game.logger.creatureDodgesHole(sees, game.player, creature)
-          }
-        },
+        (sees, isPlayer) =>
+          game.logger.trapHole.dodge(sees, isPlayer, creature),
         (sees, isPlayer) => {
           // TODO: Break fragile items
-          let fallEvent = this.fallEvent(game, levelMap),
-            hurtEvent: CreatureEvent | undefined = new HurtEvent(
-              [
-                {
-                  type: DamageType.Pure,
-                  dice: { times: 3, max: 2 },
-                  extra: 2,
-                },
-              ],
-              DieReason.Trap,
-              levelMap,
-              game
-            )
+          let fallEvent = this.fallEvent(game, levelMap)
 
-          if (isPlayer) {
-            if (fallEvent) {
-              game.logger.playerActivatedHole(game.player)
-            } else {
-              game.logger.playerActivatedShallowHole(game.player)
-              fallEvent = new StayEvent(levelMap)
-              hurtEvent = undefined
-            }
-          } else {
-            if (fallEvent) {
-              game.logger.creatureActivatedHole(sees, game.player, creature)
-            } else {
-              game.logger.creatureActivatedShallowHole(
-                sees,
-                game.player,
-                creature
-              )
+          if (fallEvent) {
+            game.logger.trapHole.activated(sees, isPlayer, creature)
 
-              fallEvent = new StayEvent(levelMap)
-              hurtEvent = undefined
-            }
-          }
-
-          if (hurtEvent) {
             creature.on(fallEvent)
-            return creature.on(hurtEvent)
-          }
+            return creature.on(
+              new HurtEvent(
+                [
+                  {
+                    type: DamageType.Pure,
+                    dice: { times: 3, max: 2 },
+                    extra: 2,
+                  },
+                ],
+                DieReason.Trap,
+                levelMap,
+                game
+              )
+            )
+          } else {
+            game.logger.trapHole.shallowActivated(sees, isPlayer, creature)
 
-          return creature.on(fallEvent)
+            return creature.on(new StayEvent(levelMap))
+          }
         }
       )
     )
