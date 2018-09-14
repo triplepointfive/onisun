@@ -1,6 +1,6 @@
 import { AI } from './internal'
 
-import { Point, succ } from '../utils/utils'
+import { Point } from '../utils/utils'
 import { Creature } from '../models/creature'
 
 import * as graphlib from 'graphlib'
@@ -105,7 +105,7 @@ export class Patrol extends AI {
       this.graph.setEdge(this.currentNodeID, this.i)
     }
     this.currentNodeID = this.i
-    this.i = succ(this.i)
+    this.newNodeId()
     this.step = 0
   }
 
@@ -170,5 +170,9 @@ export class Patrol extends AI {
 
   private markNodeVisited(nodeID: NodeID): void {
     this.lastNodeVisit[nodeID] = this.step
+  }
+
+  private newNodeId(): void {
+    this.i = String.fromCharCode(this.i.charCodeAt(0) + 1)
   }
 }

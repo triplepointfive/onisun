@@ -1,23 +1,21 @@
 import { min } from 'lodash'
 
 export class Rect {
-  // TODO: Validate?
   constructor(
     public x: number,
     public y: number,
     public w: number,
     public h: number
-  ) {}
+  ) {
+    if (w <= 0 || h <= 0) {
+      throw `Rect ${x} ${y} ${w} ${h}: size is negative or zero`
+    }
+  }
 
   move(x: number, y: number): void {
     this.x += x
     this.y += y
   }
-}
-
-// TODO: Remove this
-export const succ = function(c: string): string {
-  return String.fromCharCode(c.charCodeAt(0) + 1)
 }
 
 export const rand = function(max: number): number {

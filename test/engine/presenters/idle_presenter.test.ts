@@ -176,12 +176,11 @@ describe('IdlePresenter', () => {
       presenter.handleCommand()
       expect(game.logger.messages.length).toEqual(1)
 
-      expect(presenter.redirect.mock.calls.length).toBe(0)
-      expect(presenter.endTurn.mock.calls.length).toBe(0)
+      expect(presenter.redirect).not.toHaveBeenCalled()
+      expect(presenter.endTurn).not.toHaveBeenCalled()
     })
 
     it('handles stairs', () => {
-      // TODO: Remove
       presenter = new IdlePresenter(game.currentMap, game)
       presenter.redirect = jest.fn()
       presenter.endTurn = jest.fn()
@@ -192,8 +191,8 @@ describe('IdlePresenter', () => {
       presenter.handleCommand()
       expect(game.logger.messages.length).toEqual(0)
 
-      expect(presenter.redirect.mock.calls.length).toBe(0)
-      expect(presenter.endTurn.mock.calls.length).toBe(1)
+      expect(presenter.redirect).not.toHaveBeenCalled()
+      expect(presenter.endTurn).toHaveBeenCalled()
     })
   })
 
@@ -202,8 +201,8 @@ describe('IdlePresenter', () => {
       presenter.pickUpCommand()
 
       expect(game.logger.messages.length).toEqual(1)
-      expect(presenter.redirect.mock.calls.length).toBe(0)
-      expect(presenter.endTurn.mock.calls.length).toBe(0)
+      expect(presenter.redirect).not.toHaveBeenCalled()
+      expect(presenter.endTurn).not.toHaveBeenCalled()
     })
 
     it('picks up single item', () => {
@@ -223,8 +222,8 @@ describe('IdlePresenter', () => {
       map.at(1, 1).addItem(generateItem(), 1)
       presenter.pickUpCommand()
 
-      expect(presenter.redirect.mock.calls.length).toBe(1)
-      expect(presenter.endTurn.mock.calls.length).toBe(0)
+      expect(presenter.redirect).toHaveBeenCalled()
+      expect(presenter.endTurn).not.toHaveBeenCalled()
     })
   })
 
