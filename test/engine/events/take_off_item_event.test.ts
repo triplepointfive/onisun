@@ -46,12 +46,6 @@ describe('Taking item off event', () => {
     expect(game.logger.messages.length).toEqual(2)
   })
 
-  it('removes damage from player', () => {
-    expect(player.itemsDamages.length).toEqual(1)
-    player.on(event)
-    expect(player.itemsDamages.length).toEqual(0)
-  })
-
   describe('with armor', () => {
     beforeEach(() => {
       let armor = generateBodyArmor()

@@ -49,15 +49,6 @@ export class TakeOffItemEvent extends CreatureEvent {
       })
     }
 
-    if (item instanceof Weapon) {
-      item.damages.forEach((itemDamage: Damage) => {
-        player.itemsDamages.splice(
-          findIndex(player.itemsDamages, damage => damage === itemDamage),
-          1
-        )
-      })
-    }
-
     item.impacts.forEach(impact => {
       player.on(new RemoveImpactEvent(impact, item.name, this.game))
     })

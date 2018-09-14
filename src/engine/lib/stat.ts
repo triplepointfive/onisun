@@ -90,3 +90,15 @@ export class StrengthStat extends Stat {
     }
   }
 }
+
+export class DexterityStat extends Stat {
+  get missileAdjustment(): number {
+    if (this.current < 5) {
+      return -2
+    } else if (this.current > 10) {
+      return Math.floor((this.current - 10) / 2)
+    } else {
+      return 0
+    }
+  }
+}

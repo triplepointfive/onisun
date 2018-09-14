@@ -39,12 +39,6 @@ describe('Put item on event', () => {
     expect(game.logger.messages.length).toEqual(1)
   })
 
-  it('adds damage to player', () => {
-    expect(player.itemsDamages.length).toEqual(0)
-    player.on(event)
-    expect(player.itemsDamages.length).toEqual(1)
-  })
-
   describe('with armor', () => {
     let armor: Armor
 

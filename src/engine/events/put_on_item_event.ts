@@ -54,10 +54,6 @@ export class PutOnItemEvent extends CreatureEvent {
       player.itemsProtections = player.itemsProtections.concat(item.protections)
     }
 
-    if (item instanceof Weapon) {
-      player.itemsDamages = player.itemsDamages.concat(item.damages)
-    }
-
     item.impacts.forEach(impact => {
       player.on(new AddImpactEvent(impact, item.name, this.game))
     })

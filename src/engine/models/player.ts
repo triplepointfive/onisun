@@ -3,7 +3,12 @@ import { Game, GroupedItem, Inventory, LevelMap, PlayerAI } from '../../engine'
 import { AfterEvent } from '../events/after_event'
 import { CreatureEvent } from '../events/internal'
 import { Level } from '../lib/level'
-import { CapacityLimitStat, Stat, StrengthStat } from '../lib/stat'
+import {
+  CapacityLimitStat,
+  Stat,
+  StrengthStat,
+  DexterityStat,
+} from '../lib/stat'
 import { Item, Missile, Protection, ProtectionType } from './item'
 import { Damage } from '../lib/damage'
 import { Profession } from './profession'
@@ -15,7 +20,6 @@ export class Player extends Creature {
   public inventory: Inventory = new Inventory()
 
   public itemsProtections: Protection[] = []
-  public itemsDamages: Damage[] = []
   public itemsResistances: Resistance[] = []
 
   public stuffWeight: Stat
@@ -23,7 +27,7 @@ export class Player extends Creature {
 
   // Main attributes
   public strength: StrengthStat
-  public dexterity: Stat
+  public dexterity: DexterityStat
   public constitution: Stat
   public intelligence: Stat
   public wisdom: Stat
@@ -34,12 +38,13 @@ export class Player extends Creature {
     public ai: PlayerAI,
     specie: Specie,
     strengthValue: number,
+    dexterityValue: number,
     constitutionValue: number
   ) {
     super(specie)
 
     this.strength = new StrengthStat(strengthValue)
-    this.dexterity = new Stat(2)
+    this.dexterity = new DexterityStat(dexterityValue)
     this.constitution = new Stat(constitutionValue)
     this.intelligence = new Stat(10)
     this.wisdom = new Stat(2)
@@ -91,14 +96,21 @@ export class Player extends Creature {
   }
 
   get throwDamages(): Damage[] {
-    // TODO: Add missile and missile weapons damages
-    return this.specie.throwingDamages
+    const dexterityAdjustment = this.dexterity.missileAdjustment
+
+    return concat(this.specie.throwingDamages, this.missileItemsDamages()).map(
+      (damage: Damage) => {
+        let dmg = cloneDeep(damage)
+        dmg.extra += dexterityAdjustment
+        return dmg
+      }
+    )
   }
 
   get damages(): Damage[] {
     const strengthAdjustment = this.strength.meleeAdjustment
 
-    return concat(this.specie.damages, this.itemsDamages).map(
+    return concat(this.specie.damages, this.meleeItemsDamages()).map(
       (damage: Damage) => {
         let dmg = cloneDeep(damage)
         dmg.extra += strengthAdjustment
@@ -119,5 +131,27 @@ export class Player extends Creature {
 
   get resistances(): Resistance[] {
     return concat(this.specie.resistances, this.itemsResistances)
+  }
+
+  protected meleeItemsDamages(): Damage[] {
+    const rightHandEq = this.inventory.rightHandSlot.equipment,
+      leftHandEq = this.inventory.leftHandSlot.equipment
+
+    // TODO: Default damage
+    return concat(
+      rightHandEq ? rightHandEq.item.damages : [],
+      leftHandEq ? leftHandEq.item.damages : []
+    )
+  }
+
+  protected missileItemsDamages(): Damage[] {
+    const missileEq = this.inventory.missileSlot.equipment,
+      missileWeaponEq = this.inventory.missileWeaponSlot.equipment
+
+    // TODO: Default damage
+    return concat(
+      missileEq ? missileEq.item.damages : [],
+      missileWeaponEq ? missileWeaponEq.item.damages : []
+    )
   }
 }
