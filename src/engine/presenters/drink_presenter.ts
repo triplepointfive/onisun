@@ -1,13 +1,9 @@
-import {
-  ItemsListingPresenter,
-  ItemsListingPosition,
-} from './items_listing_presenter'
+import { DrinkPotionEvent, GroupedItem } from '../../engine'
 import { ItemGroup, Potion } from '../models/item'
-import { DrinkPotionEvent } from '../../engine'
+import { SingleItemUseListingPresenter } from './items_listing_presenter'
 
-export class DrinkPresenter extends ItemsListingPresenter {
-  public title: string = 'Что выпить?'
-  public singleItemMode: boolean = true
+export class DrinkPresenter extends SingleItemUseListingPresenter {
+  public readonly title: string = 'Что выпить?'
 
   protected initPositions(): void {
     this.positions = this.player.inventory
@@ -15,12 +11,8 @@ export class DrinkPresenter extends ItemsListingPresenter {
       .filter(itemGroup => itemGroup.item.group === ItemGroup.Potion)
   }
 
-  public pickUpItems(items: ItemsListingPosition[]): void {
-    // TODO: Remove this method or ensure it's not being called
-  }
-
-  public withItem(itemGroup: { item: Potion }): void {
-    this.player.on(new DrinkPotionEvent(itemGroup.item, this.game))
+  public withItem({ item }: GroupedItem<Potion>): void {
+    this.player.on(new DrinkPotionEvent(item, this.game))
     this.endTurn()
   }
 }

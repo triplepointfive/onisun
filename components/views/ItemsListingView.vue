@@ -15,6 +15,7 @@
 
 <script lang='ts'>
 import Vue from 'vue'
+import { Player, GroupedItem, Item } from 'src/onisun'
 
 const LETTER_OFFSET = 97
 
@@ -29,22 +30,22 @@ export default Vue.extend({
     }
   },
   computed: {
-    player() {
+    player(): Player {
       return this.screen.player
     },
-    carryingWeight() {
+    carryingWeight(): string {
       let weight = Math.round(this.player.stuffWeight.current * 100) / 100
       return `Нагрузка ${weight} из ${this.player.carryingCapacity.stressed}`
     }
   },
   methods: {
-    onEvent(event) {
+    onEvent(event: KeyboardEvent) {
       switch (event.key) {
       case 'Escape':
         return this.screen.close()
       case 'Enter':
       case ' ':
-        return this.screen.pickUpItems(this.selected.map(index => this.screen.positions[index]))
+        return this.screen.withItems(this.selected.map(index => this.screen.positions[index]))
       default:
         return this.selectAt(event.key.charCodeAt(0) - LETTER_OFFSET)
       }
@@ -63,17 +64,17 @@ export default Vue.extend({
     indexLetter(i: number): string {
       return String.fromCharCode(LETTER_OFFSET + i)
     },
-    positionSelected(index) {
+    positionSelected(index: number) {
       return this.selected.indexOf(index) >= 0
     },
-    positionStatus(position) {
+    positionStatus(position: GroupedItem<Item>) {
       if (!position.item) {
         return ''
       } else {
         return 'text-success'
       }
     },
-    itemWeight(position) {
+    itemWeight(position: GroupedItem<Item>): number {
       return Math.round(position.item.weight * position.count * 100) / 100
     }
   }
