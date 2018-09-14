@@ -1,6 +1,6 @@
 import { withMatchingTile } from '../generator/post'
 import { StairwayDown, StairwayUp, Tile } from './tile'
-import { LevelMap, LevelMapId } from './level_map'
+import { LevelMap } from './level_map'
 import { Game } from './game'
 import { Player } from './player'
 
@@ -11,12 +11,12 @@ export abstract class Dungeon {
   public abstract enter(game: Game, player: Player): void
   public abstract register(game: Game): void
 
-  protected addStairDown(map: LevelMap, adjustMapId: LevelMapId): LevelMap {
-    return this.addStairs(map, new StairwayDown(map, adjustMapId))
+  protected addStairDown(map: LevelMap, adjustMapName: string): LevelMap {
+    return this.addStairs(map, new StairwayDown(map, adjustMapName))
   }
 
-  protected addStairUp(map: LevelMap, adjustMapId: LevelMapId): LevelMap {
-    return this.addStairs(map, new StairwayUp(map, adjustMapId))
+  protected addStairUp(map: LevelMap, adjustMapName: string): LevelMap {
+    return this.addStairs(map, new StairwayUp(map, adjustMapName))
   }
 
   private addStairs(map: LevelMap, tile: Tile): LevelMap {

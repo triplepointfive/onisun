@@ -43,7 +43,7 @@ export class MoveEvent extends CreatureEvent {
   public affectCreature(actor: Creature): Reaction {
     const pos = this.levelMap.creaturePos(actor)
 
-    if (this.nextLevel.id !== this.levelMap.id) {
+    if (this.nextLevel.name !== this.levelMap.name) {
       this.levelMap.removeCreature(actor)
       this.nextLevel.addCreature(this.nextPoint, actor)
     } else {
@@ -63,7 +63,7 @@ export class MoveEvent extends CreatureEvent {
   }
 
   public affectPlayer(player: Player): Reaction {
-    if (this.nextLevel && this.levelMap.id !== this.nextLevel.id) {
+    if (this.nextLevel && this.levelMap.name !== this.nextLevel.name) {
       this.levelMap.reset()
       this.nextLevel.enter()
 

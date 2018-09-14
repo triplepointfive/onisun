@@ -94,7 +94,7 @@ export class HoleTrap extends Trap {
       () => true,
       tile => {
         if (tile instanceof StairwayDown) {
-          let downLevelMap = game.getMap(tile.adjacentMapId),
+          let downLevelMap = game.getMap(tile.adjacentMapName),
             downPos = undefined
 
           downPos = safeWithMatchingTile(downLevelMap, tile =>

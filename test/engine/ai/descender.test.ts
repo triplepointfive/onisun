@@ -22,11 +22,11 @@ describe('Descender', () => {
     game.currentMap = map = generateLevelMap()
     adjustMap = generateLevelMap()
 
-    game.addMap(map.id, () => map)
-    game.addMap(adjustMap.id, () => adjustMap)
+    game.addMap(map.name, () => map)
+    game.addMap(adjustMap.name, () => adjustMap)
 
-    map.setTile(1, 1, new StairwayDown(map, adjustMap.id))
-    adjustMap.setTile(1, 5, new StairwayUp(adjustMap, map.id))
+    map.setTile(1, 1, new StairwayDown(map, adjustMap.name))
+    adjustMap.setTile(1, 5, new StairwayUp(adjustMap, map.name))
 
     actor = generateCreatureWithAI(new Descender())
   })
@@ -58,7 +58,7 @@ describe('Descender', () => {
       map.addCreature(new Point(1, 1), actor)
     })
 
-    it('goes down', () => {
+    fit('goes down', () => {
       actor.act(map, game)
       expect(() => map.creaturePos(actor)).toThrow()
       expect(adjustMap.creaturePos(actor).eq(new Point(1, 5))).toBeTruthy()

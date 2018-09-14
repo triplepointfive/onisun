@@ -10,7 +10,6 @@ import { HealthStat } from '../lib/stat'
 import { Item, Missile, Protection } from './item'
 import { Damage } from '../lib/damage'
 import { Specie, Resistance } from './specie'
-import { LevelMapId } from './level_map'
 
 export enum Clan {
   Player,
@@ -49,7 +48,7 @@ export abstract class Creature {
     return this.lastId++
   }
 
-  protected stageMemories: Map<LevelMapId, Memory> = new Map()
+  protected stageMemories: Map<string, Memory> = new Map()
 
   public dead: boolean = false
 
@@ -92,7 +91,7 @@ export abstract class Creature {
   }
 
   public stageMemory(levelMap: LevelMap): Memory {
-    const memory = this.stageMemories.get(levelMap.id)
+    const memory = this.stageMemories.get(levelMap.name)
 
     if (memory) {
       return memory
@@ -102,14 +101,14 @@ export abstract class Creature {
   }
 
   public visionMask(levelMap: LevelMap): Memory {
-    let memory = this.stageMemories.get(levelMap.id)
+    let memory = this.stageMemories.get(levelMap.name)
 
     if (memory) {
       memory.resetVisible()
     } else {
       memory = new Memory(levelMap.width, levelMap.height)
 
-      this.stageMemories.set(levelMap.id, memory)
+      this.stageMemories.set(levelMap.name, memory)
     }
 
     buildFov(levelMap.creaturePos(this), this.visionRadius, memory, levelMap)

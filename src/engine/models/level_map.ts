@@ -5,15 +5,11 @@ import { Tile, StairwayDown, StairwayUp } from './tile'
 
 import { remove } from 'lodash'
 
-// TODO: Remove map id
-export type LevelMapId = number
-
 export class LevelMap extends Mapped<Tile> {
   public creatures: Creature[] = []
   public timeline: Timeline<CreatureId>
-  public name: string = 'unnamed'
 
-  constructor(public readonly id: LevelMapId, map: Tile[][]) {
+  constructor(public readonly name: string, map: Tile[][]) {
     super(map)
     this.timeline = new Timeline()
   }
@@ -39,7 +35,7 @@ export class LevelMap extends Mapped<Tile> {
     })
 
     if (!tile) {
-      throw `Creature ${creature.id} is not found on map ${this.id}`
+      throw `Creature ${creature.id} is not found on map ${this.name}`
     }
 
     return tile
@@ -55,7 +51,7 @@ export class LevelMap extends Mapped<Tile> {
     })
 
     if (!pos) {
-      throw `Creature ${creature.id} is not found on map ${this.id}`
+      throw `Creature ${creature.id} is not found on map ${this.name}`
     }
 
     return pos
@@ -89,12 +85,12 @@ export class LevelMap extends Mapped<Tile> {
     this.map[x][y] = tile
   }
 
-  public matchStairs(adjustId: LevelMapId, enterPos: Point): Point {
+  public matchStairs(adjustName: string, enterPos: Point): Point {
     let stairPos: Point | undefined
 
     this.each((tile, x, y) => {
       if (tile instanceof StairwayDown || tile instanceof StairwayUp) {
-        if (tile.adjacentMapId === adjustId) {
+        if (tile.adjacentMapName === adjustName) {
           tile.enterPos = enterPos
           stairPos = new Point(x, y)
         }
@@ -105,6 +101,6 @@ export class LevelMap extends Mapped<Tile> {
       return stairPos
     }
 
-    throw `LevelMap ${this.name} failed to find stairs to ${adjustId}`
+    throw `LevelMap ${this.name} failed to find stairs to ${adjustName}`
   }
 }

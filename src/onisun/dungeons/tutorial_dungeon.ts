@@ -31,19 +31,19 @@ tiles.set('W', () => new Wall())
 tiles.set('R', () => new Floor('R', TileTypes.Floor))
 tiles.set('D', () => new Door())
 
-const initId: number = 1,
-  secondId = initId + 1
+const trapsLevel = 'Traps',
+  secondLevel = '2nd'
 
 export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
-    const levelMap = (game.currentMap = game.getMap(initId))
+    const levelMap = (game.currentMap = game.getMap(trapsLevel))
 
     levelMap.addCreature(new Point(3, 14), player)
   }
 
   public register(game: Game): void {
-    game.addMap(initId, (id, game) => {
-      let map = this.generateMap(id, [
+    game.addMap(trapsLevel, (name, game) => {
+      let map = this.generateMap(name, [
         'WWWWWWWWWWW',
         'WWWWRRRWWWW',
         'WWWWRRRWWWW',
@@ -74,9 +74,8 @@ export class TutorialDungeon extends Dungeon {
         'WRRRWCWRRRW',
         'WWWWWWWWWWW',
       ])
-      map.name = 'Traps'
 
-      map.setTile(5, 2, new StairwayDown(map, secondId))
+      map.setTile(5, 2, new StairwayDown(map, secondLevel))
 
       map.setTile(
         4,
@@ -107,17 +106,16 @@ export class TutorialDungeon extends Dungeon {
       return map
     })
 
-    game.addMap(secondId, (id, game) => {
-      let map = this.generateMap(id, [
+    game.addMap(secondLevel, (name, game) => {
+      let map = this.generateMap(name, [
         'WWWWW',
         'WRRRW',
         'WRRRW',
         'WRRRW',
         'WWWWW',
       ])
-      map.name = '2nd'
 
-      map.setTile(2, 1, new StairwayUp(map, initId))
+      map.setTile(2, 1, new StairwayUp(map, trapsLevel))
 
       map.addCreature(new Point(1, 1), golem())
 
@@ -125,9 +123,8 @@ export class TutorialDungeon extends Dungeon {
     })
   }
 
-  private generateMap(id: number, scheme: string[]): LevelMap {
-    let map = new LevelMap(id, drawn(scheme, tiles))
-
+  private generateMap(name: string, scheme: string[]): LevelMap {
+    let map = new LevelMap(name, drawn(scheme, tiles))
     return map
   }
 }

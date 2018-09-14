@@ -31,9 +31,9 @@ class StairwayDownTileMoverVisitor extends TileVisitor {
 
   public onStairwayDown(stairway: StairwayDown): void {
     // TODO: Do not do this if already connected
-    const adjacentMap = this.game.getMap(stairway.adjacentMapId)
+    const adjacentMap = this.game.getMap(stairway.adjacentMapName)
     stairway.enterPos = adjacentMap.matchStairs(
-      this.levelMap.id,
+      this.levelMap.name,
       this.levelMap.creaturePos(this.actor)
     )
 

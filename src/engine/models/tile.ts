@@ -1,6 +1,6 @@
 import { Creature, Reaction } from './creature'
 import { Point } from '../utils/utils'
-import { LevelMap, LevelMapId } from './level_map'
+import { LevelMap } from './level_map'
 import { Item } from './item'
 import { Game } from './game'
 import { ItemsBunch } from '../lib/bunch'
@@ -130,7 +130,7 @@ export abstract class Stairway extends Tile {
     key: string,
     type: TileTypes,
     public currentMap: LevelMap,
-    public adjacentMapId: LevelMapId
+    public adjacentMapName: string
   ) {
     super(key, type)
   }
@@ -141,8 +141,8 @@ export abstract class Stairway extends Tile {
 }
 
 export class StairwayDown extends Stairway {
-  constructor(currentMap: LevelMap, adjacentMapId: LevelMapId) {
-    super('>', TileTypes.StairwayDown, currentMap, adjacentMapId)
+  constructor(currentMap: LevelMap, adjacentMapName: string) {
+    super('>', TileTypes.StairwayDown, currentMap, adjacentMapName)
   }
 
   public visit(tileVisitor: TileVisitor): void {
@@ -150,13 +150,13 @@ export class StairwayDown extends Stairway {
   }
 
   protected buildNew(): Tile {
-    return new StairwayDown(this.currentMap, this.adjacentMapId)
+    return new StairwayDown(this.currentMap, this.adjacentMapName)
   }
 }
 
 export class StairwayUp extends Stairway {
-  constructor(currentMap: LevelMap, adjacentMapId: LevelMapId) {
-    super('<', TileTypes.StairwayUp, currentMap, adjacentMapId)
+  constructor(currentMap: LevelMap, adjacentMapName: string) {
+    super('<', TileTypes.StairwayUp, currentMap, adjacentMapName)
   }
 
   public visit(tileVisitor: TileVisitor): void {
@@ -164,7 +164,7 @@ export class StairwayUp extends Stairway {
   }
 
   protected buildNew(): Tile {
-    return new StairwayUp(this.currentMap, this.adjacentMapId)
+    return new StairwayUp(this.currentMap, this.adjacentMapName)
   }
 }
 

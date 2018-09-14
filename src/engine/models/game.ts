@@ -1,10 +1,10 @@
 import { ProfessionPicker } from './profession'
 import { TileEffect } from './tile_effect'
-import { LevelMapId, LevelMap } from './level_map'
+import { LevelMap } from './level_map'
 import { Logger } from './logger'
 import { Player } from './player'
 
-type MapGenerator = (id: LevelMapId, game: Game) => LevelMap
+type MapGenerator = (name: string, game: Game) => LevelMap
 
 export abstract class Game {
   public logger: Logger
@@ -13,7 +13,7 @@ export abstract class Game {
   public running: boolean = false
   public effect: TileEffect | null = null
 
-  protected maps: Map<LevelMapId, LevelMap | MapGenerator> = new Map()
+  protected maps: Map<string, LevelMap | MapGenerator> = new Map()
 
   constructor(
     public player: Player,
@@ -59,27 +59,27 @@ export abstract class Game {
     }
   }
 
-  public getMap(id: LevelMapId): LevelMap {
-    const levelMap = this.maps.get(id)
+  public getMap(name: string): LevelMap {
+    const levelMap = this.maps.get(name)
 
     if (!levelMap) {
-      throw `Map with id ${id} is not found`
+      throw `Map ${name} is not found`
     }
 
     if (levelMap instanceof LevelMap) {
       return levelMap
     } else if (levelMap instanceof Function) {
-      const builtLevelMap = levelMap(id, this)
-      this.maps.set(id, builtLevelMap)
+      const builtLevelMap = levelMap(name, this)
+      this.maps.set(name, builtLevelMap)
       return builtLevelMap
     } else {
-      throw `LevelMap with id ${id} is not found`
+      throw `LevelMap with id ${name} is not found`
     }
   }
 
-  public addMap(id: LevelMapId, generator: MapGenerator): void {
+  public addMap(name: string, generator: MapGenerator): void {
     // TODO: Raise if presence
-    this.maps.set(id, generator)
+    this.maps.set(name, generator)
   }
 
   private levelMapTurn(): void {

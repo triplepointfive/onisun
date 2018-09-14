@@ -41,9 +41,9 @@ class HandleTileVisitor extends TileVisitor {
   protected onStairway(stairway: Stairway): void {
     // TODO: Do not do this if already connected
     // TODO: Remove duplicity!!! descender.ts
-    const adjacentMap = this.game.getMap(stairway.adjacentMapId)
+    const adjacentMap = this.game.getMap(stairway.adjacentMapName)
     stairway.enterPos = adjacentMap.matchStairs(
-      this.levelMap.id,
+      this.levelMap.name,
       this.levelMap.creaturePos(this.player)
     )
 

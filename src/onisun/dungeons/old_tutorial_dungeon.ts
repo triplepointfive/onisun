@@ -41,7 +41,7 @@ tiles.set('D', () => new Door())
 
 export class TutorialDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
-    const levelMap = (game.currentMap = game.getMap(initId))
+    const levelMap = (game.currentMap = game.getMap(initId.toString()))
 
     withMatchingTile(
       levelMap,
@@ -53,33 +53,35 @@ export class TutorialDungeon extends Dungeon {
   }
 
   public register(game: Game): void {
-    game.addMap(initId, (id, game) =>
+    game.addMap(initId.toString(), (id, game) =>
       addCreatures(
         0.1,
-        this.addStairDown(this.generateMap(id), 0),
+        this.addStairDown(this.generateMap(id), '0'),
         creaturesPool1
       )
     )
 
     for (let i = initId + 1; i < initId + 6; i++) {
-      game.addMap(i, (id, game) => {
+      game.addMap(i.toString(), (name, game) => {
         return addCreatures(
           i * 0.01,
           this.addStairUp(
-            this.addStairDown(this.generateMap(id), i + 1),
-            i - 1
+            this.addStairDown(this.generateMap(name), (i + 1).toString()),
+            (i - 1).toString()
           ),
           creaturesPool1
         )
       })
     }
 
-    game.addMap(5, (id, game) => this.addStairUp(this.generateMap(id), 4))
+    game.addMap('5', (name, game) =>
+      this.addStairUp(this.generateMap(name), '4')
+    )
   }
 
-  private generateMap(id: number): LevelMap {
+  private generateMap(name: string): LevelMap {
     let map = new LevelMap(
-      id,
+      name,
       dungeon<Tile>(
         40,
         30,
@@ -94,7 +96,7 @@ export class TutorialDungeon extends Dungeon {
 
     if (config.simple) {
       map = new LevelMap(
-        id,
+        name,
         drawn(
           [
             'WWWWWWWWWWWWWWWWWWWWWW',
@@ -120,7 +122,6 @@ export class TutorialDungeon extends Dungeon {
     }
 
     centralize(map)
-    map.name = `MP ${id}`
 
     // if (config.addTraps) {
     //   for (let i = 0; i < 10; i++) {

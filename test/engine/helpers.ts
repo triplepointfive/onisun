@@ -137,10 +137,10 @@ export class TestGame extends Game {}
 let levelMapId = 0
 export const generateLevelMap = function(
   mask: string[] = undefined,
-  id: LevelMapId = levelMapId++
+  name: string = generateString()
 ): LevelMap {
-  let map = new LevelMap(
-    id,
+  return new LevelMap(
+    name,
     drawn(
       mask || [
         'WWWWW',
@@ -156,8 +156,6 @@ export const generateLevelMap = function(
       testTiles
     )
   )
-
-  return map
 }
 
 export const generateGame = function(
