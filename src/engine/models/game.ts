@@ -6,7 +6,7 @@ import { Player } from './player'
 
 type MapGenerator = (name: string, game: Game) => LevelMap
 
-export abstract class Game {
+export class Game {
   public logger: Logger
   public currentMap: LevelMap | undefined
   public playerTurn: boolean = false

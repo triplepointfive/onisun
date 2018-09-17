@@ -24,6 +24,7 @@ import {
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
 import { Material } from './engine/lib/material'
 import { Scroll } from './engine/models/item'
+import { TitleDungeon } from './onisun/dungeons/title_dungeon'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -31,7 +32,7 @@ export * from './onisun/professions'
 export * from './onisun/talents'
 export * from './onisun/items'
 
-export class Application {
+export class TmpApplication {
   public game: Onisun
   constructor() {
     this.game = new Onisun(this.initPlayer())
@@ -145,5 +146,43 @@ export class Application {
 export class Onisun extends Game {
   constructor(player: Player) {
     super(player, new OnisunProfessionPicker(player))
+  }
+}
+
+export class Application {
+  public static titleGame() {
+    let player = new Player(
+        new Level([1, 3, 5, 10, 20]),
+        new PlayerAI(),
+        {
+          name: 'Player',
+          weight: 80,
+          clan: Clan.Player,
+          abilities: allAbilities,
+          protections: [],
+          damages: [],
+          maxHealthValue: 10,
+          regenerationRate: 30,
+          regenerationValue: 1,
+          resistances: [],
+          visionRadius: 10,
+          moveSpeed: 20,
+          attackSpeed: 20,
+          bodyControl: 5,
+          leavesCorpseRatio: 0,
+          material: Material.flesh,
+          throwingDamages: [],
+        },
+        12,
+        12,
+        15
+      ),
+      game = new Game(player, new OnisunProfessionPicker(player)),
+      dungeon = new TitleDungeon()
+
+    dungeon.register(game)
+    dungeon.enter(game, player)
+
+    return game
   }
 }

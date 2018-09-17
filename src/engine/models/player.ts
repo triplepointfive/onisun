@@ -15,7 +15,7 @@ import { Damage } from '../lib/damage'
 import { Profession } from './profession'
 import { Specie, Resistance } from './specie'
 import { Creature, Reaction } from './creature'
-import { KillStat } from '../utils/kill_stat';
+import { KillStat } from '../utils/kill_stat'
 
 export class Player extends Creature {
   public professions: Profession[] = []
