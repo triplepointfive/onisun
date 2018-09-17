@@ -15,6 +15,7 @@ import { Damage } from '../lib/damage'
 import { Profession } from './profession'
 import { Specie, Resistance } from './specie'
 import { Creature, Reaction } from './creature'
+import { KillStat } from '../utils/kill_stat';
 
 export class Player extends Creature {
   public professions: Profession[] = []
@@ -25,6 +26,8 @@ export class Player extends Creature {
 
   public stuffWeight: Stat
   public carryingCapacity: CapacityLimitStat
+
+  public killStat: KillStat = new KillStat()
 
   // Main attributes
   public strength: StrengthStat

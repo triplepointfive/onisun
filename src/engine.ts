@@ -95,5 +95,6 @@ export * from './engine/presenters/profession_picking_presenter'
 export * from './engine/presenters/put_on_items_presenter'
 
 export * from './engine/utils/fov'
+export * from './engine/utils/kill_stat'
 export * from './engine/utils/lee_path'
 export * from './engine/utils/utils'

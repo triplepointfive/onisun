@@ -150,10 +150,6 @@ export default Vue.extend({
 }
 
 #app {
-  padding: 0;
-  height: 100%;
-  background-color: black;
-
   .player-stats {
     position: fixed;
     bottom: 0;
