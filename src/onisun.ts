@@ -151,7 +151,7 @@ export class Onisun extends Game {
   }
 }
 
-class TitleGame extends Game {
+export class TitleGame extends Game {
   private turns = 0
 
   public turn(): void {
@@ -206,4 +206,9 @@ export class Application {
 
     return game
   }
+}
+
+export enum Race {
+  Human,
+  Dwarf
 }

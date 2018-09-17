@@ -1,6 +1,6 @@
 <template lang='pug'>
 #app
-  Scene.scene(
+  Scene(
     :level='game.currentMap'
     :player='game.player'
     :pos='pos'
@@ -15,8 +15,9 @@
       | ██║   ██║██║╚██╗██║██║╚════██║██║   ██║██║╚██╗██║
       | ╚██████╔╝██║ ╚████║██║███████║╚██████╔╝██║ ╚████║
       |  ╚═════╝ ╚═╝  ╚═══╝╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
+    .subtitle(v-text='subtitle')
     .content
-      .menu-option(v-for='option in options')
+      .menu-option(v-for='option in options' :class="{ 'mt-2': option.separator }")
         | [
         span.char(v-text='option.char')
         | ]
@@ -26,24 +27,104 @@
 <script lang='ts'>
 import Vue from 'vue'
 
-import { Application, Point } from '../src/onisun'
+import { Application, Point, TitleGame, Gender, Race } from '../src/onisun'
+import { sample } from 'lodash'
 
 import Scene from './Scene.vue'
 
 const LOOP_INTERVAL = 100
 
+enum Stage {
+  Title,
+  Gender,
+  Race,
+  PrimaryAttributes,
+
+  Final,
+}
+
+type Option = {
+  char: string,
+  name: string,
+  command: () => void,
+  separator?: true
+}
+
+type State
+  = { stage: Stage.Title }
+  | { stage: Stage.Gender }
+  | { stage: Stage.Race, gender: Gender }
+  | { stage: Stage.PrimaryAttributes, gender: Gender, race: Race }
+  | { stage: Stage.Final, gender: Gender, race: Race }
+
 export default Vue.extend({
   name: 'Title',
   data() {
     return {
-      game: null
+      game: null as TitleGame | null,
+      loopIntervalId: undefined as number | undefined,
+      state: { stage: Stage.Title } as State
     }
   },
   computed: {
-    options() {
-      return [
-        { char: 'N', name: 'New game' },
-      ]
+    genderName(): string {
+      return this.state.gender === Gender.Male ? 'male' : 'female'
+    },
+    raceName(): string {
+      return this.state.race === Race.Human ? 'human' : 'dwarf'
+    },
+    subtitle(): string {
+      switch (this.state.stage) {
+      case Stage.Gender:
+        return 'Choose a gender:'
+      case Stage.Race:
+        return `You are ${this.genderName}. Choose a race:`
+      case Stage.PrimaryAttributes:
+        return `You are ${this.genderName} ${this.raceName}. Choose your attributes:`
+      default:
+        return ''
+      }
+    },
+    options(): Option[] {
+      switch (this.state.stage) {
+      case Stage.Title:
+        return [
+          { char: 'N', name: 'New game', command: () => this.state = { stage: Stage.Gender } },
+        ]
+      case Stage.Gender:
+        return [
+          { char: 'M', name: 'Male',
+            command: () => this.state = { stage: Stage.Race, gender: Gender.Male } },
+          { char: 'F', name: 'Female',
+            command: () => this.state = { stage: Stage.Race, gender: Gender.Female } },
+          { char: '*', name: 'Random', separator: true,
+            command: () => this.state = { stage: Stage.Race, gender: sample([Gender.Male, Gender.Female]) || Gender.Male } },
+          { char: '=', name: 'Back', separator: true,
+            command: () => this.state = { stage: Stage.Title } },
+        ]
+      case Stage.Race:
+        return [
+          { char: 'H', name: 'Human',
+            command: () => Object.assign(this.state, { stage: Stage.PrimaryAttributes, race: Race.Human }) },
+          { char: 'D', name: 'Dwarf',
+            command: () => Object.assign(this.state, { stage: Stage.PrimaryAttributes, race: Race.Dwarf }) },
+          { char: '*', name: 'Random', separator: true,
+            command: () => Object.assign(this.state, { stage: Stage.PrimaryAttributes, race: sample([Race.Dwarf, Race.Human]) || Race.Human }) },
+          { char: '=', name: 'Back', separator: true,
+            command: () => this.state = { stage: Stage.Gender } },
+        ]
+      case Stage.PrimaryAttributes:
+        return [
+          { char: '*', name: 'Random', separator: true,
+            command: () => Object.assign(this.state, { stage: Stage.Final }) },
+          { char: 'M', name: 'Manually',
+            command: () => Object.assign(this.state, { stage: Stage.PrimaryAttributes }) },
+          { char: '=', name: 'Back', separator: true,
+            command: () => this.state = { stage: Stage.Gender } },
+        ]
+      default:
+        return []
+      }
     },
     pos(): Point | undefined {
       if (this.game && this.game.currentMap) {
@@ -61,17 +142,24 @@ export default Vue.extend({
     loop() {
       if (this.game) {
         this.game.turn()
+
         if (this.game.done) {
           this.game = Application.titleGame()
         }
       }
     },
     onEvent(event: KeyboardEvent) {
-      console.log(event.key)
+      let option = this.options.find(option => option.char === event.key.toUpperCase())
+
+      if (option) {
+        option.command()
+      } else {
+        console.log(event.key)
+      }
     }
   },
   created() {
-    this.loopIntervalId = setInterval(this.loop, LOOP_INTERVAL)
+    this.loopIntervalId = window.setInterval(this.loop, LOOP_INTERVAL)
     document.addEventListener('keydown', this.onEvent)
   },
   mounted() {
@@ -104,6 +192,10 @@ export default Vue.extend({
   color: white;
 
   > .char {
+    color: gold;
+  }
+
+  &:hover {
     color: gold;
   }
 }
