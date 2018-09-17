@@ -32,6 +32,7 @@ export enum ItemGroup {
   MissileWeapon,
   Boots,
   Scrolls,
+  Hat,
 }
 
 export enum ItemSubgroup {
@@ -278,6 +279,17 @@ export class Boots extends Armor {
     protections: Protection[]
   ) {
     super(ItemGroup.Boots, name, weight, material, protections, Usage.Boots)
+  }
+}
+
+export class Hat extends Armor {
+  constructor(
+    name: string,
+    weight: number,
+    material: Material,
+    protections: Protection[]
+  ) {
+    super(ItemGroup.Hat, name, weight, material, protections, Usage.WearsOnHead)
   }
 }
 

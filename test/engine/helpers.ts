@@ -29,6 +29,7 @@ import {
   Talent,
   ProtectionType,
   Material,
+  Hat,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -48,6 +49,12 @@ class TestMissile extends Missile {}
 export const generateOneHandedWeapon = function(): OneHandWeapon {
   return new OneHandWeapon(generateString(), 1, Material.iron, [
     { type: DamageType.Melee, dice: { max: 10, times: 3 }, extra: 4 },
+  ])
+}
+
+export const generateHeadArmor = function(): Hat {
+  return new Hat(generateString(), 1, Material.iron, [
+    { type: ProtectionType.Heavy, value: 4 },
   ])
 }
 

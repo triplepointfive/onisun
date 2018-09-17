@@ -43,7 +43,7 @@ export class AirBlowTrap extends Trap {
     return this.revealed ? 6 : 15
   }
 
-  get creatureBlowThreshold(): number {
+  get creatureWeightBlowThreshold(): number {
     return 60
   }
 
@@ -61,7 +61,10 @@ export class AirBlowTrap extends Trap {
         (sees, isPlayer) =>
           game.logger.trapAirBlow.dodge(sees, isPlayer, creature),
         (sees, isPlayer) => {
-          if (creature.weightWithCarryings >= this.creatureBlowThreshold) {
+          // EXTRA: Blow away stuff lying on a trap cell
+          if (
+            creature.weightWithCarryings >= this.creatureWeightBlowThreshold
+          ) {
             game.logger.trapAirBlow.resist(sees, isPlayer, creature)
           } else {
             let newPos = this.randomPos(
