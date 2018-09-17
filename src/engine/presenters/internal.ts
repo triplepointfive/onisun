@@ -32,7 +32,7 @@ export abstract class Presenter {
   }
 
   protected endTurn(): void {
-    this.game.player.ai.endTurn()
+    this.game.player.ai.endTurn(this.game, this.levelMap)
   }
 
   protected redirect(presenter: Presenter): void {

@@ -54,7 +54,7 @@ export class TitleDungeon extends Dungeon {
 
   public register(game: Game): void {
     game.addMap(titleId, (id, game) =>
-      addCreatures(0.05, this.generateMap(titleId), creaturesPool1)
+      addCreatures(0, this.generateMap(titleId), creaturesPool1)
     )
   }
 

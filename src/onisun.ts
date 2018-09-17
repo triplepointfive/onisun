@@ -11,6 +11,7 @@ import {
   BodyArmor,
   ProtectionType,
   PutOnItemEvent,
+  PlayerBorgAI,
 } from './engine'
 
 import { OnisunProfessionPicker } from './onisun/professions'
@@ -25,6 +26,7 @@ import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
 import { Material } from './engine/lib/material'
 import { Scroll } from './engine/models/item'
 import { TitleDungeon } from './onisun/dungeons/title_dungeon'
+import { Dispatcher } from './onisun/ai'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -149,20 +151,39 @@ export class Onisun extends Game {
   }
 }
 
+class TitleGame extends Game {
+  private turns = 0
+
+  public turn(): void {
+    super.turn()
+
+    if (this.currentMap && this.playerTurn) {
+      this.turns += 1
+      this.player.ai.endTurn(this, this.currentMap)
+    }
+  }
+
+  get done(): boolean {
+    return this.player.dead || this.turns > 150
+  }
+}
+
 export class Application {
   public static titleGame() {
     let player = new Player(
         new Level([1, 3, 5, 10, 20]),
-        new PlayerAI(),
+        new PlayerBorgAI(new Dispatcher()),
         {
           name: 'Player',
           weight: 80,
           clan: Clan.Player,
           abilities: allAbilities,
           protections: [],
-          damages: [],
+          damages: [
+            { type: DamageType.Pure, dice: { times: 3, max: 3 }, extra: 1 },
+          ],
           maxHealthValue: 10,
-          regenerationRate: 30,
+          regenerationRate: 1,
           regenerationValue: 1,
           resistances: [],
           visionRadius: 10,
@@ -177,7 +198,7 @@ export class Application {
         12,
         15
       ),
-      game = new Game(player, new OnisunProfessionPicker(player)),
+      game = new TitleGame(player, new OnisunProfessionPicker(player)),
       dungeon = new TitleDungeon()
 
     dungeon.register(game)

@@ -35,7 +35,9 @@ export class LevelMap extends Mapped<Tile> {
     })
 
     if (!tile) {
-      throw `Creature ${creature.id} is not found on map ${this.name}`
+      throw `Creature ${creature.id} ${creature.name} is not found on map ${
+        this.name
+      }`
     }
 
     return tile
@@ -51,7 +53,9 @@ export class LevelMap extends Mapped<Tile> {
     })
 
     if (!pos) {
-      throw `Creature ${creature.id} is not found on map ${this.name}`
+      throw `Creature ${creature.id} ${creature.name} is not found on map ${
+        this.name
+      }`
     }
 
     return pos

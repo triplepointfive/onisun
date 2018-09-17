@@ -3,7 +3,7 @@
   Scene.scene(
     :level='game.currentMap'
     :player='game.player'
-    :pos='game.currentMap.creaturePos(game.player)'
+    :pos='pos'
     v-if='game'
     )
 
@@ -26,9 +26,11 @@
 <script lang='ts'>
 import Vue from 'vue'
 
-import { Application } from '../src/onisun'
+import { Application, Point } from '../src/onisun'
 
 import Scene from './Scene.vue'
+
+const LOOP_INTERVAL = 100
 
 export default Vue.extend({
   name: 'Title',
@@ -42,6 +44,14 @@ export default Vue.extend({
       return [
         { char: 'N', name: 'New game' },
       ]
+    },
+    pos(): Point | undefined {
+      if (this.game && this.game.currentMap) {
+        return new Point(
+          Math.round(this.game.currentMap.width * 0.5),
+          Math.round(this.game.currentMap.height * 0.4)
+        )
+      }
     }
   },
   components: {
@@ -51,7 +61,7 @@ export default Vue.extend({
     loop() {
       if (this.game) {
         this.game.turn()
-        if (this.game.player.dead) {
+        if (this.game.done) {
           this.game = Application.titleGame()
         }
       }
@@ -61,7 +71,7 @@ export default Vue.extend({
     }
   },
   created() {
-    this.loopIntervalId = setInterval(this.loop, 10)
+    this.loopIntervalId = setInterval(this.loop, LOOP_INTERVAL)
     document.addEventListener('keydown', this.onEvent)
   },
   mounted() {

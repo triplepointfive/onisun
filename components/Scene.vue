@@ -22,7 +22,7 @@ import {
   displayItem,
   displayTile,
 } from './scene_tiles'
-import { Creature } from 'src/engine';
+import { Creature, Point } from 'src/engine';
 
 const HUMAN  = new CreatureTile('＠', 0, 255, 0)
 const RAT = new CreatureTile('r', 197, 65, 38)
@@ -161,10 +161,6 @@ export default Vue.extend({
     },
     animationFps(): number {
       return 1000 / this.interval
-    },
-    tileItems() {
-      let items = this.stage.at(this.player.pos.x, this.player.pos.y).items()
-      return items && items.bunch
     }
   },
   mounted() {

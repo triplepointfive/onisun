@@ -1,18 +1,18 @@
-import { MetaAI, AIEvent } from './meta_ai'
-import { Player } from '../models/player'
 import {
-  IdlePresenter,
-  Game,
-  TalentsTreePresenter,
-  ProfessionPickingPresenter,
-  LevelMap,
   AfterEvent,
+  Game,
+  IdlePresenter,
+  LevelMap,
+  ProfessionPickingPresenter,
+  TalentsTreePresenter,
   TeleportationPresenter,
 } from '../../engine'
-import { Presenter } from '../presenters/internal'
 import { DieReason } from '../events/die_event'
-import { DeathPresenter } from '../presenters/death_presenter'
 import { CreatureEvent } from '../events/internal'
+import { Player } from '../models/player'
+import { DeathPresenter } from '../presenters/death_presenter'
+import { Presenter } from '../presenters/internal'
+import { AIEvent, MetaAI } from './meta_ai'
 
 export class AINewLevelEvent extends AIEvent {
   constructor(public level: number, private levelMap: LevelMap, game: Game) {
@@ -74,8 +74,6 @@ export class AITeleportationEvent extends AIEvent {
 
 export class PlayerAI extends MetaAI {
   public presenter: Presenter | null = null
-  private game: Game | undefined
-  private levelMap: LevelMap | undefined
   public levelUps: number = 0
 
   public act(
@@ -83,28 +81,25 @@ export class PlayerAI extends MetaAI {
     levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {
-    this.game = game
-    this.levelMap = levelMap
-
-    this.presenter = new IdlePresenter(levelMap, this.game)
-    this.game.playerTurn = true
+    this.presenter = new IdlePresenter(levelMap, game)
+    game.playerTurn = true
 
     return
   }
 
-  public endTurn(): void {
+  public endTurn(game: Game, levelMap: LevelMap): void {
     let event = this.events.pop()
     if (event) {
       event.run()
-    } else if (this.game && this.levelMap) {
-      this.game.player.on(new AfterEvent(this.levelMap, this.game))
+    } else if (game && levelMap) {
+      game.player.on(new AfterEvent(levelMap, game))
 
       let event = this.events.pop()
       if (event) {
         event.run()
       } else {
-        this.game.player.ai.runEvents()
-        this.game.playerTurn = false
+        game.player.ai.runEvents()
+        game.playerTurn = false
         this.presenter = null
       }
     }
@@ -112,5 +107,23 @@ export class PlayerAI extends MetaAI {
 
   public redirect(presenter: Presenter): void {
     this.presenter = presenter
+  }
+}
+
+export class PlayerBorgAI extends PlayerAI {
+  constructor(private ai: MetaAI) {
+    super()
+  }
+
+  public act(
+    player: Player,
+    levelMap: LevelMap,
+    game: Game
+  ): CreatureEvent | undefined {
+    let event = this.ai.act(player, levelMap, game)
+
+    game.playerTurn = true
+
+    return event
   }
 }
