@@ -10,23 +10,7 @@ export class LevelUpEvent extends PlayerEvent {
   }
 
   protected updateHealth(player: Player): void {
-    const constitution = player.constitution.current
-
-    if (constitution < 3) {
-      player.health.constantDecrease(2)
-    } else if (constitution < 6) {
-      player.health.constantDecrease(1)
-    } else if (constitution < 12) {
-      // No change
-    } else if (constitution < 15) {
-      player.health.constantIncrease(1)
-    } else if (constitution < 18) {
-      player.health.constantIncrease(2)
-    } else if (constitution < 20) {
-      player.health.constantIncrease(3)
-    } else {
-      player.health.constantIncrease(4)
-    }
+    player.health.constantIncrease(player.constitution.levelUpHPBonus)
 
     if (player.health.maximum < 1) {
       player.health.constantIncrease(1 - player.health.maximum)

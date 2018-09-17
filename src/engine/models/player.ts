@@ -8,6 +8,7 @@ import {
   Stat,
   StrengthStat,
   DexterityStat,
+  ConstitutionStat,
 } from '../lib/stat'
 import { Item, Missile, Protection, ProtectionType } from './item'
 import { Damage } from '../lib/damage'
@@ -28,7 +29,7 @@ export class Player extends Creature {
   // Main attributes
   public strength: StrengthStat
   public dexterity: DexterityStat
-  public constitution: Stat
+  public constitution: ConstitutionStat
   public intelligence: Stat
   public wisdom: Stat
   public charisma: Stat
@@ -45,7 +46,7 @@ export class Player extends Creature {
 
     this.strength = new StrengthStat(strengthValue)
     this.dexterity = new DexterityStat(dexterityValue)
-    this.constitution = new Stat(constitutionValue)
+    this.constitution = new ConstitutionStat(constitutionValue)
     this.intelligence = new Stat(10)
     this.wisdom = new Stat(2)
     this.charisma = new Stat(2)

@@ -91,6 +91,26 @@ export class StrengthStat extends Stat {
   }
 }
 
+export class ConstitutionStat extends Stat {
+  get levelUpHPBonus(): number {
+    if (this.current < 3) {
+      return -2
+    } else if (this.current < 6) {
+      return -1
+    } else if (this.current < 12) {
+      return 0
+    } else if (this.current < 15) {
+      return 1
+    } else if (this.current < 18) {
+      return 2
+    } else if (this.current < 20) {
+      return 3
+    } else {
+      return 4
+    }
+  }
+}
+
 export class DexterityStat extends Stat {
   get bodyControlAdjustment(): number {
     if (this.current < 5) {

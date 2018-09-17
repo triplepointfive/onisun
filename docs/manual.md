@@ -45,6 +45,9 @@ This affects the damage you do with melee weapons and interactions with heavy it
 
 ### Dexterity
 
+- Affects body control
+- Adjusts damage with missiles.
+
 ### Constitution
 
 - Every point adds 3kg to carrying capacity.
