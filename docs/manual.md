@@ -8,9 +8,9 @@
 
 ## Skills
 
-## Stats
+## Secondary attributes
 
-Every creature has the following stats:
+These are what every creature has. Secondary attributes apply to combat. They are highly affected with primary attributes, but for AI they are constants.
 
 ### HP
 
@@ -32,32 +32,56 @@ This defines how often a creature has a turn in comparison to other creatures. T
 
 It is a change of a monster to dodge the hit. It is the same for melee and missile attack (although missile attacks have it own change to miss). Note that this value works in comparison with enemies value. This means, even if a monster has a high body control value, still it can be easily hit by a monster with even higher body control value.
 
-## Main attributes
+## Primary attributes
 
-Main attributes are key stats of every character. Their lower limit is 0 and the max value differ.
+Primary attributes are key stats of every character. Their lower limit is 0 and the max value differ.
 
 ### Strength
 
-This affects the damage you do with melee weapons and interactions with heavy items.
+Strength is responsible for melee damage and interactions with heavy items.
 
 - Every point adds 5kg to carrying capacity.
 - Adjusts damage value in melee. With low value, it is a penalty, with the higher value is a bonus.
 
 ### Dexterity
 
-- Affects body control
+Dexterity affects missile attacks and your body control.
+
+- Affects body control.
 - Adjusts damage with missiles.
 
 ### Constitution
+
+This is your body's state, your HP and sizes.
 
 - Every point adds 3kg to carrying capacity.
 - Affects max health value on level up.
 
 ### Intelligence
 
+Intelligence has effects on MP and gives you more opportunities to interacts with items.
+
+- Adjusts MP on level up.
+- Low value opens stupid things to do, high values allow to escape them.
+
 ### Wisdom
 
+This is your experience with the world, this defines what you know about the things around you.
+
+- Defines MP regeneration rate.
+- Affects the chance of successfully reading a scroll or a book.
+
+How to train it:
+
+- Slaying monsters increases it.
+- Discovering the world increases it.
+
 ### Charisma
+
+This is your appearance.
+
+- High value decreases prices at shop.
+- Allows to negotiate penalties from your materialism.
 
 ## Combat
 
