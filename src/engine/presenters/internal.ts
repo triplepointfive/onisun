@@ -38,7 +38,7 @@ export abstract class Presenter {
     this.game.player.ai.redirect(presenter)
   }
 
-  protected goIdle(): void {
+  public goIdle(): void {
     this.redirect(new IdlePresenter(this.levelMap, this.game))
   }
 }

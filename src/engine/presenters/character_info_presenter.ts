@@ -1,10 +1,33 @@
 import { Presenter, PresenterType } from './internal'
 import { Color, Gender } from '../../engine'
 import { PlayerSpecie } from '../models/specie'
+import { LevelMap } from '../models/level_map'
+import { Game } from '../models/game'
 
-export class CharacterInfoPresenter extends Presenter {
+export enum CharacterInfoPage {
+  Base,
+  Talents,
+}
+
+export abstract class CharacterInfoPresenter extends Presenter {
+  constructor(levelMap: LevelMap, game: Game) {
+    super(levelMap, game)
+  }
+
   get type(): PresenterType {
     return PresenterType.CharacterInfo
+  }
+
+  abstract get page(): CharacterInfoPage
+
+  protected get specie(): PlayerSpecie {
+    return this.game.player.specie
+  }
+}
+
+export class BaseInfoPresenter extends CharacterInfoPresenter {
+  get page(): CharacterInfoPage {
+    return CharacterInfoPage.Base
   }
 
   get name(): string {
@@ -33,9 +56,5 @@ export class CharacterInfoPresenter extends Presenter {
 
   get skinColor(): Color {
     return this.specie.skinColor
-  }
-
-  private get specie(): PlayerSpecie {
-    return this.game.player.specie
   }
 }

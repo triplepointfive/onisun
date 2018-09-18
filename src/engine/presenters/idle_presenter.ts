@@ -23,7 +23,7 @@ import { concat } from 'lodash'
 import { Trap } from '../models/tile'
 import { PickSingleOptionPresenter } from './pick_single_option_presenter'
 import { StayEvent } from '../events/stay_event'
-import { CharacterInfoPresenter } from './character_info_presenter'
+import { BaseInfoPresenter } from './character_info_presenter'
 
 class HandleTileVisitor extends TileVisitor {
   // TODO: Add direction since commands might duplicate
@@ -77,7 +77,7 @@ export class IdlePresenter extends Presenter {
   }
 
   public characterInfo(): void {
-    this.redirect(new CharacterInfoPresenter(this.levelMap, this.game))
+    this.redirect(new BaseInfoPresenter(this.levelMap, this.game))
   }
 
   public bagCommand(): void {

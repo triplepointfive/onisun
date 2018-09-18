@@ -87,7 +87,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 .option {
   border: 1px solid white;
   display: inline-block;

@@ -28,7 +28,7 @@ import { Material } from './engine/lib/material'
 import { Scroll } from './engine/models/item'
 import { TitleDungeon } from './onisun/dungeons/title_dungeon'
 import { Dispatcher } from './onisun/ai'
-import { CharacterInfoPresenter } from './engine/presenters/character_info_presenter'
+import { BaseInfoPresenter } from './engine/presenters/character_info_presenter'
 import { Race, allRaces, Color } from './engine/models/specie'
 import { sample } from 'lodash'
 
@@ -116,7 +116,7 @@ export class TmpApplication {
       player.addItem(new LightSpeedBoots(), 1)
 
       this.game.playerTurn = true
-      player.ai.presenter = new CharacterInfoPresenter(
+      player.ai.presenter = new BaseInfoPresenter(
         this.game.currentMap,
         this.game
       )

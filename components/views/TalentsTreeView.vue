@@ -38,7 +38,7 @@
 <script lang='ts'>
 import Vue from 'vue'
 import { OnisunTalentId } from 'src/onisun'
-import { TalentStatus, Profession } from 'src/engine';
+import { TalentStatus, Profession } from 'src/engine'
 
 const LETTER_OFFSET = 97
 

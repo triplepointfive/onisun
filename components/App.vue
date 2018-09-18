@@ -48,7 +48,7 @@ import DeathView from './views/DeathView.vue'
 import PickSingleOptionView from './views/PickSingleOptionView.vue'
 import CharacterInfoView from './views/CharacterInfoView.vue'
 
-import { LevelMap, PresenterType, Presenter, CharacterInfoPresenter } from '../src/engine'
+import { LevelMap, PresenterType, Presenter } from '../src/engine'
 
 import { TmpApplication } from '../src/onisun'
 import { setInterval, clearInterval } from 'timers'
@@ -58,7 +58,7 @@ export default Vue.extend({
     return {
       game: new TmpApplication().game,
       ts: Date.now(),
-      loopIntervalId: undefined
+      loopIntervalId: undefined as number | undefined
     }
   },
   components: {
@@ -112,7 +112,7 @@ export default Vue.extend({
     }
   },
   created() {
-    this.loopIntervalId = setInterval(this.loop, 10)
+    this.loopIntervalId = window.setInterval(this.loop, 10)
     document.addEventListener('keydown', this.onEvent)
   },
   beforeDestroy() {

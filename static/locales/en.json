@@ -1,6 +1,6 @@
 {
   "presenters": {
-    "characterInfo": {
+    "baseInfo": {
       "name": "Name",
       "eye": "Eye color",
       "hair": "Hair color",
@@ -8,6 +8,10 @@
       "height": "Height",
       "weight": "Weight",
       "gender": "Gender"
+    },
+    "infoViewsHead": {
+      "baseInfo": "Character Info",
+      "talentsInfo": "Talents"
     }
   },
   "colors": {
