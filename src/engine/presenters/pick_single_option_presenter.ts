@@ -9,7 +9,11 @@ export class PickSingleOptionPresenter<Option> extends Presenter {
     game: Game,
     private withOption: (option: Option) => void
   ) {
-    super(PresenterType.PickHandleOption, levelMap, game)
+    super(levelMap, game)
+  }
+
+  get type(): PresenterType {
+    return PresenterType.PickHandleOption
   }
 
   public pick(option: Option): void {

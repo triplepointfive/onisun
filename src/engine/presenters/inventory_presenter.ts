@@ -23,8 +23,12 @@ export class InventoryPresenter extends Presenter {
   private takeTime: boolean = false
 
   constructor(levelMap: LevelMap, game: Game) {
-    super(PresenterType.Inventory, levelMap, game)
+    super(levelMap, game)
     this.rebuildPositions()
+  }
+
+  get type(): PresenterType {
+    return PresenterType.Inventory
   }
 
   public takeOff(position: InventoryPresenterPosition) {

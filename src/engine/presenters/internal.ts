@@ -14,16 +14,15 @@ export enum PresenterType {
   Look,
   Teleportation,
   PickHandleOption,
+  CharacterInfo,
 }
 
 export abstract class Presenter {
   public player: Player
 
-  constructor(
-    public readonly type: PresenterType,
-    protected levelMap: LevelMap,
-    protected game: Game
-  ) {
+  abstract get type(): PresenterType
+
+  constructor(protected levelMap: LevelMap, protected game: Game) {
     this.player = this.game.player
   }
 

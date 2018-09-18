@@ -9,13 +9,12 @@ export abstract class PickPointPresenter<Title, Body> extends Presenter {
   protected memory: Memory
 
   constructor(
-    type: PresenterType,
     levelMap: LevelMap,
     game: Game,
     private effect: string,
     private match: (point: Point) => boolean
   ) {
-    super(type, levelMap, game)
+    super(levelMap, game)
 
     this.memory = this.player.stageMemory(this.levelMap)
     this.targetPos = levelMap.creaturePos(this.player)

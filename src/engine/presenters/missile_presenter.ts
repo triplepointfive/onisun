@@ -12,11 +12,15 @@ export class MissilePresenter extends Presenter {
   private path: Point[] = []
 
   constructor(levelMap: LevelMap, game: Game) {
-    super(PresenterType.Missile, levelMap, game)
+    super(levelMap, game)
 
     this.findEnemies()
     this.memory = this.player.stageMemory(this.levelMap)
     this.targetPos = this.resetTargetId()
+  }
+
+  get type(): PresenterType {
+    return PresenterType.Missile
   }
 
   public nextTarget(): void {

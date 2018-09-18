@@ -16,7 +16,7 @@ export class TalentsTreePresenter extends Presenter {
   public readonly options: TalentsTreePresenterProfession[] = []
 
   constructor(public readonly level: number, levelMap: LevelMap, game: Game) {
-    super(PresenterType.AbilitiesPicking, levelMap, game)
+    super(levelMap, game)
 
     this.options = this.player.professions.map(profession => {
       return {
@@ -28,6 +28,10 @@ export class TalentsTreePresenter extends Presenter {
         }),
       }
     })
+  }
+
+  get type(): PresenterType {
+    return PresenterType.AbilitiesPicking
   }
 
   get title(): string {

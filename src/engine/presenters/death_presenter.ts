@@ -5,7 +5,11 @@ import { LevelMap } from '../models/level_map'
 
 export class DeathPresenter extends Presenter {
   constructor(public dieReason: DieReason, levelMap: LevelMap, game: Game) {
-    super(PresenterType.Death, levelMap, game)
+    super(levelMap, game)
+  }
+
+  get type(): PresenterType {
+    return PresenterType.Death
   }
 
   get playerName(): string {

@@ -5,8 +5,12 @@ export abstract class ItemsListingPresenter extends Presenter {
   public positions: GroupedItem<Item>[] = []
 
   constructor(levelMap: LevelMap, game: Game) {
-    super(PresenterType.ItemsListing, levelMap, game)
+    super(levelMap, game)
     this.initPositions()
+  }
+
+  get type(): PresenterType {
+    return PresenterType.ItemsListing
   }
 
   abstract get title(): string

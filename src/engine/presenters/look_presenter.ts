@@ -14,9 +14,11 @@ export class LookPresenter extends PickPointPresenter<
   string
 > {
   constructor(levelMap: LevelMap, game: Game) {
-    super(PresenterType.Look, levelMap, game, '_', target =>
-      this.memory.inRange(target)
-    )
+    super(levelMap, game, '_', target => this.memory.inRange(target))
+  }
+
+  get type(): PresenterType {
+    return PresenterType.Look
   }
 
   get title(): LookPresenterVisibility {

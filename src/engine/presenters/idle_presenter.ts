@@ -67,8 +67,8 @@ class AdjustHandleTileVisitor extends HandleTileVisitor {
 }
 
 export class IdlePresenter extends Presenter {
-  constructor(levelMap: LevelMap, game: Game) {
-    super(PresenterType.Idle, levelMap, game)
+  get type(): PresenterType {
+    return PresenterType.Idle
   }
 
   public inventoryCommand(): void {

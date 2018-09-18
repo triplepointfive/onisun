@@ -5,7 +5,11 @@ import { Game, LevelMap } from '../../engine'
 
 export class ProfessionPickingPresenter extends Presenter {
   constructor(public readonly level: number, levelMap: LevelMap, game: Game) {
-    super(PresenterType.ProfessionPicking, levelMap, game)
+    super(levelMap, game)
+  }
+
+  get type(): PresenterType {
+    return PresenterType.ProfessionPicking
   }
 
   get title(): string {

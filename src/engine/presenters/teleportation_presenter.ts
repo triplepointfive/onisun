@@ -10,7 +10,6 @@ export class TeleportationPresenter extends PickPointPresenter<
 > {
   constructor(levelMap: LevelMap, game: Game) {
     super(
-      PresenterType.Teleportation,
       levelMap,
       game,
       'x',
@@ -18,6 +17,10 @@ export class TeleportationPresenter extends PickPointPresenter<
         levelMap.at(x, y).passibleThrough(this.player) &&
         this.memory.at(x, y).seen
     )
+  }
+
+  get type(): PresenterType {
+    return PresenterType.Teleportation
   }
 
   get title(): string {
