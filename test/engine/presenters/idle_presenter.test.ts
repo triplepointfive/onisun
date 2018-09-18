@@ -213,7 +213,7 @@ describe('IdlePresenter', () => {
       expect(game.logger.messages.length).toEqual(0)
       expect(presenter.redirect.mock.calls.length).toBe(0)
       expect(presenter.endTurn.mock.calls.length).toBe(1)
-      expect(player.on.mock.calls.length).toEqual(1)
+      expect(player.on.mock.calls.length).toEqual(2)
       expect(player.on.mock.calls[0][0]).toBeInstanceOf(PickUpItemsEvent)
     })
 

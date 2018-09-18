@@ -4,7 +4,7 @@ div
 
 <script lang='ts'>
 import Vue from 'vue'
-import { IdleInputKey, Direction } from '../../src/onisun'
+import { Direction } from '../../src/onisun'
 
 export default Vue.extend({
   name: 'IdleView',
@@ -54,6 +54,9 @@ export default Vue.extend({
         return this.screen.dropCommand()
       case 'D':
         return this.screen.drinkCommand()
+
+      case '@':
+        return this.screen.characterInfo()
 
       default:
         console.log('Key: ', event.key)

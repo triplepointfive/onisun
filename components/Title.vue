@@ -180,6 +180,7 @@ export default Vue.extend({
   > .title {
     line-height: 1rem;
     font-size: 1rem;
+    overflow-y: hidden;
   }
 
   > .content {

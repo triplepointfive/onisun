@@ -210,5 +210,5 @@ export class Application {
 
 export enum Race {
   Human,
-  Dwarf
+  Dwarf,
 }

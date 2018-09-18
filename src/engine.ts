@@ -79,6 +79,7 @@ export * from './engine/models/traps/teleportation_trap'
 export * from './engine/models/traps/water_trap'
 
 export * from './engine/presenters/bag_presenter'
+export * from './engine/presenters/character_info_presenter'
 export * from './engine/presenters/death_presenter'
 export * from './engine/presenters/drink_presenter'
 export * from './engine/presenters/drop_items_presenter'

@@ -12,5 +12,5 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 new Vue({
   el: '#app',
-  render: h => h(Title)
+  render: h => h(App)
 })

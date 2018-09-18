@@ -46,16 +46,17 @@ import PickPointView from './views/PickPointView.vue'
 import MissileView from './views/MissileView.vue'
 import DeathView from './views/DeathView.vue'
 import PickSingleOptionView from './views/PickSingleOptionView.vue'
+import CharacterInfoView from './views/CharacterInfoView.vue'
 
-import { LevelMap, PresenterType, Presenter } from '../src/engine'
+import { LevelMap, PresenterType, Presenter, CharacterInfoPresenter } from '../src/engine'
 
-import { Application } from '../src/onisun'
+import { TmpApplication } from '../src/onisun'
 import { setInterval, clearInterval } from 'timers'
 
 export default Vue.extend({
   data() {
     return {
-      game: new Application().game,
+      game: new TmpApplication().game,
       ts: Date.now(),
       loopIntervalId: undefined
     }
@@ -92,6 +93,8 @@ export default Vue.extend({
         return DeathView
       case PresenterType.PickHandleOption:
         return PickSingleOptionView
+      case PresenterType.CharacterInfo:
+        return CharacterInfoView
       default:
         throw `App: unknown presenter ${this.game.player.ai.presenter}`
       }
