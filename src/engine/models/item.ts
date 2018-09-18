@@ -1,5 +1,5 @@
 import { Player } from './player'
-import { Specie } from './specie'
+import { CreatureSpecie } from './specie'
 
 import { Game } from './game'
 import { Damage } from '../lib/damage'
@@ -121,7 +121,7 @@ export class Item {
 }
 
 export class Corpse extends Item {
-  constructor(public readonly specie: Specie) {
+  constructor(public readonly specie: CreatureSpecie) {
     super(
       ItemGroup.Consumable,
       `${specie.name}'s corpse`,

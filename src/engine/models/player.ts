@@ -13,11 +13,11 @@ import {
 import { Item, Missile, Protection, ProtectionType } from './item'
 import { Damage } from '../lib/damage'
 import { Profession } from './profession'
-import { Specie, Resistance } from './specie'
+import { CreatureSpecie, Resistance, PlayerSpecie } from './specie'
 import { Creature, Reaction } from './creature'
 import { KillStat } from '../utils/kill_stat'
 
-export class Player extends Creature {
+export class Player extends Creature<PlayerSpecie> {
   public professions: Profession[] = []
   public inventory: Inventory = new Inventory()
 
@@ -40,7 +40,7 @@ export class Player extends Creature {
   constructor(
     public level: Level,
     public ai: PlayerAI,
-    specie: Specie,
+    specie: PlayerSpecie,
     strengthValue: number,
     dexterityValue: number,
     constitutionValue: number

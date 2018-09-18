@@ -1,4 +1,4 @@
-import { Specie } from '../models/specie'
+import { CreatureSpecie } from '../models/specie'
 import { Attribute } from './attribute'
 
 export class Stat {
@@ -59,7 +59,7 @@ export class HealthStat extends Attribute {
   private regenerationValue: number
 
   constructor(
-    specie: Specie,
+    specie: CreatureSpecie,
     private currentTurn = 0,
     currentValue = specie.maxHealthValue
   ) {

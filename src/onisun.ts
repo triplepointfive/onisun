@@ -12,6 +12,7 @@ import {
   ProtectionType,
   PutOnItemEvent,
   PlayerBorgAI,
+  Gender,
 } from './engine'
 
 import { OnisunProfessionPicker } from './onisun/professions'
@@ -27,7 +28,9 @@ import { Material } from './engine/lib/material'
 import { Scroll } from './engine/models/item'
 import { TitleDungeon } from './onisun/dungeons/title_dungeon'
 import { Dispatcher } from './onisun/ai'
-import { CharacterInfoPresenter } from './engine/presenters/character_info_presenter';
+import { CharacterInfoPresenter } from './engine/presenters/character_info_presenter'
+import { Race, allRaces, Color } from './engine/models/specie'
+import { sample } from 'lodash'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -113,7 +116,10 @@ export class TmpApplication {
       player.addItem(new LightSpeedBoots(), 1)
 
       this.game.playerTurn = true
-      player.ai.presenter = new CharacterInfoPresenter(this.game.currentMap, this.game)
+      player.ai.presenter = new CharacterInfoPresenter(
+        this.game.currentMap,
+        this.game
+      )
 
       this.game.logger.reset()
     }
@@ -141,6 +147,13 @@ export class TmpApplication {
         leavesCorpseRatio: 0,
         material: Material.flesh,
         throwingDamages: [],
+
+        race: Race.Dwarf,
+        gender: Gender.Male,
+        eyeColor: Color.Aqua,
+        hairColor: Color.Fuchsia,
+        skinColor: Color.Purple,
+        height: 100,
       },
       12,
       12,
@@ -197,6 +210,13 @@ export class Application {
           leavesCorpseRatio: 0,
           material: Material.flesh,
           throwingDamages: [],
+
+          race: sample(allRaces) || Race.Dwarf,
+          gender: Gender.Male,
+          eyeColor: Color.Aqua,
+          hairColor: Color.Fuchsia,
+          skinColor: Color.Purple,
+          height: 100,
         },
         12,
         12,
@@ -210,9 +230,4 @@ export class Application {
 
     return game
   }
-}
-
-export enum Race {
-  Human,
-  Dwarf,
 }

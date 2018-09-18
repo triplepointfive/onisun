@@ -1,4 +1,4 @@
-import { random, times } from 'lodash'
+import { random, times, sample } from 'lodash'
 import {
   AI,
   allAbilities,
@@ -18,7 +18,7 @@ import {
   PlayerAI,
   Profession,
   Room,
-  Specie,
+  CreatureSpecie,
   Tile,
   TileTypes,
   TileVisitor,
@@ -30,6 +30,8 @@ import {
   ProtectionType,
   Material,
   Hat,
+  PlayerSpecie,
+  allRaces,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -103,7 +105,7 @@ const wrapAI = function(ai: AI): MetaAI {
   return new AIWrapper(ai)
 }
 
-const fakeSpecie: () => Specie = () => {
+const fakeSpecie: () => PlayerSpecie = () => {
   return {
     name: 'Test specie',
     weight: 10,
@@ -122,6 +124,7 @@ const fakeSpecie: () => Specie = () => {
     leavesCorpseRatio: 0.5,
     material: Material.flesh,
     throwingDamages: [],
+    race: sample(allRaces),
   }
 }
 

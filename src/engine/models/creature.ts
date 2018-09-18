@@ -9,7 +9,7 @@ import { buildFov } from '../lib/map_fov'
 import { HealthStat } from '../lib/stat'
 import { Item, Missile, Protection } from './item'
 import { Damage } from '../lib/damage'
-import { Specie, Resistance } from './specie'
+import { CreatureSpecie, Resistance } from './specie'
 
 export enum Clan {
   Player,
@@ -42,7 +42,7 @@ export enum Reaction {
   RESIST,
 }
 
-export abstract class Creature {
+export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
   private static lastId: CreatureId = 0
   public static getId(): CreatureId {
     return this.lastId++
@@ -189,7 +189,7 @@ export class AICreature extends Creature {
 
   constructor(
     public ai: MetaAI,
-    specie: Specie,
+    specie: CreatureSpecie,
     id: CreatureId = Creature.getId()
   ) {
     super(specie, id)

@@ -1,7 +1,36 @@
 {
   "presenters": {
     "characterInfo": {
-      "name": "Name"
+      "name": "Name",
+      "eye": "Eye color",
+      "hair": "Hair color",
+      "skin": "Skin color",
+      "height": "Height",
+      "weight": "Weight",
+      "gender": "Gender"
     }
+  },
+  "colors": {
+    "maroon":  "Maroon",
+    "red":     "Red",
+    "orange":  "Orange",
+    "yellow":  "Yellow",
+    "olive":   "Olive",
+    "green":   "Green",
+    "purple":  "Purple",
+    "fuchsia": "Fuchsia",
+    "lime":    "Lime",
+    "teal":    "Teal",
+    "aqua":    "Aqua",
+    "blue":    "Blue",
+    "navy":    "Navy",
+    "black":   "Black",
+    "gray":    "Gray",
+    "silver":  "Silver",
+    "white":   "White"
+  },
+  "genders": {
+    "male": "Male",
+    "female": "Female"
   }
 }
