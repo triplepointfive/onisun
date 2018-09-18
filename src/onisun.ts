@@ -27,6 +27,7 @@ import { Material } from './engine/lib/material'
 import { Scroll } from './engine/models/item'
 import { TitleDungeon } from './onisun/dungeons/title_dungeon'
 import { Dispatcher } from './onisun/ai'
+import { CharacterInfoPresenter } from './engine/presenters/character_info_presenter';
 
 export * from './engine'
 export * from './onisun/ai'
@@ -110,6 +111,9 @@ export class TmpApplication {
       )
 
       player.addItem(new LightSpeedBoots(), 1)
+
+      this.game.playerTurn = true
+      player.ai.presenter = new CharacterInfoPresenter(this.game.currentMap, this.game)
 
       this.game.logger.reset()
     }

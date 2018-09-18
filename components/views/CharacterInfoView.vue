@@ -6,7 +6,7 @@
       .col-md-4
         .attribute-row(v-for='info in baseInfo')
           span.name
-            | {{ info.name }}:
+            | {{ info.name | t('presenters.characterInfo') }}:
             |
           span.value(v-text='info.value')
       .col-md-4
@@ -26,7 +26,7 @@ export default Vue.extend({
   computed: {
     baseInfo(): Info[] {
       return [
-        { name: 'Name', value: 'Ilya' },
+        { name: 'name', value: 'Ilya' },
       ]
     }
   },

@@ -32,7 +32,7 @@ export default Vue.extend({
         this.screen.pickProfession(option)
       }
     },
-    onEvent(event) {
+    onEvent(event: KeyboardEvent) {
       switch(event.key) {
       case 'a':
         this.picked = this.screen.options[0]
