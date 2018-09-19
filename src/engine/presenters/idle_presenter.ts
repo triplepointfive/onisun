@@ -15,7 +15,7 @@ import {
   UntrapEvent,
   Point,
 } from '../../engine'
-import { InventoryPresenter } from './inventory_presenter'
+import { EquipmentPresenter } from './equipment_presenter'
 import { MissilePresenter } from './missile_presenter'
 import { MoveEvent } from '../events/move_event'
 import { CreatureEvent } from '../events/internal'
@@ -73,7 +73,7 @@ export class IdlePresenter extends Presenter {
   }
 
   public inventoryCommand(): void {
-    this.redirect(new InventoryPresenter(this.levelMap, this.game))
+    this.redirect(new EquipmentPresenter(this.levelMap, this.game))
   }
 
   public characterInfo(): void {

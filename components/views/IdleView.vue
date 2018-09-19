@@ -43,6 +43,7 @@ export default Vue.extend({
         return this.screen.stayCommand()
 
       case 'i':
+      case '#':
         return this.screen.inventoryCommand()
       case 'I':
         return this.screen.bagCommand()

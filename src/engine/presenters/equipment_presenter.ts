@@ -1,4 +1,3 @@
-import { Presenter, PresenterType } from './internal'
 import {
   Game,
   Item,
@@ -10,6 +9,10 @@ import {
   LevelMap,
 } from '../../engine'
 import { IdlePresenter } from './idle_presenter'
+import {
+  CharacterInfoPage,
+  CharacterInfoPresenter,
+} from './character_info_presenter'
 
 export interface InventoryPresenterPosition {
   inventorySlot: InventorySlot
@@ -18,7 +21,7 @@ export interface InventoryPresenterPosition {
   availableItems: GroupedItem<Item>[]
 }
 
-export class InventoryPresenter extends Presenter {
+export class EquipmentPresenter extends CharacterInfoPresenter {
   public positions: InventoryPresenterPosition[] = []
   private takeTime: boolean = false
 
@@ -27,8 +30,8 @@ export class InventoryPresenter extends Presenter {
     this.rebuildPositions()
   }
 
-  get type(): PresenterType {
-    return PresenterType.Inventory
+  get page(): CharacterInfoPage {
+    return CharacterInfoPage.Equipment
   }
 
   public takeOff(position: InventoryPresenterPosition) {

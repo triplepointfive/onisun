@@ -1,20 +1,20 @@
 <template lang='pug'>
 .screen-modal
-  .title Character Information
-
   .head-option(v-for='{ name, key } in pages' :class="{ '-active': activeOption === name }")
     | [
     span.key {{ key }}
     | ]
     | {{ name | t('presenters.infoViewsHead') }}
 
-  BasePage(:screen='screen')
+  component(:is='page' :screen='screen')
 </template>
 
 <script lang='ts'>
-import Vue from 'vue'
+import Vue, { Component } from 'vue'
 
 import BasePage from './CharacterInfoPages/BasePage.vue'
+import EquipmentPage from './CharacterInfoPages/EquipmentPage.vue'
+
 import { CharacterInfoPage, CharacterInfoPresenter } from '../../src/onisun'
 
 type Option = {
@@ -29,25 +29,41 @@ export default Vue.extend({
   methods: {
     onEvent(event: KeyboardEvent): void {
       switch (event.key) {
+      case '@':
+        return this.screen.goToBaseInfo()
+      case '#':
+        return this.screen.goToInventory()
       case 'Escape':
         return this.screen.goIdle()
       }
     }
   },
   computed: {
+    page(): Component {
+      switch(this.screen.page) {
+        case CharacterInfoPage.Base:
+          return BasePage
+        case CharacterInfoPage.Equipment:
+          return EquipmentPage
+        default:
+          return BasePage
+      }
+    },
     pages(): Option[] {
       return [
         { type: CharacterInfoPage.Base, name: 'baseInfo', key: '@' },
-        { type: CharacterInfoPage.Talents, name: 'talentsInfo', key: '#' }
+        { type: CharacterInfoPage.Equipment, name: 'equipment', key: '#' },
+        { type: CharacterInfoPage.Talents, name: 'talentsInfo', key: '%' },
       ]
     },
     activeOption(): string {
-      let option = this.pages.find(({ type }) => type === screen.page)
+      let option = this.pages.find(({ type }) => type === this.screen.page)
       return option ? option.name : 'baseInfo'
     }
   },
   components: {
-    BasePage
+    BasePage,
+    EquipmentPage,
   }
 })
 </script>
@@ -60,6 +76,7 @@ export default Vue.extend({
   cursor: pointer;
 
   color: white;
+  border-bottom: 1px solid gold;
 
   > .key {
     color: gold;

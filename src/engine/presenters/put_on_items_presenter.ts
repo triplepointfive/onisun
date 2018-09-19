@@ -3,7 +3,7 @@ import { SingleItemUseListingPresenter } from './items_listing_presenter'
 import { Item } from '../models/item'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
-import { InventoryPresenter } from './inventory_presenter'
+import { EquipmentPresenter } from './equipment_presenter'
 
 export class PutOnItemsPresenter extends SingleItemUseListingPresenter {
   public readonly title: string = 'Что надеть?'
@@ -24,6 +24,6 @@ export class PutOnItemsPresenter extends SingleItemUseListingPresenter {
   }
 
   public close(): void {
-    this.redirect(new InventoryPresenter(this.levelMap, this.game))
+    this.redirect(new EquipmentPresenter(this.levelMap, this.game))
   }
 }

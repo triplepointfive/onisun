@@ -6,7 +6,10 @@ const options: Options = {
   plugins: [
     require("@poi/plugin-typescript")()
   ],
-  staticFolder: 'static'
+  staticFolder: 'static',
+  html: {
+    title: 'OniSun'
+  }
 };
 
 export default options;

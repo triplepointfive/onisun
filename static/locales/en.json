@@ -11,6 +11,7 @@
     },
     "infoViewsHead": {
       "baseInfo": "Character Info",
+      "equipment": "Equipment",
       "talentsInfo": "Talents"
     }
   },

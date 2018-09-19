@@ -1,6 +1,5 @@
 <template lang='pug'>
-.screen-modal
-  .h4.title Инвентарь
+div
   .subtitle.my-3(v-text='carryingWeight')
 
   table.content.inventory-list
@@ -33,20 +32,20 @@ import {
   DamageType,
   Protection,
   ProtectionType,
-} from '../../src/engine'
+} from '../../../src/engine'
 
 import {
   displayItem,
-} from './../scene_tiles'
+} from './../../scene_tiles'
 
 import {
   showItemDetails
-} from '../shows'
+} from '../../shows'
 
 const LETTER_OFFSET = 97
 
 export default Vue.extend({
-  name: 'Inventory',
+  name: 'EquipmentPage',
   props: ['screen'],
   data() {
     return {

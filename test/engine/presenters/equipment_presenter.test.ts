@@ -1,6 +1,6 @@
 import {
   Player,
-  InventoryPresenter,
+  EquipmentPresenter,
   IdlePresenter,
   PutOnItemsPresenter,
 } from '../../../src/engine'
@@ -13,16 +13,16 @@ import {
   generateOneHandedWeapon,
 } from '../helpers'
 
-describe('InventoryPresenter', () => {
+describe('EquipmentPresenter', () => {
   let game: TestGame = generateGame(),
     player: Player,
-    presenter: InventoryPresenter
+    presenter: EquipmentPresenter
 
   beforeEach(() => {
     game.player = player = generatePlayer()
     player.inventory.leftHandSlot.equip(generateOneHandedWeapon(), 1)
 
-    presenter = new InventoryPresenter(generateLevelMap(), game)
+    presenter = new EquipmentPresenter(generateLevelMap(), game)
     jest.spyOn(presenter, 'redirect')
     presenter.endTurn = jest.fn()
   })

@@ -2,7 +2,7 @@ import {
   IdlePresenter,
   IdleInputKey,
   Player,
-  InventoryPresenter,
+  EquipmentPresenter,
   Dungeon,
   Point,
   LevelMap,
@@ -74,7 +74,7 @@ describe('IdlePresenter', () => {
     presenter.inventoryCommand()
     expect(presenter.redirect.mock.calls.length).toBe(1)
     expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
-      InventoryPresenter
+      EquipmentPresenter
     )
   })
 

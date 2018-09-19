@@ -1,10 +1,18 @@
 {
   "presenters": {
-    "characterInfo": {
+    "baseInfo": {
       "name": "Имя",
       "eye": "Цвет глаз",
       "hair": "Цвет волос",
-      "skin": "Цвет кожи"
+      "skin": "Цвет кожи",
+      "height": "Рост",
+      "weight": "Вес",
+      "gender": "Пол"
+    },
+    "infoViewsHead": {
+      "baseInfo": "Основное",
+      "equipment": "Снаряжение",
+      "talentsInfo": "Таланты"
     }
   },
   "colors": {
@@ -25,5 +33,9 @@
     "gray":    "Серый",
     "silver":  "Серебряный",
     "white":   "Белый"
+  },
+  "genders": {
+    "male": "Мужской",
+    "female": "Женский"
   }
 }

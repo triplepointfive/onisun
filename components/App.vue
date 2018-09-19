@@ -41,7 +41,6 @@ import Idle from './views/IdleView.vue'
 import ProfessionPickingView from './views/ProfessionPickingView.vue'
 import ItemsListingView from './views/ItemsListingView.vue'
 import TalentsTreeView from './views/TalentsTreeView.vue'
-import InventoryView from './views/InventoryView.vue'
 import PickPointView from './views/PickPointView.vue'
 import MissileView from './views/MissileView.vue'
 import DeathView from './views/DeathView.vue'
@@ -82,8 +81,6 @@ export default Vue.extend({
         return Idle
       case PresenterType.ItemsListing:
         return ItemsListingView
-      case PresenterType.Inventory:
-        return InventoryView
       case PresenterType.Missile:
         return MissileView
       case PresenterType.Teleportation:

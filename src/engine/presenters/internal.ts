@@ -7,7 +7,6 @@ export enum PresenterType {
   AbilitiesPicking,
   Death,
   Idle,
-  Inventory,
   ItemsListing,
   Missile,
   ProfessionPicking,

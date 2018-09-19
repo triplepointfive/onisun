@@ -1,5 +1,5 @@
 import { Presenter, PresenterType } from './internal'
-import { Color, Gender } from '../../engine'
+import { Color, Gender, EquipmentPresenter } from '../../engine'
 import { PlayerSpecie } from '../models/specie'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
@@ -7,6 +7,7 @@ import { Game } from '../models/game'
 export enum CharacterInfoPage {
   Base,
   Talents,
+  Equipment,
 }
 
 export abstract class CharacterInfoPresenter extends Presenter {
@@ -16,6 +17,14 @@ export abstract class CharacterInfoPresenter extends Presenter {
 
   get type(): PresenterType {
     return PresenterType.CharacterInfo
+  }
+
+  public goToBaseInfo(): void {
+    this.redirect(new BaseInfoPresenter(this.levelMap, this.game))
+  }
+
+  public goToInventory(): void {
+    this.redirect(new EquipmentPresenter(this.levelMap, this.game))
   }
 
   abstract get page(): CharacterInfoPage
@@ -56,5 +65,11 @@ export class BaseInfoPresenter extends CharacterInfoPresenter {
 
   get skinColor(): Color {
     return this.specie.skinColor
+  }
+}
+
+export class TalentsPresenter extends CharacterInfoPresenter {
+  get page(): CharacterInfoPage {
+    return CharacterInfoPage.Talents
   }
 }
