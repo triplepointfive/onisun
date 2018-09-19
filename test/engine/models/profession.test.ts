@@ -1,5 +1,10 @@
-import { ProfessionPicker, Player } from '../../../src/engine'
-import { generateProfession, generatePlayer } from '../helpers'
+import {
+  ProfessionPicker,
+  Player,
+  Talent,
+  TalentStatus,
+} from '../../../src/engine'
+import { generateProfession, generatePlayer, generateTalent } from '../helpers'
 
 describe('ProfessionPicker', () => {
   let profession1,
@@ -59,6 +64,30 @@ describe('ProfessionPicker', () => {
       player.professions.push(profession1)
       player.professions.push(profession2)
       expect(picker.available(player).length).toEqual(0)
+    })
+  })
+
+  describe('talent status', () => {
+    let talent: Talent
+
+    beforeEach(() => {
+      talent = generateTalent()
+    })
+
+    it('available', () => {
+      expect(talent.status(profession1)).toEqual(TalentStatus.Available)
+    })
+
+    it('completed', () => {
+      talent.rank = talent.maxRank
+
+      expect(talent.status(profession1)).toEqual(TalentStatus.Completed)
+    })
+
+    it('unavailable', () => {
+      talent = generateTalent({ depth: 3 })
+
+      expect(talent.status(profession1)).toEqual(TalentStatus.Unavailable)
     })
   })
 })

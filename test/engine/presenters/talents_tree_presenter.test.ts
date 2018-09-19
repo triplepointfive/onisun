@@ -36,65 +36,25 @@ describe('TalentsTreePresenter', () => {
     presenter.endTurn = jest.fn()
   })
 
-  it('builds title', () => {
-    expect(presenter.title).toEqual('Pick new talent')
-  })
-
-  describe('talent status', () => {
-    it('available', () => {
-      presenter = new TalentsTreePresenter(3, map, game)
-
-      expect(presenter.options.length).toEqual(1)
-      expect(presenter.options[0].profession).toEqual(profession)
-      expect(presenter.options[0].talents[0].status).toEqual(
-        TalentStatus.Available
-      )
-    })
-
-    it('completed', () => {
-      talent.rank = talent.maxRank
-      presenter = new TalentsTreePresenter(3, map, game)
-
-      expect(presenter.options.length).toEqual(1)
-      expect(presenter.options[0].profession).toEqual(profession)
-      expect(presenter.options[0].talents[0].status).toEqual(
-        TalentStatus.Completed
-      )
-    })
-
-    it('unavailable', () => {
-      talent = generateTalent({ depth: 3 })
-      profession.talents = [talent]
-
-      presenter = new TalentsTreePresenter(3, map, game)
-
-      expect(presenter.options.length).toEqual(1)
-      expect(presenter.options[0].profession).toEqual(profession)
-      expect(presenter.options[0].talents[0].status).toEqual(
-        TalentStatus.Unavailable
-      )
-    })
-  })
-
   it('picking a talent for not picked profession', () => {
     player.professions = []
-    expect(() => presenter.pickTalent(profession.id, talent.id)).toThrow()
+    expect(() => presenter.pickTalent(profession.id, talent.name)).toThrow()
   })
 
   it('picking a talent for not related profession', () => {
     expect(() =>
-      presenter.pickTalent(profession.id, generateTalent().id)
+      presenter.pickTalent(profession.id, generateTalent().name)
     ).toThrow()
   })
 
   it('picking a talent with max rank', () => {
     talent.rank = talent.maxRank
-    expect(() => presenter.pickTalent(profession.id, talent.id)).toThrow()
+    expect(() => presenter.pickTalent(profession.id, talent.name)).toThrow()
   })
 
   describe('with correct talent', () => {
     beforeEach(() => {
-      presenter.pickTalent(profession.id, talent.id)
+      presenter.pickTalent(profession.id, talent.name)
     })
 
     it('updating its level', () => {

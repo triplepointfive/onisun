@@ -1,11 +1,39 @@
 import { Player } from './player'
 
 import { includes, sample } from 'lodash'
-import { Talent } from './talent'
+import { Game } from './game'
 
-export class Profession {
+export enum TalentStatus {
+  Available,
+  Completed,
+  Unavailable,
+}
+
+export abstract class Talent {
+  constructor(
+    public readonly name: string,
+    public readonly depth: number,
+    public rank: number,
+    public readonly maxRank: number
+  ) {}
+
+  public abstract onObtain(game: Game): void
+
+  public status(profession: Profession): TalentStatus {
+    if (this.rank === this.maxRank) {
+      return TalentStatus.Completed
+    } else if (this.depth * profession.depthCost > profession.points) {
+      return TalentStatus.Unavailable
+    } else {
+      return TalentStatus.Available
+    }
+  }
+}
+
+export abstract class Profession {
   public talents: Talent[] = []
-  public readonly depthCost: number = 3
+
+  abstract get depthCost(): number
 
   constructor(
     public readonly id: number,
@@ -13,6 +41,8 @@ export class Profession {
     public level: number = 1,
     public points: number = 0
   ) {}
+
+  abstract get grid(): (Talent | undefined)[][]
 }
 
 export class ProfessionPicker {

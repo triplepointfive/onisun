@@ -6,7 +6,10 @@
     | ]
     | {{ name | t('presenters.infoViewsHead') }}
 
-  component(:is='page' :screen='screen')
+  component(
+    :is='page' :screen='screen'
+    ref="pageComponent"
+    )
 </template>
 
 <script lang='ts'>
@@ -14,6 +17,7 @@ import Vue, { Component } from 'vue'
 
 import BasePage from './CharacterInfoPages/BasePage.vue'
 import EquipmentPage from './CharacterInfoPages/EquipmentPage.vue'
+import TalentsPage from './CharacterInfoPages/TalentsPage.vue'
 
 import { CharacterInfoPage, CharacterInfoPresenter } from '../../src/onisun'
 
@@ -33,8 +37,12 @@ export default Vue.extend({
         return this.screen.goToBaseInfo()
       case '#':
         return this.screen.goToInventory()
+      case '%':
+        return this.screen.goToTalents()
       case 'Escape':
         return this.screen.goIdle()
+      default:
+        this.$refs.pageComponent.onEvent(event)
       }
     }
   },
@@ -45,6 +53,8 @@ export default Vue.extend({
           return BasePage
         case CharacterInfoPage.Equipment:
           return EquipmentPage
+        case CharacterInfoPage.Talents:
+          return TalentsPage
         default:
           return BasePage
       }
@@ -64,6 +74,7 @@ export default Vue.extend({
   components: {
     BasePage,
     EquipmentPage,
+    TalentsPage,
   }
 })
 </script>
@@ -78,6 +89,8 @@ export default Vue.extend({
   color: white;
   border-bottom: 1px solid gold;
 
+  margin-bottom: 1rem;
+
   > .key {
     color: gold;
   }
@@ -87,6 +100,7 @@ export default Vue.extend({
     border-bottom: none;
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
+    vertical-align: bottom;
   }
 }
 </style>

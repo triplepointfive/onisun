@@ -1,6 +1,6 @@
 <template lang='pug'>
 div
-  .subtitle.my-3(v-text='carryingWeight')
+  .subtitle.mb-3(v-text='carryingWeight')
 
   table.content.inventory-list
     tr(v-for='(position, index) in screen.positions' :key='index' :class='availableStatus(position)')

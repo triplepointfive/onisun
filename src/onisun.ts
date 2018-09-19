@@ -13,9 +13,19 @@ import {
   PutOnItemEvent,
   PlayerBorgAI,
   Gender,
+  BaseInfoPresenter,
+  Race,
+  allRaces,
+  Color,
+  Material,
+  TalentsPresenter,
 } from './engine'
 
-import { OnisunProfessionPicker } from './onisun/professions'
+import {
+  OnisunProfessionPicker,
+  OnisunAttackerProfession,
+  OnisunDefenderProfession,
+} from './onisun/professions'
 import {
   woodenArrow,
   ironArrow,
@@ -24,12 +34,9 @@ import {
   LightSpeedBoots,
 } from './onisun/items'
 import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
-import { Material } from './engine/lib/material'
 import { Scroll } from './engine/models/item'
 import { TitleDungeon } from './onisun/dungeons/title_dungeon'
 import { Dispatcher } from './onisun/ai'
-import { BaseInfoPresenter } from './engine/presenters/character_info_presenter'
-import { Race, allRaces, Color } from './engine/models/specie'
 import { sample } from 'lodash'
 
 export * from './engine'
@@ -47,12 +54,9 @@ export class TmpApplication {
     dungeon.register(this.game)
     dungeon.enter(this.game, this.game.player)
 
-    const player = this.game.player,
-      prof = this.game.professionPicker.available(player)[1]
-
-    if (prof) {
-      player.professions.push(prof)
-    }
+    const player = this.game.player
+    player.professions.push(new OnisunAttackerProfession())
+    player.professions.push(new OnisunDefenderProfession())
 
     const dagger = new OneHandWeapon('Кинжал', 0.8, Material.iron, [
       { type: DamageType.Melee, dice: { times: 1, max: 3 }, extra: 2 },
@@ -116,7 +120,7 @@ export class TmpApplication {
       player.addItem(new LightSpeedBoots(), 1)
 
       this.game.playerTurn = true
-      player.ai.presenter = new BaseInfoPresenter(
+      player.ai.presenter = new TalentsPresenter(
         this.game.currentMap,
         this.game
       )

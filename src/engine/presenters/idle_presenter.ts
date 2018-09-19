@@ -14,6 +14,7 @@ import {
   LookPresenter,
   UntrapEvent,
   Point,
+  BaseInfoPresenter,
 } from '../../engine'
 import { EquipmentPresenter } from './equipment_presenter'
 import { MissilePresenter } from './missile_presenter'
@@ -23,7 +24,6 @@ import { concat } from 'lodash'
 import { Trap } from '../models/tile'
 import { PickSingleOptionPresenter } from './pick_single_option_presenter'
 import { StayEvent } from '../events/stay_event'
-import { BaseInfoPresenter } from './character_info_presenter'
 
 class HandleTileVisitor extends TileVisitor {
   // TODO: Add direction since commands might duplicate

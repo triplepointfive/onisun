@@ -3,13 +3,9 @@ import { Game, LevelMap, Talent, TalentStatus } from '../../engine'
 import { Profession } from '../models/profession'
 import { LevelUpEvent } from '../events/level_up_event'
 
-interface TalentWithStatus extends Talent {
-  status: TalentStatus
-}
-
 interface TalentsTreePresenterProfession {
   profession: Profession
-  talents: TalentWithStatus[]
+  talents: Talent[]
 }
 
 export class TalentsTreePresenter extends Presenter {
@@ -21,11 +17,7 @@ export class TalentsTreePresenter extends Presenter {
     this.options = this.player.professions.map(profession => {
       return {
         profession,
-        talents: profession.talents.map(talent => {
-          return Object.assign({}, talent, {
-            status: this.status(talent, profession),
-          })
-        }),
+        talents: profession.talents,
       }
     })
   }
@@ -34,11 +26,7 @@ export class TalentsTreePresenter extends Presenter {
     return PresenterType.AbilitiesPicking
   }
 
-  get title(): string {
-    return 'Pick new talent'
-  }
-
-  public pickTalent(professionId: number, talentId: number): void {
+  public pickTalent(professionId: number, talentName: string): void {
     const profession: Profession | undefined = this.player.professions.find(
       profession => profession.id === professionId
     )
@@ -48,17 +36,17 @@ export class TalentsTreePresenter extends Presenter {
     }
 
     let talent: Talent | undefined = profession.talents.find(
-      talent => talent.id === talentId
+      talent => talent.name === talentName
     )
 
     if (talent === undefined) {
-      throw `Talent with id ${talentId} for profession ${
+      throw `Talent ${talentName} for profession ${
         profession.name
       } is not found`
     }
 
-    if (this.status(talent, profession) !== TalentStatus.Available) {
-      throw `Talent with id ${talentId} for profession ${
+    if (talent.status(profession) !== TalentStatus.Available) {
+      throw `Talent ${talentName} for profession ${
         profession.name
       } can not be upgraded`
     }
@@ -73,15 +61,5 @@ export class TalentsTreePresenter extends Presenter {
     this.player.on(new LevelUpEvent())
 
     this.endTurn()
-  }
-
-  private status(talent: Talent, profession: Profession): TalentStatus {
-    if (talent.rank === talent.maxRank) {
-      return TalentStatus.Completed
-    } else if (talent.depth * profession.depthCost > profession.points) {
-      return TalentStatus.Unavailable
-    } else {
-      return TalentStatus.Available
-    }
   }
 }

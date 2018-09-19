@@ -44,7 +44,10 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'BasePage',
-  props: ['screen']
+  props: ['screen'],
+  methods: {
+    onEvent(event: KeyboardEvent): void {}
+  }
 })
 </script>
 

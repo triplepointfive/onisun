@@ -13,6 +13,10 @@
       "baseInfo": "Character Info",
       "equipment": "Equipment",
       "talentsInfo": "Talents"
+    },
+    "talentsPage": {
+      "rank": "Rank %{current}/%{max}",
+      "requirements": "Requires %{req} more points in"
     }
   },
   "colors": {
@@ -37,5 +41,19 @@
   "genders": {
     "male": "Male",
     "female": "Female"
+  },
+  "professions": {
+    "warrior": "Warrior",
+    "defender": "Defender"
+  },
+  "talents": {
+    "twoHandedWeapons": {
+      "name": "Two handed weapons",
+      "description": "Allows to take a weapon in each hand"
+    },
+    "strongGrip": {
+      "name": "Strong grip",
+      "description": "Weapons do not get out of hand"
+    }
   }
 }

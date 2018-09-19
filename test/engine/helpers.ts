@@ -212,24 +212,24 @@ export const prettyMap = function(map: LevelMap): string[] {
   return stringMap
 }
 
+class TestProfession extends Profession {
+  grid: Talent[][]
+
+  get depthCost(): number {
+    return 5
+  }
+}
+
 let professionId = 0
 export const generateProfession = function(level: number = 1): Profession {
   const name = times(4, () => random(35).toString(36)).join('')
-  return new Profession(professionId++, name, level)
+  return new TestProfession(professionId++, name, level)
 }
 
 class TestTalent extends Talent {
   public onObtain(game: Game): void {}
 }
 
-let talentId = 0
 export const generateTalent = function({ depth } = { depth: 0 }): Talent {
-  return new TestTalent(
-    talentId++,
-    generateString(),
-    depth,
-    0,
-    3,
-    generateString()
-  )
+  return new TestTalent(generateString(), depth, 0, 3)
 }
