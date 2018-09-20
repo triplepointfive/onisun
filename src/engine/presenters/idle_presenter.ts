@@ -19,7 +19,7 @@ import {
 import { EquipmentPresenter } from './equipment_presenter'
 import { MissilePresenter } from './missile_presenter'
 import { MoveEvent } from '../events/move_event'
-import { CreatureEvent } from '../events/internal'
+import { CreatureEvent, PlayerEvent } from '../events/internal'
 import { concat } from 'lodash'
 import { Trap } from '../models/tile'
 import { PickSingleOptionPresenter } from './pick_single_option_presenter'
@@ -27,7 +27,7 @@ import { StayEvent } from '../events/stay_event'
 
 class HandleTileVisitor extends TileVisitor {
   // TODO: Add direction since commands might duplicate
-  public commands: [string, CreatureEvent][] = []
+  public commands: [string, PlayerEvent][] = []
 
   constructor(
     public position: Point,

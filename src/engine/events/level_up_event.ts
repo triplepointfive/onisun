@@ -1,6 +1,6 @@
-import { PlayerEvent } from './player_event'
 import { Reaction } from '../models/creature'
 import { Player } from '../models/player'
+import { PlayerEvent } from './internal'
 
 export class LevelUpEvent extends PlayerEvent {
   public affectPlayer(player: Player): Reaction {

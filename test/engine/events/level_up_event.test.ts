@@ -1,17 +1,7 @@
-import { generateCreature, generatePlayer } from '../helpers'
-import { Player, Creature, LevelUpEvent } from '../../../src/engine'
+import { generatePlayer } from '../helpers'
+import { Player, LevelUpEvent } from '../../../src/engine'
 
 describe('LevelUpEvent', () => {
-  it('For creature does nothing', () => {
-    let creature: Creature = generateCreature()
-
-    const oldHealth = creature.health.maximum
-
-    creature.on(new LevelUpEvent())
-
-    expect(creature.health.maximum).toEqual(oldHealth)
-  })
-
   describe('For player', () => {
     let player: Player
 

@@ -50,7 +50,7 @@ export class TakeOffItemEvent extends CreatureEvent {
     }
 
     item.impacts.forEach(impact => {
-      player.on(new RemoveImpactEvent(impact, item.name, this.game))
+      player.on(new RemoveImpactEvent(impact, this.game, item.name))
     })
   }
 }

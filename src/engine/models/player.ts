@@ -1,7 +1,7 @@
 import { concat, cloneDeep, sumBy } from 'lodash'
 import { Game, GroupedItem, Inventory, LevelMap, PlayerAI } from '../../engine'
 import { AfterEvent } from '../events/after_event'
-import { CreatureEvent } from '../events/internal'
+import { CreatureEvent, PlayerEvent } from '../events/internal'
 import { Level } from '../lib/level'
 import {
   CapacityLimitStat,
@@ -78,7 +78,7 @@ export class Player extends Creature<PlayerSpecie> {
     this.visionMask(levelMap)
   }
 
-  public on(event: CreatureEvent): Reaction {
+  public on(event: PlayerEvent): Reaction {
     return event.affectPlayer(this)
   }
 

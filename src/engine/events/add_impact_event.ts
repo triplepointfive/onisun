@@ -15,19 +15,12 @@ export class AddImpactEvent extends CreatureEvent {
 
   public affectCreature(creature: Creature): Reaction {
     // Different messages for player
-
-    if (creature.hasImpact(this.impactType)) {
-      this.applyImpact()
-    }
-
     if (this.duration) {
-      creature.impactsBunch.addImpact(this.impactType, this.duration)
+      creature.addImpact(this.impactType, this.duration)
     } else {
-      creature.addImpact(this.impactType, this.source)
+      creature.addConstImpact(this.impactType, this.source)
     }
 
     return Reaction.NOTHING
   }
-
-  protected applyImpact(): void {}
 }

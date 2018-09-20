@@ -32,6 +32,8 @@ import {
   Hat,
   PlayerSpecie,
   allRaces,
+  Gender,
+  Color,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -125,6 +127,12 @@ const fakeSpecie: () => PlayerSpecie = () => {
     material: Material.flesh,
     throwingDamages: [],
     race: sample(allRaces),
+
+    gender: Gender.Female,
+    eyeColor: Color.Aqua,
+    hairColor: Color.Fuchsia,
+    skinColor: Color.Purple,
+    height: 200,
 
     critical: { chance: 0.05, multiplier: 2 },
   }

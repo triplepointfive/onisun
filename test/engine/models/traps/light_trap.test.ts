@@ -66,7 +66,7 @@ describe('LightTrap', () => {
 
       Calculator.dodges = jest.fn(() => false)
 
-      player.addImpact(ImpactType.Blind, 'test')
+      player.addConstImpact(ImpactType.Blind, 'test')
 
       trap.activate(pos, game, levelMap, player)
 

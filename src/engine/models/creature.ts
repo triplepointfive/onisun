@@ -132,12 +132,20 @@ export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
     return includes(this.impacts, type)
   }
 
-  public addImpact(type: ImpactType, effect: string): void {
+  public addConstImpact(type: ImpactType, effect: string): void {
     this.impactsBunch.addConstImpact(type, effect)
   }
 
-  public removeImpact(type: ImpactType, effect: string): void {
+  public addImpact(type: ImpactType, turns: number): void {
+    this.impactsBunch.addImpact(type, turns)
+  }
+
+  public removeConstImpact(type: ImpactType, effect: string): void {
     this.impactsBunch.removeConstImpact(type, effect)
+  }
+
+  public removeImpact(type: ImpactType): void {
+    this.impactsBunch.removeImpact(type)
   }
 
   get visionRadius(): number {
@@ -203,7 +211,6 @@ export class AICreature extends Creature {
     if (command) {
       this.on(command)
     }
-
     this.on(new AfterEvent(levelMap, game))
 
     return this.speed

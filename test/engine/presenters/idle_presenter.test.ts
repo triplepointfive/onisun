@@ -119,7 +119,7 @@ describe('IdlePresenter', () => {
 
   describe('moving', () => {
     it('into a wall', () => {
-      player.addImpact(ImpactType.Blind, 'test')
+      player.addConstImpact(ImpactType.Blind, 'test')
 
       const wallPos = fakeStairPos.add(Direction.up)
       expect(player.stageMemory(map).at(wallPos.x, wallPos.y).seen).toBeFalsy()

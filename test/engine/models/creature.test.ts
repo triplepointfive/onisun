@@ -23,7 +23,7 @@ describe('Creature', () => {
 
   it('vision radius', () => {
     expect(creature.visionRadius).toBeGreaterThan(0)
-    creature.addImpact(ImpactType.Blind, 'test')
+    creature.addConstImpact(ImpactType.Blind, 'test')
     expect(creature.visionRadius).toEqual(0)
   })
 })

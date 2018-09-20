@@ -1,16 +1,24 @@
 import { Game, GroupedItem, ItemsBunch, Tile } from '../../engine'
-import { Creature, Reaction } from '../models/creature'
+import { Reaction, Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { Item } from '../models/item'
-import { PlayerEvent } from './player_event'
+import { CreatureEvent } from './internal'
 
-export class PickUpItemsEvent extends PlayerEvent {
+export class PickUpItemsEvent extends CreatureEvent {
   constructor(
     private tile: Tile,
     private items: GroupedItem<Item>[],
     private game: Game
   ) {
     super()
+  }
+
+  public affectCreature(creature: Creature): Reaction {
+    this.items.forEach(({ item, count }) => {
+      creature.addItem(item, count)
+    })
+
+    return Reaction.NOTHING
   }
 
   public affectPlayer(player: Player): Reaction {

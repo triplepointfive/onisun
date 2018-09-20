@@ -5,13 +5,20 @@ import { ImpactType, Game } from '../../engine'
 export class RemoveImpactEvent extends CreatureEvent {
   constructor(
     private impactType: ImpactType,
-    private source: string,
-    private game: Game
+    private game: Game,
+    private source: string | undefined = undefined
   ) {
     super()
   }
 
   public affectCreature(creature: Creature): Reaction {
+    // Different messages for player
+    if (this.source) {
+      creature.removeConstImpact(this.impactType, this.source)
+    } else {
+      creature.removeImpact(this.impactType)
+    }
+
     return Reaction.NOTHING
   }
 }

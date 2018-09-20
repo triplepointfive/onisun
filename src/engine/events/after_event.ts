@@ -1,17 +1,21 @@
 import { DieEvent, DieReason, Game, ImpactType, LevelMap } from '../../engine'
-import { Reaction } from '../models/creature'
+import { Reaction, Creature } from '../models/creature'
 import { Player } from '../models/player'
-import { PlayerEvent } from './player_event'
+import { CreatureEvent } from './internal'
 
-export class AfterEvent extends PlayerEvent {
+export class AfterEvent extends CreatureEvent {
   constructor(private levelMap: LevelMap, private game: Game) {
     super()
   }
 
+  public affectCreature(creature: Creature): Reaction {
+    return Reaction.NOTHING
+  }
+
   public affectPlayer(player: Player): Reaction {
-    player.removeImpact(ImpactType.Overloaded, 'bag')
-    player.removeImpact(ImpactType.Stressed, 'bag')
-    player.removeImpact(ImpactType.Loaded, 'bag')
+    player.removeConstImpact(ImpactType.Overloaded, 'bag')
+    player.removeConstImpact(ImpactType.Stressed, 'bag')
+    player.removeConstImpact(ImpactType.Loaded, 'bag')
 
     if (player.stuffWeight.current > player.carryingCapacity.flattenedStart) {
       return player.on(
@@ -20,13 +24,13 @@ export class AfterEvent extends PlayerEvent {
     }
 
     if (player.stuffWeight.current > player.carryingCapacity.overloadedStart) {
-      player.addImpact(ImpactType.Overloaded, 'bag')
+      player.addConstImpact(ImpactType.Overloaded, 'bag')
     } else if (
       player.stuffWeight.current > player.carryingCapacity.loadedStart
     ) {
-      player.addImpact(ImpactType.Loaded, 'bag')
+      player.addConstImpact(ImpactType.Loaded, 'bag')
     } else if (player.stuffWeight.current > player.carryingCapacity.stressed) {
-      player.addImpact(ImpactType.Stressed, 'bag')
+      player.addConstImpact(ImpactType.Stressed, 'bag')
     }
 
     return Reaction.NOTHING
