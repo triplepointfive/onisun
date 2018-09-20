@@ -36,4 +36,8 @@ export class BaseInfoPresenter extends CharacterInfoPresenter {
   get skinColor(): Color {
     return this.specie.skinColor
   }
+
+  get turns(): number {
+    return this.game.turns
+  }
 }

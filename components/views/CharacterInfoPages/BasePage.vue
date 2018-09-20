@@ -37,6 +37,12 @@
         | {{ 'skin' | t('presenters.baseInfo') }}:
         |
       span.value {{ screen.skinColor | t('colors') }}
+  .content-col
+    .attribute-row
+      span.name
+        | {{ 'turns' | t('presenters.baseInfo') }}:
+        |
+      span.value {{ screen.turns }}
 </template>
 
 <script lang="ts">

@@ -8,31 +8,33 @@
       )
       | [
       .key {{ index + 1 }}
-      | ] {{ profession.name   | t('professions') }}
+      | ] {{ profession.name | t('professions') }} ({{ profession.level }})
 
-  table.talents
-    tr(v-for='(row, i) in pickedProfession.grid' :key='i')
-      td.cell(v-for='(talent, j) in row' :key='j')
-        .talent-cell(
-          v-if='talent'
-          :class='talentPickedStatus(talent)'
-          :id="j + 'talentTree-'+i"
-          variant="primary"
-          click='pickTalent(talent)'
-          dblclick="close(talent)"
-          )
-          img.icon(:src="'assets/talents/' + iconPath(talent)")
-          span.level {{ talentTip(talent) }}
+  .talents
+    .subtitle.mb-3 {{ 'talentsTaken' | t('presenters.talentsPage', '', { count: pickedProfession.points }) }}
+    table
+      tr(v-for='(row, i) in pickedProfession.grid' :key='i')
+        td.cell(v-for='(talent, j) in row' :key='j')
+          .talent-cell(
+            v-if='talent'
+            :class='talentPickedStatus(talent)'
+            :id="j + 'talentTree-'+i"
+            variant="primary"
+            click='pickTalent(talent)'
+            dblclick="close(talent)"
+            )
+            img.icon(:src="'assets/talents/' + iconPath(talent)")
+            span.level {{ talentTip(talent) }}
 
-          b-popover(:target="j + 'talentTree-'+i" triggers="hover" container='talents-container')
-            template
-              p.name {{ talent.name | t('talents', 'name') }}
-              small
-                p.rank {{ 'rank' | t('presenters.talentsPage', '', { current: talent.rank, max: talent.maxRank }) }}
-                p.requirements(v-if="talentPickedStatus(talent) === '-unavailable'")
-                  | {{ 'requirements' | t('presenters.talentsPage', '', { req: talent.depth * pickedProfession.depthCost }) }}
-                  | {{ pickedProfession.name | t('professions') }}
-                p.description {{ talent.name | t('talents', 'description') }}
+            b-popover(:target="j + 'talentTree-'+i" triggers="hover" container='talents-container')
+              template
+                p.name {{ talent.name | t('talents', 'name') }}
+                small
+                  p.rank {{ 'rank' | t('presenters.talentsPage', '', { current: talent.rank, max: talent.maxRank }) }}
+                  p.requirements(v-if="talentPickedStatus(talent) === '-unavailable'")
+                    | {{ 'requirements' | t('presenters.talentsPage', '', { req: talent.depth * pickedProfession.depthCost }) }}
+                    | {{ pickedProfession.name | t('professions') }}
+                  p.description {{ talent.name | t('talents', 'description') }}
 </template>
 
 <script lang='ts'>

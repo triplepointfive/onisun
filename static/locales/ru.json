@@ -7,7 +7,8 @@
       "skin": "Цвет кожи",
       "height": "Рост",
       "weight": "Вес",
-      "gender": "Пол"
+      "gender": "Пол",
+      "turns": "Ход"
     },
     "infoViewsHead": {
       "baseInfo": "Основное",
@@ -16,7 +17,8 @@
     },
     "talentsPage": {
       "rank": "Уровень %{current}/%{max}",
-      "requirements": "Требуется %{req} очков в"
+      "requirements": "Требуется %{req} очков в",
+      "talentsTaken": "Талантов взято %{count}"
     }
   },
   "colors": {

@@ -12,6 +12,7 @@ export class Game {
   public playerTurn: boolean = false
   public running: boolean = false
   public effect: TileEffect | null = null
+  public turns: number = 0
 
   protected maps: Map<string, LevelMap | MapGenerator> = new Map()
 
@@ -52,7 +53,7 @@ export class Game {
       }
     } else {
       while (!this.player.dead && !this.playerTurn) {
-        this.levelMapTurn()
+        this.levelMapTurn(this.currentMap)
       }
 
       this.player.rebuildVision(this.currentMap)
@@ -78,18 +79,15 @@ export class Game {
   }
 
   public addMap(name: string, generator: MapGenerator): void {
-    // TODO: Raise if presence
+    if (this.maps.has(name)) {
+      throw `Game.addMap: map ${name} already presence`
+    }
+
     this.maps.set(name, generator)
   }
 
-  private levelMapTurn(): void {
-    // TODO: Remove!!!
-    if (!this.currentMap) {
-      throw 'levelMapTurn: Map is undefined'
-    }
-
-    let timeline = this.currentMap.timeline,
-      map = this.currentMap
+  private levelMapTurn(levelMap: LevelMap): void {
+    let timeline = levelMap.timeline
 
     const actorId = timeline.next()
 
@@ -97,13 +95,14 @@ export class Game {
       throw 'Timeline event is empty!'
     }
 
-    const actor = map.creatures.find(creature => actorId === creature.id)
+    const actor = levelMap.creatures.find(creature => actorId === creature.id)
 
     if (actor) {
-      const speed = actor.act(map, this)
+      const speed = actor.act(levelMap, this)
+      this.turns += 1
 
       // If they are still on a map
-      if (speed && map.creatures.find(creature => actorId === creature.id)) {
+      if (speed && levelMap.creatures.find(creature => actorId === creature.id)) {
         timeline.add(actorId, speed)
       }
     }

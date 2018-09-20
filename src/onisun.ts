@@ -178,13 +178,10 @@ export class Onisun extends Game {
 }
 
 export class TitleGame extends Game {
-  private turns = 0
-
   public turn(): void {
     super.turn()
 
     if (this.currentMap && this.playerTurn) {
-      this.turns += 1
       this.player.ai.endTurn(this, this.currentMap)
     }
   }
