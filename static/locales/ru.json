@@ -13,7 +13,8 @@
     "infoViewsHead": {
       "baseInfo": "Основное",
       "equipment": "Снаряжение",
-      "talentsInfo": "Таланты"
+      "talentsInfo": "Таланты",
+      "historyInfo": "История"
     },
     "talentsPage": {
       "rank": "Уровень %{current}/%{max}",

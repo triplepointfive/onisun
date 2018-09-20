@@ -3,6 +3,7 @@ import {
   TalentsPresenter,
   EquipmentPresenter,
   BaseInfoPresenter,
+  HistoryInfoPresenter,
 } from '../../engine'
 import { PlayerSpecie } from '../models/specie'
 import { LevelMap } from '../models/level_map'
@@ -12,6 +13,7 @@ export enum CharacterInfoPage {
   Base,
   Talents,
   Equipment,
+  History,
 }
 
 export abstract class CharacterInfoPresenter extends Presenter {
@@ -29,6 +31,10 @@ export abstract class CharacterInfoPresenter extends Presenter {
 
   public goToInventory(): void {
     this.redirect(new EquipmentPresenter(this.levelMap, this.game))
+  }
+
+  public goToHistoryInfo(): void {
+    this.redirect(new HistoryInfoPresenter(this.levelMap, this.game))
   }
 
   public goToTalents(): void {

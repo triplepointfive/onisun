@@ -17,6 +17,7 @@ import Vue, { Component } from 'vue'
 
 import BasePage from './CharacterInfoPages/BasePage.vue'
 import EquipmentPage from './CharacterInfoPages/EquipmentPage.vue'
+import HistoryInfoPage from './CharacterInfoPages/HistoryInfoPage.vue'
 import TalentsPage from './CharacterInfoPages/TalentsPage.vue'
 
 import { CharacterInfoPage, CharacterInfoPresenter } from '../../src/onisun'
@@ -39,6 +40,8 @@ export default Vue.extend({
         return this.screen.goToInventory()
       case '%':
         return this.screen.goToTalents()
+      case '&':
+        return this.screen.goToHistoryInfo()
       case 'Escape':
         return this.screen.goIdle()
       default:
@@ -55,6 +58,8 @@ export default Vue.extend({
           return EquipmentPage
         case CharacterInfoPage.Talents:
           return TalentsPage
+        case CharacterInfoPage.History:
+          return HistoryInfoPage
         default:
           return BasePage
       }
@@ -64,6 +69,7 @@ export default Vue.extend({
         { type: CharacterInfoPage.Base, name: 'baseInfo', key: '@' },
         { type: CharacterInfoPage.Equipment, name: 'equipment', key: '#' },
         { type: CharacterInfoPage.Talents, name: 'talentsInfo', key: '%' },
+        { type: CharacterInfoPage.History, name: 'historyInfo', key: '&' },
       ]
     },
     activeOption(): string {

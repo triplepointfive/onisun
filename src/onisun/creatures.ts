@@ -42,7 +42,7 @@ const newCreature = (
     material: Material.flesh,
 
     throwingDamages: [],
-    critical
+    critical,
   })
 }
 

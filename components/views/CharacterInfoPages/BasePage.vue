@@ -1,48 +1,5 @@
 <template lang="pug">
 .content
-  .content-col
-    .attribute-row
-      span.name
-        | {{ 'name' | t('presenters.baseInfo') }}:
-        |
-      span.value {{ screen.name }}
-    .attribute-row
-      span.name
-        | {{ 'height' | t('presenters.baseInfo') }}:
-        |
-      span.value {{ screen.height }}sm
-    .attribute-row
-      span.name
-        | {{ 'weight' | t('presenters.baseInfo') }}:
-        |
-      span.value {{ screen.weight }}kg
-    .attribute-row
-      span.name
-        | {{ 'gender' | t('presenters.baseInfo') }}:
-        |
-      span.value {{ screen.gender | t('genders') }}
-  .content-col
-    .attribute-row
-      span.name
-        | {{ 'eye' | t('presenters.baseInfo') }}:
-        |
-      span.value {{ screen.eyeColor | t('colors') }}
-    .attribute-row
-      span.name
-        | {{ 'hair' | t('presenters.baseInfo') }}:
-        |
-      span.value {{ screen.hairColor | t('colors') }}
-    .attribute-row
-      span.name
-        | {{ 'skin' | t('presenters.baseInfo') }}:
-        |
-      span.value {{ screen.skinColor | t('colors') }}
-  .content-col
-    .attribute-row
-      span.name
-        | {{ 'turns' | t('presenters.baseInfo') }}:
-        |
-      span.value {{ screen.turns }}
 </template>
 
 <script lang="ts">
@@ -70,7 +27,8 @@ export default Vue.extend({
     padding: 0;
   }
 
-  > .name { color: yellow;
+  > .name {
+    color: yellow;
   }
 
   > .value {

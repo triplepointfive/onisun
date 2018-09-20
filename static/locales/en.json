@@ -13,7 +13,8 @@
     "infoViewsHead": {
       "baseInfo": "Character Info",
       "equipment": "Equipment",
-      "talentsInfo": "Talents"
+      "talentsInfo": "Talents",
+      "historyInfo": "History"
     },
     "talentsPage": {
       "rank": "Rank %{current}/%{max}",

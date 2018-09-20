@@ -102,7 +102,10 @@ export class Game {
       this.turns += 1
 
       // If they are still on a map
-      if (speed && levelMap.creatures.find(creature => actorId === creature.id)) {
+      if (
+        speed &&
+        levelMap.creatures.find(creature => actorId === creature.id)
+      ) {
         timeline.add(actorId, speed)
       }
     }
