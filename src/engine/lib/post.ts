@@ -1,5 +1,5 @@
 import { LevelMap, Tile, Item } from '../../engine'
-import { Pool } from '../lib/pool'
+import { Pool } from './pool'
 import { Creature } from '../models/creature'
 import { Point, cycle } from '../utils/utils'
 

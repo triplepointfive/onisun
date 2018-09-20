@@ -1,7 +1,7 @@
 import { VisibleCreatureEvent } from './visible_creature_event'
 import { Creature } from '../models/creature'
 import { Player } from '../models/player'
-import { withMatchingTile } from '../generator/post'
+import { withMatchingTile } from '../lib/post'
 import { MoveEvent } from './move_event'
 import { Point } from '../utils/utils'
 import { LevelMap } from '../models/level_map'

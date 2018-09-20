@@ -36,8 +36,8 @@ describe('AttackEvent', () => {
   it('victim can dodge', () => {
     Calculator.misses = jest.fn(() => true)
 
-    expect(actor.on(event)).toEqual(Reaction.DODGE)
-    expect(victim.health.atMax).toBeTruthy()
+    expect(victim.on(new AttackEvent(actor, map, game))).toEqual(Reaction.DODGE)
+    expect(actor.health.atMax).toBeTruthy()
   })
 
   describe('on success', () => {

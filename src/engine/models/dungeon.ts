@@ -1,4 +1,4 @@
-import { withMatchingTile } from '../generator/post'
+import { withMatchingTile } from '../lib/post'
 import { StairwayDown, StairwayUp, Tile } from './tile'
 import { LevelMap } from './level_map'
 import { Game } from './game'

@@ -101,14 +101,6 @@ export class Logger {
     this.addMessage(LogLevel.DEBUG, 'Мне нужен лук или типа того')
   }
 
-  public youSteppedInTrap(): void {
-    this.addMessage(LogLevel.DANGER, 'Я наступил в ловушку')
-  }
-
-  public creatureSteppedInTrap(creature: Creature): void {
-    this.addMessage(LogLevel.DANGER, `${creature.name} наступил в ловушку`)
-  }
-
   public creatureTeleported(actor: Creature): void {
     this.addMessage(LogLevel.INFO, `${actor.name} иcчез`)
   }

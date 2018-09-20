@@ -122,12 +122,6 @@ export class TmpApplication {
 
       player.addItem(new LightSpeedBoots(), 1)
 
-      this.game.playerTurn = true
-      player.ai.presenter = new TalentsPresenter(
-        this.game.currentMap,
-        this.game
-      )
-
       this.game.logger.reset()
     }
   }
