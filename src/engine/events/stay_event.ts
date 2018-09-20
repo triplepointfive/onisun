@@ -1,5 +1,5 @@
-import { CreatureEvent } from './internal'
-import { Reaction, Creature } from '../models/creature'
+import { CreatureEvent, Reaction } from './internal'
+import { Creature } from '../models/creature'
 import { LevelMap } from '../models/level_map'
 
 export class StayEvent extends CreatureEvent {

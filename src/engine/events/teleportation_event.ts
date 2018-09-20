@@ -1,5 +1,5 @@
 import { VisibleCreatureEvent } from './visible_creature_event'
-import { Reaction, Creature } from '../models/creature'
+import { Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { withMatchingTile } from '../generator/post'
 import { MoveEvent } from './move_event'
@@ -8,6 +8,7 @@ import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
 import { Resistance } from '../models/specie'
 import { AITeleportationEvent } from '../ai/player_ai'
+import { Reaction } from './internal'
 
 // TODO: Creature that teleports itself away
 export class TeleportationEvent extends VisibleCreatureEvent {

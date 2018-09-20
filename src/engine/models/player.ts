@@ -1,7 +1,7 @@
 import { concat, cloneDeep, sumBy } from 'lodash'
 import { Game, GroupedItem, Inventory, LevelMap, PlayerAI } from '../../engine'
 import { AfterEvent } from '../events/after_event'
-import { CreatureEvent, PlayerEvent } from '../events/internal'
+import { PlayerEvent, Reaction } from '../events/internal'
 import { Level } from '../lib/level'
 import {
   CapacityLimitStat,
@@ -13,8 +13,8 @@ import {
 import { Item, Missile, Protection, ProtectionType } from './item'
 import { Damage } from '../lib/damage'
 import { Profession } from './profession'
-import { CreatureSpecie, Resistance, PlayerSpecie } from './specie'
-import { Creature, Reaction } from './creature'
+import { Resistance, PlayerSpecie } from './specie'
+import { Creature } from './creature'
 import { KillStat } from '../utils/kill_stat'
 
 export class Player extends Creature<PlayerSpecie> {

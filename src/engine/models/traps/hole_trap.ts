@@ -5,7 +5,7 @@ import {
   TrapEvent,
   withEachTile,
 } from '../../../engine'
-import { CreatureEvent } from '../../events/internal'
+import { CreatureEvent, Reaction } from '../../events/internal'
 import { MoveEvent } from '../../events/move_event'
 import { StayEvent } from '../../events/stay_event'
 import { Game } from '../game'
@@ -15,7 +15,6 @@ import { StairwayDown, Tile, Trap, TrapType } from '../tile'
 import { HurtEvent } from '../../events/hurt_event'
 import { DamageType } from '../../lib/damage'
 import { DieReason } from '../../events/die_event'
-import { Reaction } from '../creature'
 
 // Leads to a random tile every time because tile might be taken
 // by another creature next time you are falling down

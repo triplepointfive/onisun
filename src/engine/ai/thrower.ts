@@ -1,11 +1,11 @@
 import { AI } from './internal'
-import { Creature, Ability, Reaction, CreatureId } from '../models/creature'
+import { Creature, Ability, CreatureId } from '../models/creature'
 import { Point, bresenham } from '../utils/utils'
 import { MissileAttackEvent, GroupedItem } from '../../engine'
 import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
 import { Memory } from '../models/memory'
-import { CreatureEvent } from '../events/internal'
+import { CreatureEvent, Reaction } from '../events/internal'
 import { Item } from '../models/item'
 
 export class Thrower extends AI {

@@ -1,7 +1,7 @@
 import { Trap, TrapType, Tile } from '../tile'
 import { Game } from '../game'
 import { LevelMap } from '../level_map'
-import { Creature, Reaction } from '../creature'
+import { Creature } from '../creature'
 import { Point } from '../../utils/utils'
 import { Calculator } from '../../lib/calculator'
 import { Player } from '../player'
@@ -9,6 +9,7 @@ import { HurtEvent } from '../../events/hurt_event'
 import { DieReason } from '../../events/die_event'
 import { Damage, DamageType } from '../../lib/damage'
 import { VisibleCreatureEvent } from '../../events/visible_creature_event'
+import { Reaction } from '../../events/internal'
 
 class BareWireTrapEvent extends VisibleCreatureEvent {
   constructor(private trap: Trap, levelMap: LevelMap, game: Game) {

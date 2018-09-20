@@ -1,5 +1,5 @@
-import { Point, TeleportationEvent, TrapEvent } from '../../../engine'
-import { Creature, Reaction } from '../creature'
+import { Point, TeleportationEvent, TrapEvent, Reaction } from '../../../engine'
+import { Creature } from '../creature'
 import { Game } from '../game'
 import { LevelMap } from '../level_map'
 import { Player } from '../player'

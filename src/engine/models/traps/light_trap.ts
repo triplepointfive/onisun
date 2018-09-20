@@ -1,13 +1,14 @@
 import { Trap, TrapType, Tile } from '../tile'
 import { Game } from '../game'
 import { LevelMap } from '../level_map'
-import { Creature, Reaction } from '../creature'
+import { Creature } from '../creature'
 import { TrapEvent } from '../../events/trap_event'
 import { Point } from '../../utils/utils'
 import { AddImpactEvent } from '../../events/add_impact_event'
 import { ImpactType } from '../../lib/impact'
 import { Calculator } from '../../lib/calculator'
 import { Player } from '../player'
+import { Reaction } from '../../../engine'
 
 export class LightTrap extends Trap {
   constructor(tile: Tile, revealed: boolean = false) {

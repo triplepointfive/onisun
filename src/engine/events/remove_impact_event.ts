@@ -1,5 +1,5 @@
-import { CreatureEvent } from './internal'
-import { Creature, Reaction } from '../models/creature'
+import { CreatureEvent, Reaction } from './internal'
+import { Creature } from '../models/creature'
 import { ImpactType, Game } from '../../engine'
 
 export class RemoveImpactEvent extends CreatureEvent {

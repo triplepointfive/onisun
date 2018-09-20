@@ -3,6 +3,7 @@ import {
   generateGame,
   generateLevelMap,
   generateMissile,
+  generatePlayer,
 } from '../helpers'
 import {
   Reaction,
@@ -27,7 +28,7 @@ describe('StayEvent', () => {
     game = generateGame()
     game.currentMap = map = generateLevelMap()
 
-    actor = generateCreature()
+    actor = generatePlayer()
     victim = generateCreature()
 
     map.addCreature(new Point(1, 1), actor)
@@ -40,10 +41,9 @@ describe('StayEvent', () => {
 
   describe('when victim dodges', () => {
     beforeEach(() => {
-      Calculator.misses = jest.fn()
-      Calculator.misses.mockReturnValueOnce(true)
+      Calculator.misses = jest.fn(() => true)
 
-      expect(actor.on(event)).toEqual(Reaction.THROW_DODGE)
+      expect(actor.on(event)).toEqual(Reaction.DODGE)
     })
 
     it('logs a message', () => {
@@ -53,8 +53,7 @@ describe('StayEvent', () => {
 
   describe('when victim failed to dodge', () => {
     beforeEach(() => {
-      Calculator.misses = jest.fn()
-      Calculator.misses.mockReturnValueOnce(false)
+      Calculator.misses = jest.fn(() => false)
     })
 
     describe('actor does damage', () => {

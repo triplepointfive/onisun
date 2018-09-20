@@ -1,10 +1,11 @@
-import { Creature, Reaction } from './creature'
+import { Creature } from './creature'
 import { Point } from '../utils/utils'
 import { LevelMap } from './level_map'
 import { Item } from './item'
 import { Game } from './game'
 import { ItemsBunch } from '../lib/bunch'
 import { Player } from './player'
+import { Reaction } from '../events/internal'
 
 export enum TileTypes {
   Wall,

@@ -1,5 +1,13 @@
-import { Creature, Reaction } from '../models/creature'
+import { Creature } from '../models/creature'
 import { Player } from '../models/player'
+
+export enum Reaction {
+  DIE,
+  HURT,
+  DODGE,
+  NOTHING,
+  RESIST,
+}
 
 export abstract class PlayerEvent {
   public abstract affectPlayer(subject: Player): Reaction

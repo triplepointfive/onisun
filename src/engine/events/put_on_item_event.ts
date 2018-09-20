@@ -1,22 +1,17 @@
-import { CreatureEvent } from './internal'
+import { PlayerEvent, Reaction } from './internal'
 import { InventorySlot, Item, Game } from '../../engine'
-import { Creature, Reaction } from '../models/creature'
 import { Player } from '../models/player'
 import { TakeOffItemEvent } from './take_off_item_event'
-import { Armor, Weapon } from '../models/item'
+import { Armor } from '../models/item'
 import { AddImpactEvent } from './add_impact_event'
 
-export class PutOnItemEvent extends CreatureEvent {
+export class PutOnItemEvent extends PlayerEvent {
   constructor(
     private slot: InventorySlot,
     private item: Item,
     private game: Game
   ) {
     super()
-  }
-
-  public affectCreature(creature: Creature): Reaction {
-    return Reaction.NOTHING
   }
 
   public affectPlayer(player: Player): Reaction {

@@ -1,10 +1,11 @@
 import { VisibleCreatureEvent } from './visible_creature_event'
 import { Trap } from '../models/tile'
-import { Creature, Reaction } from '../models/creature'
+import { Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
 import { Calculator } from '../lib/calculator'
+import { Reaction } from './internal'
 
 export class TrapEvent extends VisibleCreatureEvent {
   private dodgeRatio: number

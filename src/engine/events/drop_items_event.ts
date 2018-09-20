@@ -1,6 +1,6 @@
-import { CreatureEvent } from './internal'
+import { CreatureEvent, Reaction } from './internal'
 import { Tile, GroupedItem, Game } from '../../engine'
-import { Creature, Reaction } from '../models/creature'
+import { Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { Item } from '../models/item'
 

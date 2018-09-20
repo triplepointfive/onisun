@@ -1,6 +1,6 @@
-import { CreatureEvent } from './internal'
+import { CreatureEvent, Reaction } from './internal'
 import { LevelMap } from '../models/level_map'
-import { Creature, Reaction } from '../models/creature'
+import { Creature } from '../models/creature'
 import { Damage } from '../lib/damage'
 import { Game } from '../models/game'
 import { DieEvent, DieReason } from './die_event'

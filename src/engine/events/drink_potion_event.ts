@@ -1,5 +1,5 @@
-import { Creature, Reaction } from '../models/creature'
-import { CreatureEvent } from './internal'
+import { Creature } from '../models/creature'
+import { CreatureEvent, Reaction } from './internal'
 import { Potion, Game } from '../../engine'
 
 export class DrinkPotionEvent extends CreatureEvent {

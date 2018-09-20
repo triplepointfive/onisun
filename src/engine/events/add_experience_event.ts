@@ -1,19 +1,15 @@
-import { CreatureEvent } from './internal'
-import { Creature, Reaction } from '../models/creature'
+import { PlayerEvent, Reaction } from './internal'
+import { Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { Game, AINewLevelEvent, LevelMap } from '../../engine'
 
-export class AddExperienceEvent extends CreatureEvent {
+export class AddExperienceEvent extends PlayerEvent {
   constructor(
     public actor: Creature,
     private levelMap: LevelMap,
     private game: Game
   ) {
     super()
-  }
-
-  public affectCreature(subject: Creature): Reaction {
-    return Reaction.NOTHING
   }
 
   public affectPlayer(subject: Player): Reaction {

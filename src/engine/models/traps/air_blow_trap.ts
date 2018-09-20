@@ -2,7 +2,7 @@ import { Trap, Tile, TrapType } from '../tile'
 import { Player } from '../player'
 import { LevelMap } from '../level_map'
 import { Game } from '../game'
-import { Creature, Reaction } from '../creature'
+import { Creature } from '../creature'
 import { Point, Direction, bresenhamInclusion } from '../../utils/utils'
 import { Calculator } from '../../lib/calculator'
 import { TrapEvent } from '../../events/trap_event'
@@ -11,6 +11,7 @@ import { Item } from '../item'
 import { RemoveItemEvent } from '../../events/remove_item_event'
 import { shuffle } from 'lodash'
 import { MoveEvent } from '../../events/move_event'
+import { Reaction } from '../../../engine'
 
 export class AirBlowTrap extends Trap {
   constructor(tile: Tile, revealed: boolean = false) {

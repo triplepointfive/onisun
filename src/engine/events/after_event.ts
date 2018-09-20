@@ -1,7 +1,7 @@
 import { DieEvent, DieReason, Game, ImpactType, LevelMap } from '../../engine'
-import { Reaction, Creature } from '../models/creature'
+import { Creature } from '../models/creature'
 import { Player } from '../models/player'
-import { CreatureEvent } from './internal'
+import { CreatureEvent, Reaction } from './internal'
 
 export class AfterEvent extends CreatureEvent {
   constructor(private levelMap: LevelMap, private game: Game) {

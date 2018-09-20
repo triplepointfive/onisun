@@ -1,11 +1,12 @@
-import { CreatureEvent } from './internal'
-import { Creature, Reaction } from '../models/creature'
+import { CreatureEvent, Reaction } from './internal'
+import { Creature } from '../models/creature'
 import { AddExperienceEvent } from './add_experience_event'
 import { Game } from '../models/game'
 import { LevelMap } from '../models/level_map'
 import { Calculator } from '../lib/calculator'
 import { HurtEvent } from './hurt_event'
 import { DieReason } from './die_event'
+import { Player } from '../models/player'
 
 export class AttackEvent extends CreatureEvent {
   constructor(
@@ -17,71 +18,45 @@ export class AttackEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
-    const reaction = this.process(actor)
+    return this.process(actor, false)
+  }
 
-    switch (reaction) {
-      case Reaction.NOTHING:
-        // TODO: victim is not always a player, should be another message as well
-        this.game.logger.noDamageToPlayer(actor)
-        break
-      case Reaction.RESIST:
-        // TODO: victim is not always a player, should be another message as well
-        this.game.logger.playerIgnoresDamage(actor)
-        break
+  public affectPlayer(player: Player): Reaction {
+    const reaction = this.process(player, true)
+
+    if (reaction === Reaction.DIE) {
+      player.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
     }
 
     return reaction
   }
 
-  public affectPlayer(actor: Creature): Reaction {
-    const reaction = this.process(actor)
+  protected process(actor: Creature, isPlayer: boolean): Reaction {
+    const [reaction, damage] = this.hit(actor)
 
-    switch (reaction) {
-      case Reaction.NOTHING:
-        this.game.logger.noDamageToTarget(actor)
-        break
-      case Reaction.RESIST:
-        this.game.logger.targetIgnoresDamage(this.victim)
-        break
-    }
+    this.game.logger.attackLogger.melee(
+      damage,
+      actor,
+      this.victim,
+      reaction,
+      isPlayer
+    )
 
     return reaction
   }
 
-  protected process(actor: Creature): Reaction {
+  protected hit(actor: Creature): [Reaction, number] {
     if (Calculator.misses(actor.bodyControl, this.victim.bodyControl)) {
-      this.game.logger.missMessage(this.game.player, actor, this.victim)
-      return Reaction.DODGE
+      return [Reaction.DODGE, 0]
     }
 
     const hurtEvent = new HurtEvent(
-        Calculator.withCritical(actor.damages, actor.specie.critical),
-        DieReason.Attack,
-        this.levelMap,
-        this.game
-      ),
-      reaction = this.victim.on(hurtEvent)
+      Calculator.withCritical(actor.damages, actor.specie.critical),
+      DieReason.Attack,
+      this.levelMap,
+      this.game
+    )
 
-    switch (reaction) {
-      case Reaction.DIE:
-        actor.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
-        this.game.logger.killMessage(
-          this.game.player,
-          hurtEvent.damage,
-          actor,
-          this.victim
-        )
-        break
-      case Reaction.HURT:
-        this.game.logger.hurtMessage(
-          this.game.player,
-          hurtEvent.damage,
-          actor,
-          this.victim
-        )
-        break
-    }
-
-    return reaction
+    return [this.victim.on(hurtEvent), hurtEvent.damage]
   }
 }

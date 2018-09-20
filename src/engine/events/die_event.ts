@@ -1,10 +1,9 @@
-import { CreatureEvent } from './internal'
-import { Creature, Reaction } from '../models/creature'
+import { CreatureEvent, Reaction } from './internal'
+import { Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { Corpse } from '../models/item'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
-import { DeathPresenter } from '../presenters/death_presenter'
 import { AIDieEvent } from '../ai/player_ai'
 
 export enum DieReason {

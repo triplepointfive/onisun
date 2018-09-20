@@ -2,7 +2,7 @@ import { includes } from 'lodash'
 import { Game, GroupedItem, ImpactBunch, LevelMap, Memory } from '../../engine'
 import { MetaAI } from '../ai/meta_ai'
 import { AfterEvent } from '../events/after_event'
-import { CreatureEvent } from '../events/internal'
+import { CreatureEvent, Reaction } from '../events/internal'
 import { ItemsBunch } from '../lib/bunch'
 import { ImpactType } from '../lib/impact'
 import { buildFov } from '../lib/map_fov'
@@ -32,15 +32,6 @@ export const allAbilities = [
 ]
 
 export type CreatureId = number
-
-export enum Reaction {
-  DIE,
-  HURT,
-  DODGE,
-  THROW_DODGE,
-  NOTHING,
-  RESIST,
-}
 
 export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
   private static lastId: CreatureId = 0

@@ -1,8 +1,8 @@
 import { Game, GroupedItem, ItemsBunch, Tile } from '../../engine'
-import { Reaction, Creature } from '../models/creature'
+import { Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { Item } from '../models/item'
-import { CreatureEvent } from './internal'
+import { CreatureEvent, Reaction } from './internal'
 
 export class PickUpItemsEvent extends CreatureEvent {
   constructor(

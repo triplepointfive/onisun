@@ -1,6 +1,6 @@
-import { CreatureEvent } from './internal'
+import { CreatureEvent, Reaction } from './internal'
 import { Point } from '../utils/utils'
-import { Creature, Reaction } from '../models/creature'
+import { Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { ItemFlightTileEffect } from '../models/tile_effect'
 import { ThrowEvent } from './throw_event'

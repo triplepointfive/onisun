@@ -21,17 +21,6 @@ describe('Drink potion event', () => {
     game = generateGame()
   })
 
-  describe('on common creatures', () => {
-    beforeEach(() => {
-      actor = generateCreature()
-      event = new AddExperienceEvent(actor, map, game)
-    })
-
-    it('does nothing', () => {
-      expect(actor.on(event)).toEqual(Reaction.NOTHING)
-    })
-  })
-
   describe('on player', () => {
     beforeEach(() => {
       game.player = actor = generatePlayer()

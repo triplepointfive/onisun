@@ -1,10 +1,9 @@
-import { Reaction } from '../models/creature'
 import { Player } from '../models/player'
 import { LevelMap } from '../models/level_map'
 import { Game } from '../models/game'
 import { Trap } from '../models/tile'
 import { Point } from '../utils/utils'
-import { PlayerEvent } from './internal'
+import { PlayerEvent, Reaction } from './internal'
 
 export class UntrapEvent extends PlayerEvent {
   constructor(

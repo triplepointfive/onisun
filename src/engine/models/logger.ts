@@ -1,9 +1,10 @@
-import { Creature, Reaction } from './creature'
+import { Creature } from './creature'
 import { Item, Potion, CorrosionLevel } from './item'
 
 import { last } from 'lodash'
 import { Player } from './player'
 import { BodyPart } from './inventory_slot'
+import { Reaction } from '../../engine'
 
 export enum LogLevel {
   DEBUG,
@@ -22,12 +23,15 @@ export interface LogMessage {
 export class Logger {
   public messages: LogMessage[] = []
 
+  public attackLogger: AttackLogger
   public trapAirBlow: TrapAirBlowLogger
   public trapBareWire: TrapBareWireLogger
   public trapHole: TrapHoleLogger
   public trapFallingRock: TrapFallingRockLogger
 
   constructor(player: Player) {
+    this.attackLogger = new AttackLogger(this, player)
+
     this.trapAirBlow = new TrapAirBlowLogger(this, player)
     this.trapBareWire = new TrapBareWireLogger(this, player)
     this.trapFallingRock = new TrapFallingRockLogger(this, player)
@@ -36,15 +40,6 @@ export class Logger {
 
   public reset() {
     this.messages = []
-  }
-
-  public hurtMessage(
-    player: Player,
-    damage: number,
-    actor: Creature,
-    target: Creature
-  ) {
-    this.debug(`${target.name} got ${damage} damage from ${actor.name}`)
   }
 
   public killMessage(
@@ -60,21 +55,6 @@ export class Logger {
     )
   }
 
-  public missMessage(player: Player, actor: Creature, target: Creature) {
-    this.debug(`${actor.name} misses ${target.name}!`)
-  }
-
-  public throwMissMessage(
-    player: Player,
-    actor: Creature,
-    target: Creature,
-    missile: Item
-  ) {
-    this.debug(
-      `${actor.name} throws ${missile.name} in ${target.name}, but misses!`
-    )
-  }
-
   public throwKillMessage(
     player: Player,
     damage: number,
@@ -86,20 +66,6 @@ export class Logger {
       `${target.name} got ${damage} damage from ${actor.name} by ${
         missile.name
       } causes them to die`
-    )
-  }
-
-  public throwHurtMessage(
-    player: Player,
-    damage: number,
-    actor: Creature,
-    target: Creature,
-    missile: Item
-  ) {
-    this.debug(
-      `${target.name} got ${damage} damage from ${actor.name} by ${
-        missile.name
-      }`
     )
   }
 
@@ -141,28 +107,6 @@ export class Logger {
 
   public creatureSteppedInTrap(creature: Creature): void {
     this.addMessage(LogLevel.DANGER, `${creature.name} наступил в ловушку`)
-  }
-
-  public noDamageToPlayer(actor: Creature): void {
-    this.addMessage(
-      LogLevel.DEBUG,
-      `${actor.name} ударил по мне, но я не почувствовал боли`
-    )
-  }
-
-  public noDamageToTarget(actor: Creature): void {
-    this.addMessage(
-      LogLevel.DEBUG,
-      `Удар пришелся по ${actor.name} но остался незамеченным`
-    )
-  }
-
-  public playerIgnoresDamage(target: Creature): void {
-    this.addMessage(LogLevel.DEBUG, `Я игнорирую урон ${target.name}`)
-  }
-
-  public targetIgnoresDamage(target: Creature): void {
-    this.addMessage(LogLevel.INFO, `${target.name} игнорирует урон`)
   }
 
   public creatureTeleported(actor: Creature): void {
@@ -499,5 +443,74 @@ class TrapFallingRockLogger extends SubLogger {
     actor: Creature
   ): void {
     this.info(`${actor.name} попал в ловушку`)
+  }
+}
+
+class AttackLogger extends SubLogger {
+  public melee(
+    damage: number,
+    actor: Creature,
+    target: Creature,
+    reaction: Reaction,
+    isPlayer: boolean
+  ): void {
+    switch (reaction) {
+      case Reaction.HURT:
+        return this.debug(
+          `${target.name} got ${damage} damage from ${actor.name}`
+        )
+      case Reaction.DIE:
+        return this.warning(
+          `${target.name} got ${damage} damage from ${
+            actor.name
+          } causes them to die`
+        )
+      case Reaction.NOTHING:
+        return this.debug(
+          `Удар пришелся по ${actor.name} но остался незамеченным`
+        )
+      //this.addMessage( LogLevel.DEBUG, `${actor.name} ударил по мне, но я не почувствовал боли`)
+      case Reaction.RESIST:
+        return this.info(`${target.name} игнорирует урон`)
+      // this.addMessage(LogLevel.DEBUG, `Я игнорирую урон ${target.name}`)
+      case Reaction.DODGE:
+        return this.debug(`${actor.name} misses ${target.name}!`)
+    }
+  }
+
+  public missile(
+    damage: number,
+    actor: Creature,
+    target: Creature,
+    reaction: Reaction,
+    missile: Item,
+    isPlayer: boolean
+  ): void {
+    switch (reaction) {
+      case Reaction.HURT:
+        return this.debug(
+          `${target.name} got ${damage} damage from ${actor.name} by ${
+            missile.name
+          }`
+        )
+      case Reaction.DIE:
+        return this.warning(
+          `${target.name} got ${damage} damage from ${
+            actor.name
+          } causes them to die`
+        )
+      case Reaction.NOTHING:
+        return this.debug(
+          `Удар пришелся по ${actor.name} но остался незамеченным`
+        )
+      //this.addMessage( LogLevel.DEBUG, `${actor.name} ударил по мне, но я не почувствовал боли`)
+      case Reaction.RESIST:
+        return this.info(`${target.name} игнорирует урон`)
+      // this.addMessage(LogLevel.DEBUG, `Я игнорирую урон ${target.name}`)
+      case Reaction.DODGE:
+        return this.debug(
+          `${actor.name} throws ${missile.name} in ${target.name}, but misses!`
+        )
+    }
   }
 }

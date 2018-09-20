@@ -1,7 +1,7 @@
 import { ImpactType } from '../lib/impact'
-import { Creature, Reaction } from '../models/creature'
+import { Creature } from '../models/creature'
 import { Game } from '../models/game'
-import { CreatureEvent } from './internal'
+import { CreatureEvent, Reaction } from './internal'
 
 export class AddImpactEvent extends CreatureEvent {
   constructor(
