@@ -125,6 +125,8 @@ const fakeSpecie: () => PlayerSpecie = () => {
     material: Material.flesh,
     throwingDamages: [],
     race: sample(allRaces),
+
+    critical: { chance: 0.05, multiplier: 2 }
   }
 }
 

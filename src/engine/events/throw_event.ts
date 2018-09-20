@@ -32,7 +32,7 @@ export class ThrowEvent extends CreatureEvent {
 
     // TODO: Check has no resistances
     const { damage, resist } = Calculator.damage(
-      actor.throwDamages,
+      Calculator.withCritical(actor.throwDamages, actor.specie.critical),
       this.victim.protections,
       this.victim.resistances
     )

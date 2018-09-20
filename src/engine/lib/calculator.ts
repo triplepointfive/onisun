@@ -1,13 +1,32 @@
 import { includes, intersection, random, sum, sumBy, times } from 'lodash'
 import { DamageType, ProtectionType } from '../../engine'
 import { Protection } from '../models/item'
-import { Resistance } from '../models/specie'
+import { Resistance, Critical } from '../models/specie'
 import { Damage, Dice } from './damage'
 
 export type DamageOrResist = { damage: number; resist: boolean }
 
 export class Calculator {
   private constructor() {}
+
+  public static withCritical(
+    damages: Damage[],
+    { chance, multiplier }: Critical
+  ): Damage[] {
+    if (Math.random() > chance) {
+      return damages
+    }
+
+    return damages.map(
+      ({ type, dice: { times, max }, extra }): Damage => {
+        return {
+          type,
+          dice: { times, max: max * multiplier },
+          extra: extra * multiplier,
+        }
+      }
+    )
+  }
 
   public static misses(attackerBC: number, victimBC: number): boolean {
     return (

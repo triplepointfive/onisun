@@ -38,12 +38,15 @@ import { Scroll } from './engine/models/item'
 import { TitleDungeon } from './onisun/dungeons/title_dungeon'
 import { Dispatcher } from './onisun/ai'
 import { sample } from 'lodash'
+import { Critical } from './engine/models/specie'
 
 export * from './engine'
 export * from './onisun/ai'
 export * from './onisun/professions'
 export * from './onisun/talents'
 export * from './onisun/items'
+
+const critical: Critical = { chance: 0.05, multiplier: 2 }
 
 export class TmpApplication {
   public game: Onisun
@@ -158,6 +161,8 @@ export class TmpApplication {
         hairColor: Color.Fuchsia,
         skinColor: Color.Purple,
         height: 100,
+
+        critical,
       },
       12,
       12,
@@ -221,6 +226,7 @@ export class Application {
           hairColor: Color.Fuchsia,
           skinColor: Color.Purple,
           height: 100,
+          critical,
         },
         12,
         12,

@@ -55,7 +55,7 @@ export class AttackEvent extends CreatureEvent {
     }
 
     const hurtEvent = new HurtEvent(
-        actor.damages,
+        Calculator.withCritical(actor.damages, actor.specie.critical),
         DieReason.Attack,
         this.levelMap,
         this.game

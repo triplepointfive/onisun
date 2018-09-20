@@ -11,6 +11,11 @@ export enum Resistance {
   Insulator,
 }
 
+export type Critical = {
+  chance: number
+  multiplier: number
+}
+
 export interface CreatureSpecie {
   name: string
   weight: number
@@ -37,6 +42,8 @@ export interface CreatureSpecie {
   leavesCorpseRatio: number
 
   material: Material
+
+  critical: Critical
 }
 
 export enum Race {

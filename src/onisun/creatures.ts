@@ -7,9 +7,12 @@ import {
   Protection,
   ProtectionType,
   Damage,
+  Critical,
 } from '../engine'
 import { Dispatcher } from './ai'
 import { Material } from '../engine/lib/material'
+
+const critical: Critical = { chance: 0.05, multiplier: 2 }
 
 const newCreature = (
   name: string,
@@ -39,6 +42,7 @@ const newCreature = (
     material: Material.flesh,
 
     throwingDamages: [],
+    critical
   })
 }
 
