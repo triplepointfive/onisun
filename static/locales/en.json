@@ -24,6 +24,9 @@
     "professionPickingView": {
       "title": "Gained %{level} level",
       "rank": "Rank %{level}"
+    },
+    "talentsPickingView": {
+      "title": "Talent picking"
     }
   },
   "colors": {

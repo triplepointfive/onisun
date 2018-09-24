@@ -5,6 +5,7 @@
         v-for='(profession, index) in screen.professions'
         :key='profession.id'
         :class="{ '-active': profession.name == pickedProfession.name }"
+        @click='pickProfession(profession)'
       )
       | [
       .key {{ index + 1 }}
@@ -20,8 +21,8 @@
             :class='talentPickedStatus(talent)'
             :id="j + 'talentTree-'+i"
             variant="primary"
-            click='pickTalent(talent)'
-            dblclick="close(talent)"
+            @click='pickTalent(talent)'
+            dblclick="confirmPick(talent)"
             )
             img.icon(:src="'assets/talents/' + iconPath(talent)")
             span.level {{ talentTip(talent) }}
@@ -35,6 +36,8 @@
                     | {{ 'requirements' | t('presenters.talentsPage', '', { req: talent.depth * pickedProfession.depthCost }) }}
                     | {{ pickedProfession.name | t('professions') }}
                   p.description {{ talent.name | t('talents', 'description') }}
+
+  b-btn.confirm(variant='default' v-if='picked' @click='confirmPick()') Подтвердить
 </template>
 
 <script lang='ts'>
@@ -45,11 +48,11 @@ const LETTER_OFFSET = 97
 
 export default Vue.extend({
   name: 'TalentsPage',
-  props: ['screen'],
+  props: ['screen', 'pickingEnabled'],
   data() {
     return {
       picked: undefined as Talent | undefined,
-      pickedProfession: this.screen.professions[0]
+      pickedProfession: this.screen.professions[0] as Profession
     }
   },
   computed: {
@@ -69,18 +72,21 @@ export default Vue.extend({
     }
   },
   methods: {
-    close(doubleClickOption = undefined) {
-      const talent = doubleClickOption || this.picked
+    confirmPick(doubleClickTalent: Talent | undefined) {
+      const pickedTalent = doubleClickTalent || this.picked
 
-      if (!talent || talent.status(this.pickedProfession) !== TalentStatus.Available) {
-        return
+      if (pickedTalent && pickedTalent.status(this.pickedProfession) === TalentStatus.Available) {
+        this.$emit('pickTalent', this.pickedProfession, pickedTalent)
       }
-
-      this.screen.pickTalent(this.pickedProfession.id, talent.name)
-      this.picked = undefined
+    },
+    pickProfession(profession: Profession): void {
+      if (profession && this.pickedProfession && this.pickedProfession.name !== profession.name) {
+        this.picked = undefined
+        this.pickedProfession = profession
+      }
     },
     pickTalent(talent: Talent) {
-      if (talent.status(this.pickedProfession) === TalentStatus.Available) {
+      if (this.pickingEnabled && talent.status(this.pickedProfession) === TalentStatus.Available) {
         this.picked = talent
       }
     },
@@ -92,7 +98,18 @@ export default Vue.extend({
       case '4':
       case '5':
       case '6':
-        this.pickedProfession = this.screen.professions[parseInt(event.key) - 1] || this.pickedProfession
+        return this.pickProfession(this.screen.professions[parseInt(event.key) - 1])
+      case ' ':
+      case 'Enter':
+        console.log('a')
+        return this.confirmPick()
+      default:
+        for (let talent of this.pickedProfession.talents) {
+          if (this.nameToLetter[talent.name] === event.key) {
+            this.pickTalent(talent)
+            break
+          }
+        }
       }
     },
     talentTip(talent: Talent): string {
@@ -137,12 +154,21 @@ export default Vue.extend({
   .talents {
     display: inline-block;
   }
+
+  .confirm {
+    display: block;
+  }
 }
 
 .profession-block {
   padding: 0.5rem;
   border: 1px solid black;
   color: white;
+  cursor: pointer;
+
+  &:hover {
+    border-color: gold;
+  }
 
   &.-active {
     border-color: gold;

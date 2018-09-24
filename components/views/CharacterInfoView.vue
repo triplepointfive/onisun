@@ -7,7 +7,8 @@
     | {{ name | t('presenters.infoViewsHead') }}
 
   component(
-    :is='page' :screen='screen'
+    :is='page'
+    :screen='screen'
     ref="pageComponent"
     )
 </template>

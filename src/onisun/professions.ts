@@ -22,7 +22,10 @@ export class OnisunAttackerProfession extends Profession {
       5
     )
   ) {
-    super(OnisunProfessionId.Attacker, 'warrior', level)
+    super(OnisunProfessionId.Attacker, 'warrior', level, 0, [
+      twoHandedWeapons,
+      strongGrip,
+    ])
   }
 
   get depthCost(): number {
@@ -32,7 +35,6 @@ export class OnisunAttackerProfession extends Profession {
   get grid(): (Talent | undefined)[][] {
     return [
       [undefined, this.twoHandedWeapons, undefined],
-      [this.twoHandedWeapons, undefined, this.twoHandedWeapons],
       [undefined, this.strongGrip, undefined],
     ]
   }
@@ -40,7 +42,7 @@ export class OnisunAttackerProfession extends Profession {
 
 export class OnisunDefenderProfession extends Profession {
   constructor(level: number = 0) {
-    super(OnisunProfessionId.Defender, 'defender', level)
+    super(OnisunProfessionId.Defender, 'defender', level, 0, [])
   }
 
   get depthCost(): number {

@@ -233,7 +233,7 @@ class TestProfession extends Profession {
 let professionId = 0
 export const generateProfession = function(level: number = 1): Profession {
   const name = times(4, () => random(35).toString(36)).join('')
-  return new TestProfession(professionId++, name, level)
+  return new TestProfession(professionId++, name, level, 0, [])
 }
 
 class TestTalent extends Talent {

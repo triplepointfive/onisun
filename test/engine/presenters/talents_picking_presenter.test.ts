@@ -10,7 +10,6 @@ import {
   Player,
   TalentsPickingPresenter,
   Talent,
-  TalentStatus,
 } from '../../../src/engine'
 
 describe('TalentsTreePresenter', () => {
@@ -36,25 +35,14 @@ describe('TalentsTreePresenter', () => {
     presenter.endTurn = jest.fn()
   })
 
-  it('picking a talent for not picked profession', () => {
-    player.professions = []
-    expect(() => presenter.pickTalent(profession.id, talent.name)).toThrow()
-  })
-
-  it('picking a talent for not related profession', () => {
-    expect(() =>
-      presenter.pickTalent(profession.id, generateTalent().name)
-    ).toThrow()
-  })
-
   it('picking a talent with max rank', () => {
     talent.rank = talent.maxRank
-    expect(() => presenter.pickTalent(profession.id, talent.name)).toThrow()
+    expect(() => presenter.pickTalent(profession, talent)).toThrow()
   })
 
   describe('with correct talent', () => {
     beforeEach(() => {
-      presenter.pickTalent(profession.id, talent.name)
+      presenter.pickTalent(profession, talent)
     })
 
     it('updating its level', () => {

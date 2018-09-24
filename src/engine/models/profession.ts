@@ -17,7 +17,12 @@ export abstract class Talent {
     public readonly maxRank: number
   ) {}
 
-  public abstract onObtain(game: Game): void
+  protected abstract onObtain(game: Game): void
+
+  public upgrade(game: Game): void {
+    this.rank += 1
+    this.onObtain(game)
+  }
 
   public status(profession: Profession): TalentStatus {
     if (this.rank === this.maxRank) {
@@ -31,15 +36,14 @@ export abstract class Talent {
 }
 
 export abstract class Profession {
-  public talents: Talent[] = []
-
   abstract get depthCost(): number
 
   constructor(
     public readonly id: number,
     public readonly name: string,
     public level: number = 1,
-    public points: number = 0
+    public points: number = 0,
+    public talents: Talent[]
   ) {}
 
   abstract get grid(): (Talent | undefined)[][]

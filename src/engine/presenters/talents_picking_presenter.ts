@@ -2,6 +2,7 @@ import { Presenter, PresenterType } from './internal'
 import { Game, LevelMap, Talent, TalentStatus } from '../../engine'
 import { Profession } from '../models/profession'
 import { LevelUpEvent } from '../events/level_up_event'
+import { TalentsPresenter } from './talents_presenter'
 
 interface TalentsTreePresenterProfession {
   profession: Profession
@@ -10,9 +11,12 @@ interface TalentsTreePresenterProfession {
 
 export class TalentsPickingPresenter extends Presenter {
   public readonly options: TalentsTreePresenterProfession[] = []
+  public readonly talentsPage: TalentsPresenter
 
   constructor(public readonly level: number, levelMap: LevelMap, game: Game) {
     super(levelMap, game)
+
+    this.talentsPage = new TalentsPresenter(levelMap, game)
 
     this.options = this.player.professions.map(profession => {
       return {
@@ -26,36 +30,14 @@ export class TalentsPickingPresenter extends Presenter {
     return PresenterType.TalentsPicking
   }
 
-  public pickTalent(professionId: number, talentName: string): void {
-    const profession: Profession | undefined = this.player.professions.find(
-      profession => profession.id === professionId
-    )
-
-    if (profession === undefined) {
-      throw `Profession with id ${professionId} is not found`
-    }
-
-    let talent: Talent | undefined = profession.talents.find(
-      talent => talent.name === talentName
-    )
-
-    if (talent === undefined) {
-      throw `Talent ${talentName} for profession ${
-        profession.name
-      } is not found`
-    }
-
+  public pickTalent(profession: Profession, talent: Talent): void {
     if (talent.status(profession) !== TalentStatus.Available) {
-      throw `Talent ${talentName} for profession ${
+      throw `Talent ${talent.name} for profession ${
         profession.name
       } can not be upgraded`
     }
 
-    talent.rank += 1
-    if (talent.rank === 1) {
-      talent.onObtain(this.game)
-    }
-
+    talent.upgrade(this.game)
     profession.points += 1
 
     this.player.on(new LevelUpEvent())
