@@ -54,7 +54,7 @@ export class TmpApplication {
   constructor() {
     this.game = new Onisun(this.initPlayer())
 
-    const dungeon = new TutorialDungeon()
+    const dungeon = new TitleDungeon()
     dungeon.register(this.game)
     dungeon.enter(this.game, this.game.player)
 

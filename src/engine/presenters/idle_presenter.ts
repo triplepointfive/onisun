@@ -15,15 +15,17 @@ import {
   UntrapEvent,
   Point,
   BaseInfoPresenter,
+  CloseDoorEvent,
 } from '../../engine'
 import { EquipmentPresenter } from './equipment_presenter'
 import { MissilePresenter } from './missile_presenter'
 import { MoveEvent } from '../events/move_event'
 import { CreatureEvent, PlayerEvent } from '../events/internal'
 import { concat } from 'lodash'
-import { Trap } from '../models/tile'
+import { Trap, Door } from '../models/tile'
 import { PickSingleOptionPresenter } from './pick_single_option_presenter'
 import { StayEvent } from '../events/stay_event'
+import { OpenDoorEvent } from '../events/open_door_event'
 
 class HandleTileVisitor extends TileVisitor {
   // TODO: Add direction since commands might duplicate
@@ -31,8 +33,8 @@ class HandleTileVisitor extends TileVisitor {
 
   constructor(
     public position: Point,
-    private game: Game,
-    private levelMap: LevelMap
+    protected game: Game,
+    protected levelMap: LevelMap
   ) {
     super()
   }
@@ -65,6 +67,20 @@ class HandleTileVisitor extends TileVisitor {
 
 class AdjustHandleTileVisitor extends HandleTileVisitor {
   protected onStairway(): void {}
+
+  public onDoor(door: Door): void {
+    if (door.open) {
+      this.commands.push([
+        'closeDoor',
+        new CloseDoorEvent(door, this.levelMap, this.game),
+      ])
+    } else {
+      this.commands.push([
+        'openDoor',
+        new OpenDoorEvent(door, this.levelMap, this.game),
+      ])
+    }
+  }
 }
 
 export class IdlePresenter extends BaseMenusPresenter {

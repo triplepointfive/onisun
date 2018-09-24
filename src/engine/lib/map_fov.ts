@@ -21,7 +21,9 @@ class VisibilityTileVisitor extends TileVisitor {
   }
 
   public onDoor(door: Door) {
-    this.visible = this.pos.x === this.x && this.pos.y === this.y
+    this.default(door)
+    this.visible =
+      this.visible || (this.pos.x === this.x && this.pos.y === this.y)
   }
 
   protected default(tile: Tile) {

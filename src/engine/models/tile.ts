@@ -89,12 +89,12 @@ export class Room extends Floor {
 }
 
 export class Door extends Tile {
-  constructor() {
+  constructor(public open: boolean = Math.random() >= 0.5) {
     super('D', TileTypes.Door)
   }
 
   public visibleThrough(): boolean {
-    return false
+    return this.open
   }
 
   public visit(tileVisitor: TileVisitor): void {
@@ -102,7 +102,7 @@ export class Door extends Tile {
   }
 
   protected buildNew(): Tile {
-    return new Door()
+    return new Door(this.open)
   }
 }
 

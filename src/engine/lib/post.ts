@@ -11,7 +11,7 @@ export const addDoors = function(
   addDoor: () => boolean = () => true
 ): LevelMap {
   for (let j = 1; j < level.height - 1; j++) {
-    for (let i = 1; i < level.width; i++) {
+    for (let i = 1; i < level.width - 1; i++) {
       const tile = level.at(i, j),
         up = level.at(i, j - 1),
         down = level.at(i, j + 1),

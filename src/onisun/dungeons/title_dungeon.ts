@@ -73,6 +73,8 @@ export class TitleDungeon extends Dungeon {
       )
     )
 
+    addDoors(map, () => new Door(), () => true)
+
     centralize(map)
 
     // addItems(0.05, map, weapons.merge(itemsPool))

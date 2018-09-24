@@ -73,15 +73,24 @@ export class CreatureTile extends ImportantTile {
   }
 }
 
-export class DoorTile extends DisplayTile {
+class ClosedDoorTile extends DisplayTile {
   constructor() {
-    super('戸')
+    super('＋')
   }
 
   public lighted(degree: number) {
     let tile = this.clone()
     this.litColor(tile, degree)
     tile.swapColors()
+
+    return tile
+  }
+}
+
+class OpenDoorTile extends ClosedDoorTile {
+  public lighted(degree: number) {
+    let tile = this.clone()
+    this.litColor(tile, degree)
 
     return tile
   }
@@ -174,7 +183,8 @@ export const displayItem = function(item: Item): ItemTile {
   }
 }
 
-const DOOR = new DoorTile()
+const CLOSED_DOOR = new ClosedDoorTile()
+const OPEN_DOOR = new OpenDoorTile()
 const WALL = new WallTile()
 const FLOOR = new FloorTile()
 const STAIRWAY_DOWN = new StairwayDownD()
@@ -209,7 +219,11 @@ export class DisplayTileVisitor extends TileVisitor {
   }
 
   public onDoor(door: Door): void {
-    this.tile = DOOR
+    if (door.open) {
+      this.tile = OPEN_DOOR
+    } else {
+      this.tile = CLOSED_DOOR
+    }
   }
 
   public onTrap(trap: Trap): void {

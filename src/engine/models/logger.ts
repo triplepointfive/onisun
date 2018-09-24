@@ -24,6 +24,7 @@ export class Logger {
   public messages: LogMessage[] = []
 
   public attackLogger: AttackLogger
+  public doorLogger: DoorLogger
   public trapAirBlow: TrapAirBlowLogger
   public trapBareWire: TrapBareWireLogger
   public trapHole: TrapHoleLogger
@@ -31,6 +32,7 @@ export class Logger {
 
   constructor(player: Player) {
     this.attackLogger = new AttackLogger(this, player)
+    this.doorLogger = new DoorLogger(this, player)
 
     this.trapAirBlow = new TrapAirBlowLogger(this, player)
     this.trapBareWire = new TrapBareWireLogger(this, player)
@@ -435,6 +437,24 @@ class TrapFallingRockLogger extends SubLogger {
     actor: Creature
   ): void {
     this.info(`${actor.name} попал в ловушку`)
+  }
+}
+
+class DoorLogger extends SubLogger {
+  public alreadyOpen(): void {
+    this.debug('Door is already open')
+  }
+
+  public alreadyClosed(): void {
+    this.debug('Door is already closed')
+  }
+
+  public open(): void {
+    this.debug('I opened the door')
+  }
+
+  public close(): void {
+    this.debug('I closed the door')
   }
 }
 
