@@ -20,7 +20,7 @@ export class AINewLevelEvent extends AIEvent {
   }
 
   public run(): void {
-    if (this.level % 3 === 0) {
+    if (this.level % 5 === 0) {
       this.game.player.ai.presenter = new ProfessionPickingPresenter(
         this.level,
         this.levelMap,

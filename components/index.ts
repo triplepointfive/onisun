@@ -21,6 +21,6 @@ fetch('locales/en.json', { cache: 'no-store' }).then((response) => response.json
 
   new Vue({
     el: '#app',
-    render: h => h(App)
+    render: h => h(Title)
   })
 })
