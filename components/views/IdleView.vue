@@ -57,7 +57,13 @@ export default Vue.extend({
         return this.screen.drinkCommand()
 
       case '@':
-        return this.screen.characterInfo()
+        return this.screen.goToBaseInfo()
+      case '#':
+        return this.screen.goToInventory()
+      case '%':
+        return this.screen.goToTalents()
+      case '&':
+        return this.screen.goToHistoryInfo()
 
       default:
         console.log('Key: ', event.key)

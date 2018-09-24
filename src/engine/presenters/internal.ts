@@ -1,7 +1,14 @@
 import { Player } from '../models/player'
 import { LevelMap } from '../models/level_map'
 import { Tile } from '../models/tile'
-import { Game, IdlePresenter } from '../../engine'
+import {
+  Game,
+  IdlePresenter,
+  BaseInfoPresenter,
+  EquipmentPresenter,
+  HistoryInfoPresenter,
+  TalentsPresenter,
+} from '../../engine'
 
 export enum PresenterType {
   TalentsPicking,
@@ -39,5 +46,23 @@ export abstract class Presenter {
 
   public goIdle(): void {
     this.redirect(new IdlePresenter(this.levelMap, this.game))
+  }
+}
+
+export abstract class BaseMenusPresenter extends Presenter {
+  public goToBaseInfo(): void {
+    this.redirect(new BaseInfoPresenter(this.levelMap, this.game))
+  }
+
+  public goToInventory(): void {
+    this.redirect(new EquipmentPresenter(this.levelMap, this.game))
+  }
+
+  public goToHistoryInfo(): void {
+    this.redirect(new HistoryInfoPresenter(this.levelMap, this.game))
+  }
+
+  public goToTalents(): void {
+    this.redirect(new TalentsPresenter(this.levelMap, this.game))
   }
 }

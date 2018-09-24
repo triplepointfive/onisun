@@ -1,4 +1,4 @@
-import { Presenter, PresenterType } from './internal'
+import { Presenter, PresenterType, BaseMenusPresenter } from './internal'
 import {
   Game,
   Direction,
@@ -67,17 +67,13 @@ class AdjustHandleTileVisitor extends HandleTileVisitor {
   protected onStairway(): void {}
 }
 
-export class IdlePresenter extends Presenter {
+export class IdlePresenter extends BaseMenusPresenter {
   get type(): PresenterType {
     return PresenterType.Idle
   }
 
   public inventoryCommand(): void {
     this.redirect(new EquipmentPresenter(this.levelMap, this.game))
-  }
-
-  public characterInfo(): void {
-    this.redirect(new BaseInfoPresenter(this.levelMap, this.game))
   }
 
   public bagCommand(): void {

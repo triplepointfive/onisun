@@ -1,4 +1,4 @@
-import { Presenter, PresenterType } from './internal'
+import { PresenterType, BaseMenusPresenter } from './internal'
 import {
   TalentsPresenter,
   EquipmentPresenter,
@@ -16,29 +16,13 @@ export enum CharacterInfoPage {
   History,
 }
 
-export abstract class CharacterInfoPresenter extends Presenter {
+export abstract class CharacterInfoPresenter extends BaseMenusPresenter {
   constructor(levelMap: LevelMap, game: Game) {
     super(levelMap, game)
   }
 
   get type(): PresenterType {
     return PresenterType.CharacterInfo
-  }
-
-  public goToBaseInfo(): void {
-    this.redirect(new BaseInfoPresenter(this.levelMap, this.game))
-  }
-
-  public goToInventory(): void {
-    this.redirect(new EquipmentPresenter(this.levelMap, this.game))
-  }
-
-  public goToHistoryInfo(): void {
-    this.redirect(new HistoryInfoPresenter(this.levelMap, this.game))
-  }
-
-  public goToTalents(): void {
-    this.redirect(new TalentsPresenter(this.levelMap, this.game))
   }
 
   abstract get page(): CharacterInfoPage
