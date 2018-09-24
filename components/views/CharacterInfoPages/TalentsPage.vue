@@ -114,10 +114,11 @@ export default Vue.extend({
     },
     talentTip(talent: Talent): string {
       let tip = `${talent.rank}/${talent.maxRank}`
-      if (talent.rank >= talent.maxRank) {
-        return tip
-      } else {
+
+      if (talent.status(this.pickedProfession) === TalentStatus.Available) {
         return `${this.nameToLetter[talent.name]} ${tip}`
+      } else {
+        return tip
       }
     },
     talentPickedStatus(talent: Talent): string | undefined {

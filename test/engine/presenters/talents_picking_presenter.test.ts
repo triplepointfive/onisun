@@ -10,6 +10,7 @@ import {
   Player,
   TalentsPickingPresenter,
   Talent,
+  PresenterType,
 } from '../../../src/engine'
 
 describe('TalentsTreePresenter', () => {
@@ -33,6 +34,10 @@ describe('TalentsTreePresenter', () => {
 
     presenter = new TalentsPickingPresenter(3, map, game)
     presenter.endTurn = jest.fn()
+  })
+
+  it('type', () => {
+    expect(presenter.type).toEqual(PresenterType.TalentsPicking)
   })
 
   it('picking a talent with max rank', () => {
