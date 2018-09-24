@@ -20,6 +20,10 @@
       "rank": "Уровень %{current}/%{max}",
       "requirements": "Требуется %{req} очков в",
       "talentsTaken": "Талантов взято %{count}"
+    },
+    "professionPickingView": {
+      "title": "Получил %{level} уровень",
+      "rank": "Ранк %{level}"
     }
   },
   "colors": {

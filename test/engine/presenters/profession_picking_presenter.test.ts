@@ -9,7 +9,7 @@ import {
   ProfessionPicker,
   Game,
   Player,
-  TalentsTreePresenter,
+  TalentsPickingPresenter,
 } from '../../../src/engine'
 
 import { sortBy } from 'lodash'
@@ -34,10 +34,6 @@ describe('ProfessionPickingPresenter', () => {
     presenter.redirect = jest.fn()
   })
 
-  it('builds title', () => {
-    expect(presenter.title).toEqual('Gained 3 level')
-  })
-
   it('builds options', () => {
     const sort = collection => sortBy(collection, profession => profession.id)
 
@@ -53,13 +49,13 @@ describe('ProfessionPickingPresenter', () => {
 
     it('updating its level', () => {
       expect(player.professions.length).toEqual(1)
-      expect(player.professions[0].level).toEqual(1)
+      expect(player.professions[0].level).toEqual(2)
     })
 
     it('redirects to talents screen', () => {
       expect(presenter.redirect.mock.calls.length).toEqual(1)
       expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
-        TalentsTreePresenter
+        TalentsPickingPresenter
       )
     })
   })
@@ -78,7 +74,7 @@ describe('ProfessionPickingPresenter', () => {
     it('redirects to talents screen', () => {
       expect(presenter.redirect.mock.calls.length).toEqual(1)
       expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
-        TalentsTreePresenter
+        TalentsPickingPresenter
       )
     })
   })

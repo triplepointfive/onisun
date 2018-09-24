@@ -8,7 +8,7 @@ interface TalentsTreePresenterProfession {
   talents: Talent[]
 }
 
-export class TalentsTreePresenter extends Presenter {
+export class TalentsPickingPresenter extends Presenter {
   public readonly options: TalentsTreePresenterProfession[] = []
 
   constructor(public readonly level: number, levelMap: LevelMap, game: Game) {
@@ -23,7 +23,7 @@ export class TalentsTreePresenter extends Presenter {
   }
 
   get type(): PresenterType {
-    return PresenterType.AbilitiesPicking
+    return PresenterType.TalentsPicking
   }
 
   public pickTalent(professionId: number, talentName: string): void {

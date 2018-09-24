@@ -1,16 +1,22 @@
 <template lang='pug'>
 .screen-modal.text-center
-  .title {{ screen.title }}
+  .title {{ 'title' | t('presenters.professionPickingView', '', { level: screen.level }) }}
   .content
     .option.p-2.m-3(
-      v-for='option in screen.options'
+      v-for='(option, index) in screen.options'
       :key='option.id'
       @click='picked = option'
       @dblclick="close(option)"
       :class="{ 'picked': picked && picked.id === option.id }"
       )
-      img.icon(:src='iconPath(option.id)')
-      .name {{ option.name }}
+      img.icon(:src='iconPath(option.name)')
+
+      | [
+      span.key {{ index === 0 ? 'a' : 'b' }}
+      | ]
+      |
+      span.name {{ option.name | t('professions') }}
+      div {{ 'rank' | t('presenters.professionPickingView', '', { level: option.level + 1 }) }}
   .bottom
     b-btn(@click='close' v-if='picked !== null' variant='success') Подтвердить
 </template>
@@ -47,41 +53,8 @@ export default Vue.extend({
         return
       }
     },
-    iconPath(professionId: number) {
-      return 'assets/professions/' + [
-        'acrobatic.svg',
-        'button-finger.svg',
-        'disintegrate.svg',
-        'flying-fox.svg',
-        'amputation.svg',
-        'catch.svg',
-        'divert.svg',
-        'fruiting.svg',
-        'annexation.svg',
-        'conversation.svg',
-        'dodging.svg',
-        'grab.svg',
-        'arrest.svg',
-        'convince.svg',
-        'drinking.svg',
-        'journey.svg',
-        'back-forth.svg',
-        'coronation.svg',
-        'drop-weapon.svg',
-        'juggler.svg',
-        'backstab.svg',
-        'crafting.svg',
-        'drowning.svg',
-        'jump-across.svg',
-        'boot-stomp.svg',
-        'crush.svg',
-        'eating.svg',
-        'kindle.svg',
-        'bowman.svg',
-        'discussion.svg',
-        'expander.svg',
-        'kneeling.svg',
-      ][professionId]
+    iconPath(professionName: string): string {
+      return `assets/professions/${professionName}.svg`
     }
   }
 })
@@ -92,18 +65,20 @@ export default Vue.extend({
   border: 1px solid white;
   display: inline-block;
   border-radius: 1rem;
+  color: white;
 
   &.picked {
     border-color: gold;
   }
 
-  .name {
-    color: white;
+  .key, .name {
+    color: gold;
   }
 
   .icon {
     width: 100px;
     height: 100px;
+    display: block;
   }
 }
 </style>

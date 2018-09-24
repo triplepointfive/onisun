@@ -43,6 +43,7 @@ const LETTER_OFFSET = 97
 
 export default Vue.extend({
   props: ['screen'],
+  name: 'TalentsPickingView',
   data() {
     return {
       picked: null,

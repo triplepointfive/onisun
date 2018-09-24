@@ -8,7 +8,7 @@ enum OnisunProfessionId {
 
 export class OnisunAttackerProfession extends Profession {
   constructor(
-    level: number = 1,
+    level: number = 0,
     public twoHandedWeapons: AttackerTwoHandedWeapons = new AttackerTwoHandedWeapons(
       'twoHandedWeapons',
       0,
@@ -39,7 +39,7 @@ export class OnisunAttackerProfession extends Profession {
 }
 
 export class OnisunDefenderProfession extends Profession {
-  constructor(level: number = 1) {
+  constructor(level: number = 0) {
     super(OnisunProfessionId.Defender, 'defender', level)
   }
 

@@ -4,7 +4,7 @@ import {
   IdlePresenter,
   LevelMap,
   ProfessionPickingPresenter,
-  TalentsTreePresenter,
+  TalentsPickingPresenter,
   TeleportationPresenter,
 } from '../../engine'
 import { DieReason } from '../events/die_event'
@@ -27,7 +27,7 @@ export class AINewLevelEvent extends AIEvent {
         this.game
       )
     } else {
-      this.game.player.ai.presenter = new TalentsTreePresenter(
+      this.game.player.ai.presenter = new TalentsPickingPresenter(
         this.level,
         this.levelMap,
         this.game

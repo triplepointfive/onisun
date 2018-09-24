@@ -13,12 +13,10 @@ import {
   PutOnItemEvent,
   PlayerBorgAI,
   Gender,
-  BaseInfoPresenter,
   Race,
   allRaces,
   Color,
   Material,
-  TalentsPresenter,
 } from './engine'
 
 import {
@@ -39,6 +37,8 @@ import { TitleDungeon } from './onisun/dungeons/title_dungeon'
 import { Dispatcher } from './onisun/ai'
 import { sample } from 'lodash'
 import { Critical } from './engine/models/specie'
+import { ProfessionPickingPresenter } from './engine/presenters/profession_picking_presenter';
+import { LevelMap } from './engine/models/level_map';
 
 export * from './engine'
 export * from './onisun/ai'
@@ -121,6 +121,9 @@ export class TmpApplication {
       )
 
       player.addItem(new LightSpeedBoots(), 1)
+
+      player.ai.presenter = new ProfessionPickingPresenter(3, this.game.currentMap, this.game)
+      this.game.playerTurn = true
 
       this.game.logger.reset()
     }

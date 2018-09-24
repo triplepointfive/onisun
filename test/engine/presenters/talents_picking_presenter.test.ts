@@ -8,7 +8,7 @@ import {
 import {
   Game,
   Player,
-  TalentsTreePresenter,
+  TalentsPickingPresenter,
   Talent,
   TalentStatus,
 } from '../../../src/engine'
@@ -18,7 +18,7 @@ describe('TalentsTreePresenter', () => {
     profession,
     game: Game,
     player: Player,
-    presenter: TalentsTreePresenter,
+    presenter: TalentsPickingPresenter,
     talent: Talent
 
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe('TalentsTreePresenter', () => {
     game = generateGame({ player: player, professionPicker: undefined })
     player.professions.push(profession)
 
-    presenter = new TalentsTreePresenter(3, map, game)
+    presenter = new TalentsPickingPresenter(3, map, game)
     presenter.endTurn = jest.fn()
   })
 

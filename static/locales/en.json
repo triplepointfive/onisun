@@ -20,6 +20,10 @@
       "rank": "Rank %{current}/%{max}",
       "requirements": "Requires %{req} more points in",
       "talentsTaken": "Talents taken: %{count}"
+    },
+    "professionPickingView": {
+      "title": "Gained %{level} level",
+      "rank": "Rank %{level}"
     }
   },
   "colors": {

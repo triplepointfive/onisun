@@ -4,7 +4,7 @@ import { Tile } from '../models/tile'
 import { Game, IdlePresenter } from '../../engine'
 
 export enum PresenterType {
-  AbilitiesPicking,
+  TalentsPicking,
   Death,
   Idle,
   ItemsListing,

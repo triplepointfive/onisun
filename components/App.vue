@@ -40,7 +40,7 @@ import Impacts from './Impacts.vue'
 import Idle from './views/IdleView.vue'
 import ProfessionPickingView from './views/ProfessionPickingView.vue'
 import ItemsListingView from './views/ItemsListingView.vue'
-import TalentsTreeView from './views/TalentsTreeView.vue'
+import TalentsPickingView from './views/TalentsPickingView.vue'
 import PickPointView from './views/PickPointView.vue'
 import MissileView from './views/MissileView.vue'
 import DeathView from './views/DeathView.vue'
@@ -73,8 +73,8 @@ export default Vue.extend({
       }
 
       switch (this.game.player.ai.presenter.type) {
-      case PresenterType.AbilitiesPicking:
-        return TalentsTreeView
+      case PresenterType.TalentsPicking:
+        return TalentsPickingView
       case PresenterType.ProfessionPicking:
         return ProfessionPickingView
       case PresenterType.Idle:
