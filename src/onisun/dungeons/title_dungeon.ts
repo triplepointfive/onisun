@@ -18,8 +18,18 @@ import {
   Wall,
   Game,
   Player,
+  Pool,
 } from '../../engine'
 import { creaturesPool1 } from '../creatures'
+import { withEachTile } from '../../engine/lib/post';
+import { AirBlowTrap } from '../../engine/models/traps/air_blow_trap';
+import { BareWireTrap } from '../../engine/models/traps/bare_wire_trap';
+import { FallingRockTrap } from '../../engine/models/traps/falling_rock_trap';
+import { smallRock } from '../items';
+import { HoleTrap } from '../../engine/models/traps/hole_trap';
+import { LightTrap } from '../../engine/models/traps/light_trap';
+import { TeleportationTrap } from '../../engine/models/traps/teleportation_trap';
+import { WaterTrap } from '../../engine/models/traps/water_trap';
 
 const titleId: string = 'title'
 
@@ -38,6 +48,17 @@ tiles.set('C', () => new Corridor('C', TileTypes.Floor))
 tiles.set('W', () => new Wall())
 tiles.set('R', () => new Floor('R', TileTypes.Floor))
 tiles.set('D', () => new Door())
+
+const traps: Pool<Tile, Tile> = new Pool([
+  [1, (tile: Tile): Tile => new AirBlowTrap(tile, false)],
+  [1, (tile: Tile): Tile => new BareWireTrap(tile, false)],
+  [1, (tile: Tile): Tile => new FallingRockTrap(smallRock, tile, false)],
+  [1, (tile: Tile): Tile => new HoleTrap(tile, false)],
+  [1, (tile: Tile): Tile => new LightTrap(tile, false)],
+  [1, (tile: Tile): Tile => new TeleportationTrap(tile, false)],
+  [1, (tile: Tile): Tile => new WaterTrap(tile, false)],
+  [93, (tile: Tile): Tile => tile],
+])
 
 export class TitleDungeon extends Dungeon {
   public enter(game: Game, player: Player): void {
@@ -74,6 +95,10 @@ export class TitleDungeon extends Dungeon {
     )
 
     addDoors(map, () => new Door(), () => true)
+
+    withEachTile(map, tile => tile.isFloor(), (tile, x, y) => {
+      map.setTile(x, y, traps.pick(tile))
+    })
 
     centralize(map)
 
