@@ -1,0 +1,204 @@
+<template lang="pug">
+div
+  table
+    thead
+      tr.attribute-row.-head
+        th
+        th.name {{ 'name' | t('presenters.primaryAttributeSelection') }}
+        th.racial {{ 'racial' | t('presenters.primaryAttributeSelection') }}
+        th.gender {{ 'gender' | t('presenters.primaryAttributeSelection') }}
+        th.base {{ 'base' | t('presenters.primaryAttributeSelection') }}
+        th.selected {{ 'selected' | t('presenters.primaryAttributeSelection') }}
+        th.total {{ 'total' | t('presenters.primaryAttributeSelection') }}
+
+    tbody
+      tr.attribute-row(v-for='name in attributeNames')
+        th.key
+          | [
+          .key aA
+          | ]
+        td.name {{ name | t('primaryAttributes') }}
+        td.racial {{ racialAttributes[name] }}
+        td.gender {{ attributeModifier(genderAttributes[name]) }}
+        td.base {{ baseAttribute(name) }}
+        td.selected
+          a.select-button.float-left(
+            :class='{ "invisible": !canDecrease(name) }'
+            @click='decrease(name)'
+            )
+            | -
+          | {{ attributeModifier(selectedAttributes[name]) }}
+          a.select-button.float-right(
+            :class='{ "invisible": !canIncrease(name) }'
+            @click='increase(name)'
+            )
+            | +
+        td.total {{ totalAttribute(name) }}
+
+  .points.mt-3 {{ 'points' | t('presenters.primaryAttributeSelection', '', { points: points }) }}
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+import { sum } from 'lodash'
+
+import { PrimaryAttributes } from 'src/onisun';
+
+// TODO: Confirm selection
+
+const LETTER_OFFSET = 97
+
+export default Vue.extend({
+  name: 'PrimaryAttributeSelection',
+  props: ['race', 'genderAttributes'],
+  data() {
+    return {
+      points: 200,
+      selectedAttributes: {
+        strength: 0,
+        dexterity: 0,
+        constitution: 0,
+        intelligence: 0,
+        wisdom: 0,
+        charisma: 0,
+      } as PrimaryAttributes
+    }
+  },
+  computed: {
+    attributeNames(): string[] {
+      return Object.keys(this.race.primaryAttributes)
+    },
+    racialAttributes(): PrimaryAttributes {
+      return this.race.primaryAttributes
+    }
+  },
+  methods: {
+    onEvent(event: KeyboardEvent) {
+      console.log('onEvent')
+      const attrName = this.attributeNames[event.key.charCodeAt(0) - LETTER_OFFSET]
+
+      if (attrName) {
+        this.decrease(attrName)
+      }
+    },
+    attributeModifier(attribute: number): string {
+      if (attribute === 0) {
+        return '–'
+      } else if (attribute > 0) {
+        return `+${attribute}`
+      } else {
+        return attribute.toString()
+      }
+    },
+    baseAttribute(attributeName: string): number {
+      return sum([
+        this.racialAttributes[attributeName],
+        this.genderAttributes[attributeName],
+      ])
+    },
+    totalAttribute(attributeName: string): number {
+      return this.baseAttribute(attributeName) + this.selectedAttributes[attributeName]
+    },
+    canDecrease(attributeName: string): boolean {
+      return this.selectedAttributes[attributeName] > 0
+    },
+    canIncrease(attributeName: string): boolean {
+      return this.points >= this.totalAttribute(attributeName)
+    },
+    increase(attributeName: string) {
+      if (this.canIncrease(attributeName)) {
+        this.points -= this.totalAttribute(attributeName)
+        this.selectedAttributes[attributeName] += 1
+      }
+    },
+    decrease(attributeName: string) {
+      if (this.canDecrease(attributeName)) {
+        this.selectedAttributes[attributeName] -= 1
+        this.points += this.totalAttribute(attributeName)
+      }
+    }
+  }
+})
+</script>
+
+<style lang="scss" scoped>
+.attribute-row {
+  &.-head {
+    margin: 1rem;
+    border-bottom: 1px solid white;
+  }
+
+  > .key {
+    color: white;
+
+    .key {
+      color: gold;
+      display: inline;
+    }
+  }
+
+  .name {
+    color: gold;
+    text-align: left;
+    width: 100%;
+  }
+
+  .base {
+    color: gold;
+  }
+
+  .racial {
+    color: greenyellow;
+  }
+
+  .gender {
+    color: lightskyblue;
+  }
+
+  .selected {
+    color: pink;
+    user-select: none;
+  }
+
+  .total {
+    color: white;
+  }
+
+  > td, th {
+    padding: 0 0.5rem;
+    text-align: center;
+  }
+}
+
+.points {
+  color: white;
+}
+
+tbody:before {
+  content: '-';
+  display: block;
+  line-height: 0.5em;
+  color: transparent;
+}
+
+.select-button {
+  border: 1px solid pink;
+  border-radius: 0.5rem;
+  color: pink !important;
+  cursor: pointer;
+  padding: 0 5px 3px 5px;
+
+  &:hover {
+    background-color: deeppink;
+    border-color: deeppink;
+
+    text-decoration: none;
+    outline: none;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+</style>

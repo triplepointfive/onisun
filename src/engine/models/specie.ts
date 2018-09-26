@@ -3,6 +3,7 @@ import { Damage } from '../lib/damage'
 import { Clan, Ability } from './creature'
 import { Material } from '../lib/material'
 import { Gender } from '../lib/gender'
+import { Race } from '../lib/race'
 
 export enum Resistance {
   Intangible,
@@ -45,13 +46,6 @@ export interface CreatureSpecie {
 
   critical: Critical
 }
-
-export enum Race {
-  Human = 'human',
-  Dwarf = 'dwarf',
-}
-
-export const allRaces: Race[] = [Race.Human, Race.Dwarf]
 
 export enum Color {
   Maroon = 'maroon',

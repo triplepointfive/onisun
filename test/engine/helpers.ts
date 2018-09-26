@@ -1,39 +1,38 @@
-import { random, times, sample } from 'lodash'
+import { random, times } from 'lodash'
 import {
   AI,
+  AICreature,
   allAbilities,
   BodyArmor,
   Clan,
+  Color,
   Corridor,
   Creature,
+  CreatureEvent,
+  DamageType,
   Door,
   drawn,
   Game,
+  Gender,
+  Hat,
   Level,
   LevelMap,
+  Material,
   MetaAI,
   Missile,
   OneHandWeapon,
   Player,
   PlayerAI,
+  PlayerSpecie,
   Profession,
+  ProtectionType,
+  Race,
   Room,
-  CreatureSpecie,
+  Talent,
   Tile,
   TileTypes,
   TileVisitor,
   Wall,
-  CreatureEvent,
-  DamageType,
-  AICreature,
-  Talent,
-  ProtectionType,
-  Material,
-  Hat,
-  PlayerSpecie,
-  allRaces,
-  Gender,
-  Color,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -107,6 +106,8 @@ const wrapAI = function(ai: AI): MetaAI {
   return new AIWrapper(ai)
 }
 
+const testRace: Race = { name: 'testRace' }
+
 const fakeSpecie: () => PlayerSpecie = () => {
   return {
     name: 'Test specie',
@@ -126,7 +127,7 @@ const fakeSpecie: () => PlayerSpecie = () => {
     leavesCorpseRatio: 0.5,
     material: Material.flesh,
     throwingDamages: [],
-    race: sample(allRaces),
+    race: testRace,
 
     gender: Gender.Female,
     eyeColor: Color.Aqua,

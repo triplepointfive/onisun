@@ -1,51 +1,47 @@
+import { sample } from 'lodash'
 import {
-  Clan,
-  Player,
   allAbilities,
-  OneHandWeapon,
-  Game,
-  Level,
-  PlayerAI,
-  PickUpItemsEvent,
-  DamageType,
   BodyArmor,
+  Clan,
+  Color,
+  DamageType,
+  Game,
+  Gender,
+  Level,
+  Material,
+  OneHandWeapon,
+  PickUpItemsEvent,
+  Player,
+  PlayerAI,
+  PlayerBorgAI,
   ProtectionType,
   PutOnItemEvent,
-  PlayerBorgAI,
-  Gender,
-  Race,
-  allRaces,
-  Color,
-  Material,
 } from './engine'
-
+import { Scroll } from './engine/models/item'
+import { Critical } from './engine/models/specie'
+import { Dispatcher } from './onisun/ai'
+import { TitleDungeon } from './onisun/dungeons/title_dungeon'
 import {
-  OnisunProfessionPicker,
+  commonBow,
+  ironArrow,
+  LightSpeedBoots,
+  smallRock,
+  woodenArrow,
+} from './onisun/items'
+import {
   OnisunAttackerProfession,
   OnisunDefenderProfession,
+  OnisunProfessionPicker,
 } from './onisun/professions'
-import {
-  woodenArrow,
-  ironArrow,
-  commonBow,
-  smallRock,
-  LightSpeedBoots,
-} from './onisun/items'
-import { TutorialDungeon } from './onisun/dungeons/tutorial_dungeon'
-import { Scroll } from './engine/models/item'
-import { TitleDungeon } from './onisun/dungeons/title_dungeon'
-import { Dispatcher } from './onisun/ai'
-import { sample } from 'lodash'
-import { Critical } from './engine/models/specie'
-import { ProfessionPickingPresenter } from './engine/presenters/profession_picking_presenter'
-import { LevelMap } from './engine/models/level_map'
-import { TalentsPickingPresenter } from './engine/presenters/talents_picking_presenter'
+import { allRaces, humanRace } from './onisun/races'
+import { PrimaryAttributes } from './engine/lib/race'
 
 export * from './engine'
 export * from './onisun/ai'
-export * from './onisun/professions'
-export * from './onisun/talents'
 export * from './onisun/items'
+export * from './onisun/professions'
+export * from './onisun/races'
+export * from './onisun/talents'
 
 const critical: Critical = { chance: 0.05, multiplier: 2 }
 
@@ -150,7 +146,7 @@ export class TmpApplication {
         material: Material.flesh,
         throwingDamages: [],
 
-        race: Race.Dwarf,
+        race: humanRace,
         gender: Gender.Male,
         eyeColor: Color.Aqua,
         hairColor: Color.Fuchsia,
@@ -178,6 +174,28 @@ export class TitleGame extends Game {
 
     if (this.currentMap && this.playerTurn) {
       this.player.ai.endTurn(this, this.currentMap)
+    }
+  }
+
+  public genderAttributes(gender: Gender): PrimaryAttributes {
+    if (gender === Gender.Male) {
+      return {
+        strength: 1,
+        dexterity: -1,
+        constitution: 0,
+        intelligence: 0,
+        wisdom: 0,
+        charisma: 0,
+      }
+    } else {
+      return {
+        strength: -1,
+        dexterity: 1,
+        constitution: 0,
+        intelligence: 0,
+        wisdom: 0,
+        charisma: 0,
+      }
     }
   }
 
@@ -212,7 +230,7 @@ export class Application {
           material: Material.flesh,
           throwingDamages: [],
 
-          race: sample(allRaces) || Race.Dwarf,
+          race: sample(allRaces) || humanRace,
           gender: Gender.Male,
           eyeColor: Color.Aqua,
           hairColor: Color.Fuchsia,

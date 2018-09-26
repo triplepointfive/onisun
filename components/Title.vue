@@ -1,6 +1,6 @@
 <template lang='pug'>
 #app
-  Scene(
+  Scene.d-none(
     :level='game.currentMap'
     :player='game.player'
     :pos='pos'
@@ -8,29 +8,36 @@
     )
 
   .title-view.screen-modal
-    pre.title
+    pre.title.d-none
       |  ██████╗ ███╗   ██╗██╗███████╗██╗   ██╗███╗   ██╗
       | ██╔═══██╗████╗  ██║██║██╔════╝██║   ██║████╗  ██║
       | ██║   ██║██╔██╗ ██║██║███████╗██║   ██║██╔██╗ ██║
       | ██║   ██║██║╚██╗██║██║╚════██║██║   ██║██║╚██╗██║
       | ╚██████╔╝██║ ╚████║██║███████║╚██████╔╝██║ ╚████║
       |  ╚═════╝ ╚═╝  ╚═══╝╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
-    .subtitle(v-text='subtitle')
-    .content
+    .subtitle(v-text='subtitle').d-none
+    .content.d-none
       .menu-option(v-for='option in options' :class="{ 'mt-2': option.separator }")
         | [
         span.char(v-text='option.char')
         | ]
         | {{ option.name }}
+
+    PrimaryAttributeSelection(
+      v-if='game'
+      :race='race'
+      :gender-attributes='game.genderAttributes(state.gender)'
+    )
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
 
-import { Application, Point, TitleGame, Gender, Race } from '../src/onisun'
+import { Application, Point, TitleGame, Gender, Race, humanRace } from '../src/onisun'
 import { sample } from 'lodash'
 
 import Scene from './Scene.vue'
+import PrimaryAttributeSelection from './PrimaryAttributeSelection.vue'
 
 const LOOP_INTERVAL = 100
 
@@ -133,10 +140,14 @@ export default Vue.extend({
           Math.round(this.game.currentMap.height * 0.4)
         )
       }
+    },
+    race(): Race {
+      return humanRace
     }
   },
   components: {
-    Scene
+    Scene,
+    PrimaryAttributeSelection,
   },
   methods: {
     loop() {

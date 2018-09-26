@@ -21,15 +21,15 @@ import {
   Pool,
 } from '../../engine'
 import { creaturesPool1 } from '../creatures'
-import { withEachTile } from '../../engine/lib/post';
-import { AirBlowTrap } from '../../engine/models/traps/air_blow_trap';
-import { BareWireTrap } from '../../engine/models/traps/bare_wire_trap';
-import { FallingRockTrap } from '../../engine/models/traps/falling_rock_trap';
-import { smallRock } from '../items';
-import { HoleTrap } from '../../engine/models/traps/hole_trap';
-import { LightTrap } from '../../engine/models/traps/light_trap';
-import { TeleportationTrap } from '../../engine/models/traps/teleportation_trap';
-import { WaterTrap } from '../../engine/models/traps/water_trap';
+import { withEachTile } from '../../engine/lib/post'
+import { AirBlowTrap } from '../../engine/models/traps/air_blow_trap'
+import { BareWireTrap } from '../../engine/models/traps/bare_wire_trap'
+import { FallingRockTrap } from '../../engine/models/traps/falling_rock_trap'
+import { smallRock } from '../items'
+import { HoleTrap } from '../../engine/models/traps/hole_trap'
+import { LightTrap } from '../../engine/models/traps/light_trap'
+import { TeleportationTrap } from '../../engine/models/traps/teleportation_trap'
+import { WaterTrap } from '../../engine/models/traps/water_trap'
 
 const titleId: string = 'title'
 
@@ -96,9 +96,13 @@ export class TitleDungeon extends Dungeon {
 
     addDoors(map, () => new Door(), () => true)
 
-    withEachTile(map, tile => tile.isFloor(), (tile, x, y) => {
-      map.setTile(x, y, traps.pick(tile))
-    })
+    withEachTile(
+      map,
+      tile => tile.isFloor(),
+      (tile, x, y) => {
+        map.setTile(x, y, traps.pick(tile))
+      }
+    )
 
     centralize(map)
 

@@ -65,5 +65,13 @@
       "name": "Крепкий хват",
       "description": "Оружие не выбивается из рук"
     }
+  },
+  "primaryAttributes": {
+    "strength": "",
+    "dexterity": "",
+    "constitution": "",
+    "intelligence": "",
+    "wisdom": "",
+    "charisma": ""
   }
 }

@@ -27,6 +27,15 @@
     },
     "talentsPickingView": {
       "title": "Talent picking"
+    },
+    "primaryAttributeSelection": {
+      "name": "Name",
+      "racial": "Racial",
+      "gender": "Gender",
+      "total": "Total",
+      "base": "Base",
+      "selected": "Selected",
+      "points": "Points left: %{points}"
     }
   },
   "colors": {
@@ -65,5 +74,13 @@
       "name": "Strong grip",
       "description": "Weapons do not get out of hand"
     }
+  },
+  "primaryAttributes": {
+    "strength": "Strength",
+    "dexterity": "Dexterity",
+    "constitution": "Constitution",
+    "intelligence": "Intelligence",
+    "wisdom": "Wisdom",
+    "charisma": "Charisma"
   }
 }
