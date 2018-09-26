@@ -1,5 +1,7 @@
 <template lang="pug">
-div
+.content
+  .subtitle Choose attributes
+
   table
     thead
       tr.attribute-row.-head
@@ -10,17 +12,16 @@ div
         th.base {{ 'base' | t('presenters.primaryAttributeSelection') }}
         th.selected {{ 'selected' | t('presenters.primaryAttributeSelection') }}
         th.total {{ 'total' | t('presenters.primaryAttributeSelection') }}
-
     tbody
-      tr.attribute-row(v-for='name in attributeNames')
+      tr.attribute-row(v-for='(name, index) in attributeNames')
         th.key
           | [
-          .key aA
+          .key {{ keys(index) }}
           | ]
         td.name {{ name | t('primaryAttributes') }}
-        td.racial {{ racialAttributes[name] }}
-        td.gender {{ attributeModifier(genderAttributes[name]) }}
-        td.base {{ baseAttribute(name) }}
+        td.racial {{ menu.racialAttributes[name] }}
+        td.gender {{ attributeModifier(menu.genderAttributes[name]) }}
+        td.base {{ menu.baseAttributes[name] }}
         td.selected
           a.select-button.float-left(
             :class='{ "invisible": !canDecrease(name) }'
@@ -34,24 +35,25 @@ div
             )
             | +
         td.total {{ totalAttribute(name) }}
-
   .points.mt-3 {{ 'points' | t('presenters.primaryAttributeSelection', '', { points: points }) }}
+
+  .menu-options
+    MenuOption(char='R' name='Ready')
+    MenuOption(char='=' name='Back' :separator='true')
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
-import { sum } from 'lodash'
+import MenuOption from '../MenuOption.vue'
 
 import { PrimaryAttributes } from 'src/onisun';
 
 // TODO: Confirm selection
 
-const LETTER_OFFSET = 97
-
 export default Vue.extend({
-  name: 'PrimaryAttributeSelection',
-  props: ['race', 'genderAttributes'],
+  name: 'AttributesSelectionMenu',
+  props: ['menu'],
   data() {
     return {
       points: 200,
@@ -62,24 +64,51 @@ export default Vue.extend({
         intelligence: 0,
         wisdom: 0,
         charisma: 0,
-      } as PrimaryAttributes
+      } as PrimaryAttributes,
+      attributeNames: this.menu.attributeNames
     }
   },
-  computed: {
-    attributeNames(): string[] {
-      return Object.keys(this.race.primaryAttributes)
-    },
-    racialAttributes(): PrimaryAttributes {
-      return this.race.primaryAttributes
-    }
+  components: {
+    MenuOption
   },
   methods: {
     onEvent(event: KeyboardEvent) {
-      console.log('onEvent')
-      const attrName = this.attributeNames[event.key.charCodeAt(0) - LETTER_OFFSET]
+      switch (event.key) {
+        case 'a':
+          return this.decrease(this.attributeNames[0])
+        case 'A':
+          return this.increase(this.attributeNames[0])
 
-      if (attrName) {
-        this.decrease(attrName)
+        case 'b':
+          return this.decrease(this.attributeNames[1])
+        case 'B':
+          return this.increase(this.attributeNames[1])
+
+        case 'c':
+          return this.decrease(this.attributeNames[2])
+        case 'C':
+          return this.increase(this.attributeNames[2])
+
+        case 'd':
+          return this.decrease(this.attributeNames[3])
+        case 'D':
+          return this.increase(this.attributeNames[3])
+
+        case 'e':
+          return this.decrease(this.attributeNames[4])
+        case 'E':
+          return this.increase(this.attributeNames[4])
+
+        case 'f':
+          return this.decrease(this.attributeNames[5])
+        case 'F':
+          return this.increase(this.attributeNames[5])
+
+        case 'R':
+        case 'r':
+          return this.menu.ready()
+        case '=':
+          return this.menu.back()
       }
     },
     attributeModifier(attribute: number): string {
@@ -91,14 +120,18 @@ export default Vue.extend({
         return attribute.toString()
       }
     },
-    baseAttribute(attributeName: string): number {
-      return sum([
-        this.racialAttributes[attributeName],
-        this.genderAttributes[attributeName],
-      ])
+    keys(index: number): string {
+      return [
+        'aA',
+        'bB',
+        'cC',
+        'dD',
+        'eE',
+        'fF',
+      ][index]
     },
     totalAttribute(attributeName: string): number {
-      return this.baseAttribute(attributeName) + this.selectedAttributes[attributeName]
+      return this.menu.baseAttributes[attributeName] + this.selectedAttributes[attributeName]
     },
     canDecrease(attributeName: string): boolean {
       return this.selectedAttributes[attributeName] > 0

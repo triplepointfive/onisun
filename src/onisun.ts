@@ -35,10 +35,18 @@ import {
 } from './onisun/professions'
 import { allRaces, humanRace } from './onisun/races'
 import { PrimaryAttributes } from './engine/lib/race'
+import {
+  Menu,
+  MainMenu,
+  ChooseRaceMenu,
+  AttributesMenu,
+  AttributesSelectionMenu,
+} from './onisun/menus'
 
 export * from './engine'
 export * from './onisun/ai'
 export * from './onisun/items'
+export * from './onisun/menus'
 export * from './onisun/professions'
 export * from './onisun/races'
 export * from './onisun/talents'
@@ -177,35 +185,20 @@ export class TitleGame extends Game {
     }
   }
 
-  public genderAttributes(gender: Gender): PrimaryAttributes {
-    if (gender === Gender.Male) {
-      return {
-        strength: 1,
-        dexterity: -1,
-        constitution: 0,
-        intelligence: 0,
-        wisdom: 0,
-        charisma: 0,
-      }
-    } else {
-      return {
-        strength: -1,
-        dexterity: 1,
-        constitution: 0,
-        intelligence: 0,
-        wisdom: 0,
-        charisma: 0,
-      }
-    }
-  }
-
   get done(): boolean {
     return this.player.dead || this.turns > 150
   }
 }
 
 export class Application {
-  public static titleGame() {
+  public menu: Menu
+
+  constructor() {
+    // this.menu = new MainMenu(this)
+    this.menu = new AttributesSelectionMenu(Gender.Male, humanRace, this)
+  }
+
+  public titleGame() {
     let player = new Player(
         new Level([1, 3, 5, 10, 20]),
         new PlayerBorgAI(new Dispatcher()),
