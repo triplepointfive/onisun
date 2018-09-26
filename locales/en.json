@@ -1,7 +1,86 @@
 {
   "presenters": {
-    "characterInfo": {
-      "name": "Name"
+    "baseInfo": {
+      "name": "Name",
+      "eye": "Eye color",
+      "hair": "Hair color",
+      "skin": "Skin color",
+      "height": "Height",
+      "weight": "Weight",
+      "gender": "Gender",
+      "turns": "Turns"
+    },
+    "infoViewsHead": {
+      "baseInfo": "Character Info",
+      "equipment": "Equipment",
+      "talentsInfo": "Talents",
+      "historyInfo": "History"
+    },
+    "talentsPage": {
+      "rank": "Rank %{current}/%{max}",
+      "requirements": "Requires %{req} more points in",
+      "talentsTaken": "Talents taken: %{count}"
+    },
+    "professionPickingView": {
+      "title": "Gained %{level} level",
+      "rank": "Rank %{level}"
+    },
+    "talentsPickingView": {
+      "title": "Talent picking"
+    },
+    "primaryAttributeSelection": {
+      "name": "Name",
+      "racial": "Racial",
+      "gender": "Gender",
+      "total": "Total",
+      "base": "Base",
+      "selected": "Selected",
+      "points": "Points left: %{points}"
     }
+  },
+  "colors": {
+    "maroon":  "Maroon",
+    "red":     "Red",
+    "orange":  "Orange",
+    "yellow":  "Yellow",
+    "olive":   "Olive",
+    "green":   "Green",
+    "purple":  "Purple",
+    "fuchsia": "Fuchsia",
+    "lime":    "Lime",
+    "teal":    "Teal",
+    "aqua":    "Aqua",
+    "blue":    "Blue",
+    "navy":    "Navy",
+    "black":   "Black",
+    "gray":    "Gray",
+    "silver":  "Silver",
+    "white":   "White"
+  },
+  "genders": {
+    "male": "Male",
+    "female": "Female"
+  },
+  "professions": {
+    "warrior": "Warrior",
+    "defender": "Defender"
+  },
+  "talents": {
+    "twoHandedWeapons": {
+      "name": "Two handed weapons",
+      "description": "Allows to take a weapon in each hand"
+    },
+    "strongGrip": {
+      "name": "Strong grip",
+      "description": "Weapons do not get out of hand"
+    }
+  },
+  "primaryAttributes": {
+    "strength": "Strength",
+    "dexterity": "Dexterity",
+    "constitution": "Constitution",
+    "intelligence": "Intelligence",
+    "wisdom": "Wisdom",
+    "charisma": "Charisma"
   }
 }

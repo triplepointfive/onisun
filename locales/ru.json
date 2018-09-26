@@ -1,0 +1,77 @@
+{
+  "presenters": {
+    "baseInfo": {
+      "name": "Имя",
+      "eye": "Цвет глаз",
+      "hair": "Цвет волос",
+      "skin": "Цвет кожи",
+      "height": "Рост",
+      "weight": "Вес",
+      "gender": "Пол",
+      "turns": "Ход"
+    },
+    "infoViewsHead": {
+      "baseInfo": "Основное",
+      "equipment": "Снаряжение",
+      "talentsInfo": "Таланты",
+      "historyInfo": "История"
+    },
+    "talentsPage": {
+      "rank": "Уровень %{current}/%{max}",
+      "requirements": "Требуется %{req} очков в",
+      "talentsTaken": "Талантов взято %{count}"
+    },
+    "professionPickingView": {
+      "title": "Получил %{level} уровень",
+      "rank": "Ранк %{level}"
+    },
+    "talentsPickingView": {
+      "title": "Выбор таланта"
+    }
+  },
+  "colors": {
+    "maroon":  "Бордовый",
+    "red":     "Красный",
+    "orange":  "Оранжевый",
+    "yellow":  "Желтый",
+    "olive":   "Оливковый",
+    "green":   "Зеленый",
+    "purple":  "Пурпурный",
+    "fuchsia": "Фуксия",
+    "lime":    "Известь",
+    "teal":    "Чирок",
+    "aqua":    "Аква",
+    "blue":    "Синий",
+    "navy":    "Тёмно-синий",
+    "black":   "Черный",
+    "gray":    "Серый",
+    "silver":  "Серебряный",
+    "white":   "Белый"
+  },
+  "genders": {
+    "male": "Мужской",
+    "female": "Женский"
+  },
+  "professions": {
+    "warrior": "Воин",
+    "defender": "Защитник"
+  },
+  "talents": {
+    "twoHandedWeapons": {
+      "name": "Двуручные оружия",
+      "description": "Позволяет брать оружие в каждую руку"
+    },
+    "strongGrip": {
+      "name": "Крепкий хват",
+      "description": "Оружие не выбивается из рук"
+    }
+  },
+  "primaryAttributes": {
+    "strength": "",
+    "dexterity": "",
+    "constitution": "",
+    "intelligence": "",
+    "wisdom": "",
+    "charisma": ""
+  }
+}
