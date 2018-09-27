@@ -222,17 +222,10 @@ export class Application {
     return this.newPlayer(
       Gender.Male,
       humanRace,
-      new OnisunDefenderProfession(),
-      {
-        strength: 10,
-        dexterity: 10,
-        constitution: 10,
-        intelligence: 10,
-        wisdom: 10,
-        charisma: 10,
-      },
+      new OnisunAttackerProfession(),
+      humanRace.primaryAttributes,
       'AI',
-      new OnisunDefenderProfession(),
+      new OnisunAttackerProfession(),
       new PlayerBorgAI(new Dispatcher())
     )
   }

@@ -1,11 +1,19 @@
-import { Gender, Race, PrimaryAttributes, Player } from '../engine'
-
 import { Application } from '../onisun'
 import { allRaces, humanRace } from './races'
+import { OnisunProfessionPicker } from './professions'
+
+import {
+  TalentsPresenter,
+  Gender,
+  Race,
+  PrimaryAttributes,
+  Player,
+  Profession,
+  Talent,
+  PickTalentEvent,
+} from '../engine'
 
 import { sample, mergeWith } from 'lodash'
-import { Profession } from '../engine/models/profession'
-import { OnisunProfessionPicker } from './professions'
 
 export enum MenuComponent {
   MainMenu,
@@ -253,5 +261,33 @@ export class BackgroundMenu extends Menu {
 
   get component(): MenuComponent {
     return MenuComponent.BackgroundMenu
+  }
+
+  public next(): void {
+    this.redirect(new PickTalentsMenu(this.player, this.application))
+  }
+}
+
+export class PickTalentsMenu extends Menu {
+  public points: number
+  public talentsPage: TalentsPresenter
+
+  constructor(public player: Player, application: Application) {
+    super(application)
+
+    this.points = 3 // TODO ?
+    this.talentsPage = new TalentsPresenter(null, { player })
+  }
+
+  public pickTalent(profession: Profession, talent: Talent): void {
+    if (this.points <= 0) {
+    } else {
+      this.player.on(new PickTalentEvent(profession, talent))
+      this.points -= 1
+    }
+  }
+
+  get component(): MenuComponent {
+    return MenuComponent.PickTalentsMenu
   }
 }

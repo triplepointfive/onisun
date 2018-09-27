@@ -101,7 +101,6 @@ export default Vue.extend({
         return this.pickProfession(this.screen.professions[parseInt(event.key) - 1])
       case ' ':
       case 'Enter':
-        console.log('a')
         return this.confirmPick()
       default:
         for (let talent of this.pickedProfession.talents) {

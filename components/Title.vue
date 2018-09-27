@@ -33,6 +33,7 @@ import ChooseRacePage from './Menu/ChooseRaceMenu.vue'
 import EnterNamePage from './Menu/EnterNameMenu.vue'
 import BackgroundPage from './Menu/BackgroundMenu.vue'
 import MainMenuPage from './Menu/MainMenu.vue'
+import PickTalentsPage from './Menu/PickTalentsMenu.vue'
 
 import {
   Application,
@@ -76,6 +77,8 @@ export default Vue.extend({
           return EnterNamePage
         case MenuComponent.BackgroundMenu:
           return BackgroundPage
+        case MenuComponent.PickTalentsMenu:
+          return PickTalentsPage
       }
     },
     pos(): Point | undefined {

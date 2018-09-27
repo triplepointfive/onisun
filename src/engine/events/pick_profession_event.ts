@@ -12,12 +12,13 @@ export class PickProfessionEvent extends PlayerEvent {
       profession => profession.id === this.profession.id
     )
 
-    if (!playerProfession) {
+    if (playerProfession) {
+      // TODO: Validate does not exceed max level
+      playerProfession.level += 1
+    } else {
+      this.profession.level += 1
       player.professions.push(this.profession)
     }
-
-    // TODO: Validate does not exceed max level
-    this.profession.level += 1
 
     return Reaction.NOTHING
   }
