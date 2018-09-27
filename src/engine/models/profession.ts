@@ -51,7 +51,7 @@ export abstract class Profession {
 
 export class ProfessionPicker {
   constructor(
-    private pool: Profession[],
+    public pool: Profession[],
     private maxLevel: number,
     private maxTaken: number
   ) {}

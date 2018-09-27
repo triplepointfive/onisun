@@ -17,6 +17,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .menu-option {
   color: white;
+  cursor: pointer;
 
   > .char {
     color: gold;

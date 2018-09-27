@@ -19,6 +19,12 @@ fetch('locales/en.json', { cache: 'no-store' }).then((response) => response.json
     return polyglot.t(suffix ? `${prefix}.${key}.${suffix}` : `${prefix}.${key}`, args)
   })
 
+  const LETTER_OFFSET = 97
+
+  Vue.filter('indexLetter', (index: number) => {
+    return String.fromCharCode(LETTER_OFFSET + index)
+  })
+
   new Vue({
     el: '#app',
     render: h => h(Title)

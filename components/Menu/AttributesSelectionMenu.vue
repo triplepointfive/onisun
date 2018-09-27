@@ -1,8 +1,8 @@
 <template lang="pug">
 .content
-  .subtitle Choose attributes
+  .subtitle Choose your attributes:
 
-  table
+  table(v-if='manually')
     thead
       tr.attribute-row.-head
         th
@@ -35,10 +35,13 @@
             )
             | +
         td.total {{ totalAttribute(name) }}
-  .points.mt-3 {{ 'points' | t('presenters.primaryAttributeSelection', '', { points: points }) }}
+  .points.mt-3(v-if='manually')
+    |  {{ 'points' | t('presenters.primaryAttributeSelection', '', { points: points }) }}
 
   .menu-options
-    MenuOption(char='R' :name="needConfirmation ? 'Ready. Are you sure?' : 'Ready'")
+    MenuOption(char='*' name='Random' v-if='!manually')
+    MenuOption(char='M' name='Manually' v-if='!manually')
+    MenuOption(char='R' :name="needConfirmation ? 'Confirm' : 'Ready'" v-if='manually')
     MenuOption(char='=' name='Back' :separator='true')
 </template>
 
@@ -47,7 +50,7 @@ import Vue from 'vue'
 
 import MenuOption from '../MenuOption.vue'
 
-import { PrimaryAttributes } from 'src/onisun';
+import { PrimaryAttributes } from 'src/onisun'
 
 export default Vue.extend({
   name: 'AttributesSelectionMenu',
@@ -55,7 +58,7 @@ export default Vue.extend({
   data() {
     return {
       needConfirmation: false,
-      points: 200,
+      points: this.menu.points,
       selectedAttributes: {
         strength: 0,
         dexterity: 0,
@@ -64,7 +67,8 @@ export default Vue.extend({
         wisdom: 0,
         charisma: 0,
       } as PrimaryAttributes,
-      attributeNames: this.menu.attributeNames
+      attributeNames: this.menu.attributeNames,
+      manually: false
     }
   },
   components: {
@@ -103,16 +107,24 @@ export default Vue.extend({
         case 'F':
           return this.increase(this.attributeNames[5])
 
+        case 'm':
+        case 'M':
+          return this.manually = true
+
         case 'R':
         case 'r':
           if (this.needConfirmation) {
-            return this.menu.ready()
+            return this.menu.ready(this.totalAttribute)
           } else {
             this.needConfirmation = true
             return
           }
         case '=':
-          return this.menu.back()
+          if (this.manually) {
+            return this.manually = false
+          } else {
+            return this.menu.back()
+          }
       }
     },
     attributeModifier(attribute: number): string {

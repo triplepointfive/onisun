@@ -56,7 +56,6 @@ export class OnisunDefenderProfession extends Profession {
 
 export class OnisunProfessionPicker extends ProfessionPicker {
   constructor(
-    player: Player,
     public attacker = new OnisunAttackerProfession(),
     public defender = new OnisunDefenderProfession()
   ) {

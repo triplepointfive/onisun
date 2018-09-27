@@ -4,13 +4,18 @@ import { Application } from '../onisun'
 import { allRaces, humanRace } from './races'
 
 import { sample, mergeWith } from 'lodash'
+import { Profession } from '../engine/models/profession'
+import { OnisunProfessionPicker } from './professions'
 
 export enum MenuComponent {
   MainMenu,
+
   ChooseGenderMenu,
   ChooseRaceMenu,
-  AttributesMenu,
+  ChooseProfessionMenu,
   AttributesSelectionMenu,
+  EnterNameMenu,
+  PickTalentsMenu,
 }
 
 export abstract class Menu {
@@ -61,7 +66,7 @@ export class ChooseRaceMenu extends Menu {
   }
 
   public withRace(race: Race): void {
-    this.redirect(new AttributesMenu(this.gender, race, this.application))
+    this.redirect(new ChooseProfessionMenu(this.gender, race, this.application))
   }
 
   public random(): void {
@@ -73,23 +78,33 @@ export class ChooseRaceMenu extends Menu {
   }
 }
 
-export class AttributesMenu extends Menu {
+export class ChooseProfessionMenu extends Menu {
+  public readonly professions: Profession[]
+
   constructor(
     public gender: Gender,
     public race: Race,
     application: Application
   ) {
     super(application)
+
+    const pool = new OnisunProfessionPicker().pool
+    this.professions = [...pool]
+  }
+
+  public withProfession(profession: Profession): void {
+    this.redirect(
+      new AttributesSelectionMenu(
+        this.gender,
+        this.race,
+        profession,
+        this.application
+      )
+    )
   }
 
   get component(): MenuComponent {
-    return MenuComponent.AttributesMenu
-  }
-
-  public manually(): void {
-    this.redirect(
-      new AttributesSelectionMenu(this.gender, this.race, this.application)
-    )
+    return MenuComponent.ChooseProfessionMenu
   }
 
   public back(): void {
@@ -106,6 +121,7 @@ export class AttributesSelectionMenu extends Menu {
   constructor(
     public gender: Gender,
     public race: Race,
+    public profession: Profession,
     application: Application
   ) {
     super(application)
@@ -131,12 +147,26 @@ export class AttributesSelectionMenu extends Menu {
     return MenuComponent.AttributesSelectionMenu
   }
 
-  public ready(): void {
-    // TODO:
+  get points(): number {
+    return 200
+  }
+
+  public ready(totalAttributes: PrimaryAttributes): void {
+    this.redirect(
+      new EnterNameMenu(
+        this.gender,
+        this.race,
+        this.profession,
+        totalAttributes,
+        this.application
+      )
+    )
   }
 
   public back(): void {
-    this.redirect(new AttributesMenu(this.gender, this.race, this.application))
+    this.redirect(
+      new ChooseProfessionMenu(this.gender, this.race, this.application)
+    )
   }
 
   private calcGenderAttributes(gender: Gender): PrimaryAttributes {
@@ -159,5 +189,38 @@ export class AttributesSelectionMenu extends Menu {
         charisma: 0,
       }
     }
+  }
+}
+
+export class EnterNameMenu extends Menu {
+  constructor(
+    public gender: Gender,
+    public race: Race,
+    public profession: Profession,
+    public attributes: PrimaryAttributes,
+    application: Application
+  ) {
+    super(application)
+  }
+
+  get component(): MenuComponent {
+    return MenuComponent.EnterNameMenu
+  }
+
+  get maxLength(): number {
+    return 20
+  }
+
+  public withName(name: string): void {}
+
+  public back(): void {
+    this.redirect(
+      new AttributesSelectionMenu(
+        this.gender,
+        this.race,
+        this.profession,
+        this.application
+      )
+    )
   }
 }

@@ -1,6 +1,6 @@
 <template lang='pug'>
 #app
-  Scene(
+  Scene.d-none(
     :level='game.currentMap'
     :player='game.player'
     :pos='pos'
@@ -8,7 +8,7 @@
     )
 
   .title-view.screen-modal
-    pre.title
+    pre.title.d-none
       |  ██████╗ ███╗   ██╗██╗███████╗██╗   ██╗███╗   ██╗
       | ██╔═══██╗████╗  ██║██║██╔════╝██║   ██║████╗  ██║
       | ██║   ██║██╔██╗ ██║██║███████╗██║   ██║██╔██╗ ██║
@@ -26,11 +26,12 @@
 <script lang='ts'>
 import Vue,{ Component } from 'vue'
 
-import ChooseRacePage from './Menu/ChooseRaceMenu.vue'
-import ChooseGenderPage from './Menu/ChooseGenderMenu.vue'
-import MainMenuPage from './Menu/MainMenu.vue'
-import AttributesPage from './Menu/AttributesMenu.vue'
 import AttributesSelectionPage from './Menu/AttributesSelectionMenu.vue'
+import ChooseGenderPage from './Menu/ChooseGenderMenu.vue'
+import ChooseProfessionPage from './Menu/ChooseProfessionMenu.vue'
+import ChooseRacePage from './Menu/ChooseRaceMenu.vue'
+import EnterNamePage from './Menu/EnterNameMenu.vue'
+import MainMenuPage from './Menu/MainMenu.vue'
 
 import {
   Application,
@@ -66,10 +67,12 @@ export default Vue.extend({
           return ChooseGenderPage
         case MenuComponent.ChooseRaceMenu:
           return ChooseRacePage
-        case MenuComponent.AttributesMenu:
-          return AttributesPage
+        case MenuComponent.ChooseProfessionMenu:
+          return ChooseProfessionPage
         case MenuComponent.AttributesSelectionMenu:
           return AttributesSelectionPage
+        case MenuComponent.EnterNameMenu:
+          return EnterNamePage
       }
     },
     pos(): Point | undefined {

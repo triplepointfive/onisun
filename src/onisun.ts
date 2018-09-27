@@ -29,19 +29,18 @@ import {
   woodenArrow,
 } from './onisun/items'
 import {
+  AttributesSelectionMenu,
+  Menu,
+  ChooseRaceMenu,
+  MainMenu,
+} from './onisun/menus'
+import {
   OnisunAttackerProfession,
   OnisunDefenderProfession,
   OnisunProfessionPicker,
 } from './onisun/professions'
 import { allRaces, humanRace } from './onisun/races'
-import { PrimaryAttributes } from './engine/lib/race'
-import {
-  Menu,
-  MainMenu,
-  ChooseRaceMenu,
-  AttributesMenu,
-  AttributesSelectionMenu,
-} from './onisun/menus'
+import { ProfessionPicker } from './engine/models/profession'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -172,7 +171,7 @@ export class TmpApplication {
 
 export class Onisun extends Game {
   constructor(player: Player) {
-    super(player, new OnisunProfessionPicker(player))
+    super(player, new OnisunProfessionPicker())
   }
 }
 
@@ -195,7 +194,12 @@ export class Application {
 
   constructor() {
     // this.menu = new MainMenu(this)
-    this.menu = new AttributesSelectionMenu(Gender.Male, humanRace, this)
+    this.menu = new AttributesSelectionMenu(
+      Gender.Male,
+      humanRace,
+      new OnisunAttackerProfession(),
+      this
+    )
   }
 
   public titleGame() {
@@ -235,7 +239,7 @@ export class Application {
         12,
         15
       ),
-      game = new TitleGame(player, new OnisunProfessionPicker(player)),
+      game = new TitleGame(player, new OnisunProfessionPicker()),
       dungeon = new TitleDungeon()
 
     dungeon.register(game)
