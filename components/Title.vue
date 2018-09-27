@@ -31,6 +31,7 @@ import ChooseGenderPage from './Menu/ChooseGenderMenu.vue'
 import ChooseProfessionPage from './Menu/ChooseProfessionMenu.vue'
 import ChooseRacePage from './Menu/ChooseRaceMenu.vue'
 import EnterNamePage from './Menu/EnterNameMenu.vue'
+import HistoryPage from './Menu/HistoryMenu.vue'
 import MainMenuPage from './Menu/MainMenu.vue'
 
 import {
@@ -54,7 +55,7 @@ export default Vue.extend({
     const app = new Application()
     return {
       app: app,
-      game: app.titleGame() as TitleGame,
+      game: app.newTitleGame() as TitleGame,
       loopIntervalId: undefined as number | undefined
     }
   },
@@ -73,6 +74,8 @@ export default Vue.extend({
           return AttributesSelectionPage
         case MenuComponent.EnterNameMenu:
           return EnterNamePage
+        case MenuComponent.HistoryMenu:
+          return HistoryPage
       }
     },
     pos(): Point | undefined {
@@ -96,7 +99,7 @@ export default Vue.extend({
         this.game.turn()
 
         if (this.game.done) {
-          this.game = this.app.titleGame()
+          this.game = this.app.newTitleGame()
         }
       }
     },

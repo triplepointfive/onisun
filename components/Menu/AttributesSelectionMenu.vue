@@ -106,6 +106,7 @@ export default Vue.extend({
           return this.increase(this.attributeNames[5])
 
         case '*':
+          this.needConfirmation = false;
           [this.selectedAttributes, this.points] = randomizeAttributes(this.menu.baseAttributes, this.menu.points)
           return
 

@@ -4,6 +4,7 @@ import {
   BodyArmor,
   Clan,
   Color,
+  Critical,
   DamageType,
   Game,
   Gender,
@@ -14,11 +15,14 @@ import {
   Player,
   PlayerAI,
   PlayerBorgAI,
+  PrimaryAttributes,
+  Profession,
   ProtectionType,
   PutOnItemEvent,
+  Race,
+  Scroll,
+  PickProfessionEvent,
 } from './engine'
-import { Scroll } from './engine/models/item'
-import { Critical } from './engine/models/specie'
 import { Dispatcher } from './onisun/ai'
 import { TitleDungeon } from './onisun/dungeons/title_dungeon'
 import {
@@ -28,19 +32,13 @@ import {
   smallRock,
   woodenArrow,
 } from './onisun/items'
-import {
-  AttributesSelectionMenu,
-  Menu,
-  ChooseRaceMenu,
-  MainMenu,
-} from './onisun/menus'
+import { MainMenu, Menu } from './onisun/menus'
 import {
   OnisunAttackerProfession,
   OnisunDefenderProfession,
   OnisunProfessionPicker,
 } from './onisun/professions'
 import { allRaces, humanRace } from './onisun/races'
-import { ProfessionPicker } from './engine/models/profession'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -131,41 +129,7 @@ export class TmpApplication {
   }
 
   protected initPlayer(): Player {
-    return new Player(
-      new Level([1, 3, 5, 10, 20]),
-      new PlayerAI(),
-      {
-        name: 'Player',
-        weight: 80,
-        clan: Clan.Player,
-        abilities: allAbilities,
-        protections: [],
-        damages: [],
-        maxHealthValue: 10,
-        regenerationRate: 30,
-        regenerationValue: 1,
-        resistances: [],
-        visionRadius: 10,
-        moveSpeed: 20,
-        attackSpeed: 20,
-        bodyControl: 5,
-        leavesCorpseRatio: 0,
-        material: Material.flesh,
-        throwingDamages: [],
-
-        race: humanRace,
-        gender: Gender.Male,
-        eyeColor: Color.Aqua,
-        hairColor: Color.Fuchsia,
-        skinColor: Color.Purple,
-        height: 100,
-
-        critical,
-      },
-      12,
-      12,
-      15
-    )
+    return new Application().randomPlayer()
   }
 }
 
@@ -193,52 +157,84 @@ export class Application {
   public menu: Menu
 
   constructor() {
-    // this.menu = new MainMenu(this)
-    this.menu = new AttributesSelectionMenu(
+    this.menu = new MainMenu(this)
+  }
+
+  public newPlayer(
+    gender: Gender,
+    race: Race,
+    profession: Profession,
+    attributes: PrimaryAttributes,
+    name: string,
+    parentsProfession: Profession,
+    ai: PlayerAI = new PlayerAI()
+  ) {
+    let player = new Player(
+      new Level([1, 3, 5, 10, 20]), // TODO
+      ai,
+      {
+        name: name,
+        race: race,
+        gender: gender,
+        clan: Clan.Player,
+        abilities: allAbilities,
+        leavesCorpseRatio: 0,
+
+        // TODO: Review the rest
+
+        weight: 80,
+        protections: [],
+        damages: [
+          { type: DamageType.Pure, dice: { times: 3, max: 3 }, extra: 1 },
+        ],
+        maxHealthValue: 10,
+        regenerationRate: 1,
+        regenerationValue: 1,
+        resistances: [],
+        visionRadius: 10,
+        moveSpeed: 20,
+        attackSpeed: 20,
+        bodyControl: 5,
+        material: Material.flesh,
+        throwingDamages: [],
+
+        eyeColor: Color.Aqua,
+        hairColor: Color.Fuchsia,
+        skinColor: Color.Purple,
+
+        height: 100,
+        critical,
+      },
+      attributes
+    )
+
+    player.on(new PickProfessionEvent(profession))
+    player.on(new PickProfessionEvent(parentsProfession))
+
+    return player
+  }
+
+  public randomPlayer(): Player {
+    return this.newPlayer(
       Gender.Male,
       humanRace,
-      new OnisunAttackerProfession(),
-      this
+      new OnisunDefenderProfession(),
+      {
+        strength: 10,
+        dexterity: 10,
+        constitution: 10,
+        intelligence: 10,
+        wisdom: 10,
+        charisma: 10,
+      },
+      'AI',
+      new OnisunDefenderProfession(),
+      new PlayerBorgAI(new Dispatcher())
     )
   }
 
-  public titleGame() {
-    let player = new Player(
-        new Level([1, 3, 5, 10, 20]),
-        new PlayerBorgAI(new Dispatcher()),
-        {
-          name: 'Player',
-          weight: 80,
-          clan: Clan.Player,
-          abilities: allAbilities,
-          protections: [],
-          damages: [
-            { type: DamageType.Pure, dice: { times: 3, max: 3 }, extra: 1 },
-          ],
-          maxHealthValue: 10,
-          regenerationRate: 1,
-          regenerationValue: 1,
-          resistances: [],
-          visionRadius: 10,
-          moveSpeed: 20,
-          attackSpeed: 20,
-          bodyControl: 5,
-          leavesCorpseRatio: 0,
-          material: Material.flesh,
-          throwingDamages: [],
-
-          race: sample(allRaces) || humanRace,
-          gender: Gender.Male,
-          eyeColor: Color.Aqua,
-          hairColor: Color.Fuchsia,
-          skinColor: Color.Purple,
-          height: 100,
-          critical,
-        },
-        12,
-        12,
-        15
-      ),
+  public newTitleGame() {
+    let player = this.randomPlayer(),
       game = new TitleGame(player, new OnisunProfessionPicker()),
       dungeon = new TitleDungeon()
 

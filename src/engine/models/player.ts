@@ -16,6 +16,7 @@ import { Profession } from './profession'
 import { Resistance, PlayerSpecie } from './specie'
 import { Creature } from './creature'
 import { KillStat } from '../utils/kill_stat'
+import { PrimaryAttributes } from '../lib/race'
 
 export class Player extends Creature<PlayerSpecie> {
   public professions: Profession[] = []
@@ -41,18 +42,16 @@ export class Player extends Creature<PlayerSpecie> {
     public level: Level,
     public ai: PlayerAI,
     specie: PlayerSpecie,
-    strengthValue: number,
-    dexterityValue: number,
-    constitutionValue: number
+    attributes: PrimaryAttributes
   ) {
     super(specie)
 
-    this.strength = new StrengthStat(strengthValue)
-    this.dexterity = new DexterityStat(dexterityValue)
-    this.constitution = new ConstitutionStat(constitutionValue)
-    this.intelligence = new Stat(10)
-    this.wisdom = new Stat(2)
-    this.charisma = new Stat(2)
+    this.strength = new StrengthStat(attributes.strength)
+    this.dexterity = new DexterityStat(attributes.dexterity)
+    this.constitution = new ConstitutionStat(attributes.constitution)
+    this.intelligence = new Stat(attributes.intelligence)
+    this.wisdom = new Stat(attributes.wisdom)
+    this.charisma = new Stat(attributes.charisma)
 
     this.stuffWeight = new Stat(0)
     this.carryingCapacity = new CapacityLimitStat(

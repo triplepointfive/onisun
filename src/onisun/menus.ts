@@ -15,6 +15,7 @@ export enum MenuComponent {
   ChooseProfessionMenu,
   AttributesSelectionMenu,
   EnterNameMenu,
+  HistoryMenu,
   PickTalentsMenu,
 }
 
@@ -88,8 +89,8 @@ export class ChooseProfessionMenu extends Menu {
   ) {
     super(application)
 
-    const pool = new OnisunProfessionPicker().pool
-    this.professions = [...pool]
+    // TODO: Optimize
+    this.professions = new OnisunProfessionPicker().pool
   }
 
   public withProfession(profession: Profession): void {
@@ -211,7 +212,25 @@ export class EnterNameMenu extends Menu {
     return 20
   }
 
-  public withName(name: string): void {}
+  public withName(name: string): void {
+    const parentsProfession = sample(new OnisunProfessionPicker().pool)
+
+    if (!parentsProfession) {
+      throw 'EnterNameMenu: failed to get parentsProfession'
+    }
+
+    this.redirect(
+      new HistoryMenu(
+        this.gender,
+        this.race,
+        this.profession,
+        this.attributes,
+        name,
+        parentsProfession,
+        this.application
+      )
+    )
+  }
 
   public back(): void {
     this.redirect(
@@ -222,5 +241,23 @@ export class EnterNameMenu extends Menu {
         this.application
       )
     )
+  }
+}
+
+export class HistoryMenu extends Menu {
+  constructor(
+    public gender: Gender,
+    public race: Race,
+    public profession: Profession,
+    public attributes: PrimaryAttributes,
+    public name: string,
+    public parentsProfession: Profession,
+    application: Application
+  ) {
+    super(application)
+  }
+
+  get component(): MenuComponent {
+    return MenuComponent.HistoryMenu
   }
 }

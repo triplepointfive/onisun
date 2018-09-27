@@ -32,6 +32,8 @@ import { Profession } from 'src/onisun'
 
 const LETTER_OFFSET = 97
 
+// TODO: Add random option
+
 export default Vue.extend({
   name: 'ChooseProfessionMenu',
   props: ['menu'],

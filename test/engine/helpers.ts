@@ -106,7 +106,17 @@ const wrapAI = function(ai: AI): MetaAI {
   return new AIWrapper(ai)
 }
 
-const testRace: Race = { name: 'testRace' }
+const testRace: Race = {
+  name: 'testRace',
+  primaryAttributes: {
+    strength: 10,
+    dexterity: 10,
+    constitution: 10,
+    intelligence: 10,
+    wisdom: 10,
+    charisma: 10,
+  },
+}
 
 const fakeSpecie: () => PlayerSpecie = () => {
   return {
@@ -153,9 +163,7 @@ export const generatePlayer = function(): Player {
     generateLevel(),
     generatePlayerAI(),
     fakeSpecie(),
-    10,
-    10,
-    10
+    testRace.primaryAttributes
   )
 }
 

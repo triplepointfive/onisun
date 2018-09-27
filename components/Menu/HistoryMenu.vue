@@ -1,9 +1,7 @@
 <template lang="pug">
 .content
   .menu-options
-    MenuOption(char='N' name='New game')
-    MenuOption(char='T' name='Tutorial')
-    MenuOption(char='R' name='Random challenge')
+    MenuOption(char='N' name='Next')
 </template>
 
 <script lang="ts">
@@ -12,7 +10,7 @@ import Vue from 'vue'
 import MenuOption from '../MenuOption.vue'
 
 export default Vue.extend({
-  name: 'MainMenu',
+  name: 'HistoryMenu',
   props: ['menu'],
   components: {
     MenuOption
@@ -21,7 +19,7 @@ export default Vue.extend({
     onEvent(event: KeyboardEvent) {
       switch (event.key.toUpperCase()) {
       case 'N':
-        return this.menu.newGame()
+        return this.menu.next()
       }
     }
   }

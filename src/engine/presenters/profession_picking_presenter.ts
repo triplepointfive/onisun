@@ -1,7 +1,7 @@
 import { PresenterType, Presenter } from './internal'
 import { Profession } from '../models/profession'
 import { TalentsPickingPresenter } from './talents_picking_presenter'
-import { Game, LevelMap } from '../../engine'
+import { Game, LevelMap, PickProfessionEvent } from '../../engine'
 
 export class ProfessionPickingPresenter extends Presenter {
   public readonly options: Profession[]
@@ -16,15 +16,7 @@ export class ProfessionPickingPresenter extends Presenter {
   }
 
   public pickProfession(pickedProfession: Profession) {
-    let playerProfession = this.player.professions.find(
-      profession => profession.id === pickedProfession.id
-    )
-
-    if (!playerProfession) {
-      this.player.professions.push(pickedProfession)
-    }
-
-    pickedProfession.level += 1
+    this.player.on(new PickProfessionEvent(pickedProfession))
 
     this.redirect(
       new TalentsPickingPresenter(this.level, this.levelMap, this.game)
