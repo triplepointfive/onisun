@@ -1,7 +1,6 @@
 import { Player } from './player'
 
 import { includes, sample } from 'lodash'
-import { Game } from './game'
 
 export enum TalentStatus {
   Available,
@@ -17,11 +16,11 @@ export abstract class Talent {
     public readonly maxRank: number
   ) {}
 
-  protected abstract onObtain(game: Game): void
+  protected abstract onObtain(player: Player): void
 
-  public upgrade(game: Game): void {
+  public upgrade(player: Player): void {
     this.rank += 1
-    this.onObtain(game)
+    this.onObtain(player)
   }
 
   public status(profession: Profession): TalentStatus {

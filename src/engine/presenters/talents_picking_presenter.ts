@@ -24,7 +24,7 @@ export class TalentsPickingPresenter extends Presenter {
       } can not be upgraded`
     }
 
-    talent.upgrade(this.game)
+    talent.upgrade(this.player)
     profession.points += 1
 
     this.player.on(new LevelUpEvent())

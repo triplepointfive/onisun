@@ -246,7 +246,7 @@ export const generateProfession = function(level: number = 1): Profession {
 }
 
 class TestTalent extends Talent {
-  public onObtain(game: Game): void {}
+  public onObtain(player: Player): void {}
 }
 
 export const generateTalent = function({ depth } = { depth: 0 }): Talent {
