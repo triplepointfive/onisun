@@ -31,7 +31,7 @@ import ChooseGenderPage from './Menu/ChooseGenderMenu.vue'
 import ChooseProfessionPage from './Menu/ChooseProfessionMenu.vue'
 import ChooseRacePage from './Menu/ChooseRaceMenu.vue'
 import EnterNamePage from './Menu/EnterNameMenu.vue'
-import HistoryPage from './Menu/HistoryMenu.vue'
+import BackgroundPage from './Menu/BackgroundMenu.vue'
 import MainMenuPage from './Menu/MainMenu.vue'
 
 import {
@@ -74,8 +74,8 @@ export default Vue.extend({
           return AttributesSelectionPage
         case MenuComponent.EnterNameMenu:
           return EnterNamePage
-        case MenuComponent.HistoryMenu:
-          return HistoryPage
+        case MenuComponent.BackgroundMenu:
+          return BackgroundPage
       }
     },
     pos(): Point | undefined {

@@ -4,6 +4,7 @@ import { Clan, Ability } from './creature'
 import { Material } from '../lib/material'
 import { Gender } from '../lib/gender'
 import { Race } from '../lib/race'
+import { Profession } from './profession'
 
 export enum Resistance {
   Intangible,
@@ -75,4 +76,7 @@ export interface PlayerSpecie extends CreatureSpecie {
   readonly hairColor: Color
   readonly eyeColor: Color
   readonly skinColor: Color
+
+  ownProfession: Profession
+  parentsProfession: Profession
 }

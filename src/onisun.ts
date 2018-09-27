@@ -32,7 +32,7 @@ import {
   smallRock,
   woodenArrow,
 } from './onisun/items'
-import { MainMenu, Menu } from './onisun/menus'
+import { MainMenu, Menu, BackgroundMenu } from './onisun/menus'
 import {
   OnisunAttackerProfession,
   OnisunDefenderProfession,
@@ -157,7 +157,8 @@ export class Application {
   public menu: Menu
 
   constructor() {
-    this.menu = new MainMenu(this)
+    // this.menu = new MainMenu(this)
+    this.menu = new BackgroundMenu(this.randomPlayer(), this)
   }
 
   public newPlayer(
@@ -179,6 +180,9 @@ export class Application {
         clan: Clan.Player,
         abilities: allAbilities,
         leavesCorpseRatio: 0,
+
+        ownProfession: profession,
+        parentsProfession: parentsProfession,
 
         // TODO: Review the rest
 

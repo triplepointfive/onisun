@@ -1,5 +1,9 @@
 <template lang="pug">
 .content
+  .subtitle Background
+
+  PlayerBackground(:player='menu.player')
+
   .menu-options
     MenuOption(char='N' name='Next')
 </template>
@@ -8,12 +12,14 @@
 import Vue from 'vue'
 
 import MenuOption from '../MenuOption.vue'
+import PlayerBackground from '../PlayerBackground.vue'
 
 export default Vue.extend({
   name: 'HistoryMenu',
   props: ['menu'],
   components: {
-    MenuOption
+    MenuOption,
+    PlayerBackground
   },
   methods: {
     onEvent(event: KeyboardEvent) {

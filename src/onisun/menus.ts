@@ -1,4 +1,4 @@
-import { Gender, Race, PrimaryAttributes } from '../engine'
+import { Gender, Race, PrimaryAttributes, Player } from '../engine'
 
 import { Application } from '../onisun'
 import { allRaces, humanRace } from './races'
@@ -15,7 +15,7 @@ export enum MenuComponent {
   ChooseProfessionMenu,
   AttributesSelectionMenu,
   EnterNameMenu,
-  HistoryMenu,
+  BackgroundMenu,
   PickTalentsMenu,
 }
 
@@ -220,13 +220,15 @@ export class EnterNameMenu extends Menu {
     }
 
     this.redirect(
-      new HistoryMenu(
-        this.gender,
-        this.race,
-        this.profession,
-        this.attributes,
-        name,
-        parentsProfession,
+      new BackgroundMenu(
+        this.application.newPlayer(
+          this.gender,
+          this.race,
+          this.profession,
+          this.attributes,
+          name,
+          parentsProfession
+        ),
         this.application
       )
     )
@@ -244,20 +246,12 @@ export class EnterNameMenu extends Menu {
   }
 }
 
-export class HistoryMenu extends Menu {
-  constructor(
-    public gender: Gender,
-    public race: Race,
-    public profession: Profession,
-    public attributes: PrimaryAttributes,
-    public name: string,
-    public parentsProfession: Profession,
-    application: Application
-  ) {
+export class BackgroundMenu extends Menu {
+  constructor(public player: Player, application: Application) {
     super(application)
   }
 
   get component(): MenuComponent {
-    return MenuComponent.HistoryMenu
+    return MenuComponent.BackgroundMenu
   }
 }
