@@ -2,7 +2,7 @@
 .content
   .subtitle Choose your attributes:
 
-  table(v-if='manually')
+  table
     thead
       tr.attribute-row.-head
         th
@@ -35,14 +35,13 @@
             )
             | +
         td.total {{ totalAttribute(name) }}
-  .points.mt-3(v-if='manually')
+  .points.mt-3
     |  {{ 'points' | t('presenters.primaryAttributeSelection', '', { points: points }) }}
 
   .menu-options
-    MenuOption(char='*' name='Random' v-if='!manually')
-    MenuOption(char='M' name='Manually' v-if='!manually')
-    MenuOption(char='R' :name="needConfirmation ? 'Confirm' : 'Ready'" v-if='manually')
-    MenuOption(char='=' name='Back' :separator='true')
+    MenuOption(char='R' :name="needConfirmation ? 'Confirm' : 'Ready'")
+    MenuOption(char='*' name='Random' :separator='true')
+    MenuOption(char='=' name='Back')
 </template>
 
 <script lang="ts">
@@ -50,7 +49,7 @@ import Vue from 'vue'
 
 import MenuOption from '../MenuOption.vue'
 
-import { PrimaryAttributes } from 'src/onisun'
+import { PrimaryAttributes, randomizeAttributes } from 'src/onisun'
 
 export default Vue.extend({
   name: 'AttributesSelectionMenu',
@@ -67,8 +66,7 @@ export default Vue.extend({
         wisdom: 0,
         charisma: 0,
       } as PrimaryAttributes,
-      attributeNames: this.menu.attributeNames,
-      manually: false
+      attributeNames: this.menu.attributeNames
     }
   },
   components: {
@@ -107,9 +105,9 @@ export default Vue.extend({
         case 'F':
           return this.increase(this.attributeNames[5])
 
-        case 'm':
-        case 'M':
-          return this.manually = true
+        case '*':
+          [this.selectedAttributes, this.points] = randomizeAttributes(this.menu.baseAttributes, this.menu.points)
+          return
 
         case 'R':
         case 'r':
@@ -120,11 +118,7 @@ export default Vue.extend({
             return
           }
         case '=':
-          if (this.manually) {
-            return this.manually = false
-          } else {
-            return this.menu.back()
-          }
+          return this.menu.back()
       }
     },
     attributeModifier(attribute: number): string {
