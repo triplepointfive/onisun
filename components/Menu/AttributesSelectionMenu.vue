@@ -38,7 +38,7 @@
   .points.mt-3 {{ 'points' | t('presenters.primaryAttributeSelection', '', { points: points }) }}
 
   .menu-options
-    MenuOption(char='R' name='Ready')
+    MenuOption(char='R' :name="needConfirmation ? 'Ready. Are you sure?' : 'Ready'")
     MenuOption(char='=' name='Back' :separator='true')
 </template>
 
@@ -49,13 +49,12 @@ import MenuOption from '../MenuOption.vue'
 
 import { PrimaryAttributes } from 'src/onisun';
 
-// TODO: Confirm selection
-
 export default Vue.extend({
   name: 'AttributesSelectionMenu',
   props: ['menu'],
   data() {
     return {
+      needConfirmation: false,
       points: 200,
       selectedAttributes: {
         strength: 0,
@@ -106,7 +105,12 @@ export default Vue.extend({
 
         case 'R':
         case 'r':
-          return this.menu.ready()
+          if (this.needConfirmation) {
+            return this.menu.ready()
+          } else {
+            this.needConfirmation = true
+            return
+          }
         case '=':
           return this.menu.back()
       }
@@ -140,12 +144,16 @@ export default Vue.extend({
       return this.points >= this.totalAttribute(attributeName)
     },
     increase(attributeName: string) {
+      this.needConfirmation = false
+
       if (this.canIncrease(attributeName)) {
         this.points -= this.totalAttribute(attributeName)
         this.selectedAttributes[attributeName] += 1
       }
     },
     decrease(attributeName: string) {
+      this.needConfirmation = false
+
       if (this.canDecrease(attributeName)) {
         this.selectedAttributes[attributeName] -= 1
         this.points += this.totalAttribute(attributeName)
