@@ -77,6 +77,7 @@ export default Vue.extend({
 
       if (pickedTalent && pickedTalent.status(this.pickedProfession) === TalentStatus.Available) {
         this.$emit('pickTalent', this.pickedProfession, pickedTalent)
+        this.picked = undefined
       }
     },
     pickProfession(profession: Profession): void {

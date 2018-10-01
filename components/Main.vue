@@ -1,14 +1,20 @@
 <template lang='pug'>
-#app
-  Scene.d-none(
-    :level='game.currentMap'
-    :player='game.player'
-    :pos='pos'
-    v-if='game'
-    )
+.container-fluid
 
-  .title-view.screen-modal
-    pre.title.d-none
+  Game(
+    ref='gameComponent'
+    :game='game'
+    v-if='game'
+  )
+  Scene(
+    :level='background.currentMap'
+    :player='background.player'
+    :pos='backgroundPos'
+    v-else-if='background'
+  )
+
+  .title-view.screen-modal(v-if='app.menu')
+    pre.title
       |  ██████╗ ███╗   ██╗██╗███████╗██╗   ██╗███╗   ██╗
       | ██╔═══██╗████╗  ██║██║██╔════╝██║   ██║████╗  ██║
       | ██║   ██║██╔██╗ ██║██║███████╗██║   ██║██╔██╗ ██║
@@ -35,6 +41,8 @@ import BackgroundPage from './Menu/BackgroundMenu.vue'
 import MainMenuPage from './Menu/MainMenu.vue'
 import PickTalentsPage from './Menu/PickTalentsMenu.vue'
 
+import Game from './Game.vue'
+
 import {
   Application,
   Point,
@@ -43,25 +51,31 @@ import {
   Race,
   humanRace,
   MainMenu,
-  MenuComponent
+  MenuComponent,
+  Onisun
 } from '../src/onisun'
 
 import Scene from './Scene.vue'
 
-const LOOP_INTERVAL = 100
+const LOOP_INTERVAL = 10
 
 export default Vue.extend({
-  name: 'Title',
+  name: 'Main',
   data() {
     const app = new Application()
     return {
       app: app,
-      game: app.newTitleGame() as TitleGame,
-      loopIntervalId: undefined as number | undefined
+      background: app.newTitleGame() as TitleGame,
+      loopIntervalId: undefined as number | undefined,
+      step: 0
     }
   },
   computed: {
-    menuPage(): Component {
+    menuPage(): Component | undefined {
+      if (!this.app.menu) {
+        return
+      }
+
       switch (this.app.menu.component) {
         case MenuComponent.MainMenu:
           return MainMenuPage
@@ -81,33 +95,56 @@ export default Vue.extend({
           return PickTalentsPage
       }
     },
-    pos(): Point | undefined {
-      if (this.game.currentMap) {
+    backgroundPos(): Point | undefined {
+      if (this.background.currentMap) {
         return new Point(
-          Math.round(this.game.currentMap.width * 0.5),
-          Math.round(this.game.currentMap.height * 0.4)
+          Math.round(this.background.currentMap.width * 0.5),
+          Math.round(this.background.currentMap.height * 0.4)
         )
       }
     },
-    race(): Race {
-      return humanRace
+    game(): Onisun | null {
+      return this.app.mainGame
     }
   },
   components: {
-    Scene
+    Scene,
+    Game
   },
   methods: {
     loop() {
-      if (this.game) {
-        this.game.turn()
+      const gameComponent = this.$refs.gameComponent
 
-        if (this.game.done) {
-          this.game = this.app.newTitleGame()
+      if (this.game && this.$refs.gameComponent) {
+        this.$refs.gameComponent.loop()
+        return
+      }
+
+      if (this.background) {
+        this.step += 1
+
+        if (this.step >= 10) {
+          this.step = 0
+          this.background.turn()
+
+          if (this.background.done) {
+            this.background = this.app.newTitleGame()
+          }
         }
       }
     },
     onEvent(event: KeyboardEvent) {
-      this.$refs.menuComponent.onEvent(event)
+      const gameComponent = this.$refs.gameComponent
+      if (gameComponent) {
+
+        console.log('gameComponent')
+        gameComponent.onEvent(event)
+      }
+
+      const menuComponent = this.$refs.menuComponent
+      if (menuComponent) {
+        menuComponent.onEvent(event)
+      }
     }
   },
   created() {
@@ -129,7 +166,6 @@ export default Vue.extend({
   > .title {
     line-height: 1rem;
     font-size: 1rem;
-    overflow-y: hidden;
   }
 
   .menu-options {

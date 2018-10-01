@@ -1,5 +1,5 @@
 <template lang='pug'>
-#app.container-fluid(v-if='game')
+#game-screen(v-if='game')
   Scene.scene(
     :level='game.currentMap'
     :player='game.player'
@@ -49,14 +49,13 @@ import CharacterInfoView from './views/CharacterInfoView.vue'
 
 import { LevelMap, PresenterType, Presenter } from '../src/engine'
 
-import { TmpApplication } from '../src/onisun'
 import { setInterval, clearInterval } from 'timers'
 
 export default Vue.extend({
+  name: 'Game',
+  props: ['game'],
   data() {
     return {
-      game: new TmpApplication().game,
-      ts: Date.now(),
       loopIntervalId: undefined as number | undefined
     }
   },
@@ -107,14 +106,6 @@ export default Vue.extend({
         view.onEvent(event)
       }
     }
-  },
-  created() {
-    this.loopIntervalId = window.setInterval(this.loop, 10)
-    document.addEventListener('keydown', this.onEvent)
-  },
-  beforeDestroy() {
-    clearInterval(this.loopIntervalId)
-    document.removeEventListener('keydown', this.onEvent)
   }
 })
 </script>
@@ -149,7 +140,7 @@ export default Vue.extend({
   white-space: nowrap;
 }
 
-#app {
+#game-screen {
   .player-stats {
     position: fixed;
     bottom: 0;

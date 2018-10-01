@@ -275,15 +275,18 @@ export class PickTalentsMenu extends Menu {
   constructor(public player: Player, application: Application) {
     super(application)
 
-    this.points = 3 // TODO ?
+    this.points = 1 // TODO ?
     this.talentsPage = new TalentsPresenter(null, { player })
   }
 
   public pickTalent(profession: Profession, talent: Talent): void {
-    if (this.points <= 0) {
-    } else {
-      this.player.on(new PickTalentEvent(profession, talent))
+    if (this.points > 0) {
       this.points -= 1
+      this.player.on(new PickTalentEvent(profession, talent))
+    }
+
+    if (this.points <= 0) {
+      this.application.initGame(this.player)
     }
   }
 

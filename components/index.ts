@@ -7,8 +7,7 @@ import './application.scss'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-import App from './App.vue'
-import Title from './Title.vue'
+import Main from './Main.vue'
 
 Vue.use(BootstrapVue)
 
@@ -27,6 +26,6 @@ fetch('locales/en.json', { cache: 'no-store' }).then((response) => response.json
 
   new Vue({
     el: '#app',
-    render: h => h(Title)
+    render: h => h(Main)
   })
 })

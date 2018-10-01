@@ -89,6 +89,7 @@ export class IdlePresenter extends BaseMenusPresenter {
   }
 
   public inventoryCommand(): void {
+    console.log('inventoryCommand')
     this.redirect(new EquipmentPresenter(this.levelMap, this.game))
   }
 
