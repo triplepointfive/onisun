@@ -43,16 +43,23 @@
         | {{ 'turns' | t('presenters.baseInfo') }}:
         |
       span.value {{ screen.turns }}
+
+  PlayerBackground(:player='screen.player')
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+
+import PlayerBackground from '../../PlayerBackground.vue'
 
 export default Vue.extend({
   name: 'HistoryInfoPage',
   props: ['screen'],
   methods: {
     onEvent(event: KeyboardEvent): void {}
+  },
+  components: {
+    PlayerBackground
   }
 })
 </script>
