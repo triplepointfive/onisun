@@ -10,6 +10,7 @@ export const humanRace: Race = {
     wisdom: 6,
     charisma: 9,
   },
+  experienceRatio: 0.9,
 }
 
 export const dwarfRace: Race = {
@@ -22,6 +23,7 @@ export const dwarfRace: Race = {
     wisdom: 7,
     charisma: 7,
   },
+  experienceRatio: 1,
 }
 
 export const allRaces: Race[] = [humanRace, dwarfRace]

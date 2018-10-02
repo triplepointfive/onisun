@@ -116,6 +116,7 @@ const testRace: Race = {
     wisdom: 10,
     charisma: 10,
   },
+  experienceRatio: 1,
 }
 
 const fakeSpecie: () => PlayerSpecie = () => {

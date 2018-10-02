@@ -1,5 +1,16 @@
 <template lang="pug">
 .content
+  .content-col
+    .attribute-row
+      span.name
+        | Level:
+        |
+      span.value {{ screen.currentLevel }}
+    .attribute-row
+      span.name
+        | Experience:
+        |
+      span.value {{ screen.currentExperience }}
 </template>
 
 <script lang="ts">

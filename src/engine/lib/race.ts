@@ -11,4 +11,5 @@ export interface PrimaryAttributes {
 export interface Race {
   readonly name: string
   readonly primaryAttributes: PrimaryAttributes
+  readonly experienceRatio: number
 }

@@ -24,6 +24,8 @@ import {
   OnisunProfessionPicker,
 } from './onisun/professions'
 import { humanRace } from './onisun/races'
+import { drop, reduce, times, last } from 'lodash'
+import { map } from 'jquery'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -64,7 +66,8 @@ export class Application {
   public mainGame: Onisun | null = null
 
   constructor() {
-    this.menu = new MainMenu(this)
+    // this.menu = new MainMenu(this)
+    this.initGame(this.randomPlayer(new PlayerAI()))
   }
 
   public initGame(player: Player) {
@@ -82,7 +85,7 @@ export class Application {
     ai: PlayerAI = new PlayerAI()
   ) {
     let player = new Player(
-      new Level([1, 3, 5, 10, 20]), // TODO
+      this.buildLevels(race),
       ai,
       {
         name: name,
@@ -127,6 +130,25 @@ export class Application {
     player.on(new PickProfessionEvent(parentsProfession))
 
     return player
+  }
+
+  private buildLevels(race: Race): Level {
+    return new Level(
+      drop(
+        reduce(
+          map(
+            drop(times(51, i => (i % 5) * 10 + ~~(i / 5) * 100), 2),
+            (x, i) => x * (i + 1)
+          ),
+          (acc, v) => {
+            acc.push((last(acc) || 0) + v)
+            return acc
+          },
+          [0]
+        ),
+        1
+      ).map(val => Math.floor(val * race.experienceRatio))
+    )
   }
 
   public randomPlayer(ai: PlayerAI): Player {

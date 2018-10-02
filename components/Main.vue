@@ -136,8 +136,6 @@ export default Vue.extend({
     onEvent(event: KeyboardEvent) {
       const gameComponent = this.$refs.gameComponent
       if (gameComponent) {
-
-        console.log('gameComponent')
         gameComponent.onEvent(event)
       }
 

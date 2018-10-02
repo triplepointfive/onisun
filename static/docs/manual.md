@@ -1,5 +1,9 @@
 ## Races
 
+### Human
+
+- Leveling requires 10 percent less experience.
+
 ## Classes
 
 ## Professions
