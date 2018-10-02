@@ -2,7 +2,6 @@ import { random, times } from 'lodash'
 import {
   AI,
   AICreature,
-  allAbilities,
   BodyArmor,
   Clan,
   Color,
@@ -33,6 +32,7 @@ import {
   TileTypes,
   TileVisitor,
   Wall,
+  Ability,
 } from '../../src/engine'
 
 export const generateString = function(length: number = 7): string {
@@ -124,7 +124,7 @@ const fakeSpecie: () => PlayerSpecie = () => {
     name: 'Test specie',
     weight: 10,
     clan: Clan.FreeForAll,
-    abilities: allAbilities,
+    abilities: [Ability.Inventory, Ability.GoStairway, Ability.Throwing],
     protections: [],
     damages: [],
     maxHealthValue: 50,

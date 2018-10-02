@@ -9,12 +9,6 @@ enum OnisunProfessionId {
 export class OnisunAttackerProfession extends Profession {
   constructor(
     level: number = 0,
-    public twoHandedWeapons: AttackerTwoHandedWeapons = new AttackerTwoHandedWeapons(
-      'twoHandedWeapons',
-      0,
-      0,
-      5
-    ),
     public strongGrip: AttackerStrongGrip = new AttackerStrongGrip(
       'strongGrip',
       1,
@@ -23,7 +17,6 @@ export class OnisunAttackerProfession extends Profession {
     )
   ) {
     super(OnisunProfessionId.Attacker, 'warrior', level, 0, [
-      twoHandedWeapons,
       strongGrip,
     ])
   }
@@ -34,7 +27,6 @@ export class OnisunAttackerProfession extends Profession {
 
   get grid(): (Talent | undefined)[][] {
     return [
-      [undefined, this.twoHandedWeapons, undefined],
       [undefined, this.strongGrip, undefined],
     ]
   }

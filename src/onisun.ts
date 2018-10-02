@@ -1,5 +1,6 @@
+import { map } from 'jquery'
+import { drop, last, reduce, times } from 'lodash'
 import {
-  allAbilities,
   Clan,
   Color,
   Critical,
@@ -18,14 +19,12 @@ import {
 } from './engine'
 import { Dispatcher } from './onisun/ai'
 import { TitleDungeon } from './onisun/dungeons/title_dungeon'
-import { BackgroundMenu, Menu, MainMenu } from './onisun/menus'
+import { MainMenu, Menu } from './onisun/menus'
 import {
   OnisunAttackerProfession,
   OnisunProfessionPicker,
 } from './onisun/professions'
 import { humanRace } from './onisun/races'
-import { drop, reduce, times, last } from 'lodash'
-import { map } from 'jquery'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -92,7 +91,7 @@ export class Application {
         race: race,
         gender: gender,
         clan: Clan.Player,
-        abilities: allAbilities,
+        abilities: [],
         leavesCorpseRatio: 0,
 
         ownProfession: profession,

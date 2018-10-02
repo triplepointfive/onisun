@@ -18,18 +18,12 @@ export enum Clan {
 }
 
 export enum Ability {
-  GoStairwayDown,
+  GoStairway,
   Inventory,
-  PutOn,
   Throwing,
-}
 
-export const allAbilities = [
-  Ability.GoStairwayDown,
-  Ability.Inventory,
-  Ability.PutOn,
-  Ability.Throwing,
-]
+  KnockWeaponOut,
+}
 
 export type CreatureId = number
 

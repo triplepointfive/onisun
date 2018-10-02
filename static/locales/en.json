@@ -67,13 +67,9 @@
     "defender": "Defender"
   },
   "talents": {
-    "twoHandedWeapons": {
-      "name": "Two handed weapons",
-      "description": "Allows to take a weapon in each hand"
-    },
     "strongGrip": {
       "name": "Strong grip",
-      "description": "Weapons do not get out of hand"
+      "description": "Lower chance of weapon getting out of hand"
     }
   },
   "primaryAttributes": {
