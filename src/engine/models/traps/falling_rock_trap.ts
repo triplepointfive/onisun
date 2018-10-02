@@ -33,7 +33,7 @@ export class FallingRockTrap extends Trap {
   }
 
   get damages(): Damage[] {
-    return [{ type: DamageType.Blunt, extra: 3, dice: { times: 2, max: 5 } }]
+    return [{ type: DamageType.Blunt, min: 8, max: 13, resistances: [] }]
   }
 
   public untrap(

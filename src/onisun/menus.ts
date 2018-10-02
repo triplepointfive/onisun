@@ -14,7 +14,7 @@ import {
 } from '../engine'
 
 import { sample, mergeWith } from 'lodash'
-import { PlayerAI } from '../engine/ai/player_ai';
+import { PlayerAI } from '../engine/ai/player_ai'
 
 export enum MenuComponent {
   MainMenu,
@@ -48,7 +48,12 @@ export class MainMenu extends Menu {
   }
 
   public randomPlayer(): void {
-    this.redirect(new BackgroundMenu(this.application.randomPlayer(new PlayerAI), this.application))
+    this.redirect(
+      new BackgroundMenu(
+        this.application.randomPlayer(new PlayerAI()),
+        this.application
+      )
+    )
   }
 }
 

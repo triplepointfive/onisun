@@ -21,7 +21,7 @@ describe('HurtEvent', () => {
     jest.spyOn(creature, 'on')
 
     event = new HurtEvent(
-      [{ type: DamageType.Pure, dice: { times: 0, max: 0 }, extra: 10 }],
+      [{ type: DamageType.Pure, min: 10, max: 10, resistances: [] }],
       DieReason.Attack,
       map,
       game

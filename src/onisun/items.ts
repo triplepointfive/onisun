@@ -46,7 +46,7 @@ export const commonBow = () =>
   new Bow(
     'Обычный лук',
     1,
-    [{ type: DamageType.Pierce, dice: { times: 1, max: 3 }, extra: 3 }],
+    [{ type: DamageType.Pierce, min: 4, max: 6, resistances: [] }],
     Material.wood
   )
 
@@ -54,7 +54,7 @@ export const smallRock = () =>
   new MissileRock(
     'Маленький камень',
     0.3,
-    [{ type: DamageType.Blunt, dice: { times: 1, max: 3 }, extra: 2 }],
+    [{ type: DamageType.Blunt, min: 3, max: 5, resistances: [] }],
     Material.stone
   )
 
@@ -62,14 +62,14 @@ export const woodenArrow = () =>
   new Arrow(
     'Деревянная стрела',
     0.2,
-    [{ type: DamageType.Pierce, dice: { times: 1, max: 4 }, extra: 3 }],
+    [{ type: DamageType.Pierce, min: 4, max: 7, resistances: [] }],
     Material.wood
   )
 export const ironArrow = () =>
   new Arrow(
     'Железная стрела',
     0.25,
-    [{ type: DamageType.Pierce, dice: { times: 2, max: 3 }, extra: 3 }],
+    [{ type: DamageType.Pierce, min: 5, max: 9, resistances: [] }],
     Material.iron
   )
 
@@ -78,14 +78,14 @@ export const weapons = new Pool<null, Item>([
     1,
     () =>
       new OneHandWeapon('Катана', 1, Material.iron, [
-        { type: DamageType.Melee, dice: { times: 5, max: 2 }, extra: 0 },
+        { type: DamageType.Melee, min: 5, max: 10, resistances: [] },
       ]),
   ],
   [
     7,
     () =>
       new OneHandWeapon('Кинжал', 0.8, Material.iron, [
-        { type: DamageType.Melee, dice: { times: 1, max: 3 }, extra: 2 },
+        { type: DamageType.Melee, min: 3, max: 5, resistances: [] },
       ]),
   ],
 ])

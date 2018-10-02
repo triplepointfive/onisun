@@ -6,6 +6,7 @@ import { Creature } from '../creature'
 import { Player } from '../player'
 import { DamageType, Damage } from '../../lib/damage'
 import { WaterDamageEvent } from '../../events/water_damage_event'
+import { Resistance } from '../specie'
 
 export class WaterTrap extends Trap {
   constructor(tile: Tile, revealed: boolean = false) {
@@ -21,7 +22,7 @@ export class WaterTrap extends Trap {
   }
 
   get damages(): Damage[] {
-    return [{ type: DamageType.Pure, extra: 5, dice: { times: 2, max: 2 } }]
+    return [{ type: DamageType.Pure, min: 7, max: 9, resistances: [] }]
   }
 
   public untrap(

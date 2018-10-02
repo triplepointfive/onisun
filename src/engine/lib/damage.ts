@@ -8,14 +8,9 @@ export enum DamageType {
   Pure,
 }
 
-export type Dice = {
-  times: number
-  max: number
-}
-
 export type Damage = {
-  extra: number
-  dice: Dice
+  min: number
+  max: number
   type: DamageType
-  resistances?: Resistance[]
+  resistances: Resistance[] // TODO! Make mandatory
 }

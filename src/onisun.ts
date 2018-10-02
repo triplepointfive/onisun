@@ -102,9 +102,7 @@ export class Application {
 
         weight: 80,
         protections: [],
-        damages: [
-          { type: DamageType.Pure, dice: { times: 3, max: 3 }, extra: 1 },
-        ],
+        damages: [{ type: DamageType.Pure, min: 4, max: 10, resistances: [] }],
         maxHealthValue: 10,
         regenerationRate: 1,
         regenerationValue: 1,

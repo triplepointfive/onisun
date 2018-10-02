@@ -38,7 +38,5 @@ export class DefenderSteelSkin extends OnisunTalent {
 }
 
 export class DefenderBattleShield extends OnisunTalent {
-  protected onObtain(player: Player): void {
-
-  }
+  protected onObtain(player: Player): void {}
 }

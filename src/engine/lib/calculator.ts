@@ -1,8 +1,8 @@
-import { includes, intersection, random, sum, sumBy, times } from 'lodash'
+import { includes, intersection, random, sum, sumBy } from 'lodash'
 import { DamageType, ProtectionType } from '../../engine'
 import { Protection } from '../models/item'
 import { Resistance, Critical } from '../models/specie'
-import { Damage, Dice } from './damage'
+import { Damage } from './damage'
 
 export type DamageOrResist = { damage: number; resist: boolean }
 
@@ -18,11 +18,12 @@ export class Calculator {
     }
 
     return damages.map(
-      ({ type, dice: { times, max }, extra }): Damage => {
+      ({ type, min, max, resistances }): Damage => {
         return {
           type,
-          dice: { times, max: max * multiplier },
-          extra: extra * multiplier,
+          min: min * multiplier,
+          max: max * multiplier,
+          resistances,
         }
       }
     )
@@ -77,7 +78,7 @@ export class Calculator {
 
     const damage = sumBy(
       damages,
-      ({ extra, dice, type, resistances }): number => {
+      ({ min, max, type, resistances }): number => {
         if (this.resistTo(type, resistances, victimResistances)) {
           return 0
         }
@@ -85,8 +86,7 @@ export class Calculator {
         return Math.floor(
           Math.max(
             0,
-            extra +
-              this.dropDice(dice) -
+            this.dropDice(min, max) -
               this.protectionValue(type, protectionTypes)
           )
         )
@@ -98,10 +98,10 @@ export class Calculator {
 
   protected static resistTo(
     damageType: DamageType,
-    resistances: Resistance[] | undefined,
+    resistances: Resistance[],
     victimResistances: Resistance[]
   ): boolean {
-    if (resistances && intersection(victimResistances, resistances).length) {
+    if (intersection(victimResistances, resistances).length) {
       return true
     }
 
@@ -117,8 +117,8 @@ export class Calculator {
     }
   }
 
-  protected static dropDice(dice: Dice): number {
-    return sum(times(dice.times, () => random(1, dice.max)))
+  protected static dropDice(min: number, max: number): number {
+    return random(min, max)
   }
 
   protected static protectionValue(

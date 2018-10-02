@@ -22,9 +22,7 @@ import {
 
 describe('WaterDamageEvent', () => {
   let game: Game, levelMap: LevelMap, player: Player, event: WaterDamageEvent
-  const damages = [
-    { type: DamageType.Pure, dice: { times: 0, max: 0 }, extra: 20 },
-  ]
+  const damages = [{ type: DamageType.Pure, min: 20, max: 20 }]
 
   beforeEach(() => {
     game = generateGame()

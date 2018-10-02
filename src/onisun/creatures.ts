@@ -50,7 +50,7 @@ export const rat = () => {
   return newCreature(
     'Rat',
     [],
-    [{ type: DamageType.Melee, dice: { times: 2, max: 2 }, extra: 0 }]
+    [{ type: DamageType.Melee, min: 2, max: 4, resistances: [] }]
   )
 }
 
@@ -58,7 +58,7 @@ export const golem = () => {
   return newCreature(
     'Golem',
     [{ type: ProtectionType.Solid, value: 5 }],
-    [{ type: DamageType.Blunt, dice: { times: 1, max: 5 }, extra: 10 }]
+    [{ type: DamageType.Blunt, min: 11, max: 15, resistances: [] }]
   )
 }
 

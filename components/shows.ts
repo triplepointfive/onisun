@@ -8,14 +8,8 @@ export const showItemDetails = function(item: Item): string | undefined {
   }
 }
 
-export const showDamage = function({ extra, dice: { times, max }, type }: Damage): string {
-  let base = `${showDamageType(type)} ${times}d${max}`
-
-  if (extra) {
-    base += `+${extra}`
-  }
-
-  return base
+export const showDamage = function({ min, max, type }: Damage): string {
+  return `${showDamageType(type)} ${min}-${max}`
 }
 
 export const showDamageType = function(damageType: DamageType): string {

@@ -116,7 +116,8 @@ export class Player extends Creature<PlayerSpecie> {
     return concat(this.specie.throwingDamages, this.missileItemsDamages()).map(
       (damage: Damage) => {
         let dmg = cloneDeep(damage)
-        dmg.extra += dexterityAdjustment
+        dmg.min += dexterityAdjustment
+        dmg.max += dexterityAdjustment
         return dmg
       }
     )
@@ -128,7 +129,8 @@ export class Player extends Creature<PlayerSpecie> {
     return concat(this.specie.damages, this.meleeItemsDamages()).map(
       (damage: Damage) => {
         let dmg = cloneDeep(damage)
-        dmg.extra += strengthAdjustment
+        dmg.min += strengthAdjustment
+        dmg.max += strengthAdjustment
         return dmg
       }
     )

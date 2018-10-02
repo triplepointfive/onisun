@@ -51,7 +51,7 @@ class TestMissile extends Missile {}
 
 export const generateOneHandedWeapon = function(): OneHandWeapon {
   return new OneHandWeapon(generateString(), 1, Material.iron, [
-    { type: DamageType.Melee, dice: { max: 10, times: 3 }, extra: 4 },
+    { type: DamageType.Melee, min: 7, max: 34 },
   ])
 }
 
@@ -71,7 +71,7 @@ export const generateMissile = function(): Missile {
   return new TestMissile(
     'test missile',
     1,
-    [{ type: DamageType.Pierce, dice: { times: 0, max: 0 }, extra: 2 }],
+    [{ type: DamageType.Pierce, min: 2, max: 2 }],
     Material.wood
   )
 }

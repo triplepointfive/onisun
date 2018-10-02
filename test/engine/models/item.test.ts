@@ -13,7 +13,7 @@ import {
 describe('Weapon', () => {
   it('corrosion', () => {
     const damages = (penalty: number): Damage[] => [
-      { type: DamageType.Pure, dice: { times: 0, max: 0 }, extra: 3 - penalty },
+      { type: DamageType.Pure, min: 3 - penalty, max: 3 - penalty },
     ]
 
     let item = new OneHandWeapon('test', 1, Material.iron, damages(0))

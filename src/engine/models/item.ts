@@ -4,7 +4,7 @@ import { CreatureSpecie } from './specie'
 import { Game } from './game'
 import { Damage } from '../lib/damage'
 import { ImpactType } from '../lib/impact'
-import { Material, WaterAffect } from '../lib/material'
+import { Material } from '../lib/material'
 
 export enum Usage {
   WeaponOneHand,
@@ -165,8 +165,8 @@ export abstract class Weapon extends Item {
   }
 
   protected damageWithCorrosion(penalty: number): Damage[] {
-    return this.rawDamages.map(({ dice, type, extra }: Damage) => {
-      return { dice, type, extra: extra - penalty }
+    return this.rawDamages.map(({ type, min, max, resistances }: Damage) => {
+      return { type, min: min - penalty, max: max - penalty, resistances }
     })
   }
 }

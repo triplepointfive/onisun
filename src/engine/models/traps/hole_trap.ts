@@ -13,7 +13,7 @@ import { LevelMap } from '../level_map'
 import { Player } from '../player'
 import { StairwayDown, Tile, Trap, TrapType } from '../tile'
 import { HurtEvent } from '../../events/hurt_event'
-import { DamageType } from '../../lib/damage'
+import { DamageType, Damage } from '../../lib/damage'
 import { DieReason } from '../../events/die_event'
 
 // Leads to a random tile every time because tile might be taken
@@ -40,6 +40,15 @@ export class HoleTrap extends Trap {
     return this.revealed ? 1 : 5
   }
 
+  get damage(): Damage {
+    return {
+      type: DamageType.Pure,
+      min: 5,
+      max: 8,
+      resistances: [],
+    }
+  }
+
   public activate(
     pos: Point,
     game: Game,
@@ -62,18 +71,7 @@ export class HoleTrap extends Trap {
 
             creature.on(fallEvent)
             return creature.on(
-              new HurtEvent(
-                [
-                  {
-                    type: DamageType.Pure,
-                    dice: { times: 3, max: 2 },
-                    extra: 2,
-                  },
-                ],
-                DieReason.Trap,
-                levelMap,
-                game
-              )
+              new HurtEvent([this.damage], DieReason.Trap, levelMap, game)
             )
           } else {
             game.logger.trapHole.shallowActivated(sees, isPlayer, creature)

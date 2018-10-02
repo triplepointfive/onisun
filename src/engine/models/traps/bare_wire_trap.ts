@@ -10,6 +10,7 @@ import { DieReason } from '../../events/die_event'
 import { Damage, DamageType } from '../../lib/damage'
 import { VisibleCreatureEvent } from '../../events/visible_creature_event'
 import { Reaction } from '../../events/internal'
+import { Resistance } from '../specie'
 
 class BareWireTrapEvent extends VisibleCreatureEvent {
   constructor(private trap: Trap, levelMap: LevelMap, game: Game) {
@@ -21,7 +22,14 @@ class BareWireTrapEvent extends VisibleCreatureEvent {
   }
 
   get damages(): Damage[] {
-    return [{ type: DamageType.Pure, dice: { times: 5, max: 2 }, extra: 5 }]
+    return [
+      {
+        type: DamageType.Pure,
+        min: 10,
+        max: 15,
+        resistances: [Resistance.Insulator],
+      },
+    ]
   }
 
   public affectCreature(creature: Creature): Reaction {
