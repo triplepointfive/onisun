@@ -25,6 +25,7 @@ export class AttackEvent extends CreatureEvent {
     const reaction = this.process(player, true)
 
     if (reaction === Reaction.DIE) {
+      player.killStat.add(this.victim.name)
       player.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
     }
 

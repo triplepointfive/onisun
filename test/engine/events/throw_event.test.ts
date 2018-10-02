@@ -14,10 +14,11 @@ import {
   Point,
   Missile,
   Calculator,
+  Player,
 } from '../../../src/engine'
 
 describe('StayEvent', () => {
-  let actor: Creature,
+  let actor: Player,
     victim: Creature,
     event: ThrowEvent,
     map: LevelMap,
@@ -85,6 +86,7 @@ describe('StayEvent', () => {
 
       it('victim dies', () => {
         expect(victim.dead).toBeTruthy()
+        expect(actor.killStat.total).toEqual(1)
       })
 
       it('logs a message', () => {

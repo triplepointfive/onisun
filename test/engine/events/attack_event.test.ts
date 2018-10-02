@@ -73,6 +73,7 @@ describe('AttackEvent', () => {
 
       expect(actor.on(event)).toEqual(Reaction.DIE)
       expect(victim.dead).toBeTruthy()
+      expect(actor.killStat.total).toEqual(1)
     })
   })
 })

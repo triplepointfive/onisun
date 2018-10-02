@@ -1,8 +1,4 @@
-import {
-  Player,
-  DefenderSteelSkin,
-  ProtectionType,
-} from '../../src/onisun'
+import { Player, DefenderSteelSkin, ProtectionType } from '../../src/onisun'
 import { generatePlayer } from '../engine/helpers'
 
 let player: Player

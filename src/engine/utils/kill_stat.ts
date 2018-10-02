@@ -11,6 +11,7 @@ export class KillStat {
     } else {
       this.stat.set(name, 1)
     }
+    this.total += 1
   }
 
   get all(): [string, number][] {
