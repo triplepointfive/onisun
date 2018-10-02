@@ -8,6 +8,16 @@
       span.value {{ screen.name }}
     .attribute-row
       span.name
+        | {{ 'gender' | t('presenters.baseInfo') }}:
+        |
+      span.value {{ screen.gender | t('genders') }}
+    .attribute-row
+      span.name
+        | {{ 'race' | t('presenters.baseInfo') }}:
+        |
+      span.value {{ screen.race.name | t('races') }}
+    .attribute-row
+      span.name
         | {{ 'height' | t('presenters.baseInfo') }}:
         |
       span.value {{ screen.height }}sm
@@ -16,11 +26,6 @@
         | {{ 'weight' | t('presenters.baseInfo') }}:
         |
       span.value {{ screen.weight }}kg
-    .attribute-row
-      span.name
-        | {{ 'gender' | t('presenters.baseInfo') }}:
-        |
-      span.value {{ screen.gender | t('genders') }}
   .content-col
     .attribute-row
       span.name

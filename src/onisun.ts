@@ -66,8 +66,8 @@ export class Application {
   public mainGame: Onisun | null = null
 
   constructor() {
-    // this.menu = new MainMenu(this)
-    this.initGame(this.randomPlayer(new PlayerAI()))
+    this.menu = new MainMenu(this)
+    // this.initGame(this.randomPlayer(new PlayerAI()))
   }
 
   public initGame(player: Player) {

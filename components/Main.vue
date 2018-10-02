@@ -91,7 +91,7 @@ export default Vue.extend({
           return EnterNamePage
         case MenuComponent.BackgroundMenu:
           return BackgroundPage
-        case MenuComponent.PickTalentsMenu:
+        case MenuComponent.TalentsMenu:
           return PickTalentsPage
       }
     },

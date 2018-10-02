@@ -8,6 +8,7 @@
       "height": "Height",
       "weight": "Weight",
       "gender": "Gender",
+      "race": "Race",
       "turns": "Turns"
     },
     "infoViewsHead": {
@@ -82,5 +83,9 @@
     "intelligence": "Intelligence",
     "wisdom": "Wisdom",
     "charisma": "Charisma"
+  },
+  "races": {
+    "human": "Human",
+    "dwarf": "Dwarf"
   }
 }

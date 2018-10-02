@@ -24,7 +24,7 @@ export enum MenuComponent {
   AttributesSelectionMenu,
   EnterNameMenu,
   BackgroundMenu,
-  PickTalentsMenu,
+  TalentsMenu,
 }
 
 export abstract class Menu {
@@ -140,15 +140,9 @@ export class AttributesSelectionMenu extends Menu {
     this.racialAttributes = this.race.primaryAttributes
     this.genderAttributes = this.calcGenderAttributes(gender)
 
-    this.baseAttributes = mergeWith(
-      {},
+    this.baseAttributes = this.sumAttributes(
       this.racialAttributes,
-      this.genderAttributes,
-      (x, y) => {
-        if (x) {
-          return x + y
-        }
-      }
+      this.genderAttributes
     )
   }
 
@@ -160,13 +154,13 @@ export class AttributesSelectionMenu extends Menu {
     return 200
   }
 
-  public ready(totalAttributes: PrimaryAttributes): void {
+  public ready(deltaAttributes: PrimaryAttributes): void {
     this.redirect(
       new EnterNameMenu(
         this.gender,
         this.race,
         this.profession,
-        totalAttributes,
+        this.sumAttributes(this.baseAttributes, deltaAttributes),
         this.application
       )
     )
@@ -198,6 +192,17 @@ export class AttributesSelectionMenu extends Menu {
         charisma: 0,
       }
     }
+  }
+
+  private sumAttributes(
+    attr1: PrimaryAttributes,
+    attr2: PrimaryAttributes
+  ): PrimaryAttributes {
+    return mergeWith({}, attr1, attr2, (x, y) => {
+      if (x) {
+        return x + y
+      }
+    })
   }
 }
 
@@ -264,19 +269,19 @@ export class BackgroundMenu extends Menu {
   }
 
   public next(): void {
-    this.redirect(new PickTalentsMenu(this.player, this.application))
+    this.redirect(new TalentsMenu(this.player, this.application))
   }
 }
 
-export class PickTalentsMenu extends Menu {
+export class TalentsMenu extends Menu {
   public points: number
-  public talentsPage: TalentsPresenter
+  public talentsPage: { professions: Profession[] }
 
   constructor(public player: Player, application: Application) {
     super(application)
 
-    this.points = 1 // TODO ?
-    this.talentsPage = new TalentsPresenter(null, { player })
+    this.points = 3 // TODO ?
+    this.talentsPage = { professions: player.professions }
   }
 
   public pickTalent(profession: Profession, talent: Talent): void {
@@ -291,6 +296,6 @@ export class PickTalentsMenu extends Menu {
   }
 
   get component(): MenuComponent {
-    return MenuComponent.PickTalentsMenu
+    return MenuComponent.TalentsMenu
   }
 }

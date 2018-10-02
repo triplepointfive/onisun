@@ -113,7 +113,7 @@ export default Vue.extend({
         case 'R':
         case 'r':
           if (this.needConfirmation) {
-            return this.menu.ready(this.totalAttribute)
+            return this.menu.ready(this.selectedAttributes)
           } else {
             this.needConfirmation = true
             return

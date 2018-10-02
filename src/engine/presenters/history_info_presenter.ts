@@ -2,7 +2,7 @@ import {
   CharacterInfoPresenter,
   CharacterInfoPage,
 } from './character_info_presenter'
-import { Gender, Color } from '../../engine'
+import { Gender, Color, Race } from '../../engine'
 
 export class HistoryInfoPresenter extends CharacterInfoPresenter {
   get page(): CharacterInfoPage {
@@ -35,6 +35,10 @@ export class HistoryInfoPresenter extends CharacterInfoPresenter {
 
   get skinColor(): Color {
     return this.specie.skinColor
+  }
+
+  get race(): Race {
+    return this.player.specie.race
   }
 
   get turns(): number {
