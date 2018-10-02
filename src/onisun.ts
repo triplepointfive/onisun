@@ -23,6 +23,7 @@ import { MainMenu, Menu } from './onisun/menus'
 import {
   OnisunAttackerProfession,
   OnisunProfessionPicker,
+  OnisunDefenderProfession,
 } from './onisun/professions'
 import { humanRace } from './onisun/races'
 
@@ -157,7 +158,7 @@ export class Application {
       new OnisunAttackerProfession(),
       humanRace.primaryAttributes,
       'AI',
-      new OnisunAttackerProfession(),
+      new OnisunDefenderProfession(),
       ai
     )
   }

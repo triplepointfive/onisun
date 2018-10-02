@@ -1,5 +1,9 @@
 import { ProfessionPicker, Profession, Player, Talent } from '../engine'
-import { AttackerTwoHandedWeapons, AttackerStrongGrip } from './talents'
+import {
+  AttackerTwoHandedWeapons,
+  AttackerStrongGrip,
+  DefenderSteelSkin,
+} from './talents'
 
 enum OnisunProfessionId {
   Attacker,
@@ -16,9 +20,7 @@ export class OnisunAttackerProfession extends Profession {
       5
     )
   ) {
-    super(OnisunProfessionId.Attacker, 'warrior', level, 0, [
-      strongGrip,
-    ])
+    super(OnisunProfessionId.Attacker, 'warrior', level, 0, [strongGrip])
   }
 
   get depthCost(): number {
@@ -26,15 +28,21 @@ export class OnisunAttackerProfession extends Profession {
   }
 
   get grid(): (Talent | undefined)[][] {
-    return [
-      [undefined, this.strongGrip, undefined],
-    ]
+    return [[undefined, this.strongGrip, undefined]]
   }
 }
 
 export class OnisunDefenderProfession extends Profession {
-  constructor(level: number = 0) {
-    super(OnisunProfessionId.Defender, 'defender', level, 0, [])
+  constructor(
+    level: number = 0,
+    public steelSkin: DefenderSteelSkin = new DefenderSteelSkin(
+      'steelSkin',
+      0,
+      0,
+      5
+    )
+  ) {
+    super(OnisunProfessionId.Defender, 'defender', level, 0, [steelSkin])
   }
 
   get depthCost(): number {
@@ -42,7 +50,7 @@ export class OnisunDefenderProfession extends Profession {
   }
 
   get grid(): (Talent | undefined)[][] {
-    return []
+    return [[this.steelSkin]]
   }
 }
 

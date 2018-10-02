@@ -1,4 +1,5 @@
-import { min } from 'lodash'
+import { min, concat, cloneDeep, flatten } from 'lodash'
+import { Protection } from '../../engine'
 
 export class Rect {
   constructor(
@@ -188,4 +189,23 @@ export const minUnsafe = function<T>(list: T[]): T {
   }
 
   throw 'minUnsafe got empty array'
+}
+
+export const groupProtections = function(
+  ...protections: Protection[][]
+): Protection[] {
+  return cloneDeep(flatten(protections)).reduce(
+    (acc: Protection[], protection: Protection): Protection[] => {
+      const accProtection = acc.find(({ type }) => protection.type === type)
+
+      if (accProtection) {
+        accProtection.value += protection.value
+      } else {
+        acc.push(protection)
+      }
+
+      return acc
+    },
+    []
+  )
 }

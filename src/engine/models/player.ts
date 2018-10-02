@@ -17,6 +17,7 @@ import { Resistance, PlayerSpecie } from './specie'
 import { Creature } from './creature'
 import { KillStat } from '../utils/kill_stat'
 import { PrimaryAttributes } from '../lib/race'
+import { groupProtections } from '../utils/utils'
 
 export class Player extends Creature<PlayerSpecie> {
   public professions: Profession[] = []
@@ -135,7 +136,8 @@ export class Player extends Creature<PlayerSpecie> {
 
   get protections(): Protection[] {
     const perEmptySlotArmor = 1
-    return concat(this.specie.protections, this.itemsProtections, [
+
+    return groupProtections(this.specie.protections, this.itemsProtections, [
       {
         type: ProtectionType.Unarmored,
         value: perEmptySlotArmor * this.inventory.unarmoredSlotsCount,

@@ -14,6 +14,6 @@ module.exports = {
     "json",
     "node"
   ],
-  "collectCoverageFrom": ["src/engine/**/*.{ts,js}"],
+  "collectCoverageFrom": ["src/engine/**/*.{ts,js}", "src/onisun/**/*.{ts,js}"],
   "testURL": 'http://localhost',
 }

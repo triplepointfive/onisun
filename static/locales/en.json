@@ -70,6 +70,10 @@
     "strongGrip": {
       "name": "Strong grip",
       "description": "Lower chance of weapon getting out of hand"
+    },
+    "steelSkin": {
+      "name": "Steel Skin",
+      "description": "Grants additional unarmored protection"
     }
   },
   "primaryAttributes": {

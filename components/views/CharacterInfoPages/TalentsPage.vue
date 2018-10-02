@@ -135,10 +135,7 @@ export default Vue.extend({
       }
     },
     iconPath(talent: Talent): string {
-      switch(talent.name) {
-        default:
-          return 'AttackerStrongGrip.svg'
-      }
+      return `${talent.name}.svg`
     }
   }
 })
