@@ -1,5 +1,5 @@
 <template lang="pug">
-.menu-option(:class='{ "-separator": separator }')
+.menu-option(:class='{ "-separator": separator }' @click="$emit('click')")
   | [
   span.char(v-text='char')
   | ]

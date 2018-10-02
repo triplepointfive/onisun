@@ -1,9 +1,9 @@
 <template lang="pug">
 .content
   .menu-options
-    MenuOption(char='N' name='New game')
+    MenuOption(char='N' name='New game' @click='newGame()')
     MenuOption(char='T' name='Tutorial')
-    MenuOption(char='R' name='Random challenge')
+    MenuOption(char='R' name='Random challenge' @click='random()')
 </template>
 
 <script lang="ts">
@@ -21,8 +21,16 @@ export default Vue.extend({
     onEvent(event: KeyboardEvent) {
       switch (event.key.toUpperCase()) {
       case 'N':
-        return this.menu.newGame()
+        return this.newGame()
+      case 'R':
+        return this.random()
       }
+    },
+    newGame(): void {
+      this.menu.newGame()
+    },
+    random(): void {
+      this.menu.randomPlayer()
     }
   }
 })

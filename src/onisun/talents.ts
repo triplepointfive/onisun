@@ -36,3 +36,9 @@ export class DefenderSteelSkin extends OnisunTalent {
     player.specie.protections.push({ type: ProtectionType.Unarmored, value: 1 })
   }
 }
+
+export class DefenderBattleShield extends OnisunTalent {
+  protected onObtain(player: Player): void {
+
+  }
+}

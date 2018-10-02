@@ -152,6 +152,8 @@ export class Application {
   }
 
   public randomPlayer(ai: PlayerAI): Player {
+    // TODO: Randomize race
+    // TODO: Add random attributes
     return this.newPlayer(
       Gender.Male,
       humanRace,

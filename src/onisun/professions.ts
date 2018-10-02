@@ -3,6 +3,7 @@ import {
   AttackerTwoHandedWeapons,
   AttackerStrongGrip,
   DefenderSteelSkin,
+  DefenderBattleShield,
 } from './talents'
 
 enum OnisunProfessionId {
@@ -37,6 +38,12 @@ export class OnisunDefenderProfession extends Profession {
     level: number = 0,
     public steelSkin: DefenderSteelSkin = new DefenderSteelSkin(
       'steelSkin',
+      0,
+      0,
+      5
+    ),
+    public battleShield: DefenderBattleShield = new DefenderBattleShield(
+      'battleShield',
       0,
       0,
       5

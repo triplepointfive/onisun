@@ -5,7 +5,7 @@
   PlayerBackground(:player='menu.player')
 
   .menu-options
-    MenuOption(char='N' name='Next')
+    MenuOption(char='N' name='Next' @click='next()')
 </template>
 
 <script lang="ts">
@@ -25,8 +25,11 @@ export default Vue.extend({
     onEvent(event: KeyboardEvent) {
       switch (event.key.toUpperCase()) {
       case 'N':
-        return this.menu.next()
+        return this.next()
       }
+    },
+    next(): void {
+      this.menu.next()
     }
   }
 })
