@@ -11,6 +11,7 @@ import {
 } from '../engine'
 import { Dispatcher } from './ai'
 import { Material } from '../engine/lib/material'
+import { Power } from '../engine/models/creature'
 
 const critical: Critical = { chance: 0.05, multiplier: 2 }
 
@@ -24,9 +25,10 @@ const newCreature = (
     weight: 10,
     clan: Clan.PlayerOnlyEnemy,
     abilities: [],
-    powers: [],
+    powers: [Power.KnockWeaponOut],
     protections: protections,
     damages: damages,
+    unarmedDamage: [],
 
     maxHealthValue: 1,
     regenerationRate: 5,

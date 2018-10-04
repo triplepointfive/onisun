@@ -7,6 +7,7 @@ export enum Reaction {
   DODGE,
   NOTHING,
   RESIST,
+  Success,
 }
 
 export abstract class PlayerEvent {

@@ -41,7 +41,7 @@ export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
   public dead: boolean = false
 
   public health: HealthStat
-  public coolDown: CoolDown<Ability>
+  public coolDown: CoolDown<Power>
 
   constructor(public specie: Specie, public id: CreatureId = Creature.getId()) {
     this.health = new HealthStat(specie)
@@ -78,6 +78,10 @@ export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
 
   get speed(): number {
     return this.specie.moveSpeed
+  }
+
+  public hasPower(power: Power): boolean {
+    return includes(this.specie.powers, power) && !this.coolDown.has(power)
   }
 
   public stageMemory(levelMap: LevelMap): Memory {
@@ -168,6 +172,7 @@ export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
 
   abstract get missile(): GroupedItem<Missile> | undefined
   abstract get inventoryItems(): GroupedItem<Item>[]
+  public abstract canBeDisarmed(): boolean
 
   public abstract addItem(item: Item, count: number): void
   public abstract removeItem(item: Item, count: number): void
@@ -195,15 +200,18 @@ export class AICreature extends Creature {
   }
 
   public act(levelMap: LevelMap, game: Game): number {
+    console.time('act2')
     this.statsTurn()
-    this.visionMask(levelMap)
+    console.timeEnd('act2')
 
+    console.time('act')
+    this.visionMask(levelMap)
+    console.timeEnd('act')
     const command = this.ai.act(this, levelMap, game)
     if (command) {
       this.on(command)
     }
     this.on(new AfterEvent(levelMap, game))
-
     return this.speed
   }
 
@@ -234,5 +242,12 @@ export class AICreature extends Creature {
     }
 
     this.bag.remove(item, count)
+  }
+
+  public canBeDisarmed(): boolean {
+    return (
+      this.specie.unarmedDamage.length === 0 ||
+      this.hasImpact(ImpactType.Disarmed)
+    )
   }
 }

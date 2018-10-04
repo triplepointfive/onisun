@@ -173,4 +173,11 @@ export class Player extends Creature<PlayerSpecie> {
       missileWeaponEq ? missileWeaponEq.item.damages : []
     )
   }
+
+  public canBeDisarmed(): boolean {
+    return (
+      this.inventory.rightHandSlot.equipment !== undefined ||
+      this.inventory.leftHandSlot.equipment !== undefined
+    )
+  }
 }

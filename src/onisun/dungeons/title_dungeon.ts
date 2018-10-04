@@ -41,6 +41,7 @@ const config = {
   addTraps: false,
   width: 100,
   height: 100,
+  withTraps: false,
 }
 
 const tiles: Map<string, () => Tile> = new Map()
@@ -96,16 +97,29 @@ export class TitleDungeon extends Dungeon {
 
     addDoors(map, () => new Door(), () => true)
 
-    withEachTile(
-      map,
-      tile => tile.isFloor(),
-      (tile, x, y) => {
-        map.setTile(x, y, traps.pick(tile))
-      }
-    )
+    if (config.withTraps) {
+      withEachTile(
+        map,
+        tile => tile.isFloor(),
+        (tile, x, y) => {
+          map.setTile(x, y, traps.pick(tile))
+        }
+      )
+    }
 
     centralize(map)
 
+    // withMatchingTile(map, tile => tile.passibleThrough(), (x, y) => {
+    //   map.addCreature({ x, y }, creaturesPool1.pick(null))
+    // })
+    // withMatchingTile(map, tile => tile.passibleThrough(), (x, y) => {
+    //   map.addCreature({ x, y }, creaturesPool1.pick(null))
+    // })
+    // withMatchingTile(map, tile => tile.passibleThrough(), (x, y) => {
+    //   map.addCreature({ x, y }, creaturesPool1.pick(null))
+    // })
+
+    addCreatures(0.05, map, creaturesPool1)
     // addItems(0.05, map, weapons.merge(itemsPool))
 
     return map

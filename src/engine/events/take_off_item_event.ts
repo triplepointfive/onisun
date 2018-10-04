@@ -10,7 +10,7 @@ import {
 import { Creature } from '../models/creature'
 import { Player } from '../models/player'
 import { findIndex } from 'lodash'
-import { Protection, Weapon } from '../models/item'
+import { Protection } from '../models/item'
 
 export class TakeOffItemEvent extends CreatureEvent {
   constructor(private slot: InventorySlot, private game: Game) {

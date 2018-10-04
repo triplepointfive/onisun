@@ -5,6 +5,7 @@ export enum ImpactType {
   Stressed,
   Loaded,
   Overloaded,
+  Disarmed,
 }
 
 class Impact {

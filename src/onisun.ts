@@ -26,7 +26,8 @@ import {
   OnisunDefenderProfession,
 } from './onisun/professions'
 import { humanRace } from './onisun/races'
-import { Power } from './engine/models/creature';
+import { Power } from './engine/models/creature'
+import { weapons } from './onisun/items'
 
 export * from './engine'
 export * from './onisun/ai'
@@ -68,7 +69,11 @@ export class Application {
 
   constructor() {
     // this.menu = new MainMenu(this)
-    this.initGame(this.randomPlayer(new PlayerAI()))
+    const player = this.randomPlayer(new PlayerAI())
+    this.initGame(player)
+
+    // player.inventory.rightHandSlot.equip(weapons.pick(null), 1)
+    // player.inventory.leftHandSlot.equip(weapons.pick(null), 1)
   }
 
   public initGame(player: Player) {
@@ -105,6 +110,7 @@ export class Application {
         weight: 80,
         protections: [],
         damages: [{ type: DamageType.Pure, min: 4, max: 10, resistances: [] }],
+        unarmedDamage: [],
         maxHealthValue: 10,
         regenerationRate: 1,
         regenerationValue: 1,

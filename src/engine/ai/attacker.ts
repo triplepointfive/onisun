@@ -1,8 +1,9 @@
 import { AttackEvent, Game } from '../../engine'
-import { Creature } from '../models/creature'
+import { Creature, Power } from '../models/creature'
 import { AI } from './internal'
 import { LevelMap } from '../models/level_map'
 import { CreatureEvent } from '../events/internal'
+import { KnockWeaponOutEvent } from '../events/disarm_event'
 
 export class Attacker extends AI {
   public victim?: Creature
@@ -18,7 +19,11 @@ export class Attacker extends AI {
     }
 
     if (this.victim && this.victimInAccess(actor, levelMap, this.victim)) {
-      return new AttackEvent(this.victim, levelMap, game)
+      if (this.victim.canBeDisarmed() && actor.hasPower(Power.KnockWeaponOut)) {
+        return new KnockWeaponOutEvent(this.victim, levelMap, game)
+      } else {
+        return new AttackEvent(this.victim, levelMap, game)
+      }
     } else {
       if (!firstTurn) {
         throw 'Attacker got called twice'

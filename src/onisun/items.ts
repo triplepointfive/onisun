@@ -10,6 +10,7 @@ import {
   Player,
   Pool,
   ProtectionType,
+  Weapon,
 } from '../engine'
 import { HealPotion } from './potions'
 import { Material } from '../engine/lib/material'
@@ -73,7 +74,7 @@ export const ironArrow = () =>
     Material.iron
   )
 
-export const weapons = new Pool<null, Item>([
+export const weapons = new Pool<null, Weapon>([
   [
     1,
     () =>

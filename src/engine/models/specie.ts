@@ -26,11 +26,13 @@ export interface CreatureSpecie {
   powers: Power[]
 
   protections: Protection[]
-  damages: Damage[]
   bodyControl: number
 
   throwingItem?: Missile
+
+  damages: Damage[]
   throwingDamages: Damage[]
+  unarmedDamage: Damage[]
 
   maxHealthValue: number
   regenerationRate: number

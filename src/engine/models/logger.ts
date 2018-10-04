@@ -30,9 +30,12 @@ export class Logger {
   public trapHole: TrapHoleLogger
   public trapFallingRock: TrapFallingRockLogger
 
+  public disarmLogger: DisarmLogger
+
   constructor(player: Player) {
     this.attackLogger = new AttackLogger(this, player)
     this.doorLogger = new DoorLogger(this, player)
+    this.disarmLogger = new DisarmLogger(this, player)
 
     this.trapAirBlow = new TrapAirBlowLogger(this, player)
     this.trapBareWire = new TrapBareWireLogger(this, player)
@@ -479,7 +482,7 @@ class AttackLogger extends SubLogger {
         )
       case Reaction.NOTHING:
         return this.debug(
-          `Удар пришелся по ${actor.name} но остался незамеченным`
+          `Удар пришелся по ${target.name} но остался незамеченным`
         )
       //this.addMessage( LogLevel.DEBUG, `${actor.name} ударил по мне, но я не почувствовал боли`)
       case Reaction.RESIST:
@@ -523,6 +526,28 @@ class AttackLogger extends SubLogger {
         return this.debug(
           `${actor.name} throws ${missile.name} in ${target.name}, but misses!`
         )
+    }
+  }
+}
+
+class DisarmLogger extends SubLogger {
+  public nothingToDisarm(creature: Creature) {
+    this.debug(`У ${creature.name} нечего выбивать`) // EXTRA: Extend from hands
+  }
+
+  public successOnCreature(creature: Creature) {
+    this.info(`${creature.name} остался без оружия`)
+  }
+
+  public successOnPlayer(creature: Creature, item: Item) {
+    this.info(`${creature.name} выбил ${item.name} у меня из руки`)
+  }
+
+  public fail(creature: Creature, isPlayer: boolean) {
+    if (isPlayer) {
+      this.debug(`${creature.name} удержал оружие в руках`)
+    } else {
+      this.info(`${creature.name} удержал оружие в руках`)
     }
   }
 }

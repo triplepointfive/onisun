@@ -19,7 +19,7 @@ export class HurtEvent extends CreatureEvent {
   }
 
   get damage(): number {
-    if (this.doneDamage) {
+    if (this.doneDamage !== undefined) {
       return this.doneDamage
     } else {
       throw `HurtEvent.damage called but there is no done damage`
