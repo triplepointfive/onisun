@@ -10,6 +10,7 @@ import { HealthStat } from '../lib/stat'
 import { Item, Missile, Protection } from './item'
 import { Damage } from '../lib/damage'
 import { CreatureSpecie, Resistance } from './specie'
+import { CoolDown } from '../utils/cool_down';
 
 export enum Clan {
   Player,
@@ -38,9 +39,11 @@ export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
   public dead: boolean = false
 
   public health: HealthStat
+  public coolDown: CoolDown<Ability>
 
   constructor(public specie: Specie, public id: CreatureId = Creature.getId()) {
     this.health = new HealthStat(specie)
+    this.coolDown = new CoolDown()
   }
 
   get name(): string {
@@ -168,6 +171,7 @@ export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
   public abstract removeItem(item: Item, count: number): void
 
   public statsTurn(): void {
+    this.coolDown.turn()
     this.health.turn()
 
     if (this._impactsBunch) {
