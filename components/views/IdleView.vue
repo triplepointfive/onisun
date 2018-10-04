@@ -56,6 +56,8 @@ export default Vue.extend({
       case 'D':
         return this.screen.drinkCommand()
 
+      case '!':
+        return this.screen.goToPowers()
       case '@':
         return this.screen.goToBaseInfo()
       case '#':

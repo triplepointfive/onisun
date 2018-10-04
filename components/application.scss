@@ -80,3 +80,17 @@ body {
     }
   }
 }
+
+.keyboard-key {
+  color: gold;
+
+  &:before {
+    content: '[';
+    color: white;
+  }
+
+  &:after {
+    content: ']';
+    color: white;
+  }
+}

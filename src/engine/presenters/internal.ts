@@ -8,6 +8,7 @@ import {
   EquipmentPresenter,
   HistoryInfoPresenter,
   TalentsPresenter,
+  PowersInfoPresenter,
 } from '../../engine'
 
 export enum PresenterType {
@@ -50,6 +51,10 @@ export abstract class Presenter {
 }
 
 export abstract class BaseMenusPresenter extends Presenter {
+  public goToPowers(): void {
+    this.redirect(new PowersInfoPresenter(this.levelMap, this.game))
+  }
+
   public goToBaseInfo(): void {
     this.redirect(new BaseInfoPresenter(this.levelMap, this.game))
   }

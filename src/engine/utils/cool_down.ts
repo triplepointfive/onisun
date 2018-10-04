@@ -1,8 +1,5 @@
 export class CoolDown<Key> {
-  constructor(
-    public active: Map<Key, number> = new Map
-  ) {
-  }
+  constructor(public active: Map<Key, number> = new Map()) {}
 
   public add(key: Key, turns: number): void {
     this.active.set(key, turns)

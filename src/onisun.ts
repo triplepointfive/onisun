@@ -26,6 +26,7 @@ import {
   OnisunDefenderProfession,
 } from './onisun/professions'
 import { humanRace } from './onisun/races'
+import { Power } from './engine/models/creature';
 
 export * from './engine'
 export * from './onisun/ai'
@@ -66,8 +67,8 @@ export class Application {
   public mainGame: Onisun | null = null
 
   constructor() {
-    this.menu = new MainMenu(this)
-    // this.initGame(this.randomPlayer(new PlayerAI()))
+    // this.menu = new MainMenu(this)
+    this.initGame(this.randomPlayer(new PlayerAI()))
   }
 
   public initGame(player: Player) {
@@ -93,6 +94,7 @@ export class Application {
         gender: gender,
         clan: Clan.Player,
         abilities: [],
+        powers: [Power.KnockWeaponOut],
         leavesCorpseRatio: 0,
 
         ownProfession: profession,

@@ -20,6 +20,7 @@ import BasePage from './CharacterInfoPages/BasePage.vue'
 import EquipmentPage from './CharacterInfoPages/EquipmentPage.vue'
 import HistoryInfoPage from './CharacterInfoPages/HistoryInfoPage.vue'
 import TalentsPage from './CharacterInfoPages/TalentsPage.vue'
+import PowersPage from './CharacterInfoPages/PowersPage.vue'
 
 import { CharacterInfoPage, CharacterInfoPresenter } from '../../src/onisun'
 
@@ -35,6 +36,8 @@ export default Vue.extend({
   methods: {
     onEvent(event: KeyboardEvent): void {
       switch (event.key) {
+      case '!':
+        return this.screen.goToPowers()
       case '@':
         return this.screen.goToBaseInfo()
       case '#':
@@ -53,6 +56,8 @@ export default Vue.extend({
   computed: {
     page(): Component {
       switch(this.screen.page) {
+        case CharacterInfoPage.Powers:
+          return PowersPage
         case CharacterInfoPage.Base:
           return BasePage
         case CharacterInfoPage.Equipment:
@@ -67,6 +72,7 @@ export default Vue.extend({
     },
     pages(): Option[] {
       return [
+        { type: CharacterInfoPage.Powers, name: 'powersInfo', key: '!' },
         { type: CharacterInfoPage.Base, name: 'baseInfo', key: '@' },
         { type: CharacterInfoPage.Equipment, name: 'equipment', key: '#' },
         { type: CharacterInfoPage.Talents, name: 'talentsInfo', key: '%' },

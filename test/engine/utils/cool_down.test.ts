@@ -1,10 +1,11 @@
 import { CoolDown } from '../../../src/engine'
 
 describe('CoolDown', () => {
-  let coolDown: CoolDown<string> = new CoolDown
+  let coolDown: CoolDown<string> = new CoolDown()
 
   it('works', () => {
-    const key1 = 'a', key2 = 'b'
+    const key1 = 'a',
+      key2 = 'b'
 
     expect(coolDown.has(key1)).toBeFalsy()
 

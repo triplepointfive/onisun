@@ -1,6 +1,6 @@
 import { Missile, Protection } from './item'
 import { Damage } from '../lib/damage'
-import { Clan, Ability } from './creature'
+import { Clan, Ability, Power } from './creature'
 import { Material } from '../lib/material'
 import { Gender } from '../lib/gender'
 import { Race } from '../lib/race'
@@ -23,6 +23,7 @@ export interface CreatureSpecie {
   weight: number
   clan: Clan
   abilities: Ability[]
+  powers: Power[]
 
   protections: Protection[]
   damages: Damage[]

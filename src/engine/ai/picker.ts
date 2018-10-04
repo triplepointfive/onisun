@@ -16,7 +16,7 @@ export class Picker extends GoToTileAI {
     levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {
-    if (actor.can(Ability.Inventory)) {
+    if (actor.hasAbility(Ability.Inventory)) {
       return super.act(actor, levelMap, game)
     }
   }

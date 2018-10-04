@@ -14,6 +14,7 @@ export enum CharacterInfoPage {
   Talents,
   Equipment,
   History,
+  Powers,
 }
 
 export abstract class CharacterInfoPresenter extends BaseMenusPresenter {

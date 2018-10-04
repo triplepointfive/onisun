@@ -51,7 +51,7 @@ export class Descender extends GoToTileAI {
     levelMap: LevelMap,
     game: Game
   ): CreatureEvent | undefined {
-    if (actor.can(Ability.GoStairway)) {
+    if (actor.hasAbility(Ability.GoStairway)) {
       return super.act(actor, levelMap, game)
     }
   }

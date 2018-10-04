@@ -19,7 +19,7 @@ export class Thrower extends AI {
     game: Game
   ): CreatureEvent | undefined {
     if (
-      !actor.can(Ability.Throwing) ||
+      !actor.hasAbility(Ability.Throwing) ||
       !this.hasMissile(actor) ||
       !this.canAttack(actor, levelMap, game)
     ) {

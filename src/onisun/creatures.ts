@@ -24,6 +24,7 @@ const newCreature = (
     weight: 10,
     clan: Clan.PlayerOnlyEnemy,
     abilities: [],
+    powers: [],
     protections: protections,
     damages: damages,
 

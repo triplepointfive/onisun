@@ -10,7 +10,7 @@ import { HealthStat } from '../lib/stat'
 import { Item, Missile, Protection } from './item'
 import { Damage } from '../lib/damage'
 import { CreatureSpecie, Resistance } from './specie'
-import { CoolDown } from '../utils/cool_down';
+import { CoolDown } from '../utils/cool_down'
 
 export enum Clan {
   Player,
@@ -22,8 +22,10 @@ export enum Ability {
   GoStairway,
   Inventory,
   Throwing,
+}
 
-  KnockWeaponOut,
+export enum Power {
+  KnockWeaponOut = 'knockWeaponOut',
 }
 
 export type CreatureId = number
@@ -66,7 +68,7 @@ export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
     return this.specie.damages
   }
 
-  public can(ability: Ability) {
+  public hasAbility(ability: Ability) {
     return includes(this.specie.abilities, ability)
   }
 

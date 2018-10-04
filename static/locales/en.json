@@ -15,7 +15,8 @@
       "baseInfo": "Character Info",
       "equipment": "Equipment",
       "talentsInfo": "Talents",
-      "historyInfo": "History"
+      "historyInfo": "History",
+      "powersInfo": "Powers"
     },
     "talentsPage": {
       "rank": "Rank %{current}/%{max}",
