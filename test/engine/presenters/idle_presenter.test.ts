@@ -18,6 +18,10 @@ import {
   Direction,
   StayEvent,
   ImpactType,
+  PowersInfoPresenter,
+  BaseInfoPresenter,
+  HistoryInfoPresenter,
+  TalentsPresenter,
 } from '../../../src/engine'
 
 import {
@@ -96,6 +100,44 @@ describe('IdlePresenter', () => {
     expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
       DropItemsPresenter
     )
+  })
+
+  it('opens powers screen', () => {
+    presenter.goToPowers()
+    expect(presenter.redirect.mock.calls.length).toBe(1)
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
+      PowersInfoPresenter
+    )
+  })
+
+  it('opens base info screen', () => {
+    presenter.goToBaseInfo()
+    expect(presenter.redirect.mock.calls.length).toBe(1)
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
+      BaseInfoPresenter
+    )
+  })
+
+  it('opens inventory screen', () => {
+    presenter.goToInventory()
+    expect(presenter.redirect.mock.calls.length).toBe(1)
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
+      EquipmentPresenter
+    )
+  })
+
+  it('opens history info screen', () => {
+    presenter.goToHistoryInfo()
+    expect(presenter.redirect.mock.calls.length).toBe(1)
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(
+      HistoryInfoPresenter
+    )
+  })
+
+  it('opens talents screen', () => {
+    presenter.goToTalents()
+    expect(presenter.redirect.mock.calls.length).toBe(1)
+    expect(presenter.redirect.mock.calls[0][0]).toBeInstanceOf(TalentsPresenter)
   })
 
   it('waits', () => {

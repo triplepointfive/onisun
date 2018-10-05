@@ -3,6 +3,7 @@ import {
   generatePlayer,
   generateOneHandedWeapon,
   generateLevelMap,
+  generateCreature,
 } from '../helpers'
 import {
   PickUpItemsEvent,
@@ -10,6 +11,7 @@ import {
   LevelMap,
   Point,
   Tile,
+  Creature,
 } from '../../../src/engine'
 
 describe('Pick up items', () => {
@@ -29,6 +31,16 @@ describe('Pick up items', () => {
     tile.addItem(item, 10)
 
     event = new PickUpItemsEvent(tile, [{ count: 5, item }], game)
+  })
+
+  it('creature', () => {
+    let creature: Creature = generateCreature()
+    map.addCreature(new Point(1, 1), creature)
+    event = new PickUpItemsEvent(tile, [{ count: 5, item }], game)
+
+    creature.on(event)
+    expect(creature.bag).toBeDefined()
+    expect(creature.bag.bunch.length).toEqual(1)
   })
 
   it('removes item from floor', () => {

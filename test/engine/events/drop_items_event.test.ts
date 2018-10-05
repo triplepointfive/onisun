@@ -3,6 +3,7 @@ import {
   generatePlayer,
   generateOneHandedWeapon,
   generateLevelMap,
+  generateCreature,
 } from '../helpers'
 import {
   DropItemsEvent,
@@ -11,6 +12,7 @@ import {
   Point,
   Tile,
   Game,
+  Creature,
 } from '../../../src/engine'
 
 describe('Drop items event', () => {
@@ -32,6 +34,19 @@ describe('Drop items event', () => {
     tile = map.at(1, 1)
 
     event = new DropItemsEvent(tile, [{ count: 5, item }], game)
+  })
+
+  it('creature', () => {
+    let creature: Creature = generateCreature()
+    map.addCreature(new Point(1, 1), creature)
+
+    creature.addItem(item, 5)
+
+    event = new DropItemsEvent(tile, [{ count: 5, item }], game)
+
+    creature.on(event)
+    expect(creature.bag).toBeDefined()
+    expect(creature.bag.bunch.length).toEqual(0)
   })
 
   it('adds items to floor', () => {
