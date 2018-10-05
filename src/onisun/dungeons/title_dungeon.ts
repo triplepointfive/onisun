@@ -39,8 +39,8 @@ const config = {
   maxSize: 8,
   roomsCount: 20,
   addTraps: false,
-  width: 100,
-  height: 100,
+  width: 40,
+  height: 40,
   withTraps: false,
 }
 
@@ -109,17 +109,7 @@ export class TitleDungeon extends Dungeon {
 
     centralize(map)
 
-    // withMatchingTile(map, tile => tile.passibleThrough(), (x, y) => {
-    //   map.addCreature({ x, y }, creaturesPool1.pick(null))
-    // })
-    // withMatchingTile(map, tile => tile.passibleThrough(), (x, y) => {
-    //   map.addCreature({ x, y }, creaturesPool1.pick(null))
-    // })
-    // withMatchingTile(map, tile => tile.passibleThrough(), (x, y) => {
-    //   map.addCreature({ x, y }, creaturesPool1.pick(null))
-    // })
-
-    addCreatures(0.05, map, creaturesPool1)
+    addCreatures(0.01, map, creaturesPool1)
     // addItems(0.05, map, weapons.merge(itemsPool))
 
     return map

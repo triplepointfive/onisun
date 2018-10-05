@@ -72,8 +72,8 @@ export class Application {
     const player = this.randomPlayer(new PlayerAI())
     this.initGame(player)
 
-    // player.inventory.rightHandSlot.equip(weapons.pick(null), 1)
-    // player.inventory.leftHandSlot.equip(weapons.pick(null), 1)
+    player.inventory.rightHandSlot.equip(weapons.pick(null), 1)
+    player.inventory.leftHandSlot.equip(weapons.pick(null), 1)
   }
 
   public initGame(player: Player) {

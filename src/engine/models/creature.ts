@@ -65,6 +65,13 @@ export abstract class Creature<Specie extends CreatureSpecie = CreatureSpecie> {
   }
 
   get damages(): Damage[] {
+    if (
+      this.hasImpact(ImpactType.Disarmed) &&
+      this.specie.unarmedDamage.length !== 0
+    ) {
+      return this.specie.damages
+    }
+
     return this.specie.damages
   }
 
@@ -200,13 +207,9 @@ export class AICreature extends Creature {
   }
 
   public act(levelMap: LevelMap, game: Game): number {
-    console.time('act2')
     this.statsTurn()
-    console.timeEnd('act2')
 
-    console.time('act')
     this.visionMask(levelMap)
-    console.timeEnd('act')
     const command = this.ai.act(this, levelMap, game)
     if (command) {
       this.on(command)
@@ -246,8 +249,8 @@ export class AICreature extends Creature {
 
   public canBeDisarmed(): boolean {
     return (
-      this.specie.unarmedDamage.length === 0 ||
-      this.hasImpact(ImpactType.Disarmed)
+      this.specie.unarmedDamage.length !== 0 &&
+      !this.hasImpact(ImpactType.Disarmed)
     )
   }
 }

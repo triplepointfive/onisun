@@ -3,7 +3,7 @@ import { Creature, Power } from '../models/creature'
 import { AI } from './internal'
 import { LevelMap } from '../models/level_map'
 import { CreatureEvent } from '../events/internal'
-import { KnockWeaponOutEvent } from '../events/disarm_event'
+import { KnockWeaponOutEvent } from '../events/knock_weapon_out_event'
 
 export class Attacker extends AI {
   public victim?: Creature
@@ -44,12 +44,8 @@ export class Attacker extends AI {
   private victimInAccess(
     actor: Creature,
     levelMap: LevelMap,
-    victim: Creature | undefined
+    victim: Creature
   ): boolean {
-    if (victim === undefined) {
-      return false
-    }
-
     const creature = this.findCreature(
       actor,
       levelMap,

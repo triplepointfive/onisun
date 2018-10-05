@@ -10,6 +10,8 @@ import {
   Attacker,
   Game,
   AttackEvent,
+  Power,
+  KnockWeaponOutEvent,
 } from '../../../src/engine'
 
 let internalAI = new Attacker(),
@@ -46,11 +48,20 @@ describe('When enemy is close enough', () => {
   beforeEach(() => {
     map.addCreature(new Point(2, 2), enemy)
     actor.on = jest.fn()
-    actor.act(map, game)
   })
 
   it('Builds command', () => {
+    actor.act(map, game)
     expect(actor.on.mock.calls.length).toEqual(2)
     expect(actor.on.mock.calls[0][0]).toBeInstanceOf(AttackEvent)
+  })
+
+  it('Knocks weapons out if possible', () => {
+    enemy.canBeDisarmed = jest.fn(() => true)
+    actor.specie.powers.push(Power.KnockWeaponOut)
+
+    actor.act(map, game)
+    expect(actor.on.mock.calls.length).toEqual(2)
+    expect(actor.on.mock.calls[0][0]).toBeInstanceOf(KnockWeaponOutEvent)
   })
 })

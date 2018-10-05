@@ -1,32 +1,17 @@
-import { CreatureEvent, Reaction } from './internal'
+import { random } from 'lodash'
 import {
   Creature,
-  LevelMap,
   Game,
   ImpactType,
+  LevelMap,
   Player,
   RemoveItemEvent,
+  Calculator,
 } from '../../engine'
+import { Power } from '../models/creature'
+import { CreatureEvent, Reaction } from './internal'
 
-import { random } from 'lodash'
-
-export class KnockWeaponOutEvent extends CreatureEvent {
-  constructor(
-    private victim: Creature,
-    private levelMap: LevelMap,
-    private game: Game
-  ) {
-    super()
-  }
-
-  public affectCreature(creature: Creature): Reaction {
-    return this.victim.on(
-      new DisarmEvent(creature, 1, this.levelMap, this.game)
-    )
-  }
-}
-
-export class DisarmEvent extends CreatureEvent {
+class DisarmEvent extends CreatureEvent {
   constructor(
     private actor: Creature,
     private chance: number,
@@ -40,6 +25,11 @@ export class DisarmEvent extends CreatureEvent {
     if (!creature.canBeDisarmed()) {
       this.game.logger.disarmLogger.nothingToDisarm(creature)
       return Reaction.NOTHING
+    } else if (
+      Calculator.misses(this.actor.bodyControl, creature.bodyControl)
+    ) {
+      // TODO: Log
+      return Reaction.DODGE
     } else if (this.succeeded()) {
       creature.addImpact(ImpactType.Disarmed, this.turns())
       this.game.logger.disarmLogger.successOnCreature(creature)
@@ -55,6 +45,9 @@ export class DisarmEvent extends CreatureEvent {
     if (!player.canBeDisarmed()) {
       this.game.logger.disarmLogger.nothingToDisarm(player)
       return Reaction.NOTHING
+    } else if (Calculator.misses(this.actor.bodyControl, player.bodyControl)) {
+      // TODO: Log
+      return Reaction.DODGE
     } else if (this.succeeded()) {
       let slots = []
 
@@ -89,18 +82,40 @@ export class DisarmEvent extends CreatureEvent {
   }
 
   private succeeded(): boolean {
-    return Math.random() < this.chance // EXTRA: Luck based, move to calculator
+    return Calculator.chance(1, this.chance)
   }
 
   private rightHand(): boolean {
-    return Math.random() < 0.5
+    return Calculator.chance(1, 2)
   }
 
   private bothHands(): boolean {
-    return Math.random() < 0.1
+    return Calculator.chance(1, 10)
   }
 
   private turns(): number {
     return random(3, 5)
+  }
+}
+
+export class KnockWeaponOutEvent extends CreatureEvent {
+  constructor(
+    private victim: Creature,
+    private levelMap: LevelMap,
+    private game: Game
+  ) {
+    super()
+  }
+
+  public affectCreature(creature: Creature): Reaction {
+    creature.coolDown.add(Power.KnockWeaponOut, this.coolDownTurns())
+
+    return this.victim.on(
+      new DisarmEvent(creature, 1, this.levelMap, this.game)
+    )
+  }
+
+  private coolDownTurns(): number {
+    return 10 // TODO:
   }
 }

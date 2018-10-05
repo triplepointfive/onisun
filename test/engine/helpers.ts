@@ -127,6 +127,7 @@ const fakeSpecie: () => PlayerSpecie = () => {
     abilities: [Ability.Inventory, Ability.GoStairway, Ability.Throwing],
     protections: [],
     damages: [],
+    unarmedDamage: [],
     maxHealthValue: 50,
     regenerationRate: 10,
     regenerationValue: 1,
@@ -139,6 +140,7 @@ const fakeSpecie: () => PlayerSpecie = () => {
     material: Material.flesh,
     throwingDamages: [],
     race: testRace,
+    powers: [],
 
     gender: Gender.Female,
     eyeColor: Color.Aqua,
