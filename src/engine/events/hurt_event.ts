@@ -36,17 +36,17 @@ export class HurtEvent extends CreatureEvent {
     this.doneDamage = damage
 
     if (resist) {
-      return Reaction.RESIST
+      return Reaction.Resist
     }
 
     if (damage >= subject.health.currentValue) {
       subject.on(new DieEvent(this.game, this.levelMap, this.dieReason))
-      return Reaction.DIE
+      return Reaction.Die
     } else if (damage <= 0) {
-      return Reaction.NOTHING
+      return Reaction.Nothing
     } else {
       subject.health.decrease(damage)
-      return Reaction.HURT
+      return Reaction.Hurt
     }
   }
 }

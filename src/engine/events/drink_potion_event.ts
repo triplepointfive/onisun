@@ -12,6 +12,6 @@ export class DrinkPotionEvent extends CreatureEvent {
     this.potion.onDrink(this.game)
     // TODO: Different messages for player and creatures
     this.game.logger.drink(this.potion)
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

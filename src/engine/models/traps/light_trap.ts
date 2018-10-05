@@ -58,7 +58,7 @@ export class LightTrap extends Trap {
         (sees, isPlayer) => {
           // TODO: If player sees a creature log a message nevertheless
           if (creature.hasImpact(ImpactType.Blind)) {
-            return Reaction.NOTHING
+            return Reaction.Nothing
           }
 
           game.logger.lightTrapActivated(game.player, sees, isPlayer, creature)

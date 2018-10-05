@@ -20,6 +20,6 @@ export class PickProfessionEvent extends PlayerEvent {
       player.professions.push(this.profession)
     }
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

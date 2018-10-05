@@ -24,12 +24,12 @@ class DisarmEvent extends CreatureEvent {
   public affectCreature(creature: Creature): Reaction {
     if (!creature.canBeDisarmed()) {
       this.game.logger.disarmLogger.nothingToDisarm(creature)
-      return Reaction.NOTHING
+      return Reaction.Nothing
     } else if (
       Calculator.misses(this.actor.bodyControl, creature.bodyControl)
     ) {
       // TODO: Log
-      return Reaction.DODGE
+      return Reaction.Dodge
     } else if (this.succeeded()) {
       creature.addImpact(ImpactType.Disarmed, this.turns())
       this.game.logger.disarmLogger.successOnCreature(creature)
@@ -38,16 +38,16 @@ class DisarmEvent extends CreatureEvent {
     }
 
     this.game.logger.disarmLogger.fail(creature, false)
-    return Reaction.RESIST
+    return Reaction.Resist
   }
 
   public affectPlayer(player: Player): Reaction {
     if (!player.canBeDisarmed()) {
       this.game.logger.disarmLogger.nothingToDisarm(player)
-      return Reaction.NOTHING
+      return Reaction.Nothing
     } else if (Calculator.misses(this.actor.bodyControl, player.bodyControl)) {
       // TODO: Log
-      return Reaction.DODGE
+      return Reaction.Dodge
     } else if (this.succeeded()) {
       let slots = []
 
@@ -78,7 +78,7 @@ class DisarmEvent extends CreatureEvent {
     }
 
     this.game.logger.disarmLogger.fail(player, true)
-    return Reaction.RESIST
+    return Reaction.Resist
   }
 
   private succeeded(): boolean {

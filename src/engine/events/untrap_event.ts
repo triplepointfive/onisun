@@ -17,6 +17,6 @@ export class UntrapEvent extends PlayerEvent {
 
   public affectPlayer(player: Player): Reaction {
     this.trap.untrap(this.trapPosition, player, this.levelMap, this.game)
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

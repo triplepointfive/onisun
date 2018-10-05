@@ -18,7 +18,7 @@ export class DropItemsEvent extends CreatureEvent {
       creature.removeItem(item, count)
     })
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   public affectPlayer(player: Player): Reaction {
@@ -31,6 +31,6 @@ export class DropItemsEvent extends CreatureEvent {
       this.tile.addItem(item, count)
     })
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

@@ -41,13 +41,13 @@ describe('WaterDamageEvent', () => {
     })
 
     it('unaffected with water', () => {
-      expect(creature.on(event)).toEqual(Reaction.RESIST)
+      expect(creature.on(event)).toEqual(Reaction.Resist)
       expect(creature.on).toHaveBeenCalledTimes(1)
     })
 
     it('affected with water', () => {
       creature.specie.material = Material.paper
-      expect(creature.on(event)).toEqual(Reaction.HURT)
+      expect(creature.on(event)).toEqual(Reaction.Hurt)
       expect(creature.on).toHaveBeenCalledTimes(2)
     })
   })
@@ -58,7 +58,7 @@ describe('WaterDamageEvent', () => {
         player.inventory.headSlot.material = Material.paper
         player.inventory.chestSlot.material = Material.paper
 
-        expect(player.on(event)).toEqual(Reaction.HURT)
+        expect(player.on(event)).toEqual(Reaction.Hurt)
         expect(player.health.atMax).toBeFalsy()
       })
 
@@ -68,7 +68,7 @@ describe('WaterDamageEvent', () => {
         player.inventory.bootsSlot.material = Material.paper
         player.inventory.rightHandSlot.material = Material.paper
 
-        expect(player.on(event)).toEqual(Reaction.DIE)
+        expect(player.on(event)).toEqual(Reaction.Die)
         expect(player.dead).toBeTruthy()
       })
 
@@ -77,7 +77,7 @@ describe('WaterDamageEvent', () => {
         slot.material = Material.paper
         slot.equipment = { count: 1, item: generateBodyArmor() }
 
-        expect(player.on(event)).toEqual(Reaction.RESIST)
+        expect(player.on(event)).toEqual(Reaction.Resist)
         expect(player.health.atMax).toBeTruthy()
       })
     })
@@ -90,12 +90,12 @@ describe('WaterDamageEvent', () => {
 
         Calculator.chance = jest.fn(() => true)
 
-        expect(player.on(event)).toEqual(Reaction.NOTHING)
+        expect(player.on(event)).toEqual(Reaction.Nothing)
         expect(item.corrosionLevel).toEqual(CorrosionLevel.Slightly)
 
         Calculator.chance = jest.fn(() => false)
 
-        expect(player.on(event)).toEqual(Reaction.NOTHING)
+        expect(player.on(event)).toEqual(Reaction.Nothing)
         expect(item.corrosionLevel).toEqual(CorrosionLevel.Slightly)
       })
 
@@ -108,13 +108,13 @@ describe('WaterDamageEvent', () => {
 
         Calculator.chance = jest.fn(() => false)
 
-        expect(player.on(event)).toEqual(Reaction.NOTHING)
+        expect(player.on(event)).toEqual(Reaction.Nothing)
         expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
         expect(slot.equipment).toBeDefined()
 
         Calculator.chance = jest.fn(() => true)
 
-        expect(player.on(event)).toEqual(Reaction.NOTHING)
+        expect(player.on(event)).toEqual(Reaction.Nothing)
         expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
         expect(slot.equipment).toBeUndefined()
       })
@@ -128,12 +128,12 @@ describe('WaterDamageEvent', () => {
 
         Calculator.chance = jest.fn(() => true)
 
-        expect(player.on(event)).toEqual(Reaction.NOTHING)
+        expect(player.on(event)).toEqual(Reaction.Nothing)
         expect(item.corrosionLevel).toEqual(CorrosionLevel.Slightly)
 
         Calculator.chance = jest.fn(() => false)
 
-        expect(player.on(event)).toEqual(Reaction.NOTHING)
+        expect(player.on(event)).toEqual(Reaction.Nothing)
         expect(item.corrosionLevel).toEqual(CorrosionLevel.Slightly)
       })
 
@@ -144,14 +144,14 @@ describe('WaterDamageEvent', () => {
 
         Calculator.chance = jest.fn(() => false)
 
-        expect(player.on(event)).toEqual(Reaction.NOTHING)
+        expect(player.on(event)).toEqual(Reaction.Nothing)
         expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
         expect(player.inventory.findInBag(item)).toBeDefined()
 
         Calculator.chance = jest.fn(() => true)
         Calculator.lowerWeight = jest.fn(() => 10)
 
-        expect(player.on(event)).toEqual(Reaction.NOTHING)
+        expect(player.on(event)).toEqual(Reaction.Nothing)
         expect(item.corrosionLevel).toEqual(CorrosionLevel.None)
         expect(player.inventory.findInBag(item)).toBeUndefined()
       })

@@ -223,16 +223,16 @@ export class Logger {
 
   public waterBodyPartDamage(bodyPart: BodyPart, reaction: Reaction): void {
     switch (reaction) {
-      case Reaction.DIE:
+      case Reaction.Die:
         this.danger(
           `Вода попала мне на ${bodyPart.name}, рана не совместима с жизнью`
         )
         break
-      case Reaction.HURT:
+      case Reaction.Hurt:
         this.danger(`Вода обожгла мне ${bodyPart.name}`)
         break
-      case Reaction.NOTHING:
-      case Reaction.RESIST:
+      case Reaction.Nothing:
+      case Reaction.Resist:
         this.danger(`Вода попала мне на ${bodyPart.name}, но все обошлось`)
         break
     }
@@ -250,17 +250,17 @@ export class Logger {
     }
 
     switch (reaction) {
-      case Reaction.DIE:
+      case Reaction.Die:
         this.danger(`${creature.name} растворился в потоках воды`)
         break
-      case Reaction.DODGE:
+      case Reaction.Dodge:
         this.info(`${creature.name} уклонился от потока воды`)
         break
-      case Reaction.HURT:
+      case Reaction.Hurt:
         this.warning(`${creature.name} пострадал от воды`)
         break
-      case Reaction.NOTHING:
-      case Reaction.RESIST:
+      case Reaction.Nothing:
+      case Reaction.Resist:
         if (!isPlayer) {
           this.debug(`${creature.name} был облит водой`)
         }
@@ -470,25 +470,25 @@ class AttackLogger extends SubLogger {
     isPlayer: boolean
   ): void {
     switch (reaction) {
-      case Reaction.HURT:
+      case Reaction.Hurt:
         return this.debug(
           `${target.name} got ${damage} damage from ${actor.name}`
         )
-      case Reaction.DIE:
+      case Reaction.Die:
         return this.warning(
           `${target.name} got ${damage} damage from ${
             actor.name
           } causes them to die`
         )
-      case Reaction.NOTHING:
+      case Reaction.Nothing:
         return this.debug(
           `Удар пришелся по ${target.name} но остался незамеченным`
         )
       //this.addMessage( LogLevel.DEBUG, `${actor.name} ударил по мне, но я не почувствовал боли`)
-      case Reaction.RESIST:
+      case Reaction.Resist:
         return this.info(`${target.name} игнорирует урон`)
       // this.addMessage(LogLevel.DEBUG, `Я игнорирую урон ${target.name}`)
-      case Reaction.DODGE:
+      case Reaction.Dodge:
         return this.debug(`${actor.name} misses ${target.name}!`)
     }
   }
@@ -502,27 +502,27 @@ class AttackLogger extends SubLogger {
     isPlayer: boolean
   ): void {
     switch (reaction) {
-      case Reaction.HURT:
+      case Reaction.Hurt:
         return this.debug(
           `${target.name} got ${damage} damage from ${actor.name} by ${
             missile.name
           }`
         )
-      case Reaction.DIE:
+      case Reaction.Die:
         return this.warning(
           `${target.name} got ${damage} damage from ${
             actor.name
           } causes them to die`
         )
-      case Reaction.NOTHING:
+      case Reaction.Nothing:
         return this.debug(
           `Удар пришелся по ${actor.name} но остался незамеченным`
         )
       //this.addMessage( LogLevel.DEBUG, `${actor.name} ударил по мне, но я не почувствовал боли`)
-      case Reaction.RESIST:
+      case Reaction.Resist:
         return this.info(`${target.name} игнорирует урон`)
       // this.addMessage(LogLevel.DEBUG, `Я игнорирую урон ${target.name}`)
-      case Reaction.DODGE:
+      case Reaction.Dodge:
         return this.debug(
           `${actor.name} throws ${missile.name} in ${target.name}, but misses!`
         )

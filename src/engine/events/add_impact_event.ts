@@ -21,6 +21,6 @@ export class AddImpactEvent extends CreatureEvent {
       creature.addConstImpact(this.impactType, this.source)
     }
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

@@ -9,7 +9,7 @@ export class AfterEvent extends CreatureEvent {
   }
 
   public affectCreature(creature: Creature): Reaction {
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   public affectPlayer(player: Player): Reaction {
@@ -33,6 +33,6 @@ export class AfterEvent extends CreatureEvent {
       player.addConstImpact(ImpactType.Stressed, 'bag')
     }
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

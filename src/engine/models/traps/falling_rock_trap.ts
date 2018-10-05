@@ -63,7 +63,7 @@ export class FallingRockTrap extends Trap {
     creature: Creature
   ): Reaction {
     if (!this.throwMissile(pos, levelMap, game.logger)) {
-      return Reaction.NOTHING
+      return Reaction.Nothing
     }
 
     return creature.on(
@@ -81,7 +81,7 @@ export class FallingRockTrap extends Trap {
         (sees, isPlayer) => {
           if (isPlayer && game.player.inventory.headSlot.firm) {
             game.logger.trapFallingRock.resist(game.player)
-            return Reaction.RESIST
+            return Reaction.Resist
           }
 
           const res = creature.on(

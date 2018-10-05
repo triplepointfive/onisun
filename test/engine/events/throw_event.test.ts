@@ -44,7 +44,7 @@ describe('StayEvent', () => {
     beforeEach(() => {
       Calculator.misses = jest.fn(() => true)
 
-      expect(actor.on(event)).toEqual(Reaction.DODGE)
+      expect(actor.on(event)).toEqual(Reaction.Dodge)
     })
 
     it('logs a message', () => {
@@ -63,7 +63,7 @@ describe('StayEvent', () => {
           return { damage: 1, resist: false }
         })
 
-        expect(actor.on(event)).toEqual(Reaction.HURT)
+        expect(actor.on(event)).toEqual(Reaction.Hurt)
       })
 
       it('decreases health level', () => {
@@ -81,7 +81,7 @@ describe('StayEvent', () => {
           return { damage: victim.health.maximum, resist: false }
         })
 
-        expect(actor.on(event)).toEqual(Reaction.DIE)
+        expect(actor.on(event)).toEqual(Reaction.Die)
       })
 
       it('victim dies', () => {

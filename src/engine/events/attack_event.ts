@@ -24,7 +24,7 @@ export class AttackEvent extends CreatureEvent {
   public affectPlayer(player: Player): Reaction {
     const reaction = this.process(player, true)
 
-    if (reaction === Reaction.DIE) {
+    if (reaction === Reaction.Die) {
       player.killStat.add(this.victim.name)
       player.on(new AddExperienceEvent(this.victim, this.levelMap, this.game))
     }
@@ -48,7 +48,7 @@ export class AttackEvent extends CreatureEvent {
 
   protected hit(actor: Creature): [Reaction, number] {
     if (Calculator.misses(actor.bodyControl, this.victim.bodyControl)) {
-      return [Reaction.DODGE, 0]
+      return [Reaction.Dodge, 0]
     }
 
     const hurtEvent = new HurtEvent(

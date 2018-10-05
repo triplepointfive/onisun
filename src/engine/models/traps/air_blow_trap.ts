@@ -122,7 +122,7 @@ export class AirBlowTrap extends Trap {
             )
           }
 
-          return Reaction.NOTHING
+          return Reaction.Nothing
         }
       )
     )

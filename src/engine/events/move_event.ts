@@ -5,7 +5,7 @@ import { Creature, Game, Trap, Point, Reaction } from '../../engine'
 import { Player } from '../models/player'
 
 class SteppingTileVisitor extends TileVisitor {
-  public reaction: Reaction = Reaction.NOTHING
+  public reaction: Reaction = Reaction.Nothing
 
   constructor(
     private pos: Point,
@@ -74,6 +74,6 @@ export class MoveEvent extends CreatureEvent {
       this.affectCreature(player)
     }
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

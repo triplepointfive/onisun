@@ -32,7 +32,7 @@ export class TeleportationEvent extends VisibleCreatureEvent {
 
     // TODO: Add a message if player sees new position
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   public affectPlayer(player: Player): Reaction {
@@ -51,7 +51,7 @@ export class TeleportationEvent extends VisibleCreatureEvent {
       this.game.logger.playerNotTeleported()
     }
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   protected teleport(actor: Creature): boolean {

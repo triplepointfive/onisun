@@ -2,11 +2,11 @@ import { Creature } from '../models/creature'
 import { Player } from '../models/player'
 
 export enum Reaction {
-  DIE,
-  HURT,
-  DODGE,
-  NOTHING,
-  RESIST,
+  Die,
+  Hurt,
+  Dodge,
+  Nothing,
+  Resist,
   Success,
 }
 

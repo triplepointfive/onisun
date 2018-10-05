@@ -19,13 +19,13 @@ describe('StayEvent', () => {
   })
 
   it('does nothing', () => {
-    expect(creature.on(new StayEvent(map))).toEqual(Reaction.NOTHING)
+    expect(creature.on(new StayEvent(map))).toEqual(Reaction.Nothing)
   })
 
   it('when blind', () => {
     creature.addImpact(ImpactType.Blind, 'test')
 
-    expect(creature.on(new StayEvent(map))).toEqual(Reaction.NOTHING)
+    expect(creature.on(new StayEvent(map))).toEqual(Reaction.Nothing)
 
     const memory = creature.stageMemory(map)
     expect(memory.at(0, 0).see).toBeTruthy()

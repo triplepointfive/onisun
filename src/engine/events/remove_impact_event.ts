@@ -19,6 +19,6 @@ export class RemoveImpactEvent extends CreatureEvent {
       creature.removeImpact(this.impactType)
     }
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

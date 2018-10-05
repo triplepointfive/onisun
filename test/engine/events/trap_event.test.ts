@@ -65,7 +65,7 @@ describe('Trap event', () => {
       (sees, isPlayer) => ([dodgeSees, dodgeIsPlayer] = [sees, isPlayer]),
       (sees, isPlayer) => {
         ;[activatedSees, activatedIsPlayer] = [sees, isPlayer]
-        return Reaction.NOTHING
+        return Reaction.Nothing
       }
     )
   })

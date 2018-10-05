@@ -59,7 +59,7 @@ export class WaterTrap extends Trap {
             game.player,
             sees,
             isPlayer,
-            Reaction.DODGE,
+            Reaction.Dodge,
             creature
           ),
         (sees, isPlayer) => {

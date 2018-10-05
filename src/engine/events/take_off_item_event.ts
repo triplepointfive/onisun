@@ -18,7 +18,7 @@ export class TakeOffItemEvent extends CreatureEvent {
   }
 
   public affectCreature(actor: Creature): Reaction {
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   public affectPlayer(player: Player): Reaction {
@@ -33,7 +33,7 @@ export class TakeOffItemEvent extends CreatureEvent {
     player.inventory.putToBag(equipment.item, equipment.count)
     this.game.logger.takeOff(equipment.item)
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   private onTakeOff(player: Player, item: Item): void {

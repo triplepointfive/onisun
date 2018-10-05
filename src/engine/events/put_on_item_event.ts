@@ -28,7 +28,7 @@ export class PutOnItemEvent extends PlayerEvent {
     // TODO: assert can equip
     if (this.slot.equipment) {
       const reaction = player.on(new TakeOffItemEvent(this.slot, this.game))
-      if (reaction !== Reaction.NOTHING) {
+      if (reaction !== Reaction.Nothing) {
         return reaction
       }
     }
@@ -41,7 +41,7 @@ export class PutOnItemEvent extends PlayerEvent {
 
     this.game.logger.putOn(this.item)
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   private onPutOn(player: Player, item: Item): void {

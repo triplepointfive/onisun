@@ -17,6 +17,6 @@ export class PickTalentEvent extends PlayerEvent {
     this.talent.upgrade(player)
     this.profession.points += 1
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

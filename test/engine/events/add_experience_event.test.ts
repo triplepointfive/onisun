@@ -28,7 +28,7 @@ describe('Drink potion event', () => {
     })
 
     it('creates level up event', () => {
-      expect(actor.on(event)).toEqual(Reaction.NOTHING)
+      expect(actor.on(event)).toEqual(Reaction.Nothing)
       expect(actor.ai.events.length).toEqual(1)
 
       const aiEvent = actor.ai.events[0]

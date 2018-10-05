@@ -31,7 +31,7 @@ export class TrapEvent extends VisibleCreatureEvent {
 
     if (this.dodges(actor)) {
       this.onCreatureDodge(sees, false)
-      return Reaction.DODGE
+      return Reaction.Dodge
     } else {
       return this.onCreatureActivated(sees, false)
     }
@@ -42,7 +42,7 @@ export class TrapEvent extends VisibleCreatureEvent {
 
     if (this.dodges(actor)) {
       this.onCreatureDodge(true, true)
-      return Reaction.DODGE
+      return Reaction.Dodge
     } else {
       return this.onCreatureActivated(true, true)
     }

@@ -17,6 +17,6 @@ export class StayEvent extends CreatureEvent {
         memory.at(x, y).see(this.levelMap.at(x, y), 0)
       })
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

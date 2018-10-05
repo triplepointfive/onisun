@@ -5,7 +5,7 @@ export class LevelUpEvent extends PlayerEvent {
   public affectPlayer(player: Player): Reaction {
     this.updateHealth(player)
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   protected updateHealth(player: Player): void {

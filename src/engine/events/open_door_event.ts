@@ -18,6 +18,6 @@ export class OpenDoorEvent extends VisibleCreatureEvent {
       this.game.logger.doorLogger.open()
     }
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

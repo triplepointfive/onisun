@@ -17,6 +17,6 @@ export class AddExperienceEvent extends PlayerEvent {
       subject.ai.pushEvent(new AINewLevelEvent(level, this.levelMap, this.game))
     })
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

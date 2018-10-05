@@ -54,7 +54,7 @@ class BareWireTrapEvent extends VisibleCreatureEvent {
     if (player.inventory.bootsSlot.insulator) {
       this.game.logger.trapBareWire.resist()
 
-      return Reaction.RESIST
+      return Reaction.Resist
     } else {
       const hurtReaction = player.on(this.hurtEvent)
       this.game.logger.trapBareWire.activated(true, hurtReaction, player)
@@ -102,7 +102,7 @@ export class BareWireTrap extends Trap {
     creature: Creature
   ): Reaction {
     if (Calculator.dodges(creature.bodyControl, this.dodgeRatio)) {
-      return Reaction.DODGE
+      return Reaction.Dodge
     }
 
     return creature.on(new BareWireTrapEvent(this, levelMap, game))

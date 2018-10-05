@@ -36,7 +36,7 @@ export class DieEvent extends CreatureEvent {
       tile.addItem(invItem.item, invItem.count)
     )
 
-    return Reaction.DIE
+    return Reaction.Die
   }
 
   public affectPlayer(player: Player): Reaction {
@@ -44,6 +44,6 @@ export class DieEvent extends CreatureEvent {
     player.dead = true
     this.game.playerTurn = true
 
-    return Reaction.DIE
+    return Reaction.Die
   }
 }

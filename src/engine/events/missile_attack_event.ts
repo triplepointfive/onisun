@@ -28,7 +28,7 @@ export class MissileAttackEvent extends CreatureEvent {
 
     this.withMissile(actor, missile.item)
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   public affectPlayer(player: Player): Reaction {
@@ -43,7 +43,7 @@ export class MissileAttackEvent extends CreatureEvent {
     player.on(new RemoveItemEvent(player.inventory.missileSlot, 1, this.game))
     player.stuffWeight.subtract(missile.item.weight)
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   private withMissile(actor: Creature, missile: Missile): void {
@@ -64,7 +64,7 @@ export class MissileAttackEvent extends CreatureEvent {
           actor.on(new ThrowEvent(victim, missile, this.levelMap, this.game))
         )
       } else {
-        this.done(Reaction.NOTHING)
+        this.done(Reaction.Nothing)
       }
     })
   }

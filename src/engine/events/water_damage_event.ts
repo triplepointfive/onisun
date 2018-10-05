@@ -14,7 +14,7 @@ import { CreatureEvent, Reaction } from './internal'
 import { RemoveItemEvent } from './remove_item_event'
 
 export class WaterDamageEvent extends CreatureEvent {
-  private playerReaction: Reaction = Reaction.NOTHING
+  private playerReaction: Reaction = Reaction.Nothing
 
   constructor(
     private damages: Damage[],
@@ -30,7 +30,7 @@ export class WaterDamageEvent extends CreatureEvent {
         new HurtEvent(this.damages, DieReason.Trap, this.levelMap, this.game)
       )
     } else {
-      return Reaction.RESIST
+      return Reaction.Resist
     }
   }
 
@@ -110,7 +110,7 @@ export class WaterDamageEvent extends CreatureEvent {
             bodyPart,
             bodyPart.equipment.item
           )
-          this.trackReaction(Reaction.RESIST)
+          this.trackReaction(Reaction.Resist)
         } else {
           let reaction = player.on(
             new HurtEvent(
@@ -128,10 +128,10 @@ export class WaterDamageEvent extends CreatureEvent {
   }
 
   protected trackReaction(reaction: Reaction): void {
-    if (this.playerReaction === Reaction.HURT && reaction === Reaction.DIE) {
-      this.playerReaction = Reaction.DIE
-    } else if (this.playerReaction === Reaction.HURT) {
-      this.playerReaction = Reaction.HURT
+    if (this.playerReaction === Reaction.Hurt && reaction === Reaction.Die) {
+      this.playerReaction = Reaction.Die
+    } else if (this.playerReaction === Reaction.Hurt) {
+      this.playerReaction = Reaction.Hurt
     } else {
       this.playerReaction = reaction
     }

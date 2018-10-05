@@ -48,14 +48,14 @@ describe('KnockWeaponOutEvent', () => {
       player.canBeDisarmed = jest.fn(() => false)
       expect(
         creature.on(new KnockWeaponOutEvent(player, levelMap, game))
-      ).toEqual(Reaction.NOTHING)
+      ).toEqual(Reaction.Nothing)
     })
 
     it('player', () => {
       creature.canBeDisarmed = jest.fn(() => false)
       expect(
         player.on(new KnockWeaponOutEvent(creature, levelMap, game))
-      ).toEqual(Reaction.NOTHING)
+      ).toEqual(Reaction.Nothing)
     })
   })
 
@@ -67,13 +67,13 @@ describe('KnockWeaponOutEvent', () => {
     it('creature', () => {
       expect(
         creature.on(new KnockWeaponOutEvent(player, levelMap, game))
-      ).toEqual(Reaction.DODGE)
+      ).toEqual(Reaction.Dodge)
     })
 
     it('player', () => {
       expect(
         player.on(new KnockWeaponOutEvent(creature, levelMap, game))
-      ).toEqual(Reaction.DODGE)
+      ).toEqual(Reaction.Dodge)
     })
   })
 
@@ -86,13 +86,13 @@ describe('KnockWeaponOutEvent', () => {
     it('creature', () => {
       expect(
         creature.on(new KnockWeaponOutEvent(player, levelMap, game))
-      ).toEqual(Reaction.RESIST)
+      ).toEqual(Reaction.Resist)
     })
 
     it('player', () => {
       expect(
         player.on(new KnockWeaponOutEvent(creature, levelMap, game))
-      ).toEqual(Reaction.RESIST)
+      ).toEqual(Reaction.Resist)
     })
   })
 

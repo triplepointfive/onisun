@@ -15,7 +15,7 @@ export class RemoveItemEvent extends CreatureEvent {
   }
 
   public affectCreature(creature: Creature): Reaction {
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   public affectPlayer(player: Player): Reaction {
@@ -29,6 +29,6 @@ export class RemoveItemEvent extends CreatureEvent {
       this.slot.equipment.count -= this.count
     }
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 }

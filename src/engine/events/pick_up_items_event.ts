@@ -18,7 +18,7 @@ export class PickUpItemsEvent extends CreatureEvent {
       creature.addItem(item, count)
     })
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   public affectPlayer(player: Player): Reaction {
@@ -30,7 +30,7 @@ export class PickUpItemsEvent extends CreatureEvent {
       this.withTileItems(player, tileItems)
     }
 
-    return Reaction.NOTHING
+    return Reaction.Nothing
   }
 
   protected withTileItems(subject: Player, tileItems: ItemsBunch<Item>) {

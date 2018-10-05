@@ -43,7 +43,7 @@ export class Thrower extends AI {
       game,
       levelMap,
       (reaction: Reaction) => {
-        if (reaction === Reaction.DIE) {
+        if (reaction === Reaction.Die) {
           this.victim = undefined
           this.previousVictim = undefined
         }

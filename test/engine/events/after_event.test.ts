@@ -26,7 +26,7 @@ describe('AfterEvent', () => {
       creature.addImpact(ImpactType.Loaded, 'bag')
       creature.addImpact(ImpactType.Stressed, 'bag')
 
-      expect(creature.on(event)).toEqual(Reaction.NOTHING)
+      expect(creature.on(event)).toEqual(Reaction.Nothing)
     })
 
     it('removes them all', () => {
@@ -58,7 +58,7 @@ describe('AfterEvent', () => {
         get: jest.fn(() => 10),
       })
 
-      expect(creature.on(event)).toEqual(Reaction.NOTHING)
+      expect(creature.on(event)).toEqual(Reaction.Nothing)
       expect(creature.impacts).toEqual([])
     })
 
@@ -67,7 +67,7 @@ describe('AfterEvent', () => {
         get: jest.fn(() => 11),
       })
 
-      expect(creature.on(event)).toEqual(Reaction.NOTHING)
+      expect(creature.on(event)).toEqual(Reaction.Nothing)
       expect(creature.impacts).toEqual([ImpactType.Stressed])
     })
 
@@ -76,7 +76,7 @@ describe('AfterEvent', () => {
         get: jest.fn(() => 16),
       })
 
-      expect(creature.on(event)).toEqual(Reaction.NOTHING)
+      expect(creature.on(event)).toEqual(Reaction.Nothing)
       expect(creature.impacts).toEqual([ImpactType.Loaded])
     })
 
@@ -85,7 +85,7 @@ describe('AfterEvent', () => {
         get: jest.fn(() => 21),
       })
 
-      expect(creature.on(event)).toEqual(Reaction.NOTHING)
+      expect(creature.on(event)).toEqual(Reaction.Nothing)
       expect(creature.impacts).toEqual([ImpactType.Overloaded])
     })
 
@@ -94,7 +94,7 @@ describe('AfterEvent', () => {
         get: jest.fn(() => 26),
       })
 
-      expect(creature.on(event)).toEqual(Reaction.DIE)
+      expect(creature.on(event)).toEqual(Reaction.Die)
       expect(creature.dead).toBeTruthy()
     })
   })
