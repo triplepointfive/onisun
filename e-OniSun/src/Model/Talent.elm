@@ -87,7 +87,9 @@ type Material
   | Stone
   | Wood
 
-type Creature = Creature
+type alias CreatureId = Int
+
+type alias Creature = { id : CreatureId }
 
 -- Timeline
 

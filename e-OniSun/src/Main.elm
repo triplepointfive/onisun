@@ -1,6 +1,7 @@
 import Array
 import Browser
 import Browser.Events exposing (onKeyPress)
+import Dict
 import Html exposing (..)
 import Json.Decode as Decode
 
@@ -14,32 +15,39 @@ main =
     , view = view
     }
 
-type alias Model = { levelMap : LevelMap }
+type alias Model = Game
 
-type alias Msg = String
+type Msg = KeyPress String
 
-init () = ({ levelMap = levelMap }, Cmd.none)
+init : () -> (Model, Cmd Msg)
+init () = ({ levelMap = initLevelMap, creatures = Dict.empty }, Cmd.none)
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update : Msg -> Model -> (Model, Cmd Msg)
+update (KeyPress msg) model =
   case msg of
+    "l" ->
+      ( moveEvent initPlayer { x = 1, y = 1 } model
+      , Cmd.none
+      )
     "k" ->
-      ({ model | levelMap = withTile ({ x = 0, y = 0 }) (\tile -> { tile | creature = Just Creature }) model.levelMap }
+      ( moveEvent initPlayer { x = 2, y = 2 } model
       , Cmd.none
       )
     _ -> (model, Cmd.none)
 
-keyDecoder : Decode.Decoder String
+keyDecoder : Decode.Decoder Msg
 keyDecoder =
-  Decode.field "key" Decode.string
+  Decode.map KeyPress
+    <| Decode.field "key" Decode.string
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   onKeyPress keyDecoder
 
+initPlayer = { id = 1 }
 
-levelMap : LevelMap
-levelMap =
+initLevelMap : LevelMap
+initLevelMap =
   fromString """
 #####
 #   #
@@ -69,3 +77,28 @@ tileChar tile =
         Wall -> '#'
     Just _ ->
       '@'
+
+-- Screen
+
+type alias Game = { levelMap : LevelMap, creatures : Dict.Dict CreatureId Point }
+
+type alias Event = Game -> Game
+
+type alias Screen = { handler : String -> Event }
+
+setCreature : Point -> Maybe Creature -> LevelMap -> LevelMap
+setCreature pos creature levelMap =
+  withTile pos (\tile -> { tile | creature = creature }) levelMap
+
+moveEvent : Creature -> Point -> Event
+moveEvent creature pos game =
+  let
+    removeOld =
+      case Dict.get creature.id game.creatures of
+        Nothing -> identity
+        Just oldPos -> setCreature oldPos Nothing
+  in
+    { game
+    | levelMap = setCreature pos (Just creature) <| removeOld game.levelMap
+    , creatures = Dict.insert creature.id pos game.creatures
+    }
