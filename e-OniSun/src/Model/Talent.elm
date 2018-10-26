@@ -7,6 +7,25 @@ import Array
 
 import Debug
 
+-- Base
+
+type alias Point = { x : Int, y : Int }
+
+type alias CreatureId = Int
+
+type alias Creature =
+  { id : CreatureId
+  , pos : Point
+  }
+
+type alias Player =
+  { professions : List Profession
+  , id : CreatureId
+  , pos : Point
+  }
+
+-- Talents
+
 type TalentStatus = Available | Completed | Unavailable
 
 type alias Talent =
@@ -22,10 +41,6 @@ type alias Profession =
   , depthCost : Int
   , points : Int
   , talents : List Talent
-  }
-
-type alias Player =
-  { professions : List Profession
   }
 
 obtain : Talent -> Player -> Talent
@@ -87,10 +102,6 @@ type Material
   | Stone
   | Wood
 
-type alias CreatureId = Int
-
-type alias Creature = { id : CreatureId }
-
 -- Timeline
 
 type alias Timeline a =
@@ -121,24 +132,24 @@ remove v t =
 
 type TileKind = Floor | Wall
 
-type alias Tile = { kind : TileKind, creature : Maybe Creature }
+type alias Tile = { kind : TileKind }
 
-type alias LevelMap = { map : Array.Array (Array.Array Tile) }
+type alias LevelMap =
+  { map : Array.Array (Array.Array Tile)
+  , creatures : List Creature
+  }
 
-fromString : String -> LevelMap
+fromString : String -> Array.Array (Array.Array Tile)
 fromString str =
-  { map = Array.fromList
+  Array.fromList
     <| List.map (\ line -> Array.fromList
       <| List.map (\ c -> if c == ' ' then newTile Floor  else newTile Wall)
       <| String.toList line)
     <| List.filter (\line -> not <| String.isEmpty line)
     <| String.split "\n" str
-  }
 
 newTile : TileKind -> Tile
-newTile kind = { kind = kind, creature = Nothing }
-
-type alias Point = { x : Int, y : Int }
+newTile kind = { kind = kind }
 
 withTile : Point -> (Tile -> Tile) -> LevelMap -> LevelMap
 withTile pos f levelMap =
